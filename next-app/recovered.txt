@@ -1,0 +1,800 @@
+"use client";
+
+import React, { useState, useRef, useTransition, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { Plus, Trash2, Download, RefreshCw, Layers, Sparkles, Landmark, User, FileText, PenTool, Upload, X, Check, Search, QrCode } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
+import { INVOICE_TEMPLATES, ThemeConfig } from "./themes";
+import { INDIAN_STATES } from "@/lib/constants";
+
+// Alias for strict compliance with requested coding standards
+const useTranslation = useLanguage;
+
+function numberToWords(num: number): string {
+  const a = [
+    '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+    'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+  ];
+  const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  function g(n: number): string {
+    if (n < 20) return a[n];
+    const digit = n % 10;
+    return b[Math.floor(n / 10)] + (digit ? '-' + a[digit] : '');
+  }
+
+  function h(n: number): string {
+    if (n < 100) return g(n);
+    return a[Math.floor(n / 100)] + ' Hundred' + (n % 100 ? ' and ' + g(n % 100) : '');
+  }
+
+  function convert(n: number): string {
+    if (n === 0) return 'Zero';
+    const lakh = Math.floor(n / 100000);
+    const thousand = Math.floor((n % 100000) / 1000);
+    const hundred = n % 1000;
+    
+    let res = '';
+    if (lakh > 0) res += h(lakh) + ' Lakh ';
+    if (thousand > 0) res += h(thousand) + ' Thousand ';
+    if (hundred > 0) res += h(hundred);
+    return res.trim();
+  }
+
+  const parts = Math.max(0, num).toFixed(2).split('.');
+  const whole = parseInt(parts[0]);
+  const decimals = parseInt(parts[1]);
+
+  let words = convert(whole);
+  if (decimals > 0) {
+    words += ' and ' + convert(decimals) + ' Paise';
+  }
+  return words;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  hsn_code: string;
+  selling_price: number;
+  tags?: any;
+  packing_size_unit?: string;
+}
+
+interface InvoiceItem {
+  id: string;
+  productId: string;
+  name: string;
+  hsn: string;
+  qty: number;
+  rate: number;
+  taxPercent: number;
+  taxableValue: number;
+  taxAmount: number;
+  total: number;
+  per?: string;
+}
+
+interface SellerDetails {
+  companyName: string;
+  ownerName: string;
+  gstin: string;
+  phone: string;
+  address: string;
+  stateCode: string;
+  pincode?: string;
+  bankName: string;
+  accountNumber: string;
+  ifsc: string;
+  logo?: string;
+  upiId: string;
+}
+
+const DEFAULT_SELLER: SellerDetails = {
+  companyName: "Sharma Industries",
+  ownerName: "Ashutosh Sharma",
+  gstin: "08AABCU9603R1ZX",
+  phone: "+91 98765 43210",
+  address: "Bundi, Rajasthan, India",
+  stateCode: "08",
+  bankName: "State Bank of India",
+  accountNumber: "32104567890",
+  ifsc: "SBIN0001234",
+  upiId: "sharma@upi"
+};
+
+export function InvoiceEngine() {
+  const { t } = useTranslation();
+  const [isPending, startTransition] = useTransition();
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  // CRM States
+  const [clients, setClients] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedClientId, setSelectedClientId] = useState<string>("");
+  const [showAddClientModal, setShowAddClientModal] = useState(false);
+  const [newClientData, setNewClientData] = useState({ name: "", phone: "", gstin: "", address: "", state_code: "", pincode: "" });
+
+  // Seller/Company Profile State
+  const [sellerDetails, setSellerDetails] = useState<SellerDetails>(DEFAULT_SELLER);
+
+  // Form State
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
+  const [state, setState] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [gstin, setGstin] = useState("");
+  const [taxType, setTaxType] = useState<"inclusive" | "exclusive">("exclusive");
+  const [template, setTemplate] = useState<string>("classic_default");
+  const [items, setItems] = useState<InvoiceItem[]>([]);
+  const [invoiceNo, setInvoiceNo] = useState("");
+  const [invoiceDate, setInvoiceDate] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [notes, setNotes] = useState<string>("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Transport Details State
+  const [transportMode, setTransportMode] = useState<string>("Road");
+  const [vehicleNo, setVehicleNo] = useState<string>("");
+  const [transportDate, setTransportDate] = useState<string>("");
+  const [destination, setDestination] = useState<string>("");
+  const [isSameAsBilling, setIsSameAsBilling] = useState<boolean>(false);
+
+  // Payment Terms State
+  const [advancePaid, setAdvancePaid] = useState<number>(0);
+  const [paymentMode, setPaymentMode] = useState<string>("Credit");
+  const [creditDays, setCreditDays] = useState<number>(15);
+
+  // Signature State
+  const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState<1 | 2>(1);
+  const [savedInvoiceId, setSavedInvoiceId] = useState<string | null>(null);
+  useEffect(() => {
+    if (paymentMode === "Credit" && invoiceDate) {
+      const dateObj = new Date(invoiceDate);
+      dateObj.setDate(dateObj.getDate() + creditDays);
+      setDueDate(dateObj.toISOString().split("T")[0]);
+    } else if (paymentMode !== "Credit") {
+      setDueDate("");
+    }
+  }, [paymentMode, invoiceDate, creditDays]);
+
+  // Load company settings via APIs
+  useEffect(() => {
+    setIsMounted(true);
+    setInvoiceNo(`INV-${Date.now().toString().slice(-6)}`);
+    setInvoiceDate(new Date().toISOString().split("T")[0]);
+
+    const savedTemplate = localStorage.getItem("invoice_template");
+    if (savedTemplate) {
+      setTemplate(savedTemplate);
+    }
+
+    async function loadInitialData() {
+      try {
+        const [compRes, prodRes, clientRes] = await Promise.all([
+          fetch("/api/company").then(r => r.json()),
+          fetch("/api/products").then(r => r.json()),
+          fetch("/api/clients").then(r => r.json())
+        ]);
+        
+        if (compRes.success && compRes.data) {
+          setSellerDetails(compRes.data);
+          setSignatureUrl(compRes.data.signature_url);
+        }
+        if (prodRes.success && prodRes.data) setProducts(prodRes.data);
+        if (clientRes.success && clientRes.data) setClients(clientRes.data);
+      } catch (err) {
+        console.error("Failed to load initial data", err);
+      }
+    }
+    loadInitialData();
+  }, []);
+
+  const handleClientSelect = (clientId: string) => {
+    setSelectedClientId(clientId);
+    if (!clientId) {
+      setCustomerName("");
+      setCustomerPhone("");
+      setCustomerAddress("");
+      setGstin("");
+      setState("");
+      return;
+    }
+    const client = clients.find(c => c.id === clientId);
+    if (client) {
+      setCustomerName(client.name || "");
+      setCustomerPhone(client.phone || "");
+      setCustomerAddress(client.address || "");
+      setGstin(client.gstin || "");
+      setState(client.state_code || "");
+      setPincode(client.pincode || "");
+    }
+  };
+
+  const handleSaveNewClient = async () => {
+    try {
+      const res = await fetch("/api/clients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newClientData)
+      });
+      const data = await res.json();
+      if (data.success && data.data) {
+        setClients([...clients, data.data]);
+        setSelectedClientId(data.data.id);
+        setCustomerName(data.data.name);
+        setCustomerPhone(data.data.phone || "");
+        setCustomerAddress(data.data.address || "");
+        setGstin(data.data.gstin || "");
+        setState(data.data.state_code || "");
+        setPincode(data.data.pincode || "");
+        setShowAddClientModal(false);
+        setNewClientData({ name: "", phone: "", gstin: "", address: "", state_code: "", pincode: "" });
+      } else {
+        alert(data.error || "Failed to save client");
+      }
+    } catch (err) {
+      alert("Error saving client");
+    }
+  };
+
+  // Derived state comparison: Intra-state (CGST/SGST) vs Inter-state (IGST)
+  const isIGST = useMemo(() => {
+    if (!state) return false;
+    const cleanClientState = state.trim().toLowerCase();
+    
+    // Extract company state name from address (second to last part usually, e.g. Bundi, Rajasthan, India)
+    const companyAddressParts = sellerDetails.address.split(",");
+    let extractedCompanyState = "rajasthan";
+    if (companyAddressParts.length >= 2) {
+      extractedCompanyState = companyAddressParts[companyAddressParts.length - 2].trim().toLowerCase();
+    }
+    
+    const companyStateCode = (sellerDetails.stateCode || "08").trim().toLowerCase();
+
+    // If client state matches company state name or state code, it's intra-state. Otherwise inter-state.
+    const isIntraState = cleanClientState === extractedCompanyState || cleanClientState === companyStateCode;
+    return !isIntraState;
+  }, [state, sellerDetails.address, sellerDetails.stateCode]);
+
+  // Recalculate financial math for a single item row
+  const recalculateItem = (item: InvoiceItem, type: "inclusive" | "exclusive") => {
+    const qty = item.qty;
+    const rate = item.rate;
+    const taxPercent = item.taxPercent;
+    
+    if (type === "exclusive") {
+      const taxableValue = qty * rate;
+      const taxAmount = taxableValue * (taxPercent / 100);
+      const total = taxableValue + taxAmount;
+      return { ...item, taxableValue, taxAmount, total };
+    } else {
+      const total = qty * rate;
+      const taxableValue = total / (1 + (taxPercent / 100));
+      const taxAmount = total - taxableValue;
+      return { ...item, taxableValue, taxAmount, total };
+    }
+  };
+
+  const handleAddItem = () => {
+    const newItem: InvoiceItem = {
+      id: Date.now().toString(),
+      productId: "",
+      name: "",
+      hsn: "",
+      qty: 1,
+      rate: 0,
+      taxPercent: 18,
+      taxableValue: 0,
+      taxAmount: 0,
+      total: 0,
+      per: "pcs"
+    };
+    setItems([...items, recalculateItem(newItem, taxType)]);
+  };
+
+  const handleRemoveItem = (id: string) => {
+    setItems(items.filter(item => item.id !== id));
+  };
+
+  const handleItemChange = (id: string, field: keyof InvoiceItem, value: any) => {
+    setItems(items.map(item => {
+      if (item.id === id) {
+        let updated = { ...item, [field]: value };
+        
+        // Auto-fill product details if product changed
+        if (field === "productId" && value) {
+          const prod = products.find(p => p.id === value);
+          if (prod) {
+            updated.name = prod.name;
+            updated.hsn = prod.hsn_code || "3209";
+            updated.rate = prod.selling_price;
+            updated.per = prod.packing_size_unit || "pcs";
+          }
+        }
+        
+        return recalculateItem(updated, taxType);
+      }
+      return item;
+    }));
+  };
+
+  const handleTaxTypeChange = (newType: "inclusive" | "exclusive") => {
+    setTaxType(newType);
+    setItems(prevItems => prevItems.map(item => recalculateItem(item, newType)));
+  };
+
+  const handleTemplateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    setTemplate(val);
+    localStorage.setItem("invoice_template", val);
+  };
+
+  const currentTheme = useMemo(() => {
+    return INVOICE_TEMPLATES.find(t => t.id === template) || INVOICE_TEMPLATES[0];
+  }, [template]);
+  
+  const layout = currentTheme.layout;
+
+  // Tax and total sums
+  const subtotal = items.reduce((sum, item) => sum + item.taxableValue, 0);
+  const totalTax = items.reduce((sum, item) => sum + item.taxAmount, 0);
+  const grandTotal = items.reduce((sum, item) => sum + item.total, 0);
+
+  const cgst = isIGST ? 0 : totalTax / 2;
+  const sgst = isIGST ? 0 : totalTax / 2;
+  const igst = isIGST ? totalTax : 0;
+
+  const taxSlabs = useMemo(() => {
+    const slabs: { [key: number]: { taxable: number; tax: number } } = {};
+    items.forEach(item => {
+      const pct = item.taxPercent;
+      if (!slabs[pct]) {
+        slabs[pct] = { taxable: 0, tax: 0 };
+      }
+      slabs[pct].taxable += item.taxableValue;
+      slabs[pct].tax += item.taxAmount;
+    });
+    return slabs;
+  }, [items]);
+
+  const hsnSlabs = useMemo(() => {
+    const slabs: { [key: string]: { taxable: number; taxPercent: number; tax: number } } = {};
+    items.forEach(item => {
+      const hsn = item.hsn || "3209";
+      if (!slabs[hsn]) {
+        slabs[hsn] = { taxable: 0, taxPercent: item.taxPercent, tax: 0 };
+      }
+      slabs[hsn].taxable += item.taxableValue;
+      slabs[hsn].tax += item.taxAmount;
+    });
+    return slabs;
+  }, [items]);
+
+  // Signature logic moved to settings.
+
+  
+  const handleSaveAndNext = async () => {
+    if (!customerName || !customerPhone || items.length === 0) {
+      alert(t("Please fill out the client details and add at least one item."));
+      return;
+    }
+
+    try {
+      // Execute the database save
+      const res = await fetch("/api/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: savedInvoiceId,
+          date: invoiceDate,
+          due_date: dueDate,
+          invoice_no: invoiceNo,
+          client_id: selectedClientId || null,
+          client_details: {
+            name: customerName,
+            phone: customerPhone,
+            gstin: gstin,
+            address: customerAddress,
+            state_code: state,
+            pincode: pincode || "000000"
+          },
+          items: items.map(item => ({
+            product_id: item.productId,
+            name: item.name,
+            hsn_code: item.hsn,
+            qty: item.qty,
+            rate: item.rate,
+            amount: item.total
+          })),
+          tax_breakdown: { cgst, sgst, igst },
+          transport_details: {
+            transport_mode: transportMode,
+            vehicle_no: vehicleNo,
+            transport_date: transportDate,
+            destination: destination,
+            is_same_as_billing: isSameAsBilling
+          },
+          payment_terms: {
+            advance_paid: advancePaid,
+            payment_mode: paymentMode,
+            credit_days: creditDays
+          },
+          subtotal,
+          total_tax: totalTax,
+          grand_total: grandTotal,
+          is_tax_inclusive: taxType === "inclusive"
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.data) {
+        setSavedInvoiceId(data.data.id);
+        setCurrentStep(2);
+      } else {
+        alert(data.error || t("Error saving invoice data."));
+      }
+    } catch (err) {
+      alert(t("Failed to communicate with API."));
+    }
+  };
+
+  const handleGeneratePDF = async () => {
+    if (!customerName) return alert(t("Please enter Client Name."));
+    if (items.length === 0) return alert(t("Please add at least one item."));
+    if (!previewRef.current) return;
+
+    try {
+      
+      // Temporary scaling fix for html2canvas representation
+      const originalStyle = previewRef.current.style.transform;
+      previewRef.current.style.transform = "none";
+      previewRef.current.style.marginBottom = "0";
+
+      // Temporarily patch getComputedStyle to convert oklch/oklab colors
+      const originalGetComputedStyle = window.getComputedStyle;
+      const colorCache = new Map<string, string>();
+      const convertCssColorToRgb = (colorString: string) => {
+        if (colorCache.has(colorString)) return colorCache.get(colorString)!;
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = 1;
+          canvas.height = 1;
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          if (!ctx) return colorString;
+          ctx.fillStyle = colorString;
+          ctx.fillRect(0, 0, 1, 1);
+          const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+          const rgbStr = a === 255 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${(a / 255).toFixed(3)})`;
+          colorCache.set(colorString, rgbStr);
+          return rgbStr;
+        } catch (e) {
+          return colorString;
+        }
+      };
+      const replaceModernColors = (str: string) => {
+        if (typeof str !== "string") return str;
+        if (!str.includes("oklch") && !str.includes("oklab") && !str.includes("lch") && !str.includes("lab")) return str;
+        return str.replace(/(oklch|oklab|lch|lab)\([^)]+\)/gi, (match) => convertCssColorToRgb(match));
+      };
+
+      window.getComputedStyle = function (el, pseudoElt) {
+        const style = originalGetComputedStyle(el, pseudoElt);
+        return new Proxy(style, {
+          get(target, prop) {
+            if (typeof prop === "string") {
+              if (prop === "getPropertyValue") {
+                return function (propertyName: string) {
+                  return replaceModernColors(target.getPropertyValue(propertyName));
+                };
+              }
+              const val = target[prop as any];
+              if (typeof val === "string") return replaceModernColors(val);
+            }
+            const value = target[prop as any];
+            return typeof value === "function" ? (value as any).bind(target) : value;
+          }
+        });
+      };
+
+      try {
+        const opt = {
+          margin: 0,
+          filename: `${invoiceNo}_${customerName}.pdf`,
+          image: { type: 'jpeg' as const, quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+          pagebreak: { mode: 'avoid-all' },
+          jsPDF: { unit: 'mm', format: 'a4' as const, orientation: 'portrait' as const }
+        };
+        
+        const html2pdf = (await import("html2pdf.js")).default;
+        await html2pdf().set(opt).from(previewRef.current).save();
+      } finally {
+        window.getComputedStyle = originalGetComputedStyle;
+      }
+    } catch (error) {
+      console.error("PDF generation failed:", error);
+      alert(t("Failed to generate PDF."));
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {showAddClientModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 ">
+          <div className="bg-card border border-border rounded-2xl p-6 w-[400px] shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-lg text-foreground">{t("Add New Client")}</h3>
+              <button onClick={() => setShowAddClientModal(false)}><X size={20} className="text-muted-foreground hover:text-foreground" /></button>
+            </div>
+            <div className="space-y-3">
+              <input placeholder="Name" value={newClientData.name} onChange={e => setNewClientData({...newClientData, name: e.target.value})} className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground" />
+              <input placeholder="Phone" value={newClientData.phone} onChange={e => setNewClientData({...newClientData, phone: e.target.value})} className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground" />
+              <input placeholder="GSTIN" value={newClientData.gstin} onChange={e => setNewClientData({...newClientData, gstin: e.target.value})} className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground" />
+              <div className="flex gap-2">
+                <select value={newClientData.state_code} onChange={e => setNewClientData({...newClientData, state_code: e.target.value})} className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground">
+                  <option value="" disabled>State</option>
+                  {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+                <input placeholder="Pincode" value={newClientData.pincode} onChange={e => setNewClientData({...newClientData, pincode: e.target.value})} className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground" />
+              </div>
+              <textarea placeholder="Address" value={newClientData.address} onChange={e => setNewClientData({...newClientData, address: e.target.value})} className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground" />
+              <button onClick={handleSaveNewClient} className="w-full py-2 mt-2 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg">{t("Save Client")}</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Header */}
+      <div className="flex items-center gap-3 border-b border-border pb-4">
+        <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
+          <FileText className="text-primary" size={28} />
+        </div>
+        <div>
+          <h1 className="text-3xl font-black text-foreground tracking-tight">{t("Smart GST Invoicing & PDF Engine")}</h1>
+          <p className="text-muted-foreground mt-1">{t("Create professional tax invoices with zero-storage client-side PDF generation.")}</p>
+        </div>
+      </div>
+
+      <div>
+        {currentStep === 1 && (
+<div className="max-w-4xl mx-auto space-y-6">
+{/* LEFT COLUMN: EDITOR */}
+        <div className="bg-card border border-border rounded-3xl p-6 shadow-sm space-y-8">
+        
+        {/* Company Settings summary box */}
+        <div className="flex justify-between items-center bg-primary/10 border border-primary/20 rounded-2xl p-4 text-sm">
+          <div>
+            <span className="font-bold text-primary">{t("Company Profile")}: </span>
+            <span className="text-foreground font-semibold">{sellerDetails.companyName} ({sellerDetails.stateCode})</span>
+          </div>
+          <Link href="/dashboard/ceo/settings" className="text-sm text-primary hover:underline font-extrabold flex items-center gap-1">
+            {t("Edit Settings")}
+          </Link>
+        </div>
+
+        {/* Controls */}
+        <div className="flex justify-between items-center border-b border-border pb-4">
+          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+            <Layers size={20} className="text-primary" />
+            {t("Invoice Parameters")}
+          </h2>
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{t("Template")}:</label>
+            <select 
+              value={template}
+              onChange={handleTemplateChange}
+              className="px-3 py-1.5 bg-background border border-border text-foreground rounded-xl text-sm font-semibold transition-all outline-none focus:border-primary shadow-sm"
+            >
+              {INVOICE_TEMPLATES.map(t => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Invoice Metadata Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <FileText size={16} className="text-primary" />
+            {t("Invoice Metadata")}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Invoice No.")}</label>
+              <input type="text" value={invoiceNo} onChange={e => setInvoiceNo(e.target.value)} className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" />
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Invoice Date")}</label>
+              <input type="date" value={invoiceDate} onChange={e => setInvoiceDate(e.target.value)} className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" />
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Due Date")}</label>
+              <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" disabled={paymentMode === 'Credit'} />
+            </div>
+          </div>
+        </div>
+
+        {/* Client Details Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <User size={16} className="text-primary" />
+            {t("Client Details")}
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2 flex gap-2 items-end">
+              <div className="flex-1">
+                <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Select Client")}</label>
+                <div className="relative">
+                  <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <select
+                    value={selectedClientId}
+                    onChange={(e) => handleClientSelect(e.target.value)}
+                    className="w-full bg-background border border-border rounded-xl pl-10 pr-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium appearance-none"
+                  >
+                    <option value="">{t("-- Manual Entry --")}</option>
+                    {clients.map(c => (
+                      <option key={c.id} value={c.id}>{c.name} ({c.phone || "No Phone"})</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowAddClientModal(true)}
+                className="px-4 py-2.5 bg-primary/10 text-primary hover:bg-primary/20 rounded-xl border border-primary/20 transition-all font-bold text-sm whitespace-nowrap flex items-center gap-2"
+              >
+                <Plus size={16} /> {t("Add New")}
+              </button>
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("clientName")} ({t("Override")})</label>
+              <input 
+                type="text" 
+                value={customerName} 
+                onChange={(e) => setCustomerName(e.target.value)} 
+                placeholder={t("Customer / Dealer Name")} 
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" 
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("clientGstin")}</label>
+              <input 
+                type="text" 
+                value={gstin} 
+                onChange={(e) => setGstin(e.target.value)} 
+                placeholder="08XXXXXXXXXXX" 
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" 
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("contactNumber")}</label>
+              <input 
+                type="text" 
+                value={customerPhone} 
+                onChange={(e) => setCustomerPhone(e.target.value)} 
+                placeholder="+91 99999 99999" 
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" 
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("State")}</label>
+              <select 
+                value={state} 
+                onChange={(e) => setState(e.target.value)} 
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" 
+              >
+                <option value="" disabled>{t("Select State")}</option>
+                {INDIAN_STATES.map(s => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Pincode")}</label>
+              <input 
+                type="text" 
+                value={pincode} 
+                onChange={(e) => setPincode(e.target.value)} 
+                placeholder={t("e.g. 324005")} 
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" 
+              />
+            </div>
+
+            <div className="flex flex-col justify-end">
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Tax Mode")}</label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleTaxTypeChange("exclusive")}
+                  className={`py-2 px-3 text-sm font-bold rounded-xl border transition-all ${
+                    taxType === "exclusive"
+                      ? "bg-primary text-background text-white border-primary"
+                      : "bg-background text-foreground border-border hover:bg-card"
+                  }`}
+                >
+                  {t("Tax Exclusive")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleTaxTypeChange("inclusive")}
+                  className={`py-2 px-3 text-sm font-bold rounded-xl border transition-all ${
+                    taxType === "inclusive"
+                      ? "bg-primary text-background text-white border-primary"
+                      : "bg-background text-foreground border-border hover:bg-card"
+                  }`}
+                >
+                  {t("Tax Inclusive")}
+                </button>
+              </div>
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("fullAddress")}</label>
+              <textarea 
+                value={customerAddress} 
+                onChange={(e) => setCustomerAddress(e.target.value)} 
+                rows={2}
+                placeholder={t("fullAddress")} 
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" 
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Transport & Dispatch Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Layers size={16} className="text-primary" />
+            {t("Transport & Dispatch")}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Transport Mode")}</label>
+              <select 
+                value={transportMode} 
+                onChange={e => setTransportMode(e.target.value)}
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium"
+              >
+                <option value="Road">Road</option>
+                <option value="Rail">Rail</option>
+                <option value="Air">Air</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Vehicle Number")}</label>
+              <input type="text" value={vehicleNo} onChange={e => setVehicleNo(e.target.value)} placeholder="e.g. RJ02 AB 1234" className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" />
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">{t("Transport Date")}</label>
+              <input type="date" value={transportDate} onChange={e => setTransportDate(e.target.value)} className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" />
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block flex justify-between items-center mb-2">
+                {t("Destination")}
+                <label className="flex items-center gap-1 cursor-pointer text-sm text-primary lowercase normal-case">
+                  <input type="checkbox" checked={isSameAsBilling} onChange={e => {
+                    setIsSameAsBilling(e.target.checked);
+                    if (e.target.checked) setDestination(customerAddress);
+                  }} className="accent-primary" />
+                  Same as Billing
+                </label>
+              </label>
+              <input type="text" value={destination} onChange={e => setDestination(e.target.value)} placeholder="Destination" className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium" />
+            </div>
+          </div>
+        </div>
+
+        {/* Payment & Credit Terms Section */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Landmark size={16} className="text-primary" />
+            {t("Payment & Credit Terms")}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
