@@ -85,7 +85,7 @@ export function Sidebar({ role }: SidebarProps) {
     <>
       {/* Mobile Hamburger Button */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-sidebar text-sidebar-foreground"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-md border border-border/50 text-foreground shadow-md hover:bg-background transition-all duration-200"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -94,19 +94,19 @@ export function Sidebar({ role }: SidebarProps) {
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/80 z-40 "
+          className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-xs z-40 transition-opacity duration-300"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed lg:static top-0 left-0 z-40 h-full w-64 shrink-0 bg-transparent flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static top-0 left-0 z-40 h-full w-64 shrink-0 flex flex-col transition-transform duration-300 ease-in-out border-r border-border/40 lg:border-r-0 shadow-2xl lg:shadow-none bg-gradient-to-b from-[#f5e6fd] via-[#e8f0fe] to-[#fdfbfb] dark:from-[#1c1c1e] dark:to-[#1c1c1e] lg:bg-transparent lg:bg-none ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Top spacer so nav doesn't start at absolute top on mobile */}
-        <div className="h-4" />
+        <div className="h-16 lg:h-4" />
 
         {/* Navigation Links */}
         <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">

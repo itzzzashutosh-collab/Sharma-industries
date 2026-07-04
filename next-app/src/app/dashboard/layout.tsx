@@ -30,7 +30,6 @@ export default async function DashboardLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        {/* Top Header */}
         <header className="h-24 flex items-center justify-between px-4 sm:px-6 lg:px-8 bg-transparent z-10 relative">
           {/* Top Left Logo Container */}
           <div className="flex items-center pl-10 lg:pl-0 shrink-0">
@@ -38,13 +37,12 @@ export default async function DashboardLayout({
             <img
               src="/logo_day_cropped.png"
               alt="Sharma Industries Logo"
-              style={{ width: "170px", height: "auto", objectFit: "contain" }}
-              className="transition-all"
+              className="w-[130px] sm:w-[150px] lg:w-[170px] h-auto object-contain transition-all"
             />
           </div>
 
           {/* Centered Title */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight">
+          <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 flex-col items-center leading-tight">
             <span className="text-2xl font-bold text-foreground tracking-tight">Sharma Industries</span>
             <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mt-1">ERP Software</span>
           </div>
