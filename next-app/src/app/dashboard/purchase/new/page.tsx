@@ -1,10 +1,229 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { Plus, Trash2, Save, FileText, Truck, Calculator, CreditCard } from "lucide-react";
+import { Plus, Trash2, Save, FileText, Truck, Calculator, CreditCard, UploadCloud } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { getRawMaterials, submitPurchaseBill } from "@/actions/purchaseActions";
 import { useRouter } from "next/navigation";
+
+// Dynamic CDN loaders for PDF.js and Tesseract.js (running fully client-side)
+const loadPdfJs = (): Promise<any> => {
+  if (typeof window === "undefined") return Promise.resolve(null);
+  if ((window as any).pdfjsLib) return Promise.resolve((window as any).pdfjsLib);
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    script.onload = () => {
+      (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      resolve((window as any).pdfjsLib);
+    };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+
+const loadTesseract = (): Promise<any> => {
+  if (typeof window === "undefined") return Promise.resolve(null);
+  if ((window as any).Tesseract) return Promise.resolve((window as any).Tesseract);
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
+    script.onload = () => resolve((window as any).Tesseract);
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+
+const extractTextFromPdf = async (file: File): Promise<string> => {
+  const pdfjsLib = await loadPdfJs();
+  if (!pdfjsLib) return "";
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  
+  let fullText = "";
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    const pageText = textContent.items.map((item: any) => item.str).join(" ");
+    fullText += pageText + "\n";
+  }
+  return fullText;
+};
+
+const extractTextFromImage = async (file: File): Promise<string> => {
+  const Tesseract = await loadTesseract();
+  if (!Tesseract) return "";
+  const worker = await Tesseract.createWorker("eng");
+  const ret = await worker.recognize(file);
+  await worker.terminate();
+  return ret.data.text;
+};
+
+// Deterministic rules engine to parse extracted text
+const parseInvoiceText = (text: string, rawMaterialsList: any[]) => {
+  // 1. Supplier GSTIN
+  const gstinRegex = /\b\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}Z[A-Z\d]{1}\b/gi;
+  const gstinMatches = text.match(gstinRegex);
+  let supplier_gstin = "";
+  if (gstinMatches && gstinMatches.length > 0) {
+    supplier_gstin = gstinMatches[0].toUpperCase();
+  }
+
+  // 2. Invoice No
+  const invPatterns = [
+    /(?:invoice\s*no|invoice\s*number|bill\s*no|bill\s*number|inv\s*no|invoice\s*#)[:\s\-]+([A-Z0-9\-\/]+)/i,
+    /invoice\s*[:\s\-]+([A-Z0-9\-\/]+)/i,
+    /inv\s*[:\s\-]+([A-Z0-9\-\/]+)/i,
+  ];
+  let invoice_no = "";
+  for (const pattern of invPatterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) {
+      invoice_no = match[1].trim();
+      break;
+    }
+  }
+
+  // 3. Bill Date
+  const datePatterns = [
+    /\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/, // YYYY-MM-DD
+    /\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/  // DD-MM-YYYY
+  ];
+  let bill_date = new Date().toISOString().split("T")[0];
+  for (const pattern of datePatterns) {
+    const match = text.match(pattern);
+    if (match) {
+      try {
+        let parsedDate: Date;
+        if (pattern === datePatterns[0]) {
+          parsedDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        } else {
+          let year = Number(match[3]);
+          if (year < 100) year += 2000;
+          parsedDate = new Date(year, Number(match[2]) - 1, Number(match[1]));
+        }
+        if (!isNaN(parsedDate.getTime())) {
+          bill_date = parsedDate.toISOString().split("T")[0];
+          break;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+  }
+
+  // 4. Supplier Name
+  const lines = text.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+  let supplier_name = "";
+  const supplierKeywords = [/ltd/i, /pvt/i, /enterprise/i, /chemical/i, /paint/i, /industry/i, /logistics/i, /co\./i, /corporation/i];
+  for (let i = 0; i < Math.min(lines.length, 10); i++) {
+    const line = lines[i];
+    if (supplierKeywords.some(kw => kw.test(line)) && 
+        !line.includes("@") && 
+        !line.toLowerCase().includes("gstin") && 
+        !line.toLowerCase().includes("invoice") &&
+        line.length < 50) {
+      supplier_name = line;
+      break;
+    }
+  }
+  if (!supplier_name && lines.length > 0) {
+    supplier_name = lines[0].substring(0, 50);
+  }
+
+  // 5. Taxes (CGST, SGST, IGST)
+  const cgstPattern = /cgst\s*(?:amount|amt)?\s*(?:[@\d%]*\s*)?[:\s\-₹rs\.]+(\d+(?:\.\d+)?)/i;
+  const sgstPattern = /sgst\s*(?:amount|amt)?\s*(?:[@\d%]*\s*)?[:\s\-₹rs\.]+(\d+(?:\.\d+)?)/i;
+  const igstPattern = /igst\s*(?:amount|amt)?\s*(?:[@\d%]*\s*)?[:\s\-₹rs\.]+(\d+(?:\.\d+)?)/i;
+
+  const cgstMatch = text.match(cgstPattern);
+  const sgstMatch = text.match(sgstPattern);
+  const igstMatch = text.match(igstPattern);
+
+  const cgst_amount = cgstMatch ? Number(cgstMatch[1]) : 0;
+  const sgst_amount = sgstMatch ? Number(sgstMatch[1]) : 0;
+  const igst_amount = igstMatch ? Number(igstMatch[1]) : 0;
+
+  // 6. Items Matching
+  const matchedItems: any[] = [];
+  for (const rm of rawMaterialsList) {
+    const name = rm.material_name;
+    const matchingLine = lines.find(line => line.toLowerCase().includes(name.toLowerCase()));
+    if (matchingLine) {
+      const words = matchingLine.split(/[\s,]+/);
+      const nums: number[] = [];
+      for (const w of words) {
+        const cleaned = w.replace(/[,₹]/g, "");
+        const num = parseFloat(cleaned);
+        if (!isNaN(num)) {
+          if (num > 100000) continue; // Skip likely HSN codes
+          nums.push(num);
+        }
+      }
+
+      // Mathematical Invoice Heuristic: search for (qty, rate) pair
+      let quantity = 0;
+      let rate = 0;
+      let foundPair = false;
+
+      for (let j = 0; j < nums.length; j++) {
+        for (let k = 0; k < nums.length; k++) {
+          if (j === k) continue;
+          const a = nums[j];
+          const b = nums[k];
+          const product = a * b;
+          const matchingTotal = nums.find((c, idx) => idx !== j && idx !== k && Math.abs(c - product) < 2);
+          if (matchingTotal) {
+            if (j < k) {
+              quantity = a;
+              rate = b;
+            } else {
+              quantity = b;
+              rate = a;
+            }
+            foundPair = true;
+            break;
+          }
+        }
+        if (foundPair) break;
+      }
+
+      if (!foundPair && nums.length > 0) {
+        if (nums.length >= 2) {
+          quantity = nums[0];
+          rate = nums[1];
+        } else {
+          quantity = nums[0];
+          rate = Number(rm.rate || 0);
+        }
+      }
+
+      if (quantity === 0) quantity = 1;
+      if (rate === 0) rate = Number(rm.rate || 0);
+
+      matchedItems.push({
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
+        raw_material_id: rm.id,
+        quantity,
+        rate
+      });
+    }
+  }
+
+  return {
+    supplier_name,
+    supplier_gstin,
+    invoice_no,
+    bill_date,
+    cgst_amount,
+    sgst_amount,
+    igst_amount,
+    items: matchedItems.length > 0 ? matchedItems : [{ id: Date.now().toString(), raw_material_id: "", quantity: 0, rate: 0 }]
+  };
+};
 
 export default function AddPurchaseBillPage() {
   const { t } = useLanguage();
@@ -13,6 +232,64 @@ export default function AddPurchaseBillPage() {
   // Fetched State
   const [rawMaterials, setRawMaterials] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Auto-Fill State
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [extractionStatus, setExtractionStatus] = useState("");
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsExtracting(true);
+    setExtractionStatus(t("Reading file..."));
+
+    try {
+      let text = "";
+      if (file.type === "application/pdf") {
+        setExtractionStatus(t("Extracting text from PDF..."));
+        text = await extractTextFromPdf(file);
+      } else if (file.type.startsWith("image/")) {
+        setExtractionStatus(t("Running OCR on image..."));
+        text = await extractTextFromImage(file);
+      } else {
+        alert(t("Unsupported file type. Please upload a PDF or Image."));
+        setIsExtracting(false);
+        return;
+      }
+
+      if (!text || text.trim().length === 0) {
+        throw new Error(t("No readable text found in the document."));
+      }
+
+      setExtractionStatus(t("Parsing invoice fields..."));
+      const parsedData = parseInvoiceText(text, rawMaterials);
+
+      setHeaderInfo(prev => ({
+        ...prev,
+        supplier_name: parsedData.supplier_name || prev.supplier_name,
+        supplier_gstin: parsedData.supplier_gstin || prev.supplier_gstin,
+        invoice_no: parsedData.invoice_no || prev.invoice_no,
+        bill_date: parsedData.bill_date || prev.bill_date,
+      }));
+
+      setTaxes({
+        cgst_amount: parsedData.cgst_amount,
+        sgst_amount: parsedData.sgst_amount,
+        igst_amount: parsedData.igst_amount,
+      });
+
+      setItems(parsedData.items);
+
+      alert(t("Bill details populated successfully! Please review the form before saving."));
+    } catch (err: any) {
+      console.error(err);
+      alert(t("Failed to parse invoice: ") + err.message);
+    } finally {
+      setIsExtracting(false);
+      setExtractionStatus("");
+    }
+  };
 
   // Form State
   const [headerInfo, setHeaderInfo] = useState({
@@ -115,6 +392,41 @@ export default function AddPurchaseBillPage() {
           <FileText className="text-primary" size={32} /> {t("New Purchase Bill")}
         </h1>
         <p className="text-muted-foreground mt-2">{t("Record incoming raw materials and update inventory.")}</p>
+      </div>
+
+      {/* Dynamic PDF/Image Smart Auto-Filler */}
+      <div className="bg-gradient-to-r from-primary/10 via-violet-500/10 to-indigo-500/10 border border-primary/20 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-1 text-center md:text-left">
+          <h2 className="text-lg font-bold text-foreground flex items-center justify-center md:justify-start gap-2">
+            <span className="text-primary animate-pulse">✨</span> {t("Smart Auto-Fill Agent")}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {t("Upload purchase bill (PDF or image like JPG, PNG) to extract supplier, tax, items and populate form.")}
+          </p>
+        </div>
+        
+        <div className="relative shrink-0 w-full md:w-auto">
+          {isExtracting ? (
+            <div className="flex items-center justify-center gap-3 px-8 py-4 bg-background/50 border border-primary/30 rounded-2xl text-sm font-semibold text-primary">
+              <svg className="w-5 h-5 animate-spin text-primary" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <span>{extractionStatus}</span>
+            </div>
+          ) : (
+            <label className="flex items-center justify-center gap-3 px-8 py-4 bg-white/70 dark:bg-black/50 hover:bg-primary/5 hover:border-primary/50 border-2 border-dashed border-border rounded-2xl text-sm font-bold text-foreground hover:text-primary transition-all duration-300 cursor-pointer shadow-sm">
+              <UploadCloud size={20} className="text-primary" />
+              <span>{t("Upload PDF / Image Bill")}</span>
+              <input 
+                type="file" 
+                accept="application/pdf,image/*" 
+                onChange={handleFileUpload} 
+                className="hidden" 
+              />
+            </label>
+          )}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
