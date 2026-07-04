@@ -133,7 +133,30 @@ export async function submitPurchaseBill(formData: FormData) {
 
     // 2. Iterate through items and insert into purchase_items
     for (const item of items) {
-      const { raw_material_id, quantity, rate } = item;
+      const { raw_material_id, quantity, rate, material_name } = item;
+      let resolved_material_id = raw_material_id;
+
+      // If raw_material_id is empty, try to resolve it from the DB
+      if (!resolved_material_id && material_name) {
+        const { data: rm } = await supabaseAdmin
+          .from("raw_materials")
+          .select("id")
+          .ilike("material_name", material_name.trim())
+          .limit(1)
+          .maybeSingle();
+        if (rm) {
+          resolved_material_id = rm.id;
+        } else {
+          // Fallback to the first raw material in the database
+          const { data: firstRm } = await supabaseAdmin
+            .from("raw_materials")
+            .select("id")
+            .limit(1)
+            .maybeSingle();
+          resolved_material_id = firstRm?.id || "";
+        }
+      }
+
       const itemId = `PI_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
       // Insert into purchase_items
@@ -142,7 +165,7 @@ export async function submitPurchaseBill(formData: FormData) {
         .insert({
           id: itemId,
           purchase_bill_id,
-          raw_material_id,
+          raw_material_id: resolved_material_id,
           quantity: Number(quantity),
           rate: Number(rate)
         });
@@ -157,7 +180,7 @@ export async function submitPurchaseBill(formData: FormData) {
       const { data: rmData, error: rmError } = await supabaseAdmin
         .from("raw_materials")
         .select("current_stock")
-        .eq("id", raw_material_id)
+        .eq("id", resolved_material_id)
         .single();
 
       if (!rmError && rmData) {

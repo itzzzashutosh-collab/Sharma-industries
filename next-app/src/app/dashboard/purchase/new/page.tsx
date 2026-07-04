@@ -74,9 +74,9 @@ const parseInvoiceText = (text: string, rawMaterialsList: any[]) => {
 
   // 2. Invoice No
   const invPatterns = [
-    /(?:invoice\s*no|invoice\s*number|bill\s*no|bill\s*number|inv\s*no|invoice\s*#)[:\s\-]+([A-Z0-9\-\/]+)/i,
-    /invoice\s*[:\s\-]+([A-Z0-9\-\/]+)/i,
-    /inv\s*[:\s\-]+([A-Z0-9\-\/]+)/i,
+    /(?:invoice\s*no|invoice\s*number|bill\s*no|bill\s*number|inv\s*no|invoice\s*#)[:\s\-]+([A-Z0-9\-\/\\_]+)/i,
+    /invoice\s*[:\s\-]+([A-Z0-9\-\/\\_]+)/i,
+    /inv\s*[:\s\-]+([A-Z0-9\-\/\\_]+)/i,
   ];
   let invoice_no = "";
   for (const pattern of invPatterns) {
@@ -92,44 +92,80 @@ const parseInvoiceText = (text: string, rawMaterialsList: any[]) => {
     /\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/, // YYYY-MM-DD
     /\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})\b/  // DD-MM-YYYY
   ];
+  
+  // Custom month parser for formats like 04-Jul-2026
+  const dateMMMRegex = /\b(\d{1,2})[-/\s](jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[-/\s](\d{2,4})\b/i;
+  
   let bill_date = new Date().toISOString().split("T")[0];
-  for (const pattern of datePatterns) {
-    const match = text.match(pattern);
-    if (match) {
-      try {
-        let parsedDate: Date;
-        if (pattern === datePatterns[0]) {
-          parsedDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
-        } else {
-          let year = Number(match[3]);
-          if (year < 100) year += 2000;
-          parsedDate = new Date(year, Number(match[2]) - 1, Number(match[1]));
+  const mmmMatch = text.match(dateMMMRegex);
+  
+  if (mmmMatch) {
+    try {
+      const day = Number(mmmMatch[1]);
+      const monthStr = mmmMatch[2].toLowerCase();
+      let year = Number(mmmMatch[3]);
+      if (year < 100) year += 2000;
+      const months: Record<string, number> = {
+        jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+        jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11
+      };
+      const month = months[monthStr];
+      const parsedDate = new Date(year, month, day);
+      if (!isNaN(parsedDate.getTime())) {
+        bill_date = parsedDate.toISOString().split("T")[0];
+      }
+    } catch (e) {
+      // ignore
+    }
+  } else {
+    for (const pattern of datePatterns) {
+      const match = text.match(pattern);
+      if (match) {
+        try {
+          let parsedDate: Date;
+          if (pattern === datePatterns[0]) {
+            parsedDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+          } else {
+            let year = Number(match[3]);
+            if (year < 100) year += 2000;
+            parsedDate = new Date(year, Number(match[2]) - 1, Number(match[1]));
+          }
+          if (!isNaN(parsedDate.getTime())) {
+            bill_date = parsedDate.toISOString().split("T")[0];
+            break;
+          }
+        } catch (e) {
+          // ignore
         }
-        if (!isNaN(parsedDate.getTime())) {
-          bill_date = parsedDate.toISOString().split("T")[0];
-          break;
-        }
-      } catch (e) {
-        // ignore
       }
     }
   }
 
-  // 4. Supplier Name
+  // 4. Supplier Name (Advanced extraction heuristic)
   const lines = text.split("\n").map(l => l.trim()).filter(l => l.length > 0);
   let supplier_name = "";
-  const supplierKeywords = [/ltd/i, /pvt/i, /enterprise/i, /chemical/i, /paint/i, /industry/i, /logistics/i, /co\./i, /corporation/i];
-  for (let i = 0; i < Math.min(lines.length, 10); i++) {
+  const skipKeywords = [
+    /tax\s*invoice/i, /invoice/i, /challan/i, /bill/i, /original/i, /duplicate/i, 
+    /triplicate/i, /gstin/i, /date/i, /phone/i, /email/i, /mobile/i, /tel/i,
+    /page/i, /delivery/i, /purchase/i, /order/i, /welcome/i, /receipt/i, /buyer/i,
+    /consignee/i, /customer/i, /client/i
+  ];
+  
+  for (let i = 0; i < Math.min(lines.length, 15); i++) {
     const line = lines[i];
-    if (supplierKeywords.some(kw => kw.test(line)) && 
-        !line.includes("@") && 
-        !line.toLowerCase().includes("gstin") && 
-        !line.toLowerCase().includes("invoice") &&
-        line.length < 50) {
-      supplier_name = line;
-      break;
-    }
+    if (skipKeywords.some(kw => kw.test(line))) continue;
+    if (line.length < 3 || line.length > 60) continue;
+    // Skip if it looks like an address start
+    if (/^(?:plot|sector|road|street|phase|h\.?no|shop|booth|gala|village|dist|state|near)\b/i.test(line)) continue;
+    if (line.includes("@") || line.includes("www.") || line.includes(".com")) continue;
+    
+    const digitCount = (line.match(/\d/g) || []).length;
+    if (digitCount > line.length * 0.3) continue; // Skip lines containing too many numbers (like phone numbers/GST)
+
+    supplier_name = line;
+    break;
   }
+  
   if (!supplier_name && lines.length > 0) {
     supplier_name = lines[0].substring(0, 50);
   }
@@ -206,6 +242,7 @@ const parseInvoiceText = (text: string, rawMaterialsList: any[]) => {
 
       matchedItems.push({
         id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
+        material_name: name,
         raw_material_id: rm.id,
         quantity,
         rate
@@ -221,7 +258,7 @@ const parseInvoiceText = (text: string, rawMaterialsList: any[]) => {
     cgst_amount,
     sgst_amount,
     igst_amount,
-    items: matchedItems.length > 0 ? matchedItems : [{ id: Date.now().toString(), raw_material_id: "", quantity: 0, rate: 0 }]
+    items: matchedItems.length > 0 ? matchedItems : [{ id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 }]
   };
 };
 
@@ -304,7 +341,7 @@ export default function AddPurchaseBillPage() {
   });
 
   const [items, setItems] = useState([
-    { id: Date.now().toString(), raw_material_id: "", quantity: 0, rate: 0 },
+    { id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 },
   ]);
 
   const [taxes, setTaxes] = useState({
@@ -344,7 +381,7 @@ export default function AddPurchaseBillPage() {
   };
 
   const addItemRow = () => {
-    setItems(prev => [...prev, { id: Date.now().toString(), raw_material_id: "", quantity: 0, rate: 0 }]);
+    setItems(prev => [...prev, { id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 }]);
   };
 
   const removeItemRow = (id: string) => {
@@ -570,17 +607,14 @@ export default function AddPurchaseBillPage() {
                 {items.map((item, index) => (
                   <tr key={item.id} className="border-b border-border/30">
                     <td className="py-4 pr-4">
-                      <select 
-                        value={item.raw_material_id}
-                        onChange={(e) => handleItemChange(item.id, "raw_material_id", e.target.value)}
-                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground appearance-none"
+                      <input 
+                        type="text"
+                        value={item.material_name || ""}
+                        onChange={(e) => handleItemChange(item.id, "material_name", e.target.value)}
+                        placeholder="Enter item or material name"
+                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
                         required
-                      >
-                        <option value="" disabled>Select Material</option>
-                        {rawMaterials.map(rm => (
-                          <option key={rm.id} value={rm.id}>{rm.material_name}</option>
-                        ))}
-                      </select>
+                      />
                     </td>
                     <td className="py-4 px-4">
                       <input 

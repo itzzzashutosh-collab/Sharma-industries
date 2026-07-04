@@ -219,7 +219,7 @@ export default function PurchaseLedgerPage() {
                       {(Array.isArray(selectedBill.items) ? selectedBill.items : []).map((item: any, i: number) => (
                         <tr key={i} className="border-b border-border/50">
                           <td className="py-3 px-4 font-semibold text-foreground">
-                            {materials[item.raw_material_id] || "Unknown Material"}
+                            {item.material_name || materials[item.raw_material_id] || "Unknown Material"}
                           </td>
                           <td className="py-3 px-4 text-right font-mono text-muted-foreground">{item.quantity}</td>
                           <td className="py-3 px-4 text-right font-mono text-muted-foreground">₹{item.rate}</td>
