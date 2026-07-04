@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Plus, Trash2, Save, FileText, Truck, Calculator, CreditCard, UploadCloud } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { getRawMaterials, submitPurchaseBill } from "@/actions/purchaseActions";
+import { getRawMaterials, submitPurchaseBill, analyzeInvoiceTextWithAI } from "@/actions/purchaseActions";
 import { useRouter } from "next/navigation";
 
 // Dynamic CDN loaders for PDF.js and Tesseract.js (running fully client-side)
@@ -299,8 +299,30 @@ export default function AddPurchaseBillPage() {
         throw new Error(t("No readable text found in the document."));
       }
 
-      setExtractionStatus(t("Parsing invoice fields..."));
-      const parsedData = parseInvoiceText(text, rawMaterials);
+      setExtractionStatus(t("AI Agent extracting invoice details..."));
+      const aiRes = await analyzeInvoiceTextWithAI(text);
+      if (!aiRes.success) {
+        throw new Error(aiRes.error);
+      }
+
+      const parsedData = aiRes.data;
+
+      // Match raw material IDs on the client side based on name matches
+      const itemsWithIds = (parsedData.items || []).map((item: any) => {
+        const match = rawMaterials.find(rm => 
+          rm.material_name.toLowerCase().includes(item.material_name.toLowerCase()) || 
+          item.material_name.toLowerCase().includes(rm.material_name.toLowerCase())
+        );
+        return {
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
+          material_name: item.material_name,
+          raw_material_id: match ? match.id : "",
+          quantity: Number(item.quantity) || 1,
+          rate: Number(item.rate) || 0
+        };
+      });
+
+      const finalItems = itemsWithIds.length > 0 ? itemsWithIds : [{ id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 }];
 
       setHeaderInfo(prev => ({
         ...prev,
@@ -316,7 +338,7 @@ export default function AddPurchaseBillPage() {
         igst_amount: parsedData.igst_amount,
       });
 
-      setItems(parsedData.items);
+      setItems(finalItems);
 
       alert(t("Bill details populated successfully! Please review the form before saving."));
     } catch (err: any) {

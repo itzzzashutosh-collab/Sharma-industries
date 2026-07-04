@@ -201,3 +201,73 @@ export async function submitPurchaseBill(formData: FormData) {
     return { success: false, error: err.message };
   }
 }
+
+export async function analyzeInvoiceTextWithAI(text: string) {
+  try {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error("OPENAI_API_KEY is not configured in the server environment variables.");
+    }
+
+    const prompt = `
+You are an expert data extraction assistant. Analyze the following raw OCR/PDF text extracted from a purchase bill/invoice.
+Extract the billing details into the exact JSON format specified below.
+
+JSON Format:
+{
+  "supplier_name": "Supplier company/business name",
+  "supplier_gstin": "15-character GSTIN format, or empty string",
+  "invoice_no": "Invoice number or bill number",
+  "bill_date": "Date of invoice in YYYY-MM-DD format",
+  "cgst_amount": number (parsed CGST tax amount, default 0),
+  "sgst_amount": number (parsed SGST tax amount, default 0),
+  "igst_amount": number (parsed IGST tax amount, default 0),
+  "items": [
+    {
+      "material_name": "Exact name of item/material as printed on invoice",
+      "quantity": number (quantity purchased),
+      "rate": number (rate per unit)
+    }
+  ]
+}
+
+Invoice text to analyze:
+---
+${text}
+---
+
+Return ONLY valid JSON that matches the format. Do not write any markdown code blocks, intro, explanation, or HTML tags. Output strict, clean JSON.
+`;
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "You are a precise data extractor. You only return valid JSON." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.1,
+        response_format: { type: "json_object" }
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`OpenAI API error: ${response.statusText} - ${errText}`);
+    }
+
+    const result = await response.json();
+    const content = result.choices[0].message.content;
+    const parsedData = JSON.parse(content);
+
+    return { success: true, data: parsedData };
+  } catch (error: any) {
+    console.error("AI Invoice Parsing failed:", error);
+    return { success: false, error: error.message };
+  }
+}
