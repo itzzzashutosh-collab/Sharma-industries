@@ -560,7 +560,7 @@ export async function getSupplierDetailData(supplierName: string) {
   try {
     const { data: bills, error: billsErr } = await supabaseAdmin
       .from("purchase_master")
-      .select("id, invoice_no, bill_date, total_amount, payment_status, bill_file_path")
+      .select("id, invoice_no, bill_date, total_amount, grand_total, payment_status, bill_file_path")
       .ilike("supplier_name", supplierName.trim())
       .order("bill_date", { ascending: false });
 
@@ -570,7 +570,7 @@ export async function getSupplierDetailData(supplierName: string) {
       id: b.id,
       invoice_no: b.invoice_no,
       date: b.bill_date,
-      grand_total: b.total_amount,
+      grand_total: b.grand_total || b.total_amount,
       payment_status: b.payment_status,
       bill_file_path: b.bill_file_path
     }));
@@ -580,6 +580,7 @@ export async function getSupplierDetailData(supplierName: string) {
       const { data: items, error: itemsErr } = await supabaseAdmin
         .from("purchase_items")
         .select(`
+          purchase_bill_id,
           quantity,
           rate,
           raw_materials (material_name, unit_of_measure),
@@ -592,17 +593,24 @@ export async function getSupplierDetailData(supplierName: string) {
 
       if (itemsErr) throw itemsErr;
 
-      const itemMap: Record<string, { name: string; rate: number; unit: string }> = {};
+      // Create a map of purchase_bill_id -> bill_date for easy in-memory date lookup
+      const billDateMap: Record<string, string> = {};
+      mappedBills.forEach(b => {
+        billDateMap[b.id] = b.date;
+      });
+
+      const itemMap: Record<string, { name: string; rate: number; unit: string; date: string }> = {};
       (items || []).forEach((it: any) => {
         const name = it.raw_materials?.material_name || it.products?.product_name || "Unknown Item";
         const unit = it.raw_materials?.unit_of_measure || it.products?.package_size_unit || "Unit";
         const rate = Number(it.rate) || 0;
+        const billDate = billDateMap[it.purchase_bill_id] || "";
         
-        if (!itemMap[name] || itemMap[name].rate === 0) {
-          itemMap[name] = { name, rate, unit };
+        if (!itemMap[name] || billDate > itemMap[name].date) {
+          itemMap[name] = { name, rate, unit, date: billDate };
         }
       });
-      suppliedItems = Object.values(itemMap);
+      suppliedItems = Object.values(itemMap).map(({ name, rate, unit }) => ({ name, rate, unit }));
     }
 
     return { 
