@@ -551,15 +551,10 @@ export async function getSupplierDetailData(supplierName: string) {
 
     let suppliedItems: any[] = [];
     if (mappedBills && mappedBills.length > 0) {
+      // 1. Fetch raw purchase items
       const { data: items, error: itemsErr } = await supabaseAdmin
         .from("purchase_items")
-        .select(`
-          purchase_bill_id,
-          quantity,
-          rate,
-          raw_materials (material_name, unit_of_measure),
-          products (product_name, package_size_unit)
-        `)
+        .select("purchase_bill_id, raw_material_id, product_id, quantity, rate, unit")
         .in(
           "purchase_bill_id", 
           mappedBills.map(b => b.id)
@@ -567,7 +562,23 @@ export async function getSupplierDetailData(supplierName: string) {
 
       if (itemsErr) throw itemsErr;
 
-      // Create a map of purchase_bill_id -> bill_date for easy in-memory date lookup
+      // 2. Fetch raw materials and products to map names in-memory
+      const [rmRes, prodRes] = await Promise.all([
+        supabaseAdmin.from("raw_materials").select("id, material_name, unit_of_measure"),
+        supabaseAdmin.from("products").select("id, product_name, package_size_unit")
+      ]);
+
+      const rmMap: Record<string, { name: string; unit: string }> = {};
+      (rmRes.data || []).forEach(r => {
+        rmMap[r.id] = { name: r.material_name, unit: r.unit_of_measure };
+      });
+
+      const prodMap: Record<string, { name: string; unit: string }> = {};
+      (prodRes.data || []).forEach(p => {
+        prodMap[p.id] = { name: p.product_name, unit: p.package_size_unit };
+      });
+
+      // 3. Create a map of purchase_bill_id -> bill_date for easy in-memory date lookup
       const billDateMap: Record<string, string> = {};
       mappedBills.forEach(b => {
         billDateMap[b.id] = b.date;
@@ -575,8 +586,17 @@ export async function getSupplierDetailData(supplierName: string) {
 
       const itemMap: Record<string, { name: string; rate: number; unit: string; date: string }> = {};
       (items || []).forEach((it: any) => {
-        const name = it.raw_materials?.material_name || it.products?.product_name || "Unknown Item";
-        const unit = it.raw_materials?.unit_of_measure || it.products?.package_size_unit || "Unit";
+        let name = "Unknown Item";
+        let unit = it.unit || "Unit";
+        
+        if (it.raw_material_id && rmMap[it.raw_material_id]) {
+          name = rmMap[it.raw_material_id].name;
+          unit = rmMap[it.raw_material_id].unit || unit;
+        } else if (it.product_id && prodMap[it.product_id]) {
+          name = prodMap[it.product_id].name;
+          unit = prodMap[it.product_id].unit || unit;
+        }
+        
         const rate = Number(it.rate) || 0;
         const billDate = billDateMap[it.purchase_bill_id] || "";
         
