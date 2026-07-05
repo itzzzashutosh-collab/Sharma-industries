@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { Plus, Trash2, Save, FileText, Truck, Calculator, CreditCard, UploadCloud } from "lucide-react";
+import { Plus, Trash2, Save, FileText, Truck, Calculator, CreditCard, UploadCloud, X, Upload } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { getRawMaterials, submitPurchaseBill, analyzeInvoiceTextWithAI, getSuppliers, getSupplierByName } from "@/actions/purchaseActions";
 import { useRouter } from "next/navigation";
@@ -275,6 +275,7 @@ export default function AddPurchaseBillPage() {
   // Auto-Fill State
   const [isExtracting, setIsExtracting] = useState(false);
   const [extractionStatus, setExtractionStatus] = useState("");
+  const [notification, setNotification] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -293,7 +294,7 @@ export default function AddPurchaseBillPage() {
         setExtractionStatus(t("Running OCR on image..."));
         text = await extractTextFromImage(file);
       } else {
-        alert(t("Unsupported file type. Please upload a PDF or Image."));
+        setNotification({ type: "error", message: t("Unsupported file type. Please upload a PDF or Image.") });
         setIsExtracting(false);
         return;
       }
@@ -370,10 +371,10 @@ export default function AddPurchaseBillPage() {
 
       setItems(finalItems);
 
-      alert(t("Bill details populated successfully! Please review the form before saving."));
+      setNotification({ type: "success", message: t("Bill details populated successfully! Please review the form before saving.") });
     } catch (err: any) {
       console.error(err);
-      alert(t("Failed to parse invoice: ") + err.message);
+      setNotification({ type: "error", message: t("Failed to parse invoice: ") + err.message });
     } finally {
       setIsExtracting(false);
       setExtractionStatus("");
@@ -590,15 +591,34 @@ export default function AddPurchaseBillPage() {
     setIsSubmitting(false);
 
     if (res.success) {
-      alert("Purchase Bill Saved Successfully!");
-      router.push("/dashboard/purchase");
+      setNotification({ type: "success", message: "Purchase Bill Saved Successfully! Redirecting..." });
+      setTimeout(() => {
+        router.push("/dashboard/purchase");
+      }, 2000);
     } else {
-      alert("Error saving bill: " + res.error);
+      setNotification({ type: "error", message: res.message || ("Error saving bill: " + res.error) });
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12 relative">
+      {notification && (
+        <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 px-6 py-4 rounded-2xl border shadow-2xl animate-in slide-in-from-bottom duration-300 ${
+          notification.type === "success" 
+            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400" 
+            : "bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400"
+        }`}>
+          <span className="font-bold text-sm">{notification.message}</span>
+          <button 
+            type="button"
+            onClick={() => setNotification(null)}
+            className="p-1 hover:bg-muted/50 rounded-lg transition-colors ml-2"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
       <div>
         <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
           <FileText className="text-primary" size={32} /> {t("New Purchase Bill")}

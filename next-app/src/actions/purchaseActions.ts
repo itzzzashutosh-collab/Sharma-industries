@@ -57,6 +57,25 @@ export async function submitPurchaseBill(formData: FormData) {
     const invoice_no = formData.get("invoice_no") as string;
     const bill_date = formData.get("bill_date") as string;
     const supplier_name = formData.get("supplier_name") as string;
+
+    // Check duplicate invoice for the same supplier
+    if (invoice_no && supplier_name) {
+      const { data: existingBill, error: checkErr } = await supabaseAdmin
+        .from("purchase_master")
+        .select("id")
+        .eq("invoice_no", invoice_no.trim())
+        .ilike("supplier_name", supplier_name.trim())
+        .limit(1)
+        .maybeSingle();
+
+      if (checkErr) {
+        console.error("Error checking duplicate invoice:", checkErr);
+      }
+      if (existingBill) {
+        return { success: false, error: "DUPLICATE_BILL", message: "This invoice bill has already been registered in the purchase history." };
+      }
+    }
+
     const supplier_gstin = formData.get("supplier_gstin") as string;
     const tax_type = formData.get("tax_type") as string || "LOCAL";
     const itemsString = formData.get("items") as string;
