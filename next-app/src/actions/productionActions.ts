@@ -385,3 +385,19 @@ export async function getBatchDetails(batchId: string) {
     return { success: false, error: err.message };
   }
 }
+
+export async function getProductsForProduction() {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("products")
+      .select("*")
+      .eq("is_master_product", true)
+      .order("product_name", { ascending: true });
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err: any) {
+    console.error("Error fetching products for production:", err);
+    return { success: false, error: err.message };
+  }
+}

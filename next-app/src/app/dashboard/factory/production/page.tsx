@@ -30,7 +30,8 @@ import {
   completeBatch, 
   cancelBatch, 
   getProductionBatches,
-  getBatchDetails 
+  getBatchDetails,
+  getProductsForProduction
 } from "@/actions/productionActions";
 import { getRawMaterials } from "@/actions/purchaseActions";
 
@@ -94,7 +95,7 @@ export default function ProductionBatchesPage() {
     const [rmRes, batchRes, prodRes] = await Promise.all([
       getRawMaterials(),
       getProductionBatches(),
-      fetch("/api/products").then((r) => r.json())
+      getProductsForProduction()
     ]);
 
     if (rmRes.success && rmRes.data) setRawMaterials(rmRes.data);
