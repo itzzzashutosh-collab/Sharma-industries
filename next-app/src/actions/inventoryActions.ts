@@ -5,19 +5,29 @@ import { createAdminClient } from "@/utils/supabase/server";
 export async function getInventorySummary() {
   try {
     const supabase = await createAdminClient();
-    const { data: materials, error } = await supabase
-      .from("materials")
+    const { data: rawMaterials, error } = await supabase
+      .from("raw_materials")
       .select("*")
-      .order("name", { ascending: true });
+      .order("material_name", { ascending: true });
 
-    if (error || !materials || materials.length === 0) {
+    if (error || !rawMaterials || rawMaterials.length === 0) {
       return { success: false, error: "No data" };
     }
 
-    const allMaterials = materials.map((mat) => {
-      const stock = parseFloat(mat.stock) || 0;
+    const allMaterials = rawMaterials.map((mat) => {
+      const stock = parseFloat(mat.current_stock) || 0;
       const minStock = parseFloat(mat.min_stock) || 0;
-      return { ...mat, is_low_stock: stock <= minStock };
+      return {
+        id: mat.id,
+        name: mat.material_name,
+        category: mat.category,
+        unit: mat.unit_of_measure || "KG",
+        current_stock: stock,
+        min_threshold: minStock,
+        stock,
+        min_stock: minStock,
+        is_low_stock: stock <= minStock
+      };
     });
 
     return {
@@ -69,14 +79,34 @@ export async function addMaterial(data: {
 }) {
   try {
     const supabase = await createAdminClient();
-    const id = `MAT-${Date.now().toString().slice(-6)}`;
+    const id = `RM_${Date.now().toString().slice(-6)}`;
     const { data: result, error } = await supabase
-      .from("materials")
-      .insert({ id, ...data, stock: 0 })
+      .from("raw_materials")
+      .insert({
+        id,
+        material_name: data.name,
+        category: data.category,
+        unit_of_measure: data.unit,
+        min_stock: data.min_stock,
+        current_stock: 0,
+        avg_purchase_price: 0
+      })
       .select()
       .single();
+
     if (error) throw error;
-    return { success: true, data: result };
+
+    return {
+      success: true,
+      data: {
+        id: result.id,
+        name: result.material_name,
+        category: result.category,
+        unit: result.unit_of_measure || "KG",
+        current_stock: 0,
+        min_threshold: Number(result.min_stock)
+      }
+    };
   } catch (err: any) {
     return { success: false, error: err.message };
   }
@@ -87,13 +117,14 @@ export async function inwardStock(entries: { material_id: string; qty: number; v
     const supabase = await createAdminClient();
     for (const entry of entries) {
       const { data: mat } = await supabase
-        .from("materials")
-        .select("stock")
+        .from("raw_materials")
+        .select("current_stock")
         .eq("id", entry.material_id)
         .single();
 
-      const newStock = parseFloat(mat?.stock || 0) + entry.qty;
-      await supabase.from("materials").update({ stock: newStock }).eq("id", entry.material_id);
+      const newStock = parseFloat(mat?.current_stock || 0) + entry.qty;
+      await supabase.from("raw_materials").update({ current_stock: newStock }).eq("id", entry.material_id);
+      
       await supabase.from("material_logs").insert({
         material_id: entry.material_id,
         type: "IN",

@@ -15,18 +15,17 @@ export async function createMaterialAndLog(data: {
   try {
     const supabase = await createAdminClient();
 
-    // 1. Insert into materials table
+    // 1. Insert into raw_materials table
     const { data: material, error: matError } = await supabase
-      .from("materials")
+      .from("raw_materials")
       .insert([
         {
-          name: data.name,
+          material_name: data.name,
           category: data.category,
-          unit: data.unit,
+          unit_of_measure: data.unit,
           min_stock: data.min_stock,
-          stock: data.initial_qty,
-          purchase_price: data.rate,
-          status: "ACTIVE"
+          current_stock: data.initial_qty,
+          avg_purchase_price: data.rate
         }
       ])
       .select()

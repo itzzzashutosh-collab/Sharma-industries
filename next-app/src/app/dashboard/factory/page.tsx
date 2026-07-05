@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Factory, Package, AlertTriangle, DollarSign, Plus, CheckCircle, Clock, Download } from "lucide-react";
+import { getRawMaterials } from "@/actions/purchaseActions";
 
 // DUMMY DATA
 const KPIs = {
@@ -43,6 +44,7 @@ export default function FactoryOperationsPage() {
   const [selectedProd, setSelectedProd] = useState("");
   const [quantity, setQuantity] = useState("");
   const [generating, setGenerating] = useState(false);
+  const [rawMaterials, setRawMaterials] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("/api/products")
@@ -50,7 +52,19 @@ export default function FactoryOperationsPage() {
       .then(data => {
         if (data.success) setProducts(data.data);
       });
+
+    getRawMaterials().then(res => {
+      if (res.success) setRawMaterials(res.data || []);
+    });
   }, []);
+
+  const lowStockCount = useMemo(() => {
+    return rawMaterials.filter(rm => {
+      const stock = Number(rm.current_stock) || 0;
+      const threshold = Number(rm.min_stock) || 100;
+      return stock < threshold;
+    }).length;
+  }, [rawMaterials]);
 
   const handleGenerateQRs = async () => {
     if (!selectedProd || !quantity) {
@@ -126,7 +140,7 @@ export default function FactoryOperationsPage() {
             <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Low Stock RM</p>
             <div className="bg-rose-500/10 p-2 rounded-lg"><AlertTriangle size={20} className="text-rose-500" /></div>
           </div>
-          <p className="text-3xl font-black text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)] mt-2">{KPIs.lowStockAlerts} Alerts</p>
+          <p className="text-3xl font-black text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)] mt-2">{lowStockCount} Alerts</p>
         </div>
 
         <div className="bg-card border border-border p-6 rounded-3xl shadow-sm relative overflow-hidden group hover:shadow-foreground/10 transition-all duration-300">
@@ -269,23 +283,25 @@ export default function FactoryOperationsPage() {
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               <h2 className="text-xl font-bold text-foreground mb-6">Raw Material Inventory</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {RAW_MATERIALS.map(rm => {
-                  const isLow = rm.stock < rm.threshold;
-                  const maxDisplay = rm.threshold * 3;
-                  const progress = Math.min((rm.stock / maxDisplay) * 100, 100);
+                {rawMaterials.map(rm => {
+                  const stock = Number(rm.current_stock) || 0;
+                  const threshold = Number(rm.min_stock) || 100;
+                  const isLow = stock < threshold;
+                  const maxDisplay = threshold * 3;
+                  const progress = Math.min((stock / maxDisplay) * 100, 100);
                   
                   return (
                     <div key={rm.id} className="border border-border p-5 rounded-2xl bg-background hover:border-primary/30 transition-colors">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h4 className="font-bold text-foreground text-lg">{rm.name}</h4>
+                          <h4 className="font-bold text-foreground text-lg">{rm.material_name}</h4>
                           <p className="text-sm text-muted-foreground mt-1">ID: {rm.id}</p>
                         </div>
                         <div className="text-right">
                           <p className={`text-xl font-black ${isLow ? 'text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)]' : 'text-primary'}`}>
-                            {rm.stock} {rm.unit}
+                            {stock} {rm.unit_of_measure || "KG"}
                           </p>
-                          <p className="text-sm text-muted-foreground font-semibold">Min: {rm.threshold} {rm.unit}</p>
+                          <p className="text-sm text-muted-foreground font-semibold">Min: {threshold} {rm.unit_of_measure || "KG"}</p>
                         </div>
                       </div>
                       {/* Progress Bar */}

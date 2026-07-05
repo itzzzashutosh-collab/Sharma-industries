@@ -46,7 +46,7 @@ export async function startBatch(productId: string, targetYield: number) {
     // a) Fetch the recipe for the given productId
     const { data: recipeData, error: recipeErr } = await supabaseAdmin
       .from("product_recipes")
-      .select("raw_material_id, quantity_per_unit, materials(name)")
+      .select("raw_material_id, quantity_per_unit, raw_materials(material_name)")
       .eq("product_id", productId);
 
     if (recipeErr) throw recipeErr;
@@ -59,8 +59,8 @@ export async function startBatch(productId: string, targetYield: number) {
     const materialIds = recipeData.map(r => r.raw_material_id);
     
     const { data: stockData, error: stockErr } = await supabaseAdmin
-      .from("materials")
-      .select("id, name, stock")
+      .from("raw_materials")
+      .select("id, material_name, current_stock")
       .in("id", materialIds);
 
     if (stockErr) throw stockErr;
@@ -69,26 +69,26 @@ export async function startBatch(productId: string, targetYield: number) {
     
     for (const item of recipeData) {
       const requiredQty = item.quantity_per_unit * targetYield;
-      const currentStock = stockData.find(s => s.id === item.raw_material_id)?.stock || 0;
+      const currentStock = Number(stockData.find(s => s.id === item.raw_material_id)?.current_stock || 0);
       
       if (currentStock < requiredQty) {
-        throw new Error(`Insufficient stock for ${(item as any).materials?.name || 'Raw Material'}. Required: ${requiredQty}, Available: ${currentStock}`);
+        throw new Error(`Insufficient stock for ${(item as any).raw_materials?.material_name || 'Raw Material'}. Required: ${requiredQty}, Available: ${currentStock}`);
       }
       
       deductions.push({
         raw_material_id: item.raw_material_id,
-        name: (item as any).materials?.name || 'Unknown',
+        name: (item as any).raw_materials?.material_name || 'Unknown',
         requiredQty,
         currentStock,
         remainingStock: currentStock - requiredQty
       });
     }
 
-    // d) DEDUCT the calculated quantities from public.materials
+    // d) DEDUCT the calculated quantities from public.raw_materials
     for (const ded of deductions) {
       const { error: updateErr } = await supabaseAdmin
-        .from("materials")
-        .update({ stock: ded.remainingStock })
+        .from("raw_materials")
+        .update({ current_stock: ded.remainingStock })
         .eq("id", ded.raw_material_id);
         
       if (updateErr) throw updateErr;

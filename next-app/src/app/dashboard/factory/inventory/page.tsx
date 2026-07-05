@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
   Boxes,
   Search,
@@ -22,6 +22,7 @@ import {
   Package,
 } from "lucide-react";
 import { createMaterialAndLog } from "./actions";
+import { getInventorySummary, getMaterialDetails } from "@/actions/inventoryActions";
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 interface InwardRecord {
@@ -516,7 +517,7 @@ function Sheet({ open, onClose, material }: { open: boolean; onClose: () => void
 
 // ─── MAIN PAGE ───────────────────────────────────────────────────────────────
 export default function InventoryPage() {
-  const [materials, setMaterials] = useState<Material[]>(INITIAL_MOCK);
+  const [materials, setMaterials] = useState<Material[]>([]);
   const [search, setSearch] = useState("");
   const [showLowOnly, setShowLowOnly] = useState(false);
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
@@ -527,6 +528,29 @@ export default function InventoryPage() {
   const [addError, setAddError] = useState("");
   const [jsonText, setJsonText] = useState("");
   const [jsonResult, setJsonResult] = useState<{ success: boolean; message: string } | null>(null);
+
+  useEffect(() => {
+    async function loadSummary() {
+      const res = await getInventorySummary();
+      if (res.success && res.data) {
+        // Map raw database materials into initial empty details array format
+        const items = (res.data.allMaterials || []).map((m: any) => ({
+          id: m.id,
+          name: m.name,
+          category: m.category,
+          unit: m.unit,
+          current_stock: m.current_stock,
+          min_threshold: m.min_threshold,
+          supplier: "—",
+          inwardHistory: [],
+          formulations: [],
+          ledgerLogs: []
+        }));
+        setMaterials(items);
+      }
+    }
+    loadSummary();
+  }, []);
 
   const filtered = useMemo(() => {
     let list = materials;
@@ -547,9 +571,60 @@ export default function InventoryPage() {
     [materials]
   );
 
-  const handleRowClick = useCallback((mat: Material) => {
+  const handleRowClick = useCallback(async (mat: Material) => {
     setSelectedMaterial(mat);
     setSheetOpen(true);
+
+    const res = await getMaterialDetails(mat.id);
+    if (res.success && res.data) {
+      const apiFormulations = (res.data.formulations || []).map((f: any) => ({
+        product: f.products?.name || "Unknown Product",
+        sku: f.products?.sku || "-",
+        usage_pct: Number(f.usage_percentage) || Number(f.quantity_per_unit * 100) || 0,
+        qty_per_batch: Number(f.quantity_per_unit * 1000) || 0,
+        batch_size: "1000 L"
+      }));
+
+      const apiLedgerLogs = (res.data.stockLogs || []).map((l: any) => ({
+        date: l.date,
+        type: l.type as "IN" | "OUT" | "ADJUST",
+        reference: l.reference || "-",
+        description: l.reason || "",
+        qty_in: l.type === "IN" ? Number(l.qty) : null,
+        qty_out: l.type === "OUT" ? Number(l.qty) : null,
+        balance: Number(l.balance)
+      }));
+
+      const apiInwardHistory = (res.data.purchaseHistory || []).map((l: any) => ({
+        date: l.date,
+        vendor: l.reason?.replace("Inward from ", "") || "—",
+        qty: Number(l.qty),
+        rate: 0,
+        invoice_ref: l.reference || "-"
+      }));
+
+      setSelectedMaterial(prev => {
+        if (!prev || prev.id !== mat.id) return prev;
+        return {
+          ...prev,
+          formulations: apiFormulations,
+          ledgerLogs: apiLedgerLogs,
+          inwardHistory: apiInwardHistory
+        };
+      });
+
+      setMaterials(prevList => prevList.map(m => {
+        if (m.id === mat.id) {
+          return {
+            ...m,
+            formulations: apiFormulations,
+            ledgerLogs: apiLedgerLogs,
+            inwardHistory: apiInwardHistory
+          };
+        }
+        return m;
+      }));
+    }
   }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
