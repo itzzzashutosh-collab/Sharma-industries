@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Plus, Trash2, Save, FileText, Truck, Calculator, CreditCard, UploadCloud } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
-import { getRawMaterials, submitPurchaseBill, analyzeInvoiceTextWithAI } from "@/actions/purchaseActions";
+import { getRawMaterials, submitPurchaseBill, analyzeInvoiceTextWithAI, getSuppliers, getSupplierByName } from "@/actions/purchaseActions";
 import { useRouter } from "next/navigation";
 
 // Dynamic CDN loaders for PDF.js and Tesseract.js (running fully client-side)
@@ -268,7 +268,9 @@ export default function AddPurchaseBillPage() {
 
   // Fetched State
   const [rawMaterials, setRawMaterials] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Auto-Fill State
   const [isExtracting, setIsExtracting] = useState(false);
@@ -277,6 +279,7 @@ export default function AddPurchaseBillPage() {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setSelectedFile(file);
 
     setIsExtracting(true);
     setExtractionStatus(t("Reading file..."));
@@ -307,36 +310,63 @@ export default function AddPurchaseBillPage() {
 
       const parsedData = aiRes.data;
 
-      // Match raw material IDs on the client side based on name matches
+      // Match raw material IDs or Product IDs on the client side based on name matches
       const itemsWithIds = (parsedData.items || []).map((item: any) => {
-        const match = rawMaterials.find(rm => 
-          rm.material_name.toLowerCase().includes(item.material_name.toLowerCase()) || 
-          item.material_name.toLowerCase().includes(rm.material_name.toLowerCase())
+        const matchRm = rawMaterials.find(rm => 
+          rm.material_name && item.material_name && (
+            rm.material_name.toLowerCase().includes(item.material_name.toLowerCase()) || 
+            item.material_name.toLowerCase().includes(rm.material_name.toLowerCase())
+          )
         );
+        const matchProd = products.find(p => 
+          p.product_name && item.material_name && (
+            p.product_name.toLowerCase().includes(item.material_name.toLowerCase()) || 
+            item.material_name.toLowerCase().includes(p.product_name.toLowerCase())
+          )
+        );
+
         return {
           id: Date.now().toString() + Math.random().toString(36).substring(2, 5),
           material_name: item.material_name,
-          raw_material_id: match ? match.id : "",
+          raw_material_id: matchRm ? matchRm.id : "",
+          product_id: matchProd ? matchProd.id : "",
+          hsn_code: item.hsn_code || (matchRm ? matchRm.hsn_code : "") || (matchProd ? matchProd.hsn_code : "") || "",
           quantity: Number(item.quantity) || 1,
-          rate: Number(item.rate) || 0
+          unit: item.unit || (matchRm ? matchRm.unit_of_measure : "") || (matchProd ? matchProd.package_size_unit : "") || "KG",
+          rate: Number(item.rate) || 0,
+          gst_tax: Number(item.gst_tax) || 18
         };
       });
 
-      const finalItems = itemsWithIds.length > 0 ? itemsWithIds : [{ id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 }];
+      const finalItems = itemsWithIds.length > 0 ? itemsWithIds : [{
+        id: Date.now().toString(),
+        material_name: "",
+        hsn_code: "",
+        quantity: 0,
+        unit: "KG",
+        rate: 0,
+        gst_tax: 18,
+        raw_material_id: "",
+        product_id: ""
+      }];
+
+      const isAdvancePaid = parsedData.bill_date && parsedData.due_date && 
+        (parsedData.bill_date === parsedData.due_date);
 
       setHeaderInfo(prev => ({
         ...prev,
         supplier_name: parsedData.supplier_name || prev.supplier_name,
         supplier_gstin: parsedData.supplier_gstin || prev.supplier_gstin,
+        supplier_address: parsedData.supplier_address || prev.supplier_address,
         invoice_no: parsedData.invoice_no || prev.invoice_no,
         bill_date: parsedData.bill_date || prev.bill_date,
+        payment_type: isAdvancePaid ? "ADVANCE" : prev.payment_type,
+        payment_status: isAdvancePaid ? "PAID" : prev.payment_status,
+        bank_name: parsedData.bank_name || prev.bank_name,
+        bank_account_no: parsedData.bank_account_no || prev.bank_account_no,
+        bank_ifsc: parsedData.bank_ifsc || prev.bank_ifsc,
+        bank_branch: parsedData.bank_branch || prev.bank_branch
       }));
-
-      setTaxes({
-        cgst_amount: parsedData.cgst_amount,
-        sgst_amount: parsedData.sgst_amount,
-        igst_amount: parsedData.igst_amount,
-      });
 
       setItems(finalItems);
 
@@ -354,56 +384,170 @@ export default function AddPurchaseBillPage() {
   const [headerInfo, setHeaderInfo] = useState({
     supplier_name: "",
     supplier_gstin: "",
+    supplier_address: "",
     invoice_no: "",
     bill_date: new Date().toISOString().split("T")[0],
     vehicle_no: "",
     lr_no: "",
     payment_status: "UNPAID",
-    payment_type: "CREDIT"
+    payment_type: "CREDIT",
+    tax_type: "LOCAL", // LOCAL or INTERSTATE
+    bank_name: "",
+    bank_account_no: "",
+    bank_ifsc: "",
+    bank_branch: ""
   });
+
+  const [savedSuppliers, setSavedSuppliers] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  useEffect(() => {
+    getSuppliers().then(res => {
+      if (res.success && res.data) setSavedSuppliers(res.data);
+    });
+  }, []);
+
+  const handleSelectSupplier = (supplier: any) => {
+    setHeaderInfo(prev => ({
+      ...prev,
+      supplier_name: supplier.name,
+      supplier_gstin: supplier.gstin || prev.supplier_gstin,
+      supplier_address: supplier.address || prev.supplier_address,
+      bank_name: supplier.bank_name || prev.bank_name,
+      bank_account_no: supplier.bank_account_no || prev.bank_account_no,
+      bank_ifsc: supplier.bank_ifsc || prev.bank_ifsc,
+      bank_branch: supplier.bank_branch || prev.bank_branch
+    }));
+    setShowSuggestions(false);
+  };
+
+  const handleSupplierBlur = async () => {
+    if (!headerInfo.supplier_name) return;
+    setTimeout(async () => {
+      const res = await getSupplierByName(headerInfo.supplier_name);
+      if (res.success && res.data) {
+        const supplier = res.data;
+        setHeaderInfo(prev => ({
+          ...prev,
+          supplier_gstin: supplier.gstin || prev.supplier_gstin,
+          supplier_address: supplier.address || prev.supplier_address,
+          bank_name: supplier.bank_name || prev.bank_name,
+          bank_account_no: supplier.bank_account_no || prev.bank_account_no,
+          bank_ifsc: supplier.bank_ifsc || prev.bank_ifsc,
+          bank_branch: supplier.bank_branch || prev.bank_branch
+        }));
+      }
+    }, 200);
+  };
+
+  const suggestions = useMemo(() => {
+    if (!headerInfo.supplier_name) return [];
+    return savedSuppliers.filter(s => 
+      s.name.toLowerCase().includes(headerInfo.supplier_name.toLowerCase()) &&
+      s.name.toLowerCase() !== headerInfo.supplier_name.toLowerCase()
+    );
+  }, [headerInfo.supplier_name, savedSuppliers]);
 
   const [items, setItems] = useState([
-    { id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 },
+    {
+      id: Date.now().toString(),
+      material_name: "",
+      hsn_code: "",
+      quantity: 0,
+      unit: "KG",
+      rate: 0,
+      gst_tax: 18,
+      raw_material_id: "",
+      product_id: ""
+    },
   ]);
-
-  const [taxes, setTaxes] = useState({
-    igst_amount: 0,
-    cgst_amount: 0,
-    sgst_amount: 0,
-  });
 
   useEffect(() => {
     async function loadData() {
       const rmRes = await getRawMaterials();
       if (rmRes.success) setRawMaterials(rmRes.data || []);
+      
+      const prodRes = await fetch("/api/products").then(res => res.json());
+      if (prodRes.success) setProducts(prodRes.data || []);
     }
     loadData();
   }, []);
 
-  const subTotal = useMemo(() => {
-    return items.reduce((sum, item) => sum + (item.quantity * item.rate), 0);
-  }, [items]);
+  const computedTotals = useMemo(() => {
+    let sub = 0;
+    let cgst = 0;
+    let sgst = 0;
+    let igst = 0;
 
-  const grandTotal = useMemo(() => {
-    return subTotal + Number(taxes.igst_amount) + Number(taxes.cgst_amount) + Number(taxes.sgst_amount);
-  }, [subTotal, taxes]);
+    items.forEach(item => {
+      const amt = Number(item.quantity || 0) * Number(item.rate || 0);
+      sub += amt;
+      const gstRate = Number(item.gst_tax || 18);
+      const gstAmt = amt * (gstRate / 100);
+
+      if (headerInfo.tax_type === "LOCAL") {
+        cgst += gstAmt / 2;
+        sgst += gstAmt / 2;
+      } else {
+        igst += gstAmt;
+      }
+    });
+
+    const total = sub + cgst + sgst + igst;
+    return {
+      subTotal: sub,
+      cgst_amount: cgst,
+      sgst_amount: sgst,
+      igst_amount: igst,
+      grandTotal: Math.round(total)
+    };
+  }, [items, headerInfo.tax_type]);
 
   const handleHeaderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setHeaderInfo(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleTaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaxes(prev => ({ ...prev, [e.target.name]: Number(e.target.value) || 0 }));
-  };
-
   const handleItemChange = (id: string, field: string, value: string | number) => {
-    setItems(prev => prev.map(item => 
-      item.id === id ? { ...item, [field]: value } : item
-    ));
+    setItems(prev => prev.map(item => {
+      if (item.id !== id) return item;
+      const updated = { ...item, [field]: value };
+      
+      // Auto-resolution if they change the material_name / product_name
+      if (field === "material_name") {
+        const matchRm = rawMaterials.find(rm => rm.material_name && value && rm.material_name.toLowerCase() === String(value).trim().toLowerCase());
+        const matchProd = products.find(p => p.product_name && value && p.product_name.toLowerCase() === String(value).trim().toLowerCase());
+        
+        if (matchRm) {
+          updated.raw_material_id = matchRm.id;
+          updated.product_id = "";
+          updated.hsn_code = matchRm.hsn_code || updated.hsn_code;
+          updated.unit = matchRm.unit_of_measure || updated.unit;
+        } else if (matchProd) {
+          updated.product_id = matchProd.id;
+          updated.raw_material_id = "";
+          updated.hsn_code = matchProd.hsn_code || updated.hsn_code;
+          updated.unit = matchProd.package_size_unit || updated.unit;
+        } else {
+          updated.raw_material_id = "";
+          updated.product_id = "";
+        }
+      }
+      return updated;
+    }));
   };
 
   const addItemRow = () => {
-    setItems(prev => [...prev, { id: Date.now().toString(), material_name: "", raw_material_id: "", quantity: 0, rate: 0 }]);
+    setItems(prev => [...prev, {
+      id: Date.now().toString(),
+      material_name: "",
+      hsn_code: "",
+      quantity: 0,
+      unit: "KG",
+      rate: 0,
+      gst_tax: 18,
+      raw_material_id: "",
+      product_id: ""
+    }]);
   };
 
   const removeItemRow = (id: string) => {
@@ -417,28 +561,37 @@ export default function AddPurchaseBillPage() {
     setIsSubmitting(true);
     
     const formData = new FormData();
+    if (selectedFile) {
+      formData.append("bill_file", selectedFile);
+    }
     formData.append("supplier_name", headerInfo.supplier_name);
     formData.append("supplier_gstin", headerInfo.supplier_gstin);
+    formData.append("supplier_address", headerInfo.supplier_address);
+    formData.append("bank_name", headerInfo.bank_name);
+    formData.append("bank_account_no", headerInfo.bank_account_no);
+    formData.append("bank_ifsc", headerInfo.bank_ifsc);
+    formData.append("bank_branch", headerInfo.bank_branch);
     formData.append("invoice_no", headerInfo.invoice_no);
     formData.append("bill_date", headerInfo.bill_date);
     formData.append("payment_status", headerInfo.payment_status);
     formData.append("payment_type", headerInfo.payment_type);
+    formData.append("tax_type", headerInfo.tax_type);
     formData.append("transport_details", JSON.stringify({ vehicle_no: headerInfo.vehicle_no, lr_no: headerInfo.lr_no }));
     
     formData.append("items", JSON.stringify(items));
     
-    formData.append("sub_total", String(subTotal));
-    formData.append("igst_amount", String(taxes.igst_amount));
-    formData.append("cgst_amount", String(taxes.cgst_amount));
-    formData.append("sgst_amount", String(taxes.sgst_amount));
-    formData.append("total_amount", String(grandTotal));
+    formData.append("sub_total", String(computedTotals.subTotal));
+    formData.append("igst_amount", String(computedTotals.igst_amount));
+    formData.append("cgst_amount", String(computedTotals.cgst_amount));
+    formData.append("sgst_amount", String(computedTotals.sgst_amount));
+    formData.append("total_amount", String(computedTotals.grandTotal));
 
     const res = await submitPurchaseBill(formData);
     setIsSubmitting(false);
 
     if (res.success) {
       alert("Purchase Bill Saved Successfully!");
-      router.push("/dashboard/purchase"); // Return to ledger
+      router.push("/dashboard/purchase");
     } else {
       alert("Error saving bill: " + res.error);
     }
@@ -498,16 +651,33 @@ export default function AddPurchaseBillPage() {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <label className="text-sm font-semibold text-muted-foreground">{t("Supplier Name")}</label>
               <input 
                 type="text" 
                 name="supplier_name"
                 value={headerInfo.supplier_name}
                 onChange={handleHeaderChange}
+                onBlur={handleSupplierBlur}
+                onFocus={() => setShowSuggestions(true)}
                 required
+                autoComplete="off"
                 className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
               />
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-[84px] left-0 right-0 bg-card border border-border rounded-xl shadow-lg z-20 max-h-48 overflow-y-auto">
+                  {suggestions.map((s, idx) => (
+                    <button
+                      type="button"
+                      key={idx}
+                      onMouseDown={() => handleSelectSupplier(s)}
+                      className="w-full text-left px-4 py-2 hover:bg-muted text-sm font-semibold text-foreground transition-colors border-b border-border/30 last:border-b-0"
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-semibold text-muted-foreground">{t("Supplier GSTIN")}</label>
@@ -542,6 +712,18 @@ export default function AddPurchaseBillPage() {
               />
             </div>
           </div>
+          
+          <div className="space-y-2 mt-4">
+            <label className="text-sm font-semibold text-muted-foreground">{t("Supplier Address")}</label>
+            <input 
+              type="text" 
+              name="supplier_address"
+              value={headerInfo.supplier_address}
+              onChange={handleHeaderChange}
+              placeholder="Enter supplier physical address"
+              className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+            />
+          </div>
 
           {/* Payment & Transport Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
@@ -550,7 +732,7 @@ export default function AddPurchaseBillPage() {
                 <span className="bg-emerald-500/20 p-1.5 rounded-lg text-emerald-400"><CreditCard size={18} /></span> 
                 {t("Payment Details")}
               </h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-muted-foreground">{t("Payment Status")}</label>
                   <select 
@@ -574,6 +756,18 @@ export default function AddPurchaseBillPage() {
                     <option value="CREDIT">Credit (30/60 Days)</option>
                     <option value="CASH">Cash / Bank Transfer</option>
                     <option value="ADVANCE">Advance Paid</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-muted-foreground">{t("Tax Type")}</label>
+                  <select 
+                    name="tax_type"
+                    value={headerInfo.tax_type}
+                    onChange={handleHeaderChange}
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-foreground"
+                  >
+                    <option value="LOCAL">Local (CGST + SGST)</option>
+                    <option value="INTERSTATE">Interstate (IGST)</option>
                   </select>
                 </div>
               </div>
@@ -610,69 +804,165 @@ export default function AddPurchaseBillPage() {
           </div>
         </div>
 
+        {/* Supplier Banking Details */}
+        <div className="bg-card border border-border rounded-3xl p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
+            <span className="bg-emerald-500/20 p-1.5 rounded-lg text-emerald-400"><Calculator size={18} /></span> 
+            {t("Supplier Banking Details")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-muted-foreground">{t("Bank Name")}</label>
+              <input 
+                type="text" 
+                name="bank_name"
+                value={headerInfo.bank_name}
+                onChange={handleHeaderChange}
+                placeholder="e.g. HDFC Bank"
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-muted-foreground">{t("Account Number")}</label>
+              <input 
+                type="text" 
+                name="bank_account_no"
+                value={headerInfo.bank_account_no}
+                onChange={handleHeaderChange}
+                placeholder="e.g. 50200105374819"
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-muted-foreground">{t("IFSC Code")}</label>
+              <input 
+                type="text" 
+                name="bank_ifsc"
+                value={headerInfo.bank_ifsc}
+                onChange={handleHeaderChange}
+                placeholder="e.g. HDFC0008546"
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground uppercase"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-muted-foreground">{t("Branch Name")}</label>
+              <input 
+                type="text" 
+                name="bank_branch"
+                value={headerInfo.bank_branch}
+                onChange={handleHeaderChange}
+                placeholder="e.g. New Atish Market, Jaipur"
+                className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Dynamic Items Grid */}
         <div className="bg-card border border-border rounded-3xl p-6 shadow-sm overflow-hidden">
           <h2 className="text-lg font-bold text-foreground mb-6">{t("Item Details")}</h2>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[700px]">
+            <table className="w-full text-left border-collapse min-w-[1000px]">
               <thead>
                 <tr className="border-b border-border text-muted-foreground text-sm uppercase tracking-wider font-bold">
-                  <th className="pb-4 pr-4 w-1/3">{t("Raw Material")}</th>
-                  <th className="pb-4 px-4 w-1/6">{t("Quantity")}</th>
-                  <th className="pb-4 px-4 w-1/6">{t("Rate (₹)")}</th>
-                  <th className="pb-4 px-4 w-1/6 text-right">{t("Amount (₹)")}</th>
+                  <th className="pb-4 pr-4 w-1/4">{t("Item / Product Name")}</th>
+                  <th className="pb-4 px-4 w-[110px]">{t("HSN Code")}</th>
+                  <th className="pb-4 px-4 w-[100px]">{t("Quantity")}</th>
+                  <th className="pb-4 px-4 w-[90px]">{t("Unit")}</th>
+                  <th className="pb-4 px-4 w-[110px]">{t("Rate (₹)")}</th>
+                  <th className="pb-4 px-4 w-[90px]">{t("GST (%)")}</th>
+                  <th className="pb-4 px-4 text-right">{t("Tax (₹)")}</th>
+                  <th className="pb-4 px-4 text-right">{t("Total (₹)")}</th>
                   <th className="pb-4 pl-4 w-[50px]"></th>
                 </tr>
               </thead>
               <tbody>
-                {items.map((item, index) => (
-                  <tr key={item.id} className="border-b border-border/30">
-                    <td className="py-4 pr-4">
-                      <input 
-                        type="text"
-                        value={item.material_name || ""}
-                        onChange={(e) => handleItemChange(item.id, "material_name", e.target.value)}
-                        placeholder="Enter item or material name"
-                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
-                        required
-                      />
-                    </td>
-                    <td className="py-4 px-4">
-                      <input 
-                        type="number" 
-                        min="0" step="any"
-                        value={item.quantity || ""}
-                        onChange={(e) => handleItemChange(item.id, "quantity", Number(e.target.value))}
-                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
-                        required
-                      />
-                    </td>
-                    <td className="py-4 px-4">
-                      <input 
-                        type="number" 
-                        min="0" step="any"
-                        value={item.rate || ""}
-                        onChange={(e) => handleItemChange(item.id, "rate", Number(e.target.value))}
-                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
-                        required
-                      />
-                    </td>
-                    <td className="py-4 px-4 text-right font-black text-foreground">
-                      {(item.quantity * item.rate).toLocaleString('en-IN', { maximumFractionDigits: 2 })}
-                    </td>
-                    <td className="py-4 pl-4 text-right">
-                      <button 
-                        type="button"
-                        onClick={() => removeItemRow(item.id)}
-                        disabled={items.length === 1}
-                        className="p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors disabled:opacity-30"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {items.map((item, index) => {
+                  const amount = Number(item.quantity || 0) * Number(item.rate || 0);
+                  const gstRate = Number(item.gst_tax || 18);
+                  const gstAmount = amount * (gstRate / 100);
+                  const totalWithGst = amount + gstAmount;
+
+                  return (
+                    <tr key={item.id} className="border-b border-border/30">
+                      <td className="py-4 pr-4">
+                        <input 
+                          type="text"
+                          value={item.material_name || ""}
+                          onChange={(e) => handleItemChange(item.id, "material_name", e.target.value)}
+                          placeholder="Enter item or material name"
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                          required
+                        />
+                      </td>
+                      <td className="py-4 px-4">
+                        <input 
+                          type="text"
+                          value={item.hsn_code || ""}
+                          onChange={(e) => handleItemChange(item.id, "hsn_code", e.target.value)}
+                          placeholder="e.g. 3209"
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                        />
+                      </td>
+                      <td className="py-4 px-4">
+                        <input 
+                          type="number" 
+                          min="0" step="any"
+                          value={item.quantity || ""}
+                          onChange={(e) => handleItemChange(item.id, "quantity", Number(e.target.value))}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                          required
+                        />
+                      </td>
+                      <td className="py-4 px-4">
+                        <input 
+                          type="text"
+                          value={item.unit || "KG"}
+                          onChange={(e) => handleItemChange(item.id, "unit", e.target.value)}
+                          placeholder="KG/LTR"
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                        />
+                      </td>
+                      <td className="py-4 px-4">
+                        <input 
+                          type="number" 
+                          min="0" step="any"
+                          value={item.rate || ""}
+                          onChange={(e) => handleItemChange(item.id, "rate", Number(e.target.value))}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                          required
+                        />
+                      </td>
+                      <td className="py-4 px-4">
+                        <input 
+                          type="number" 
+                          min="0" max="100" step="any"
+                          value={item.gst_tax}
+                          onChange={(e) => handleItemChange(item.id, "gst_tax", Number(e.target.value))}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                          required
+                        />
+                      </td>
+                      <td className="py-4 px-4 text-right font-semibold text-muted-foreground text-sm">
+                        ₹{gstAmount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                      </td>
+                      <td className="py-4 px-4 text-right font-black text-foreground">
+                        ₹{totalWithGst.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                      </td>
+                      <td className="py-4 pl-4 text-right">
+                        <button 
+                          type="button"
+                          onClick={() => removeItemRow(item.id)}
+                          disabled={items.length === 1}
+                          className="p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors disabled:opacity-30"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -691,7 +981,7 @@ export default function AddPurchaseBillPage() {
         {/* Taxes & Footer Summary */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
-          {/* Tax Inputs */}
+          {/* Tax Outputs */}
           <div className="bg-card border border-border rounded-3xl p-6 shadow-sm">
             <h2 className="text-lg font-bold text-foreground mb-6 flex items-center gap-2">
               <span className="bg-emerald-500/20 p-1.5 rounded-lg text-emerald-400"><Calculator size={18} /></span> 
@@ -700,28 +990,16 @@ export default function AddPurchaseBillPage() {
             
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-muted-foreground w-1/3">IGST (₹)</label>
-                <input 
-                  type="number" name="igst_amount" min="0" step="any"
-                  value={taxes.igst_amount || ""} onChange={handleTaxChange}
-                  className="w-2/3 bg-background border border-border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground text-right"
-                />
+                <span className="text-sm font-semibold text-muted-foreground">IGST (Auto-calculated)</span>
+                <span className="font-mono text-lg font-bold text-foreground">₹{computedTotals.igst_amount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-muted-foreground w-1/3">CGST (₹)</label>
-                <input 
-                  type="number" name="cgst_amount" min="0" step="any"
-                  value={taxes.cgst_amount || ""} onChange={handleTaxChange}
-                  className="w-2/3 bg-background border border-border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground text-right"
-                />
+                <span className="text-sm font-semibold text-muted-foreground">CGST (Auto-calculated)</span>
+                <span className="font-mono text-lg font-bold text-foreground">₹{computedTotals.cgst_amount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
               <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-muted-foreground w-1/3">SGST (₹)</label>
-                <input 
-                  type="number" name="sgst_amount" min="0" step="any"
-                  value={taxes.sgst_amount || ""} onChange={handleTaxChange}
-                  className="w-2/3 bg-background border border-border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground text-right"
-                />
+                <span className="text-sm font-semibold text-muted-foreground">SGST (Auto-calculated)</span>
+                <span className="font-mono text-lg font-bold text-foreground">₹{computedTotals.sgst_amount.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
             </div>
           </div>
@@ -731,16 +1009,16 @@ export default function AddPurchaseBillPage() {
             <div className="space-y-3">
               <div className="flex justify-between items-center text-muted-foreground">
                 <span className="font-semibold">{t("Sub-total")}</span>
-                <span className="font-bold text-foreground">₹{subTotal.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
+                <span className="font-bold text-foreground">₹{computedTotals.subTotal.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
               <div className="flex justify-between items-center text-muted-foreground">
                 <span className="font-semibold">{t("Total Taxes")}</span>
-                <span className="font-bold text-foreground">₹{(Number(taxes.igst_amount) + Number(taxes.cgst_amount) + Number(taxes.sgst_amount)).toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
+                <span className="font-bold text-foreground">₹{(computedTotals.igst_amount + computedTotals.cgst_amount + computedTotals.sgst_amount).toLocaleString('en-IN', { maximumFractionDigits: 2 })}</span>
               </div>
               <div className="border-t border-border pt-3 mt-3 flex justify-between items-center">
                 <span className="text-xl font-bold uppercase tracking-wider text-foreground">{t("Grand Total")}</span>
                 <span className="text-3xl font-black text-primary drop-shadow-md">
-                  ₹{grandTotal.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                  ₹{computedTotals.grandTotal.toLocaleString('en-IN')}
                 </span>
               </div>
             </div>

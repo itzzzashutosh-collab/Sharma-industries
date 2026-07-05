@@ -3,28 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Factory, Package, AlertTriangle, DollarSign, Plus, CheckCircle, Clock, Download } from "lucide-react";
 import { getRawMaterials } from "@/actions/purchaseActions";
-
-// DUMMY DATA
-const KPIs = {
-  bucketsProduced: 850,
-  activeBatches: 3,
-  lowStockAlerts: 2,
-  overheadCost: 12500,
-};
-
-const BATCHES = [
-  { id: "BCH-1024", product: "Rustic Royale - 20L", status: "In-Progress", yield: 450, time: "Started 2h ago" },
-  { id: "BCH-1023", product: "Wall Putty - 40kg", status: "Completed", yield: 800, time: "Completed today" },
-  { id: "BCH-1022", product: "WeatherGuard - 10L", status: "In-Progress", yield: 120, time: "Started 4h ago" },
-  { id: "BCH-1021", product: "Primer - 20L", status: "Completed", yield: 500, time: "Completed yesterday" },
-];
-
-const RAW_MATERIALS = [
-  { id: "RM-01", name: "Titanium Dioxide", stock: 150, threshold: 200, unit: "kg" },
-  { id: "RM-02", name: "Calcium Carbonate", stock: 1200, threshold: 500, unit: "kg" },
-  { id: "RM-03", name: "Acrylic Emulsion", stock: 45, threshold: 100, unit: "Liters" },
-  { id: "RM-04", name: "Thickener", stock: 300, threshold: 50, unit: "kg" },
-];
+import { getProductionBatches } from "@/actions/productionActions";
 
 const LABOR = [
   { id: "L-01", name: "Ramesh Singh", role: "Mixer Operator", status: "Present", wage: 600 },
@@ -45,6 +24,7 @@ export default function FactoryOperationsPage() {
   const [quantity, setQuantity] = useState("");
   const [generating, setGenerating] = useState(false);
   const [rawMaterials, setRawMaterials] = useState<any[]>([]);
+  const [batches, setBatches] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("/api/products")
@@ -56,6 +36,22 @@ export default function FactoryOperationsPage() {
     getRawMaterials().then(res => {
       if (res.success) setRawMaterials(res.data || []);
     });
+
+    getProductionBatches().then(res => {
+      if (res.success) setBatches(res.data || []);
+    });
+  }, []);
+
+  const activeBatchesCount = useMemo(() => {
+    return batches.filter(b => b.status === "IN_PROGRESS").length;
+  }, [batches]);
+
+  const completedBucketsCount = useMemo(() => {
+    return batches.filter(b => b.status === "COMPLETED").reduce((sum, b) => sum + (Number(b.quantity_produced) || Number(b.target_yield) || 0), 0);
+  }, [batches]);
+
+  const overheadCostSum = useMemo(() => {
+    return EXPENSES.reduce((sum, e) => sum + e.amount, 0);
   }, []);
 
   const lowStockCount = useMemo(() => {
@@ -65,6 +61,14 @@ export default function FactoryOperationsPage() {
       return stock < threshold;
     }).length;
   }, [rawMaterials]);
+
+  const lowStockProductsCount = useMemo(() => {
+    return products.filter(p => {
+      const stock = Number(p.stock) || 0;
+      const threshold = Number(p.min_stock) || 10;
+      return stock < threshold;
+    }).length;
+  }, [products]);
 
   const handleGenerateQRs = async () => {
     if (!selectedProd || !quantity) {
@@ -119,10 +123,10 @@ export default function FactoryOperationsPage() {
         <div className="bg-card border border-border p-6 rounded-3xl shadow-sm relative overflow-hidden group hover:shadow-primary/10 transition-all duration-300">
           <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="flex justify-between items-start">
-            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Buckets Produced (Today)</p>
+            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Buckets Produced (Total)</p>
             <div className="bg-primary/10 p-2 rounded-lg"><Package size={20} className="text-primary" /></div>
           </div>
-          <p className="text-3xl font-black text-foreground mt-2">{KPIs.bucketsProduced}</p>
+          <p className="text-3xl font-black text-foreground mt-2">{completedBucketsCount}</p>
         </div>
 
         <div className="bg-card border border-border p-6 rounded-3xl shadow-sm relative overflow-hidden group hover:shadow-emerald-500/10 transition-all duration-300">
@@ -131,16 +135,19 @@ export default function FactoryOperationsPage() {
             <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Active Batches</p>
             <div className="bg-emerald-500/10 p-2 rounded-lg"><Clock size={20} className="text-emerald-400" /></div>
           </div>
-          <p className="text-3xl font-black text-emerald-400 mt-2">{KPIs.activeBatches}</p>
+          <p className="text-3xl font-black text-emerald-400 mt-2">{activeBatchesCount}</p>
         </div>
 
         <div className="bg-card border border-border p-6 rounded-3xl shadow-sm relative overflow-hidden group hover:shadow-rose-500/10 transition-all duration-300">
           <div className="absolute inset-0 bg-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="flex justify-between items-start">
-            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Low Stock RM</p>
+            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Inventory Alerts</p>
             <div className="bg-rose-500/10 p-2 rounded-lg"><AlertTriangle size={20} className="text-rose-500" /></div>
           </div>
-          <p className="text-3xl font-black text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)] mt-2">{lowStockCount} Alerts</p>
+          <p className="text-3xl font-black text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)] mt-2">{lowStockCount + lowStockProductsCount} Alerts</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {lowStockCount} Materials · {lowStockProductsCount} Products below threshold
+          </p>
         </div>
 
         <div className="bg-card border border-border p-6 rounded-3xl shadow-sm relative overflow-hidden group hover:shadow-foreground/10 transition-all duration-300">
@@ -149,7 +156,7 @@ export default function FactoryOperationsPage() {
             <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">Today's Overhead</p>
             <div className="bg-muted p-2 rounded-lg border border-border"><DollarSign size={20} className="text-foreground" /></div>
           </div>
-          <p className="text-3xl font-black text-foreground mt-2">₹{KPIs.overheadCost.toLocaleString()}</p>
+          <p className="text-3xl font-black text-foreground mt-2">₹{overheadCostSum.toLocaleString()}</p>
         </div>
       </div>
 
@@ -196,15 +203,15 @@ export default function FactoryOperationsPage() {
                       </tr>
                     </thead>
                     <tbody className="text-sm">
-                      {BATCHES.map(b => (
+                      {batches.map(b => (
                         <tr key={b.id} className="border-b border-border/50 hover:bg-muted/30 transition-colors">
                           <td className="py-4 pr-4 font-mono font-bold text-foreground">{b.id}</td>
                           <td className="py-4 px-4">
-                            <p className="font-semibold text-foreground">{b.product}</p>
-                            <p className="text-sm text-muted-foreground">{b.time}</p>
+                            <p className="font-semibold text-foreground">{b.products?.product_name || "Unknown Product"}</p>
+                            <p className="text-sm text-muted-foreground">{b.batch_date || "Today"}</p>
                           </td>
                           <td className="py-4 px-4">
-                            {b.status === "Completed" ? (
+                            {b.status === "COMPLETED" ? (
                               <span className="flex items-center gap-1.5 w-fit bg-primary/10 text-primary border border-primary/20 px-2.5 py-1 rounded-md text-sm font-bold uppercase tracking-wider">
                                 <CheckCircle size={12} /> Completed
                               </span>
@@ -215,7 +222,7 @@ export default function FactoryOperationsPage() {
                             )}
                           </td>
                           <td className="py-4 pl-4 text-right font-black text-foreground">
-                            {b.yield}
+                            {b.quantity_produced || b.target_yield || 0}
                           </td>
                         </tr>
                       ))}

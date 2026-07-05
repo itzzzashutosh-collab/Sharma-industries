@@ -84,6 +84,9 @@ export async function startBatch(productId: string, targetYield: number) {
       });
     }
 
+    // e) Generate Batch ID
+    const batchId = `BATCH-${Date.now()}`;
+
     // d) DEDUCT the calculated quantities from public.raw_materials
     for (const ded of deductions) {
       const { error: updateErr } = await supabaseAdmin
@@ -100,13 +103,25 @@ export async function startBatch(productId: string, targetYield: number) {
         date: new Date().toISOString().split('T')[0],
         type: "OUT",
         qty: ded.requiredQty,
-        reason: "Production Batch Consumed",
+        reason: `Production Batch Consumed (${batchId})`,
+        reference: batchId,
+        resulting_stock: ded.remainingStock
+      }]);
+
+      // Log to unified stock_ledger
+      await supabaseAdmin.from("stock_ledger").insert([{
+        id: `LEDGER-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        date: new Date().toISOString().split('T')[0],
+        item_id: ded.raw_material_id,
+        item_type: "RAW_MATERIAL",
+        type: "OUT",
+        qty: ded.requiredQty,
+        reference: batchId,
+        supplier_or_buyer: "Factory Production",
         resulting_stock: ded.remainingStock
       }]);
     }
 
-    // e) Insert a new row in public.production_batches
-    const batchId = `BATCH-${Date.now()}`;
     const { error: batchErr } = await supabaseAdmin
       .from("production_batches")
       .insert([{
@@ -150,20 +165,20 @@ export async function completeBatch(batchId: string, actualYield: number) {
 
     if (batchErr) throw batchErr;
 
-    // b) Increment actual_stock (we use 'stock' field) by actualYield
+    // b) Increment actual_stock by actualYield
     const { data: prodData, error: prodErr } = await supabaseAdmin
       .from("products")
-      .select("stock")
+      .select("actual_stock")
       .eq("id", batchData.product_id)
       .single();
 
     if (prodErr) throw prodErr;
 
-    const newStock = (parseFloat(prodData.stock) || 0) + actualYield;
+    const newStock = (parseFloat(prodData.actual_stock) || 0) + actualYield;
     
     const { error: stockUpdateErr } = await supabaseAdmin
       .from("products")
-      .update({ stock: newStock })
+      .update({ actual_stock: newStock })
       .eq("id", batchData.product_id);
 
     if (stockUpdateErr) throw stockUpdateErr;
@@ -180,10 +195,40 @@ export async function completeBatch(batchId: string, actualYield: number) {
       resulting_stock: newStock
     }]);
 
+    // Log to unified stock_ledger
+    await supabaseAdmin.from("stock_ledger").insert([{
+      id: `LEDGER-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      date: new Date().toISOString().split('T')[0],
+      item_id: batchData.product_id,
+      item_type: "PRODUCT",
+      type: "IN",
+      qty: actualYield,
+      total: actualYield * 100,
+      reference: batchId,
+      supplier_or_buyer: "Factory Production",
+      resulting_stock: newStock
+    }]);
+
     revalidatePath("/dashboard/production");
     return { success: true };
   } catch (err: any) {
     console.error("Error completing batch:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getProductionBatches() {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("production_batches")
+      .select("*, products(product_name)")
+      .order("id", { ascending: false })
+      .limit(20);
+      
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err: any) {
+    console.error("Error fetching batches:", err);
     return { success: false, error: err.message };
   }
 }

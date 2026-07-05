@@ -62,3 +62,19 @@ export async function createMaterialAndLog(data: {
     return { success: false, error: err.message || "Unknown error occurred" };
   }
 }
+
+export async function updateMaterialThreshold(id: string, min_stock: number) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("raw_materials")
+      .update({ min_stock })
+      .eq("id", id);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error updating material threshold:", err);
+    return { success: false, error: err.message || "Unknown error occurred" };
+  }
+}

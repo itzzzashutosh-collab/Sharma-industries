@@ -105,19 +105,20 @@ export default function PurchaseLedgerPage() {
                 <th className="pb-4 px-4">{t("Invoice No")}</th>
                 <th className="pb-4 px-4">{t("Supplier")}</th>
                 <th className="pb-4 px-4">{t("Status")}</th>
+                <th className="pb-4 px-4 text-center">{t("Attachment")}</th>
                 <th className="pb-4 pl-4 text-right">{t("Total (₹)")}</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-muted-foreground font-semibold">
+                  <td colSpan={6} className="py-8 text-center text-muted-foreground font-semibold">
                     {t("Loading bills...")}
                   </td>
                 </tr>
               ) : bills.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-8 text-center text-muted-foreground font-semibold">
+                  <td colSpan={6} className="py-8 text-center text-muted-foreground font-semibold">
                     {t("No bills found for this time period.")}
                   </td>
                 </tr>
@@ -142,6 +143,20 @@ export default function PurchaseLedgerPage() {
                         }`}>
                           {b.payment_status || "UNPAID"}
                         </span>
+                      </td>
+                      <td className="py-4 px-4 text-center" onClick={(e) => e.stopPropagation()}>
+                        {b.bill_file_path ? (
+                          <a 
+                            href={`https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/public/purchase_bills/${b.bill_file_path}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-2.5 py-1 rounded-lg text-xs font-bold transition-all"
+                          >
+                            <FileText size={12} /> {t("View")}
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground text-xs font-semibold">—</span>
+                        )}
                       </td>
                       <td className="py-4 pl-4 text-right font-black text-foreground group-hover:text-primary transition-colors">
                         ₹{amt.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
@@ -250,6 +265,19 @@ export default function PurchaseLedgerPage() {
                     </>
                   ) : (
                     <p className="text-muted-foreground italic">No transport details</p>
+                  )}
+                  
+                  {selectedBill.bill_file_path && (
+                    <div className="pt-2 border-t border-border mt-4">
+                      <a 
+                        href={`https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/public/purchase_bills/${selectedBill.bill_file_path}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 py-2.5 rounded-xl text-sm font-bold transition-all"
+                      >
+                        <FileText size={16} /> {t("View Original Bill File")}
+                      </a>
+                    </div>
                   )}
                 </div>
 

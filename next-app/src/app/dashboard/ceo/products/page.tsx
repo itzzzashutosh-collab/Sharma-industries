@@ -162,9 +162,9 @@ export default function CEOProductsPage() {
           <div key={product.id} className="bg-card border border-border rounded-2xl p-5 relative shadow-sm">
             <div className="absolute top-4 right-4 flex items-center gap-2">
               <div className={`px-2.5 py-1 rounded-lg text-sm font-bold ${
-                product.stock > (product.min_stock || 10) ? 'bg-primary/20 text-primary' : 'bg-rose-500/20 text-rose-500'
+                product.actual_stock > (product.min_stock_threshold || 10) ? 'bg-primary/20 text-primary' : 'bg-rose-500/20 text-rose-500'
               }`}>
-                {product.stock} {t("in Stock")}
+                {product.actual_stock} {t("in Stock")}
               </div>
               <EditProductModal product={product} onSuccess={fetchProducts} />
               <button

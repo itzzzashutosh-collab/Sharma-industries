@@ -20,7 +20,9 @@ export async function GET() {
       hsn_code: p.hsn_code,
       selling_price: p.selling_cost,
       tags: p.tags,
-      packing_size_unit: p.package_size_unit
+      packing_size_unit: p.package_size_unit,
+      stock: p.actual_stock,
+      min_stock: p.min_stock_threshold
     }));
 
     return NextResponse.json({ success: true, data: mappedData });

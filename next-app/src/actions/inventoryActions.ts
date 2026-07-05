@@ -14,6 +14,22 @@ export async function getInventorySummary() {
       return { success: false, error: "No data" };
     }
 
+    const { data: latestLogs } = await supabase
+      .from("stock_ledger")
+      .select("item_id, supplier_or_buyer")
+      .eq("item_type", "RAW_MATERIAL")
+      .eq("type", "IN")
+      .order("created_at", { ascending: false });
+
+    const supplierMap: Record<string, string> = {};
+    if (latestLogs && latestLogs.length > 0) {
+      latestLogs.forEach((log: any) => {
+        if (!supplierMap[log.item_id] && log.supplier_or_buyer) {
+          supplierMap[log.item_id] = log.supplier_or_buyer;
+        }
+      });
+    }
+
     const allMaterials = rawMaterials.map((mat) => {
       const stock = parseFloat(mat.current_stock) || 0;
       const minStock = parseFloat(mat.min_stock) || 0;
@@ -26,7 +42,8 @@ export async function getInventorySummary() {
         min_threshold: minStock,
         stock,
         min_stock: minStock,
-        is_low_stock: stock <= minStock
+        is_low_stock: stock <= minStock,
+        supplier: supplierMap[mat.id] || "—"
       };
     });
 
@@ -52,9 +69,10 @@ export async function getMaterialDetails(materialId: string) {
       .eq("raw_material_id", materialId);
 
     const { data: logsData } = await supabase
-      .from("material_logs")
-      .select("id, date, type, qty, reference, reason, created_by, balance")
-      .eq("material_id", materialId)
+      .from("stock_ledger")
+      .select("id, date, type, qty, reference, supplier_or_buyer, resulting_stock")
+      .eq("item_id", materialId)
+      .eq("item_type", "RAW_MATERIAL")
       .order("created_at", { ascending: false })
       .limit(20);
 
@@ -62,7 +80,13 @@ export async function getMaterialDetails(materialId: string) {
       success: true,
       data: {
         formulations: formulationsData || [],
-        purchaseHistory: (logsData || []).filter((l: any) => l.type === "IN"),
+        purchaseHistory: (logsData || []).filter((l: any) => l.type === "IN").map((l: any) => ({
+          date: l.date,
+          reason: `Inward from ${l.supplier_or_buyer}`,
+          qty: l.qty,
+          reference: l.reference,
+          vendor: l.supplier_or_buyer
+        })),
         stockLogs: logsData || [],
       },
     };

@@ -48,6 +48,8 @@ export function Sidebar({ role }: SidebarProps) {
       { name: "Traceability & Token Engine", href: "/dashboard/admin/approvals", icon: CheckSquare },
       { name: "Painters Directory", href: "/dashboard/admin/painters", icon: Users },
       { name: "Company Products", href: "/dashboard/ceo/products", icon: Package },
+      { name: "Suppliers Registry", href: "/dashboard/ceo/suppliers", icon: Users },
+      { name: "Factory Cash Flow", href: "/dashboard/ceo/cash-flow", icon: LineChart },
 
       { name: "Smart Invoicing", href: "/dashboard/ceo/invoices", icon: FileText },
       { name: "Company Quotations", href: "/dashboard/ceo/quotations", icon: FileText },
