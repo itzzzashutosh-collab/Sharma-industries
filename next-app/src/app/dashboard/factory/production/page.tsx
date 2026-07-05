@@ -19,7 +19,8 @@ import {
   FileText,
   TrendingUp,
   Tag,
-  Search
+  Search,
+  Package
 } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useRouter } from "next/navigation";
@@ -551,7 +552,26 @@ export default function ProductionBatchesPage() {
                 </div>
               </div>
             ))}
-            {filteredProducts.length === 0 && (
+            {filteredProducts.length === 0 && products.length === 0 && (
+              <div className="bg-card border-2 border-dashed border-border rounded-3xl p-12 text-center space-y-4">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
+                  <Package size={32} className="text-primary" />
+                </div>
+                <div>
+                  <p className="font-black text-lg text-foreground">No Company Products Registered Yet</p>
+                  <p className="text-sm text-muted-foreground mt-1.5 max-w-sm mx-auto">
+                    You need to first add your paint products (e.g. Interior Emulsion, Primer, Enamel) in the Company Products page before setting up formulations here.
+                  </p>
+                </div>
+                <a
+                  href="/dashboard/ceo/products"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary-hover transition-all shadow-md shadow-primary/20"
+                >
+                  <Plus size={16} /> Go to Company Products & Add Products
+                </a>
+              </div>
+            )}
+            {filteredProducts.length === 0 && products.length > 0 && (
               <p className="text-center py-12 text-muted-foreground text-sm">No products matched search query.</p>
             )}
           </div>

@@ -391,7 +391,6 @@ export async function getProductsForProduction() {
     const { data, error } = await supabaseAdmin
       .from("products")
       .select("*")
-      .eq("is_master_product", true)
       .order("product_name", { ascending: true });
 
     if (error) throw error;
