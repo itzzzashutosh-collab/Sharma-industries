@@ -153,7 +153,7 @@ export async function submitPurchaseBill(formData: FormData) {
         igst_amount,
         cgst_amount,
         sgst_amount,
-        grand_total: total_amount, 
+        total_amount, 
         transport_details,
         payment_status,
         payment_type,
@@ -162,34 +162,8 @@ export async function submitPurchaseBill(formData: FormData) {
       .select("id")
       .single();
 
-    if (masterError) {
-      const { data: fallbackData, error: fallbackError } = await supabaseAdmin
-        .from("purchase_master")
-        .insert({
-          id: masterId,
-          invoice_no,
-          bill_date,
-          supplier_name,
-          supplier_gstin,
-          items,
-          sub_total,
-          igst_amount,
-          cgst_amount,
-          sgst_amount,
-          total_amount,
-          transport_details,
-          payment_status,
-          payment_type,
-          bill_file_path
-        })
-        .select("id")
-        .single();
-        
-      if (fallbackError) throw fallbackError;
-      var purchase_bill_id = fallbackData.id;
-    } else {
-      var purchase_bill_id = masterData.id;
-    }
+    if (masterError) throw masterError;
+    const purchase_bill_id = masterData.id;
 
     // Synchronize Supplier Profile
     if (supplier_name) {
@@ -560,7 +534,7 @@ export async function getSupplierDetailData(supplierName: string) {
   try {
     const { data: bills, error: billsErr } = await supabaseAdmin
       .from("purchase_master")
-      .select("id, invoice_no, bill_date, total_amount, grand_total, payment_status, bill_file_path")
+      .select("id, invoice_no, bill_date, total_amount, payment_status, bill_file_path")
       .ilike("supplier_name", supplierName.trim())
       .order("bill_date", { ascending: false });
 
@@ -570,7 +544,7 @@ export async function getSupplierDetailData(supplierName: string) {
       id: b.id,
       invoice_no: b.invoice_no,
       date: b.bill_date,
-      grand_total: b.grand_total || b.total_amount,
+      grand_total: b.total_amount,
       payment_status: b.payment_status,
       bill_file_path: b.bill_file_path
     }));
