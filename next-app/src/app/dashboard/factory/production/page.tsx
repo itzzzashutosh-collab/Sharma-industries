@@ -32,7 +32,9 @@ import {
   cancelBatch, 
   getProductionBatches,
   getBatchDetails,
-  getProductsForProduction
+  getProductsForProduction,
+  getOverheadPreset,
+  saveOverheadPreset
 } from "@/actions/productionActions";
 import { getRawMaterials } from "@/actions/purchaseActions";
 
@@ -74,7 +76,17 @@ export default function ProductionBatchesPage() {
   // Form State: Complete Batch
   const [completeBatchId, setCompleteBatchId] = useState("");
   const [completeActualYield, setCompleteActualYield] = useState<number>(0);
+  const [completeBagsProduced, setCompleteBagsProduced] = useState<number>(0);
   const [completeProductYieldName, setCompleteProductYieldName] = useState("");
+
+  // Overhead presets for formulation modal
+  const [overheadPreset, setOverheadPreset] = useState({
+    labour_cost: 0,
+    power_cost: 0,
+    packaging_cost: 0,
+    other_cost: 0,
+    notes: ""
+  });
 
   // Search filter
   const [searchQuery, setSearchQuery] = useState("");
@@ -113,17 +125,33 @@ export default function ProductionBatchesPage() {
   const handleOpenRecipeModal = async (product: any) => {
     setSelectedProduct(product);
     setRecipeItems([]);
+    setOverheadPreset({ labour_cost: 0, power_cost: 0, packaging_cost: 0, other_cost: 0, notes: "" });
     setIsRecipeModalOpen(true);
     
-    const res = await getProductRecipe(product.id);
-    if (res.success && res.data && res.data.length > 0) {
-      setRecipeItems(res.data.map((r: any) => ({
+    const [recipeRes, overheadRes] = await Promise.all([
+      getProductRecipe(product.id),
+      getOverheadPreset(product.id)
+    ]);
+
+    if (recipeRes.success && recipeRes.data && recipeRes.data.length > 0) {
+      setRecipeItems(recipeRes.data.map((r: any) => ({
         raw_material_id: r.raw_material_id,
         quantity_per_unit: Number(r.quantity_per_unit)
       })));
     } else {
       // Default placeholder row
       setRecipeItems([{ raw_material_id: "", quantity_per_unit: 0 }]);
+    }
+
+    if (overheadRes.success && overheadRes.data) {
+      const op = overheadRes.data;
+      setOverheadPreset({
+        labour_cost: Number(op.labour_cost || 0),
+        power_cost: Number(op.power_cost || 0),
+        packaging_cost: Number(op.packaging_cost || 0),
+        other_cost: Number(op.other_cost || 0),
+        notes: op.notes || ""
+      });
     }
   };
 
@@ -132,13 +160,16 @@ export default function ProductionBatchesPage() {
     const filtered = recipeItems.filter((item) => item.raw_material_id && item.quantity_per_unit > 0);
     
     startTransition(async () => {
-      const res = await saveProductRecipe(selectedProduct.id, filtered);
-      if (res.success) {
-        showToast("success", "Formula formulation saved successfully!");
+      const [recipeRes] = await Promise.all([
+        saveProductRecipe(selectedProduct.id, filtered),
+        saveOverheadPreset(selectedProduct.id, overheadPreset)
+      ]);
+      if (recipeRes.success) {
+        showToast("success", "Formula & overhead presets saved successfully!");
         setIsRecipeModalOpen(false);
         loadData();
       } else {
-        showToast("error", "Failed to save formulation: " + res.error);
+        showToast("error", "Failed to save formulation: " + recipeRes.error);
       }
     });
   };
@@ -165,11 +196,21 @@ export default function ProductionBatchesPage() {
     }
     const fetchFormulation = async () => {
       setLoadingFormulation(true);
-      const res = await getProductRecipe(batchProduct);
-      if (res.success && res.data) {
-        setLoadedFormulation(res.data);
+      const [recipeRes, overheadRes] = await Promise.all([
+        getProductRecipe(batchProduct),
+        getOverheadPreset(batchProduct)
+      ]);
+      if (recipeRes.success && recipeRes.data) {
+        setLoadedFormulation(recipeRes.data);
       } else {
         setLoadedFormulation([]);
+      }
+      if (overheadRes.success && overheadRes.data) {
+        const op = overheadRes.data;
+        const totalDefaultOverhead = Number(op.labour_cost || 0) + Number(op.power_cost || 0) + Number(op.packaging_cost || 0) + Number(op.other_cost || 0);
+        setBatchOverheads(totalDefaultOverhead);
+      } else {
+        setBatchOverheads(0);
       }
       setLoadingFormulation(false);
     };
@@ -279,6 +320,7 @@ export default function ProductionBatchesPage() {
   const handleOpenCompleteModal = (batch: any) => {
     setCompleteBatchId(batch.id);
     setCompleteActualYield(batch.target_yield || 0);
+    setCompleteBagsProduced(0);
     setCompleteProductYieldName(batch.products?.product_name || "Finished Goods");
     setIsCompleteModalOpen(true);
   };
@@ -289,10 +331,11 @@ export default function ProductionBatchesPage() {
       return;
     }
     startTransition(async () => {
-      const res = await completeBatch(completeBatchId, completeActualYield);
+      const res = await completeBatch(completeBatchId, completeActualYield, completeBagsProduced);
       if (res.success) {
         showToast("success", "Production batch completed successfully! Stock updated.");
         setIsCompleteModalOpen(false);
+        setCompleteBagsProduced(0);
         loadData();
       } else {
         showToast("error", "Error completing batch: " + res.error);
@@ -591,6 +634,7 @@ export default function ProductionBatchesPage() {
                   <th className="py-3 px-4 text-left">Product Name</th>
                   <th className="py-3 px-4 text-left">Yield Date</th>
                   <th className="py-3 px-4 text-right">Yield Qty</th>
+                  <th className="py-3 px-4 text-right">Bags</th>
                   <th className="py-3 px-4 text-right">Total Cost</th>
                   <th className="py-3 px-4 text-right">Per-Unit Cost</th>
                   <th className="py-3 px-4 text-center">Status</th>
@@ -607,6 +651,9 @@ export default function ProductionBatchesPage() {
                       <td className="py-3.5 px-4 text-muted-foreground font-mono text-xs">{row.completed_at ? new Date(row.completed_at).toLocaleDateString('en-IN') : row.batch_date}</td>
                       <td className="py-3.5 px-4 text-right font-mono font-bold text-foreground">
                         {isSuccess ? `${formatNum(row.actual_yield)} KG/LTR` : "-"}
+                      </td>
+                      <td className="py-3.5 px-4 text-right font-mono font-bold text-primary">
+                        {isSuccess && row.bags_produced ? `${row.bags_produced} bags` : "-"}
                       </td>
                       <td className="py-3.5 px-4 text-right font-mono font-bold text-foreground">
                         ₹{formatNum(row.total_cost)}
@@ -940,7 +987,53 @@ export default function ProductionBatchesPage() {
                 ))}
               </div>
 
-              <div className="flex justify-end gap-3 pt-6 border-t border-border/40">
+              {/* ── Overhead Presets ── */}
+              <div className="border-t border-border/40 pt-5 space-y-4">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <DollarSign size={15} className="text-amber-500" /> Default Production Overheads (per batch)
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">These defaults pre-fill the overheads when launching a batch for this product.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { key: "labour_cost",   label: "Labour Cost (₹)" },
+                    { key: "power_cost",    label: "Power / Utilities (₹)" },
+                    { key: "packaging_cost",label: "Packaging (₹)" },
+                    { key: "other_cost",    label: "Other Costs (₹)" }
+                  ].map(field => (
+                    <div key={field.key}>
+                      <label className="block text-xs font-semibold text-muted-foreground mb-1">{field.label}</label>
+                      <input
+                        type="number" min="0" step="any"
+                        value={(overheadPreset as any)[field.key] || ""}
+                        onChange={(e) => setOverheadPreset(prev => ({ ...prev, [field.key]: Number(e.target.value) }))}
+                        placeholder="0.00"
+                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground font-mono"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1">Notes / Remarks</label>
+                  <input
+                    type="text"
+                    value={overheadPreset.notes}
+                    onChange={(e) => setOverheadPreset(prev => ({ ...prev, notes: e.target.value }))}
+                    placeholder="e.g. includes packaging for 20-KG buckets"
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+                  />
+                </div>
+                {/* Total overhead summary */}
+                <div className="bg-muted/50 rounded-xl px-4 py-2 flex justify-between items-center">
+                  <span className="text-xs font-bold text-muted-foreground">Total Default Overhead / batch</span>
+                  <span className="text-sm font-black text-amber-500 font-mono">
+                    ₹{(overheadPreset.labour_cost + overheadPreset.power_cost + overheadPreset.packaging_cost + overheadPreset.other_cost).toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-border/40">
                 <button 
                   type="button" 
                   onClick={() => setIsRecipeModalOpen(false)}
@@ -996,6 +1089,20 @@ export default function ProductionBatchesPage() {
                   className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground font-mono"
                 />
                 <p className="text-xs text-muted-foreground">Adjust actual yields based on physical factory output readings.</p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-muted-foreground">{t("Bags / Units Produced")}</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={completeBagsProduced || ""}
+                  onChange={(e) => setCompleteBagsProduced(Number(e.target.value))}
+                  placeholder="e.g. 40 bags of 20 KG"
+                  className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground font-mono"
+                />
+                <p className="text-xs text-muted-foreground">Total number of finished bags / containers produced in this batch.</p>
               </div>
             </div>
 

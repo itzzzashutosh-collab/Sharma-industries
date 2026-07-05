@@ -86,6 +86,8 @@ export async function submitPurchaseBill(formData: FormData) {
     const cgst_amount = Number(formData.get("cgst_amount") || 0);
     const sgst_amount = Number(formData.get("sgst_amount") || 0);
     const total_amount = Math.round(Number(formData.get("total_amount") || 0));
+    const transport_cost = Number(formData.get("transport_cost") || 0);
+    const labour_cost = Number(formData.get("labour_cost") || 0);
     const transport_details_str = formData.get("transport_details") as string;
     
     let transport_details = {};
@@ -96,6 +98,11 @@ export async function submitPurchaseBill(formData: FormData) {
     }
 
     const items = JSON.parse(itemsString || "[]");
+
+    // Pre-compute total quantity for quantity-weighted landed cost distribution
+    const totalQty = items.reduce((sum: number, it: any) => sum + (Number(it.quantity) || 0), 0);
+    const perUnitTransport = totalQty > 0 ? transport_cost / totalQty : 0;
+    const perUnitLabour    = totalQty > 0 ? labour_cost   / totalQty : 0;
 
     const supplier_address = formData.get("supplier_address") as string || "";
     const bank_name = formData.get("bank_name") as string || "";
@@ -154,6 +161,8 @@ export async function submitPurchaseBill(formData: FormData) {
         cgst_amount,
         sgst_amount,
         total_amount, 
+        transport_cost,
+        labour_cost,
         transport_details,
         payment_status,
         payment_type,
@@ -298,7 +307,9 @@ export async function submitPurchaseBill(formData: FormData) {
         }
       }
 
-      const amountWithoutGst = Number(quantity) * Number(rate);
+      const qty = Number(quantity);
+      const rateNum = Number(rate);
+      const amountWithoutGst = qty * rateNum;
       const isLocal = tax_type !== "INTERSTATE";
       const gstRate = Number(gst_tax) || 18;
       const gstAmount = amountWithoutGst * (gstRate / 100);
@@ -306,6 +317,12 @@ export async function submitPurchaseBill(formData: FormData) {
       const sgstVal = isLocal ? gstAmount / 2 : 0;
       const igstVal = isLocal ? 0 : gstAmount;
       const itemTotal = amountWithoutGst + gstAmount;
+
+      // Landed cost components per unit
+      const gstPerUnit        = rateNum * (gstRate / 100);
+      const transportPerUnit  = perUnitTransport;
+      const labourPerUnit     = perUnitLabour;
+      const landedCostPerUnit = rateNum + gstPerUnit + transportPerUnit + labourPerUnit;
 
       const itemId = `PI_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
@@ -316,14 +333,19 @@ export async function submitPurchaseBill(formData: FormData) {
           purchase_bill_id,
           raw_material_id: resolved_material_id || null,
           product_id: resolved_product_id || null,
-          quantity: Number(quantity),
-          rate: Number(rate),
+          quantity: qty,
+          rate: rateNum,
           hsn_code: hsn_code || "",
           unit: unit || "KG",
           gst_tax: gstRate,
           cgst_amount: cgstVal,
           sgst_amount: sgstVal,
           igst_amount: igstVal,
+          gst_amount: gstAmount,
+          gst_per_unit: gstPerUnit,
+          transport_per_unit: transportPerUnit,
+          labour_per_unit: labourPerUnit,
+          landed_cost: landedCostPerUnit,
           total_amount: itemTotal
         });
 
@@ -376,11 +398,15 @@ export async function submitPurchaseBill(formData: FormData) {
           .single();
 
         const currentStock = Number(rmData?.current_stock || 0);
-        const newStock = currentStock + Number(quantity);
+        const newStock = currentStock + qty;
 
         await supabaseAdmin
           .from("raw_materials")
-          .update({ current_stock: newStock })
+          .update({
+            current_stock: newStock,
+            // Update avg_purchase_price to reflect true landed cost (includes GST + transport + labour)
+            avg_purchase_price: landedCostPerUnit
+          })
           .eq("id", resolved_material_id);
 
         await supabaseAdmin.from("material_logs").insert([{
@@ -388,7 +414,7 @@ export async function submitPurchaseBill(formData: FormData) {
           material_id: resolved_material_id,
           date: bill_date || new Date().toISOString().split('T')[0],
           type: "IN",
-          qty: Number(quantity),
+          qty,
           reason: `Inward from ${supplier_name || 'Purchase Bill'}`,
           reference: invoice_no,
           balance: newStock
@@ -400,10 +426,10 @@ export async function submitPurchaseBill(formData: FormData) {
           item_id: resolved_material_id,
           item_type: "RAW_MATERIAL",
           type: "IN",
-          qty: Number(quantity),
-          rate: Number(rate),
+          qty,
+          rate: landedCostPerUnit,
           gst_tax: gstRate,
-          total: amountWithoutGst,
+          total: landedCostPerUnit * qty,
           reference: invoice_no,
           supplier_or_buyer: supplier_name,
           resulting_stock: newStock

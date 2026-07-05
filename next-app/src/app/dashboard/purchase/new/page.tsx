@@ -392,11 +392,13 @@ export default function AddPurchaseBillPage() {
     lr_no: "",
     payment_status: "UNPAID",
     payment_type: "CREDIT",
-    tax_type: "LOCAL", // LOCAL or INTERSTATE
+    tax_type: "LOCAL",
     bank_name: "",
     bank_account_no: "",
     bank_ifsc: "",
-    bank_branch: ""
+    bank_branch: "",
+    transport_cost: 0,
+    labour_cost: 0
   });
 
   const [savedSuppliers, setSavedSuppliers] = useState<any[]>([]);
@@ -578,6 +580,8 @@ export default function AddPurchaseBillPage() {
     formData.append("payment_type", headerInfo.payment_type);
     formData.append("tax_type", headerInfo.tax_type);
     formData.append("transport_details", JSON.stringify({ vehicle_no: headerInfo.vehicle_no, lr_no: headerInfo.lr_no }));
+    formData.append("transport_cost", String(headerInfo.transport_cost || 0));
+    formData.append("labour_cost", String(headerInfo.labour_cost || 0));
     
     formData.append("items", JSON.stringify(items));
     
@@ -996,6 +1000,81 @@ export default function AddPurchaseBillPage() {
               <Plus size={16} /> {t("Add Item")}
             </button>
           </div>
+        </div>
+
+        {/* ── Landed Cost Inputs: Transport & Labour ── */}
+        <div className="bg-card border border-border rounded-3xl p-6 shadow-sm">
+          <h2 className="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+            <span className="bg-amber-500/20 p-1.5 rounded-lg text-amber-400"><Truck size={16} /></span>
+            {t("Additional Landed Costs")} <span className="ml-2 text-xs font-normal text-muted-foreground">(divided equally per unit across all items)</span>
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wide">{t("Transport / Freight Cost (₹)")}</label>
+              <input
+                type="number" min="0" step="any"
+                name="transport_cost"
+                value={headerInfo.transport_cost || ""}
+                onChange={(e) => setHeaderInfo(prev => ({ ...prev, transport_cost: Number(e.target.value) }))}
+                placeholder="0.00"
+                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              />
+              <p className="text-xs text-muted-foreground mt-1">Total freight charged for this invoice.</p>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-muted-foreground mb-1.5 uppercase tracking-wide">{t("Labour / Unloading Cost (₹)")}</label>
+              <input
+                type="number" min="0" step="any"
+                name="labour_cost"
+                value={headerInfo.labour_cost || ""}
+                onChange={(e) => setHeaderInfo(prev => ({ ...prev, labour_cost: Number(e.target.value) }))}
+                placeholder="0.00"
+                className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              />
+              <p className="text-xs text-muted-foreground mt-1">Unloading, handling and porterage cost.</p>
+            </div>
+          </div>
+
+          {/* Live per-item landed cost preview */}
+          {(headerInfo.transport_cost > 0 || headerInfo.labour_cost > 0) && (
+            <div className="mt-6 overflow-x-auto">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wide mb-3">Live Landed Cost Breakdown Per Unit</p>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 font-bold text-muted-foreground">Item</th>
+                    <th className="text-right py-2 font-bold text-muted-foreground">Base Rate</th>
+                    <th className="text-right py-2 font-bold text-muted-foreground">GST/unit</th>
+                    <th className="text-right py-2 font-bold text-muted-foreground">Transport/unit</th>
+                    <th className="text-right py-2 font-bold text-muted-foreground">Labour/unit</th>
+                    <th className="text-right py-2 font-bold text-emerald-500">Landed Cost</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(() => {
+                    const totalQty = items.reduce((s, it) => s + (Number(it.quantity) || 0), 0);
+                    const perUnitT = totalQty > 0 ? (headerInfo.transport_cost || 0) / totalQty : 0;
+                    const perUnitL = totalQty > 0 ? (headerInfo.labour_cost    || 0) / totalQty : 0;
+                    return items.filter(it => it.material_name || it.rate).map(it => {
+                      const rate = Number(it.rate) || 0;
+                      const gstPu = rate * ((Number(it.gst_tax) || 18) / 100);
+                      const landed = rate + gstPu + perUnitT + perUnitL;
+                      return (
+                        <tr key={it.id} className="border-b border-border/50 hover:bg-muted/30">
+                          <td className="py-2 font-medium text-foreground truncate max-w-[140px]">{it.material_name || '—'}</td>
+                          <td className="py-2 text-right text-muted-foreground">₹{rate.toFixed(2)}</td>
+                          <td className="py-2 text-right text-blue-500">₹{gstPu.toFixed(2)}</td>
+                          <td className="py-2 text-right text-amber-500">₹{perUnitT.toFixed(2)}</td>
+                          <td className="py-2 text-right text-violet-500">₹{perUnitL.toFixed(2)}</td>
+                          <td className="py-2 text-right font-black text-emerald-500">₹{landed.toFixed(2)}</td>
+                        </tr>
+                      );
+                    });
+                  })()}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* Taxes & Footer Summary */}

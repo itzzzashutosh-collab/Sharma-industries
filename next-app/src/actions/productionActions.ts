@@ -184,7 +184,7 @@ export async function startBatch(
   }
 }
 
-export async function completeBatch(batchId: string, actualYield: number) {
+export async function completeBatch(batchId: string, actualYield: number, bagsProduced: number = 0) {
   try {
     // 1. Fetch batch details
     const { data: batchData, error: fetchErr } = await supabaseAdmin
@@ -207,6 +207,7 @@ export async function completeBatch(batchId: string, actualYield: number) {
         actual_yield: actualYield,
         quantity_produced: actualYield,
         unit_cost: unitCost,
+        bags_produced: bagsProduced,
         completed_at: new Date().toISOString()
       })
       .eq("id", batchId);
@@ -400,3 +401,54 @@ export async function getProductsForProduction() {
     return { success: false, error: err.message };
   }
 }
+
+// ─── OVERHEAD PRESETS ─────────────────────────────────────────────────────────
+
+export async function getOverheadPreset(productId: string) {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("product_overhead_presets")
+      .select("*")
+      .eq("product_id", productId)
+      .maybeSingle();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err: any) {
+    console.error("Error fetching overhead preset:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function saveOverheadPreset(
+  productId: string,
+  preset: {
+    labour_cost: number;
+    power_cost: number;
+    packaging_cost: number;
+    other_cost: number;
+    notes: string;
+  }
+) {
+  try {
+    const { error } = await supabaseAdmin
+      .from("product_overhead_presets")
+      .upsert({
+        product_id: productId,
+        labour_cost: preset.labour_cost,
+        power_cost: preset.power_cost,
+        packaging_cost: preset.packaging_cost,
+        other_cost: preset.other_cost,
+        notes: preset.notes,
+        updated_at: new Date().toISOString()
+      }, { onConflict: "product_id" });
+
+    if (error) throw error;
+    revalidatePath("/dashboard/factory/production");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error saving overhead preset:", err);
+    return { success: false, error: err.message };
+  }
+}
+
