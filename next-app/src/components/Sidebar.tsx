@@ -56,6 +56,7 @@ export function Sidebar({ role }: SidebarProps) {
       { name: "Purchase History", href: "/dashboard/purchase", icon: ShoppingCart },
       { name: "Factory Expenses", href: "/dashboard/factory/expenses", icon: Receipt },
       { name: "Inventory", href: "/dashboard/factory/inventory", icon: Boxes },
+      { name: "Batch Production", href: "/dashboard/factory/production", icon: Wrench },
       { name: "Team & HR", href: "/dashboard/employees", icon: Users },
       { name: "Salesmen Management", href: "/dashboard/admin/sales-team", icon: Users },
       { name: "Order Book & Dispatch", href: "/dashboard/admin/orders", icon: Package },
