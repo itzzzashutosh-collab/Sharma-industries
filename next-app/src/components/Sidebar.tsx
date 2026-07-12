@@ -240,6 +240,15 @@ const DEALER_NAV: NavGroup[] = [
     ],
   },
   {
+    group: "Logistics & After-Sales",
+    items: [
+      { name: "Logistics Tracking", href: "/dashboard/dealer/logistics/orders",      icon: Truck },
+      { name: "Dispatches & Returns", href: "/dashboard/dealer/logistics/dispatches", icon: ArrowUpCircle },
+      { name: "Complaints & Claims", href: "/dashboard/dealer/logistics/complaints", icon: AlertCircle },
+    ],
+  },
+
+  {
     group: "Finance",
     items: [
       { name: "Revenue",          href: "/dashboard/dealer/finance/revenue",         icon: TrendingUp },

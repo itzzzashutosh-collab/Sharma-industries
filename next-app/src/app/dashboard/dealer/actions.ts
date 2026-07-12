@@ -855,6 +855,82 @@ export async function getColorDesigns() {
   }
 }
 
+export async function getDealerDispatches() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_dispatches")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function createDealerDispatch(disp: any) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("dealer_dispatches")
+      .insert({
+        dispatch_no: disp.dispatch_no || `DISP-${Date.now()}`,
+        vehicle_no: disp.vehicle_no,
+        driver_name: disp.driver_name,
+        carrier_name: disp.carrier_name,
+        lr_no: disp.lr_no,
+        status: disp.status || "In Transit",
+        estimated_arrival: disp.estimated_arrival || null,
+        remarks: disp.remarks || "",
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/logistics/dispatches");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getDealerComplaints() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_complaints")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function createDealerComplaint(comp: any) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("dealer_complaints")
+      .insert({
+        complaint_no: comp.complaint_no || `COMP-${Date.now()}`,
+        customer_name: comp.customer_name,
+        project_name: comp.project_name,
+        issue_type: comp.issue_type,
+        priority: comp.priority || "Medium",
+        status: "Open",
+        remarks: comp.remarks || "",
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/logistics/complaints");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
 
 
