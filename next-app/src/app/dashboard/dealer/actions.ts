@@ -392,15 +392,73 @@ export async function getDealerProductsList() {
     const supabase = await createAdminClient();
     const { data: products, error } = await supabase
       .from("products")
-      .select("id, name, selling_price")
-      .order("name", { ascending: true });
+      .select("id, product_name, mrp, actual_stock, min_stock_threshold, sku_number, category")
+      .order("product_name", { ascending: true });
 
     if (error) throw error;
-    return { success: true, list: products || [] };
+    const mapped = (products || []).map(p => ({
+      id: p.id,
+      name: p.product_name,
+      product_name: p.product_name,
+      selling_price: Number(p.mrp || 0),
+      mrp: Number(p.mrp || 0),
+      actual_stock: Number(p.actual_stock || 0),
+      min_stock_threshold: Number(p.min_stock_threshold || 0),
+      sku_number: p.sku_number || "",
+      category: p.category || ""
+    }));
+    return { success: true, list: mapped };
   } catch (err: any) {
     return { success: false, error: err.message, list: [] };
   }
 }
+
+export async function getDealerStockMovement() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_stock_register")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function adjustDealerStock(adj: any) {
+  try {
+    const supabase = await createAdminClient();
+    // 1. Log movement
+    const { error: errLog } = await supabase
+      .from("dealer_stock_register")
+      .insert({
+        product_id: adj.product_id,
+        product_name: adj.product_name,
+        qty_change: Number(adj.qty_change),
+        movement_type: "Manual Adjustment",
+        remarks: adj.remarks || "Manual inventory correction"
+      });
+    if (errLog) throw errLog;
+
+    // 2. Adjust actual stock count in products
+    const { data: prod } = await supabase.from("products").select("actual_stock").eq("id", adj.product_id).single();
+    const newStock = Number(prod?.actual_stock || 0) + Number(adj.qty_change);
+    const { error: errUpdate } = await supabase
+      .from("products")
+      .update({ actual_stock: newStock })
+      .eq("id", adj.product_id);
+    if (errUpdate) throw errUpdate;
+
+    revalidatePath("/dashboard/dealer/products/inventory");
+    revalidatePath("/dashboard/dealer/products/stock-register");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
 
 // ─── Dealer Purchase ─────────────────────────────────────────────────────────
 
