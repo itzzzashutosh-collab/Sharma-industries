@@ -667,5 +667,43 @@ export async function createDealerFactoryOrder(order: any) {
   }
 }
 
+export async function getDealerExpenses() {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+    const { data, error } = await supabase
+      .from("dealer_expenses")
+      .select("*")
+      .eq("dealer_id", dId)
+      .order("expense_date", { ascending: false });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function createDealerExpense(exp: any) {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+    const { error } = await supabase
+      .from("dealer_expenses")
+      .insert({
+        dealer_id: dId,
+        category: exp.category,
+        amount: Number(exp.amount),
+        expense_date: exp.expense_date || new Date().toISOString().slice(0, 10),
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/finance/expenses");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
 

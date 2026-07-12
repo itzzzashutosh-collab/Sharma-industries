@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BusinessExpensesClient } from "./BusinessExpensesClient";
-import { getDealerInvoices } from "../../actions";
+import { getDealerExpenses } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const res = await getDealerInvoices();
-  const data = (res as any).list || ((res as any).data ? [(res as any).data] : []);
-  return <BusinessExpensesClient initialData={data} />;
+  const res = await getDealerExpenses();
+  return <BusinessExpensesClient initialData={(res.list || []) as any[]} />;
 }
