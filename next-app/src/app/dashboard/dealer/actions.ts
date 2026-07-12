@@ -821,6 +821,41 @@ export async function verifyDealerCoupon(c: any) {
   }
 }
 
+export async function saveColorDesign(design: any) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("dealer_color_designs")
+      .insert({
+        customer_id: design.customer_id,
+        project_name: design.project_name,
+        image_url: design.image_url || null,
+        selected_colors: design.selected_colors || [],
+        estimated_cost: Number(design.estimated_cost || 0),
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getColorDesigns() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_color_designs")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+
 
 
 
