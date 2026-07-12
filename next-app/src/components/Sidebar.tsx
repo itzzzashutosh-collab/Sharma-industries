@@ -200,11 +200,80 @@ const FACTORY_NAV: NavGroup[] = [
 
 const DEALER_NAV: NavGroup[] = [
   {
-    group: "Operations",
+    group: "Dashboard",
     items: [
-      { name: "New Bill",       href: "/dashboard/dealer/pos",            icon: FileText },
-      { name: "Profit & Loss",  href: "/dashboard/dealer/pnl",            icon: LineChart },
-      { name: "Expenses",       href: "/dashboard/factory/expenses",      icon: Wallet },
+      { name: "Dashboard",        href: "/dashboard/dealer",                         icon: LayoutDashboard },
+    ],
+  },
+  {
+    group: "Customers",
+    items: [
+      { name: "Customers",        href: "/dashboard/dealer/customers",               icon: Users },
+      { name: "Projects",         href: "/dashboard/dealer/customers/projects",      icon: ClipboardList },
+      { name: "House Color Studio", href: "/dashboard/dealer/customers/color-studio", icon: Paintbrush },
+    ],
+  },
+  {
+    group: "Sales",
+    items: [
+      { name: "Invoices",         href: "/dashboard/dealer/sales/invoices",          icon: FileText },
+      { name: "Quotations",       href: "/dashboard/dealer/sales/quotations",        icon: Receipt },
+      { name: "POS Billing",      href: "/dashboard/dealer/sales/pos",               icon: Calculator },
+      { name: "Payments",         href: "/dashboard/dealer/sales/payments",          icon: CreditCard },
+    ],
+  },
+  {
+    group: "Purchase",
+    items: [
+      { name: "Purchase Bills",   href: "/dashboard/dealer/purchase/bills",          icon: ShoppingCart },
+      { name: "Suppliers",        href: "/dashboard/dealer/purchase/suppliers",      icon: Truck },
+      { name: "Factory Orders",   href: "/dashboard/dealer/purchase/factory-orders", icon: ArrowUpCircle },
+    ],
+  },
+  {
+    group: "Products",
+    items: [
+      { name: "Products",         href: "/dashboard/dealer/products/list",           icon: Package },
+      { name: "Inventory",        href: "/dashboard/dealer/products/inventory",      icon: Warehouse },
+      { name: "Stock Register",   href: "/dashboard/dealer/products/stock-register", icon: BookOpen },
+      { name: "Warehouse",        href: "/dashboard/dealer/products/warehouse",      icon: Layers },
+    ],
+  },
+  {
+    group: "Finance",
+    items: [
+      { name: "Revenue",          href: "/dashboard/dealer/finance/revenue",         icon: TrendingUp },
+      { name: "Expenses",         href: "/dashboard/dealer/finance/expenses",        icon: Wallet },
+      { name: "Profit & Loss",    href: "/dashboard/dealer/finance/pnl",             icon: LineChart },
+      { name: "Cash Flow",        href: "/dashboard/dealer/finance/cash-flow",       icon: ArrowDownCircle },
+      { name: "Payment Register", href: "/dashboard/dealer/finance/payments",        icon: BookMarked },
+    ],
+  },
+  {
+    group: "Painters",
+    items: [
+      { name: "Painters",         href: "/dashboard/dealer/painters/list",           icon: UserCheck },
+      { name: "Coupons",          href: "/dashboard/dealer/painters/coupons",        icon: CheckSquare },
+      { name: "Schemes",          href: "/dashboard/dealer/painters/schemes",        icon: Sparkles },
+      { name: "Meetings",         href: "/dashboard/dealer/painters/meetings",       icon: CalendarDays },
+      { name: "Competitions",     href: "/dashboard/dealer/painters/competitions",   icon: FileCheck },
+      { name: "Portfolio Review", href: "/dashboard/dealer/painters/portfolio",      icon: FileSearch },
+    ],
+  },
+  {
+    group: "Reports",
+    items: [
+      { name: "Sales Reports",    href: "/dashboard/dealer/reports/sales",           icon: FileSpreadsheet },
+      { name: "Inventory Reports", href: "/dashboard/dealer/reports/inventory",       icon: FileSpreadsheet },
+      { name: "Finance Reports",  href: "/dashboard/dealer/reports/finance",         icon: FileBarChart },
+    ],
+  },
+  {
+    group: "Settings",
+    items: [
+      { name: "Shop Profile",     href: "/dashboard/dealer/settings/shop",           icon: Building },
+      { name: "Business Settings", href: "/dashboard/dealer/settings/business",      icon: SlidersHorizontal },
+      { name: "Application Settings", href: "/dashboard/dealer/settings/app",        icon: Settings },
     ],
   },
 ];
