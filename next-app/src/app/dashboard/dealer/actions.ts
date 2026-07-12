@@ -311,6 +311,8 @@ export async function createDealerInvoice(invoice: any) {
     const dId = await getActiveDealerId(supabase);
     const id = `INV_${Date.now()}`;
     const invNo = `SI-INV-${Date.now().toString().slice(-6)}`;
+    
+    // 1. Insert Invoice
     const { error } = await supabase
       .from("invoices")
       .insert({
@@ -332,12 +334,49 @@ export async function createDealerInvoice(invoice: any) {
         updated_at: new Date().toISOString()
       });
     if (error) throw error;
+
+    // 2. Loop items to adjust inventory and log movements
+    if (invoice.items && Array.isArray(invoice.items)) {
+      for (const item of invoice.items) {
+        // Query current actual stock count
+        const { data: prod } = await supabase
+          .from("products")
+          .select("actual_stock, product_name")
+          .eq("id", item.id)
+          .single();
+
+        if (prod) {
+          const newStock = Number(prod.actual_stock || 0) - Number(item.qty || 1);
+          // Decrement stock
+          await supabase
+            .from("products")
+            .update({ actual_stock: newStock })
+            .eq("id", item.id);
+
+          // Log movement
+          await supabase
+            .from("dealer_stock_register")
+            .insert({
+              product_id: item.id,
+              product_name: prod.product_name,
+              qty_change: -Number(item.qty || 1),
+              movement_type: "Customer Sale",
+              reference_no: invNo,
+              remarks: `Sold to customer ${invoice.customer_name}`
+            });
+        }
+      }
+    }
+
     revalidatePath("/dashboard/dealer/sales/invoices");
+    revalidatePath("/dashboard/dealer/products/inventory");
+    revalidatePath("/dashboard/dealer/products/stock-register");
     return { success: true };
   } catch (err: any) {
     return { success: false, error: err.message };
   }
 }
+
 
 export async function getDealerQuotations() {
   try {
@@ -598,6 +637,8 @@ export async function createDealerPurchaseBill(bill: any) {
   try {
     const supabase = await createAdminClient();
     const id = `BILL_${Date.now()}`;
+    
+    // 1. Insert Purchase Bill
     const { error } = await supabase
       .from("purchase_master")
       .insert({
@@ -613,12 +654,49 @@ export async function createDealerPurchaseBill(bill: any) {
         items: bill.items || []
       });
     if (error) throw error;
+
+    // 2. Loop items to increment inventory and log movements
+    if (bill.items && Array.isArray(bill.items)) {
+      for (const item of bill.items) {
+        // Query current actual stock count
+        const { data: prod } = await supabase
+          .from("products")
+          .select("actual_stock, product_name")
+          .eq("id", item.id)
+          .single();
+
+        if (prod) {
+          const newStock = Number(prod.actual_stock || 0) + Number(item.qty || 1);
+          // Increment stock
+          await supabase
+            .from("products")
+            .update({ actual_stock: newStock })
+            .eq("id", item.id);
+
+          // Log movement
+          await supabase
+            .from("dealer_stock_register")
+            .insert({
+              product_id: item.id,
+              product_name: prod.product_name,
+              qty_change: Number(item.qty || 1),
+              movement_type: "Factory Purchase",
+              reference_no: bill.invoice_no,
+              remarks: `Purchased from supplier ${bill.supplier_name}`
+            });
+        }
+      }
+    }
+
     revalidatePath("/dashboard/dealer/purchase/bills");
+    revalidatePath("/dashboard/dealer/products/inventory");
+    revalidatePath("/dashboard/dealer/products/stock-register");
     return { success: true };
   } catch (err: any) {
     return { success: false, error: err.message };
   }
 }
+
 
 export async function createDealerSupplier(supplier: any) {
   try {
