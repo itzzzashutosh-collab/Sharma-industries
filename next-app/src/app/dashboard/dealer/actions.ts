@@ -536,4 +536,78 @@ export async function saveDealerShopProfile(profile: any) {
   }
 }
 
+export async function createDealerPurchaseBill(bill: any) {
+  try {
+    const supabase = await createAdminClient();
+    const id = `BILL_${Date.now()}`;
+    const { error } = await supabase
+      .from("purchase_master")
+      .insert({
+        id,
+        invoice_no: bill.invoice_no,
+        bill_date: bill.bill_date || new Date().toISOString().slice(0, 10),
+        supplier_name: bill.supplier_name,
+        supplier_gstin: bill.supplier_gstin || null,
+        sub_total: Number(bill.sub_total || 0),
+        total_amount: Number(bill.total_amount || 0),
+        payment_status: bill.payment_status || "pending",
+        payment_type: bill.payment_type || "Bank Transfer",
+        items: bill.items || []
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/purchase/bills");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function createDealerSupplier(supplier: any) {
+  try {
+    const supabase = await createAdminClient();
+    const id = `SUP_${Date.now()}`;
+    const { error } = await supabase
+      .from("suppliers")
+      .insert({
+        id,
+        name: supplier.name,
+        address: supplier.address || null,
+        gstin: supplier.gstin || null,
+        phone: supplier.phone || null,
+        email: supplier.email || null,
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/purchase/suppliers");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function createDealerFactoryOrder(order: any) {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+    const id = `ORD_${Date.now()}`;
+    const { error } = await supabase
+      .from("orders")
+      .insert({
+        id,
+        date: new Date().toISOString().slice(0, 10),
+        dealer_id: dId,
+        dealer_name: order.dealer_name || "Shree Ram Paints",
+        total_amount: Number(order.total_amount || 0),
+        status: "pending",
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/purchase/factory-orders");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
