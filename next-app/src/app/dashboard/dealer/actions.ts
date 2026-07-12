@@ -704,6 +704,75 @@ export async function createDealerExpense(exp: any) {
   }
 }
 
+export async function getDealerWages() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_wages")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function createDealerWage(wage: any) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("dealer_wages")
+      .insert({
+        worker_name: wage.worker_name,
+        category: wage.category,
+        amount: Number(wage.amount),
+        payment_mode: wage.payment_mode || "Cash",
+        status: wage.status || "Pending",
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getDealerBankAccounts() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_bank_accounts")
+      .select("*")
+      .order("bank_name", { ascending: true });
+    if (error) throw error;
+    return { success: true, list: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function createDealerBankAccount(bank: any) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("dealer_bank_accounts")
+      .insert({
+        bank_name: bank.bank_name,
+        account_number: bank.account_number,
+        ifsc: bank.ifsc,
+        upi_id: bank.upi_id || null,
+        current_balance: Number(bank.current_balance || 0),
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
 
 
