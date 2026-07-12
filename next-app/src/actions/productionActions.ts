@@ -352,11 +352,28 @@ export async function getProductionBatches() {
   try {
     const { data, error } = await supabaseAdmin
       .from("production_batches")
-      .select("*, products(product_name)")
+      .select("*")
       .order("id", { ascending: false });
       
     if (error) throw error;
-    return { success: true, data };
+
+    // Enrich with product names via separate query (no FK constraint needed)
+    const productIds = [...new Set((data || []).map((b: any) => b.product_id).filter(Boolean))];
+    let productMap: Record<string, string> = {};
+    if (productIds.length > 0) {
+      const { data: prods } = await supabaseAdmin
+        .from("products")
+        .select("id, product_name")
+        .in("id", productIds);
+      (prods || []).forEach((p: any) => { productMap[p.id] = p.product_name; });
+    }
+
+    const enriched = (data || []).map((b: any) => ({
+      ...b,
+      products: { product_name: productMap[b.product_id] || b.product_id || "Unknown" }
+    }));
+
+    return { success: true, data: enriched };
   } catch (err: any) {
     console.error("Error fetching batches:", err);
     return { success: false, error: err.message };
@@ -367,11 +384,24 @@ export async function getBatchDetails(batchId: string) {
   try {
     const { data: batch, error: batchErr } = await supabaseAdmin
       .from("production_batches")
-      .select("*, products(product_name, package_size_unit)")
+      .select("*")
       .eq("id", batchId)
       .single();
 
     if (batchErr) throw batchErr;
+
+    // Enrich with product name separately
+    let productName = batch.product_id || "Unknown";
+    let packageSizeUnit = "";
+    if (batch.product_id) {
+      const { data: prod } = await supabaseAdmin
+        .from("products")
+        .select("product_name, package_size_unit")
+        .eq("id", batch.product_id)
+        .single();
+      if (prod) { productName = prod.product_name; packageSizeUnit = prod.package_size_unit; }
+    }
+    const enrichedBatch = { ...batch, products: { product_name: productName, package_size_unit: packageSizeUnit } };
 
     const { data: consumption, error: consErr } = await supabaseAdmin
       .from("batch_consumption")
@@ -380,7 +410,7 @@ export async function getBatchDetails(batchId: string) {
 
     if (consErr) throw consErr;
 
-    return { success: true, data: { batch, consumption } };
+    return { success: true, data: { batch: enrichedBatch, consumption } };
   } catch (err: any) {
     console.error("Error fetching batch details:", err);
     return { success: false, error: err.message };

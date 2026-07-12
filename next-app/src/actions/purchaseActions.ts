@@ -151,7 +151,6 @@ export async function submitPurchaseBill(formData: FormData) {
       .insert({
         id: masterId,
         invoice_no,
-        date: bill_date,
         bill_date,
         supplier_name,
         supplier_gstin,
@@ -449,9 +448,18 @@ export async function submitPurchaseBill(formData: FormData) {
 
 export async function analyzeInvoiceTextWithAI(text: string) {
   try {
-    const apiKey = process.env.OPENAI_API_KEY;
+    const { getActiveAIConfig, logAIUsage } = await import("@/utils/ai");
+    
+    // 1. Get active config from database
+    const config = await getActiveAIConfig();
+    
+    // Determine provider, key, and model
+    const provider = config?.provider || "openai";
+    const apiKey = config?.api_key || process.env.OPENAI_API_KEY;
+    const model = config?.selected_model || (provider === "openai" ? "gpt-4o-mini" : "gemini-3.5-flash");
+
     if (!apiKey) {
-      throw new Error("OPENAI_API_KEY is not configured in the server environment variables.");
+      throw new Error(`API key for ${provider} is not configured in settings or environment variables.`);
     }
 
     const prompt = `
@@ -490,31 +498,66 @@ ${text}
 Return ONLY valid JSON that matches the format. Do not write any markdown code blocks, intro, explanation, or HTML tags. Output strict, clean JSON.
 `;
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "You are a precise data extractor. You only return valid JSON." },
-          { role: "user", content: prompt }
-        ],
-        temperature: 0.1,
-        response_format: { type: "json_object" }
-      })
-    });
+    let parsedData: any = null;
+    let promptTokens = 0;
+    let completionTokens = 0;
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`OpenAI API error: ${response.statusText} - ${errText}`);
+    if (provider === "openai") {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            { role: "system", content: "You are a precise data extractor. You only return valid JSON." },
+            { role: "user", content: prompt }
+          ],
+          temperature: 0.1,
+          response_format: { type: "json_object" }
+        })
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`OpenAI API error: ${response.statusText} - ${errText}`);
+      }
+
+      const result = await response.json();
+      const content = result.choices[0].message.content;
+      parsedData = JSON.parse(content);
+
+      promptTokens = result.usage?.prompt_tokens || 0;
+      completionTokens = result.usage?.completion_tokens || 0;
+    } else {
+      // Gemini
+      const { getGeminiClient } = await import("@/utils/geminiClient");
+      const ai = getGeminiClient(apiKey);
+      const cleanModel = model.replace("models/", "");
+
+      const response = await ai.models.generateContent({
+        model: cleanModel,
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.1
+        }
+      });
+
+      const content = response.text;
+      if (!content) {
+        throw new Error("Gemini SDK returned empty response.");
+      }
+
+      parsedData = JSON.parse(content);
+      promptTokens = response.usageMetadata?.promptTokenCount || Math.round(prompt.length / 4);
+      completionTokens = response.usageMetadata?.candidatesTokenCount || Math.round(content.length / 4);
     }
 
-    const result = await response.json();
-    const content = result.choices[0].message.content;
-    const parsedData = JSON.parse(content);
+    // Log to AI usage logs
+    await logAIUsage(provider, model, promptTokens, completionTokens, "Purchase Invoice OCR Extractor");
 
     return { success: true, data: parsedData };
   } catch (error: any) {

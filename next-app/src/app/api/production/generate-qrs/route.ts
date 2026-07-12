@@ -10,7 +10,7 @@ const supabase = createClient(
 
 export async function POST(request: Request) {
   try {
-    const { productId, quantity } = await request.json();
+    const { productId, quantity, dealerId, tokenValue } = await request.json();
 
     if (!productId || quantity === undefined) {
       return NextResponse.json(
@@ -77,7 +77,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const points = product.token_value || 10;
+    const points = Number(tokenValue) || product.token_value || 10;
     const qrRows = [];
     const qrCodesList: string[] = [];
 
@@ -94,6 +94,7 @@ export async function POST(request: Request) {
         token_value: points,
         status: "AVAILABLE",
         is_scanned: false,
+        dealer_id: dealerId || null
       });
     }
 

@@ -152,6 +152,10 @@ export default function OnboardEmployeePage() {
               <label className="text-sm font-semibold text-muted-foreground">{t("Work Details / Shift")}</label>
               <input type="text" name="work_details" className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground" />
             </div>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-muted-foreground">{t("Base Salary (₹)")}</label>
+              <input type="number" name="salary" required placeholder="e.g. 25000" className="w-full bg-background border border-border rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground font-mono" />
+            </div>
           </div>
         </div>
 

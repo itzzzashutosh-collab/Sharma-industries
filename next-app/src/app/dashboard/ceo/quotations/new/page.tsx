@@ -1,8 +1,12 @@
 import { QuotationEngine } from "./QuotationEngine";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   title: "Smart GST Invoicing | Sharma ERP",
-};
+  };
+}
 
 export default function NewQuotationPage() {
   return (

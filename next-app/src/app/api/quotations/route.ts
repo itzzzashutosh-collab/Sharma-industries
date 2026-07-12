@@ -123,6 +123,34 @@ export async function POST(request: Request) {
     const advancePaid = body.payment_terms?.advance_paid ? Number(body.payment_terms.advance_paid) : 0;
     const balanceDue = grandTotal - advancePaid;
 
+    let pdfUrl = body.pdf_url || null;
+    if (body.pdf_base64) {
+      try {
+        const base64Data = body.pdf_base64.replace(/^data:application\/pdf;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        const sanitizedQNo = quotationNo.replace(/[^a-zA-Z0-9]/g, "_");
+        const fileName = `${sanitizedQNo}_${Date.now()}.pdf`;
+        
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("invoices")
+          .upload(fileName, buffer, {
+            contentType: "application/pdf",
+            upsert: true
+          });
+          
+        if (!uploadErr && uploadData) {
+          const { data: urlData } = supabase.storage
+            .from("invoices")
+            .getPublicUrl(uploadData.path);
+          pdfUrl = urlData?.publicUrl || null;
+        } else if (uploadErr) {
+          console.error("Storage upload error:", uploadErr);
+        }
+      } catch (err) {
+        console.error("Failed to parse and upload base64 PDF:", err);
+      }
+    }
+
     const payload = {
       id: newId,
       quotation_no: quotationNo, // Server-validated sequential quotation number
@@ -145,14 +173,16 @@ export async function POST(request: Request) {
       igst: taxBreakdown.igst || 0,
       total_gst: totalTax,
       seller: "Company",
-      transport_details: body.transport_details || null,
-      payment_terms: body.payment_terms || null,
+      payment_mode: body.payment_terms?.payment_mode || "Cash",
+      payment_status: balanceDue <= 0 ? "Paid" : (advancePaid > 0 ? "Partially Paid" : "Unpaid"),
+      advance: advancePaid,
       subtotal: Number(body.subtotal) || 0,
       additional_charges: body.additional_charges || [],
       round_off: Number(body.round_off) || 0,
       grand_total: grandTotal,
       balance_due: balanceDue,
-      is_tax_inclusive: Boolean(body.is_tax_inclusive)
+      is_tax_inclusive: Boolean(body.is_tax_inclusive),
+      pdf_url: pdfUrl
     };
 
     const { data, error } = await supabase

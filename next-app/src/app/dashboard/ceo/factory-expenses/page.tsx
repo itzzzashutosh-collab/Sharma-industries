@@ -1,9 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
 import { FactoryExpensesClient } from "./FactoryExpensesClient";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   title: "Factory Operations & Expenses | Sharma ERP",
-};
+  };
+}
 
 export default async function FactoryExpensesDashboard() {
   const supabase = await createClient();

@@ -21,8 +21,9 @@ import {
   TrendingDown,
   Package,
 } from "lucide-react";
-import { createMaterialAndLog, updateMaterialThreshold } from "./actions";
+import { createMaterialAndLog, updateMaterialThreshold, adjustStock, transferStock } from "./actions";
 import { getInventorySummary, getMaterialDetails } from "@/actions/inventoryActions";
+import { useLanguage } from "@/components/LanguageProvider";
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 interface InwardRecord {
@@ -75,18 +76,6 @@ const PRESET_CATEGORIES = [
   "Packaging - Stickers & Labels"
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  "Chemicals - Binders & Resins":    "bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-950/40 dark:text-violet-300 dark:border-violet-900/50",
-  "Chemicals - Primary Pigments":    "bg-pink-100 text-pink-700 border-pink-200 dark:bg-pink-950/40 dark:text-pink-300 dark:border-pink-900/50",
-  "Chemicals - Extenders & Fillers": "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900/50",
-  "Chemicals - Solvents & Vehicles": "bg-cyan-100 text-cyan-700 border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-900/50",
-  "Chemicals - Additives":           "bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-950/40 dark:text-indigo-300 dark:border-indigo-900/50",
-  
-  "Packaging - Buckets":             "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-900/50",
-  "Packaging - Bottles":             "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-900/50",
-  "Packaging - Stickers & Labels":   "bg-teal-100 text-teal-700 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300 dark:border-teal-900/50",
-};
-
 const getCategoryColor = (cat: string) => {
   return "bg-muted text-muted-foreground border-border/60 dark:bg-muted/40 dark:text-muted-foreground dark:border-border/30";
 };
@@ -101,14 +90,14 @@ function Modal({ open, onClose, title, children, width = "max-w-lg" }: {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${width} bg-card border border-border rounded-3xl shadow-2xl`}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+      <div className={`relative w-full ${width} bg-card border border-border rounded-3xl shadow-2xl z-10 max-h-[90vh] flex flex-col`}>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border flex-shrink-0">
           <h2 className="text-lg font-bold text-foreground">{title}</h2>
-          <button onClick={onClose} className="p-1.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          <button onClick={onClose} className="p-1.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer">
             <X size={18} />
           </button>
         </div>
-        <div className="p-6">{children}</div>
+        <div className="p-6 overflow-y-auto flex-1">{children}</div>
       </div>
     </div>
   );
@@ -166,7 +155,7 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
                 <p className="text-xs text-muted-foreground font-mono mt-0.5">{material?.id} · {material?.category}</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <button onClick={onClose} className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer">
               <X size={18} />
             </button>
           </div>
@@ -208,7 +197,7 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
                         }
                       }
                     }}
-                    className="bg-primary text-white text-[10px] px-1.5 py-0.5 rounded font-bold hover:bg-primary-hover transition-colors"
+                    className="bg-primary text-white text-[10px] px-1.5 py-0.5 rounded font-bold hover:bg-primary-hover transition-colors cursor-pointer"
                   >
                     Save
                   </button>
@@ -218,7 +207,7 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
                       setEditVal(material?.min_threshold?.toString() || "0");
                       setIsEditing(false);
                     }}
-                    className="bg-muted text-muted-foreground text-[10px] px-1.5 py-0.5 rounded hover:bg-muted/80 transition-colors"
+                    className="bg-muted text-muted-foreground text-[10px] px-1.5 py-0.5 rounded hover:bg-muted/80 transition-colors cursor-pointer"
                   >
                     X
                   </button>
@@ -235,7 +224,7 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
                       setEditVal(material?.min_threshold?.toString() || "0");
                       setIsEditing(true);
                     }}
-                    className="p-0.5 hover:bg-muted text-primary hover:text-primary-hover rounded transition-colors"
+                    className="p-0.5 hover:bg-muted text-primary hover:text-primary-hover rounded transition-colors cursor-pointer"
                     title="Edit Threshold"
                   >
                     <PlusCircle size={14} />
@@ -246,11 +235,11 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
             <div className="bg-muted/60 rounded-2xl p-3 border border-border">
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">Status</p>
               {isLow ? (
-                <span className="inline-flex items-center gap-1.5 text-sm font-bold text-destructive">
+                <span className="inline-flex items-center gap-1.5 text-sm font-bold text-destructive mt-1">
                   <TrendingDown size={15} /> Low Stock
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1.5 text-sm font-bold text-success">
+                <span className="inline-flex items-center gap-1.5 text-sm font-bold text-success mt-1">
                   <CheckCircle2 size={15} /> In Stock
                 </span>
               )}
@@ -263,7 +252,7 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-semibold transition-all ${
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   activeTab === tab.key
                     ? "bg-card text-primary shadow-sm border border-border"
                     : "text-muted-foreground hover:text-foreground"
@@ -454,6 +443,7 @@ function Sheet({ open, onClose, material, onUpdateThreshold }: { open: boolean; 
 
 // ─── MAIN PAGE ───────────────────────────────────────────────────────────────
 export default function InventoryPage() {
+  const { t } = useLanguage();
   const [materials, setMaterials] = useState<Material[]>([]);
   const [search, setSearch] = useState("");
   const [showLowOnly, setShowLowOnly] = useState(false);
@@ -465,6 +455,27 @@ export default function InventoryPage() {
   const [addError, setAddError] = useState("");
   const [jsonText, setJsonText] = useState("");
   const [jsonResult, setJsonResult] = useState<{ success: boolean; message: string } | null>(null);
+
+  // Unified Procurement Purchase History State
+  const [isPurchaseHistoryOpen, setIsPurchaseHistoryOpen] = useState(false);
+
+  // Stock Transfer Form State
+  const [isStockTransferOpen, setIsStockTransferOpen] = useState(false);
+  const [transferSourceId, setTransferSourceId] = useState("");
+  const [transferTargetId, setTransferTargetId] = useState("");
+  const [transferQty, setTransferQty] = useState("");
+  const [transferRef, setTransferRef] = useState("");
+  const [transferError, setTransferError] = useState("");
+  const [isTransferPending, setIsTransferPending] = useState(false);
+
+  // Stock Adjustment Form State
+  const [isAdjustStockOpen, setIsAdjustStockOpen] = useState(false);
+  const [adjustMaterialId, setAdjustMaterialId] = useState("");
+  const [adjustQty, setAdjustQty] = useState("");
+  const [adjustRef, setAdjustRef] = useState("");
+  const [adjustReason, setAdjustReason] = useState("");
+  const [adjustError, setAdjustError] = useState("");
+  const [isAdjustPending, setIsAdjustPending] = useState(false);
 
   const handleUpdateThreshold = useCallback((id: string, newThreshold: number) => {
     setMaterials(prev => prev.map(m => {
@@ -481,26 +492,26 @@ export default function InventoryPage() {
     });
   }, []);
 
-  useEffect(() => {
-    async function loadSummary() {
-      const res = await getInventorySummary();
-      if (res.success && res.data) {
-        // Map raw database materials into initial empty details array format
-        const items = (res.data.allMaterials || []).map((m: any) => ({
-          id: m.id,
-          name: m.name,
-          category: m.category,
-          unit: m.unit,
-          current_stock: m.current_stock,
-          min_threshold: m.min_threshold,
-          supplier: m.supplier || "—",
-          inwardHistory: [],
-          formulations: [],
-          ledgerLogs: []
-        }));
-        setMaterials(items);
-      }
+  const loadSummary = async () => {
+    const res = await getInventorySummary();
+    if (res.success && res.data) {
+      const items = (res.data.allMaterials || []).map((m: any) => ({
+        id: m.id,
+        name: m.name,
+        category: m.category,
+        unit: m.unit,
+        current_stock: m.current_stock,
+        min_threshold: m.min_threshold,
+        supplier: m.supplier || "—",
+        inwardHistory: [],
+        formulations: [],
+        ledgerLogs: []
+      }));
+      setMaterials(items);
     }
+  };
+
+  useEffect(() => {
     loadSummary();
   }, []);
 
@@ -577,7 +588,7 @@ export default function InventoryPage() {
         return m;
       }));
     }
-  }, []);
+  }, [materials]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -668,37 +679,162 @@ export default function InventoryPage() {
     }
   };
 
+  // Stock Adjustment Executer
+  const handleStockAdjustment = async () => {
+    if (!adjustMaterialId || !adjustQty) return;
+    const qtyNum = parseFloat(adjustQty);
+    if (isNaN(qtyNum) || qtyNum === 0) {
+      setAdjustError(t("Please enter a non-zero adjustment quantity."));
+      return;
+    }
+    const mat = materials.find(m => m.id === adjustMaterialId);
+    if (mat && mat.current_stock + qtyNum < 0) {
+      setAdjustError(t("Resulting stock cannot be negative."));
+      return;
+    }
+
+    setIsAdjustPending(true);
+    try {
+      const res = await adjustStock({
+        materialId: adjustMaterialId,
+        qtyChange: qtyNum,
+        reference: adjustRef || "MANUAL-ADJ",
+        reason: adjustReason || "Manual adjustment"
+      });
+
+      if (res.success) {
+        // Reload all materials summary from DB
+        await loadSummary();
+        setIsAdjustStockOpen(false);
+        setAdjustQty("");
+        setAdjustRef("");
+        setAdjustReason("");
+        setAdjustMaterialId("");
+        alert(t("Stock adjusted successfully!"));
+      } else {
+        setAdjustError(res.error || t("Failed to adjust stock."));
+      }
+    } catch (err: any) {
+      setAdjustError(err.message || t("An error occurred."));
+    } finally {
+      setIsAdjustPending(false);
+    }
+  };
+
+  // Stock Transfer Executer
+  const handleStockTransfer = async () => {
+    if (!transferSourceId || !transferTargetId || !transferQty) return;
+    if (transferSourceId === transferTargetId) {
+      setTransferError(t("Source and Target materials must be different."));
+      return;
+    }
+    const qtyNum = parseFloat(transferQty);
+    if (isNaN(qtyNum) || qtyNum <= 0) {
+      setTransferError(t("Please enter a valid transfer quantity (> 0)."));
+      return;
+    }
+    const sourceMat = materials.find(m => m.id === transferSourceId);
+    if (sourceMat && sourceMat.current_stock < qtyNum) {
+      setTransferError(t("Insufficient stock in source material."));
+      return;
+    }
+
+    setIsTransferPending(true);
+    try {
+      const res = await transferStock({
+        sourceId: transferSourceId,
+        targetId: transferTargetId,
+        qty: qtyNum,
+        reference: transferRef || "TRANSFER-TR"
+      });
+
+      if (res.success) {
+        // Reload summary from DB
+        await loadSummary();
+        setIsStockTransferOpen(false);
+        setTransferQty("");
+        setTransferRef("");
+        setTransferSourceId("");
+        setTransferTargetId("");
+        alert(t("Stock transferred successfully!"));
+      } else {
+        setTransferError(res.error || t("Failed to transfer stock."));
+      }
+    } catch (err: any) {
+      setTransferError(err.message || t("An error occurred."));
+    } finally {
+      setIsTransferPending(false);
+    }
+  };
+
   const JSON_EXAMPLE = `[\n  {\n    "material_id": "MAT-002",\n    "qty": 800,\n    "supplier": "Rajasthan Minerals Co.",\n    "rate": 42,\n    "invoice_ref": "PO-2026-101"\n  }\n]`;
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12 relative overflow-x-hidden">
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12 relative overflow-x-hidden p-6">
 
-      {/* ── HEADER ── */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
-            <Boxes className="text-primary" size={32} />
-            Raw Material &amp; Stock
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            {materials.length} materials tracked &nbsp;·&nbsp;
-            <span className={lowCount > 0 ? "text-destructive font-semibold" : "text-success font-semibold"}>
-              {lowCount} below threshold
-            </span>
-          </p>
+      {/* Breadcrumb Navigation */}
+      <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-2">
+        <span>{t("Home")}</span>
+        <span className="text-muted-foreground/45">/</span>
+        <span className="text-foreground">{t("Raw Materials & Inventory")}</span>
+      </div>
+
+      {/* Header */}
+      <div className="flex flex-col gap-4 border-b border-border pb-5">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
+            <Boxes className="text-primary" size={28} />
+          </div>
+          <div>
+            <h1 className="text-2xl font-black text-foreground tracking-tight">{t("Raw Materials & Inventory")}</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {materials.length} {t("materials tracked")} &nbsp;·&nbsp;
+              <span className={lowCount > 0 ? "text-rose-500 font-bold" : "text-emerald-500 font-bold"}>
+                {lowCount} {t("below threshold")}
+              </span>
+            </p>
+          </div>
         </div>
-        <div className="flex gap-3 flex-wrap">
-          <button
-            onClick={() => { setJsonText(""); setJsonResult(null); setJsonDialogOpen(true); }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-card border border-border text-foreground rounded-2xl text-sm font-semibold hover:border-primary/40 hover:text-primary transition-all shadow-sm"
-          >
-            <Upload size={15} /> Quick Inward via JSON
+
+        {/* Quick Actions Row (Suppliers button removed, others activated) */}
+        <div className="flex flex-wrap gap-2 pt-2 border-t border-border/60">
+          <button onClick={() => { setAddError(""); setAddDialogOpen(true); }} className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer">
+            <PlusCircle size={14} /> {t("Add Master Item")}
           </button>
-          <button
-            onClick={() => { setAddError(""); setAddDialogOpen(true); }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-2xl text-sm font-bold hover:bg-primary-hover transition-all shadow-sm shadow-primary/20"
+          <button onClick={() => { setJsonText(""); setJsonResult(null); setJsonDialogOpen(true); }} className="bg-background hover:bg-muted/40 text-muted-foreground hover:text-foreground px-4 py-2 rounded-xl text-xs font-bold border border-border/60 transition-colors cursor-pointer">
+            {t("Quick Inward")}
+          </button>
+          <button 
+            onClick={() => setIsPurchaseHistoryOpen(true)}
+            className="bg-background hover:bg-muted/40 text-muted-foreground hover:text-foreground px-4 py-2 rounded-xl text-xs font-bold border border-border/60 transition-colors cursor-pointer"
           >
-            <PlusCircle size={15} /> Add Master Item
+            {t("Purchase History")}
+          </button>
+          <button 
+            onClick={() => {
+              setTransferSourceId("");
+              setTransferTargetId("");
+              setTransferQty("");
+              setTransferRef("");
+              setTransferError("");
+              setIsStockTransferOpen(true);
+            }}
+            className="bg-background hover:bg-muted/40 text-muted-foreground hover:text-foreground px-4 py-2 rounded-xl text-xs font-bold border border-border/60 transition-colors cursor-pointer"
+          >
+            {t("Stock Transfer")}
+          </button>
+          <button 
+            onClick={() => {
+              setAdjustMaterialId("");
+              setAdjustQty("");
+              setAdjustRef("");
+              setAdjustReason("");
+              setAdjustError("");
+              setIsAdjustStockOpen(true);
+            }}
+            className="bg-background hover:bg-muted/40 text-muted-foreground hover:text-foreground px-4 py-2 rounded-xl text-xs font-bold border border-border/60 transition-colors cursor-pointer"
+          >
+            {t("Adjust Stock")}
           </button>
         </div>
       </div>
@@ -716,9 +852,9 @@ export default function InventoryPage() {
               <button
                 key={m.id}
                 onClick={() => handleRowClick(m)}
-                className="text-left bg-card border border-destructive/20 rounded-2xl p-3 hover:border-destructive/50 hover:shadow-sm transition-all group"
+                className="text-left bg-card border border-destructive/20 rounded-2xl p-3 hover:border-destructive/50 hover:shadow-sm transition-all group cursor-pointer"
               >
-                <p className="font-bold text-foreground text-xs leading-tight group-hover:text-destructive transition-colors">{m.name}</p>
+                <p className="font-bold text-foreground text-xs leading-tight group-hover:text-primary transition-colors">{m.name}</p>
                 <p className="font-mono font-black text-destructive text-lg mt-1">
                   {formatNum(m.current_stock)}
                   <span className="text-xs font-sans text-muted-foreground ml-1">{m.unit}</span>
@@ -788,7 +924,6 @@ export default function InventoryPage() {
                     <td className="py-4 px-4 font-mono text-xs text-muted-foreground">{mat.id}</td>
                     <td className="py-4 px-4">
                       <p className="font-semibold text-foreground group-hover:text-primary transition-colors">{mat.name}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{mat.supplier}</p>
                     </td>
                     <td className="py-4 px-4">
                       <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg border ${getCategoryColor(mat.category)}`}>
@@ -880,7 +1015,7 @@ export default function InventoryPage() {
 
           {addError && <p className="text-xs text-destructive bg-destructive/10 border border-destructive/20 px-3 py-2 rounded-xl">{addError}</p>}
           <p className="text-xs text-muted-foreground">Any quantity entered will automatically create an inward history and ledger entry.</p>
-          <button onClick={handleAddMaterial} disabled={isSubmitting} className="w-full py-2.5 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary-hover transition-all text-sm shadow-sm mt-2 disabled:opacity-50">
+          <button onClick={handleAddMaterial} disabled={isSubmitting} className="w-full py-2.5 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary-hover transition-all text-sm shadow-sm mt-2 disabled:opacity-50 cursor-pointer">
             {isSubmitting ? "Saving to Database..." : "Create Material Profile"}
           </button>
         </div>
@@ -914,11 +1049,223 @@ export default function InventoryPage() {
             </div>
           )}
           <div className="flex gap-3">
-            <button onClick={() => { setJsonText(JSON_EXAMPLE); setJsonResult(null); }} className="flex-1 py-2.5 bg-muted border border-border text-foreground font-semibold rounded-2xl hover:border-primary/30 transition-all text-sm">
+            <button onClick={() => { setJsonText(JSON_EXAMPLE); setJsonResult(null); }} className="flex-1 py-2.5 bg-muted border border-border text-foreground font-semibold rounded-2xl hover:border-primary/30 transition-all text-sm cursor-pointer">
               Load Example
             </button>
-            <button onClick={handleJsonInward} disabled={!jsonText.trim()} className="flex-1 py-2.5 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary-hover transition-all text-sm shadow-sm disabled:opacity-40 disabled:cursor-not-allowed">
+            <button onClick={handleJsonInward} disabled={!jsonText.trim()} className="flex-1 py-2.5 bg-primary text-primary-foreground font-bold rounded-2xl hover:bg-primary-hover transition-all text-sm shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
               Parse &amp; Apply Inward
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ── PURCHASE HISTORY DIALOG ── */}
+      <Modal open={isPurchaseHistoryOpen} onClose={() => setIsPurchaseHistoryOpen(false)} title="Procurement & Purchase History" width="max-w-4xl">
+        <div className="space-y-4">
+          <p className="text-xs text-muted-foreground">Comprehensive historical logs of raw material procurements.</p>
+          <div className="overflow-x-auto rounded-2xl border border-border max-h-[400px]">
+            <table className="w-full text-xs text-left">
+              <thead className="bg-muted text-muted-foreground font-black uppercase tracking-wider sticky top-0 bg-card z-10">
+                <tr className="border-b border-border">
+                  <th className="p-3">{t("Date")}</th>
+                  <th className="p-3">{t("Material ID")}</th>
+                  <th className="p-3">{t("Material Name")}</th>
+                  <th className="p-3">{t("Quantity")}</th>
+                  <th className="p-3">{t("Invoice Ref")}</th>
+                  <th className="p-3">{t("Supplier")}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {materials.flatMap(m => (m.inwardHistory || []).map(h => ({ ...h, id: m.id, name: m.name, unit: m.unit }))).sort((a,b) => b.date.localeCompare(a.date)).map((row: any, i: number) => (
+                  <tr key={i} className="hover:bg-muted/15">
+                    <td className="p-3 font-mono text-muted-foreground">{row.date}</td>
+                    <td className="p-3 font-mono font-bold text-foreground">{row.id}</td>
+                    <td className="p-3 font-bold text-foreground">{row.name}</td>
+                    <td className="p-3 font-mono font-bold text-primary">+{formatNum(row.qty)} {row.unit}</td>
+                    <td className="p-3 font-mono text-muted-foreground"><span className="bg-muted px-2 py-0.5 rounded-lg border border-border">{row.invoice_ref}</span></td>
+                    <td className="p-3 font-semibold text-foreground">{row.vendor}</td>
+                  </tr>
+                ))}
+                {materials.every(m => !m.inwardHistory || m.inwardHistory.length === 0) && (
+                  <tr>
+                    <td colSpan={6} className="p-8 text-center text-muted-foreground font-bold">
+                      {t("No purchase records found.")}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ── STOCK TRANSFER DIALOG ── */}
+      <Modal open={isStockTransferOpen} onClose={() => setIsStockTransferOpen(false)} title="Stock Transfer (Inter-Material)" width="max-w-lg">
+        <div className="space-y-4">
+          <p className="text-xs text-muted-foreground">Transfer raw materials quantities between material profiles.</p>
+          
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Source Material")}</label>
+            <select
+              value={transferSourceId}
+              onChange={e => {
+                setTransferSourceId(e.target.value);
+                setTransferError("");
+              }}
+              className="w-full bg-muted border border-border rounded-xl px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary font-bold"
+            >
+              <option value="">-- Select Source Material (with Stock) --</option>
+              {materials.filter(m => m.current_stock > 0).map(m => (
+                <option key={m.id} value={m.id}>
+                  {m.name} ({m.id}) - Stock: {m.current_stock} {m.unit}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Target Material")}</label>
+            <select
+              value={transferTargetId}
+              onChange={e => {
+                setTransferTargetId(e.target.value);
+                setTransferError("");
+              }}
+              className="w-full bg-muted border border-border rounded-xl px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary font-bold"
+            >
+              <option value="">-- Select Target Material --</option>
+              {materials.filter(m => m.id !== transferSourceId).map(m => (
+                <option key={m.id} value={m.id}>
+                  {m.name} ({m.id}) - Stock: {m.current_stock} {m.unit}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Quantity to Transfer")}</label>
+              <input
+                type="number"
+                value={transferQty}
+                placeholder="e.g. 100"
+                onChange={e => { setTransferQty(e.target.value); setTransferError(""); }}
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Reference Code")}</label>
+              <input
+                type="text"
+                value={transferRef}
+                placeholder="e.g. TR-2026-001"
+                onChange={e => { setTransferRef(e.target.value); setTransferError(""); }}
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary"
+              />
+            </div>
+          </div>
+
+          {transferError && (
+            <p className="text-xs text-rose-500 font-bold bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-xl">
+              {transferError}
+            </p>
+          )}
+
+          <div className="flex gap-3 pt-2">
+            <button
+              disabled={isTransferPending || !transferSourceId || !transferTargetId || !transferQty}
+              onClick={handleStockTransfer}
+              className="flex-1 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-xl transition-all cursor-pointer disabled:opacity-50"
+            >
+              {isTransferPending ? t("Transferring...") : t("Execute Transfer")}
+            </button>
+            <button
+              onClick={() => setIsStockTransferOpen(false)}
+              className="flex-1 py-2.5 bg-muted hover:bg-muted/80 text-foreground text-xs font-bold border border-border rounded-xl transition-all cursor-pointer"
+            >
+              {t("Cancel")}
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      {/* ── STOCK ADJUSTMENT DIALOG ── */}
+      <Modal open={isAdjustStockOpen} onClose={() => setIsAdjustStockOpen(false)} title="Manual Stock Adjustment" width="max-w-lg">
+        <div className="space-y-4">
+          <p className="text-xs text-muted-foreground">Manually add or deduct raw materials stock with tracking logs.</p>
+          
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Select Material")}</label>
+            <select
+              value={adjustMaterialId}
+              onChange={e => {
+                setAdjustMaterialId(e.target.value);
+                setAdjustError("");
+              }}
+              className="w-full bg-muted border border-border rounded-xl px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary font-bold"
+            >
+              <option value="">-- Select Material to Adjust --</option>
+              {materials.map(m => (
+                <option key={m.id} value={m.id}>
+                  {m.name} ({m.id}) - Current: {m.current_stock} {m.unit}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Adjustment Qty (+/-)")}</label>
+              <input
+                type="number"
+                value={adjustQty}
+                placeholder="e.g. 50 or -30"
+                onChange={e => { setAdjustQty(e.target.value); setAdjustError(""); }}
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Reference Code")}</label>
+              <input
+                type="text"
+                value={adjustRef}
+                placeholder="e.g. ADJ-2026-001"
+                onChange={e => { setAdjustRef(e.target.value); setAdjustError(""); }}
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">{t("Reason for Adjustment")}</label>
+            <input
+              type="text"
+              value={adjustReason}
+              placeholder="e.g. Spillage, audit corrections, or bonus stock"
+              onChange={e => setAdjustReason(e.target.value)}
+              className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary"
+            />
+          </div>
+
+          {adjustError && (
+            <p className="text-xs text-rose-500 font-bold bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-xl">
+              {adjustError}
+            </p>
+          )}
+
+          <div className="flex gap-3 pt-2">
+            <button
+              disabled={isAdjustPending || !adjustMaterialId || !adjustQty}
+              onClick={handleStockAdjustment}
+              className="flex-1 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-xl transition-all cursor-pointer disabled:opacity-50"
+            >
+              {isAdjustPending ? t("Saving...") : t("Save Adjustment")}
+            </button>
+            <button
+              onClick={() => setIsAdjustStockOpen(false)}
+              className="flex-1 py-2.5 bg-muted hover:bg-muted/80 text-foreground text-xs font-bold border border-border rounded-xl transition-all cursor-pointer"
+            >
+              {t("Cancel")}
             </button>
           </div>
         </div>

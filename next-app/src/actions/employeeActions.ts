@@ -22,10 +22,129 @@ export async function getEmployees() {
   }
 }
 
+export async function getEmployeeDashboardData() {
+  try {
+    const { data: employees, error: empErr } = await supabaseAdmin
+      .from("employees")
+      .select("*")
+      .order("name", { ascending: true });
+    if (empErr) throw empErr;
+
+    const today = new Date().toISOString().split("T")[0];
+    const { data: todayAttendance, error: attErr } = await supabaseAdmin
+      .from("attendance")
+      .select("*")
+      .eq("date", today);
+    if (attErr) throw attErr;
+
+    const { data: allAttendance, error: allAttErr } = await supabaseAdmin
+      .from("attendance")
+      .select("*")
+      .order("date", { ascending: false });
+    if (allAttErr) throw allAttErr;
+
+    const { data: payrollSlips, error: payErr } = await supabaseAdmin
+      .from("salary_payments")
+      .select("*")
+      .order("month", { ascending: false });
+    if (payErr) throw payErr;
+
+    return {
+      success: true,
+      data: {
+        employees: employees || [],
+        todayAttendance: todayAttendance || [],
+        allAttendance: allAttendance || [],
+        payrollSlips: payrollSlips || []
+      }
+    };
+  } catch (err: any) {
+    console.error("Error fetching employee dashboard data:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function markEmployeeAttendance(employeeId: string, date: string, status: "Present" | "Absent") {
+  try {
+    // Check if attendance already exists for this employee and date
+    const { data: existing, error: findErr } = await supabaseAdmin
+      .from("attendance")
+      .select("id")
+      .eq("employee_id", employeeId)
+      .eq("date", date)
+      .maybeSingle();
+
+    if (existing) {
+      const { error } = await supabaseAdmin
+        .from("attendance")
+        .update({ status })
+        .eq("id", existing.id);
+      if (error) throw error;
+    } else {
+      const id = `ATT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const { error } = await supabaseAdmin
+        .from("attendance")
+        .insert({
+          id,
+          employee_id: employeeId,
+          date,
+          status
+        });
+      if (error) throw error;
+    }
+
+    revalidatePath("/dashboard/employees");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error marking attendance:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function generateSalarySlip(payload: {
+  employeeId: string;
+  month: string;
+  baseSalary: number;
+  daysPresent: number;
+  advancesDeducted: number;
+  paymentMode: string;
+  paymentDate: string;
+}) {
+  try {
+    const gross_salary = Number(payload.baseSalary);
+    const net_paid = gross_salary - Number(payload.advancesDeducted);
+    const id = `PAY-${Date.now().toString().slice(-4)}`;
+
+    const { error } = await supabaseAdmin
+      .from("salary_payments")
+      .insert({
+        id,
+        employee_id: payload.employeeId,
+        month: payload.month,
+        base_salary: payload.baseSalary,
+        days_present: payload.daysPresent,
+        gross_salary,
+        advances_deducted: payload.advancesDeducted,
+        net_paid,
+        payment_mode: payload.paymentMode,
+        payment_date: payload.paymentDate
+      });
+
+    if (error) throw error;
+
+    revalidatePath("/dashboard/employees");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error generating salary slip:", err);
+    return { success: false, error: err.message };
+  }
+}
+
 export async function addEmployee(formData: FormData) {
   try {
     const id = formData.get("id") as string;
     const name = formData.get("name") as string;
+    const salaryVal = formData.get("salary") || formData.get("base_salary") || "0";
     
     // Extract text fields
     const employeeData = {
@@ -43,7 +162,9 @@ export async function addEmployee(formData: FormData) {
       account_name: formData.get("account_name") as string,
       account_no: formData.get("account_no") as string,
       ifsc_code: formData.get("ifsc_code") as string,
+      salary: Number(salaryVal) || 0,
       status: "Active",
+      joining_date: new Date().toISOString().split("T")[0]
     };
 
     // Helper to upload file
@@ -51,7 +172,6 @@ export async function addEmployee(formData: FormData) {
       if (!file || file.size === 0) return null;
       
       const ext = file.name.split('.').pop();
-      // Format: Ramesh_EMP001_AadhaarFront.jpg
       const cleanName = name.replace(/[^a-zA-Z0-9]/g, '');
       const cleanId = id.replace(/[^a-zA-Z0-9]/g, '');
       const newFileName = `${cleanName}_${cleanId}_${docName}.${ext}`;

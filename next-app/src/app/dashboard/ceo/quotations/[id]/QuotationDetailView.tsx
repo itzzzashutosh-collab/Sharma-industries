@@ -1,22 +1,74 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { Download, Landmark, ArrowLeft, CheckCircle } from "lucide-react";
+import { Download, Landmark, ArrowLeft, CheckCircle, Printer, Share2, Ban, Edit3, Copy, FileCheck } from "lucide-react";
 import Link from "next/link";
 import { SettlementModal } from "./SettlementModal";
 import { useRouter } from "next/navigation";
+import { updateQuotationStatus } from "./actions";
 
 export function QuotationDetailView({ quotation }: { quotation: any }) {
   const router = useRouter();
   const previewRef = useRef<HTMLDivElement>(null);
   const [showModal, setShowModal] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [status, setStatus] = useState(quotation.status || "Pending");
 
   useEffect(() => setIsMounted(true), []);
 
   const isPaid = quotation.balance_due <= 0;
 
+  const handlePrint = () => {
+    if (typeof window !== "undefined") {
+      if (quotation.pdf_url) {
+        window.open(quotation.pdf_url, "_blank");
+      } else {
+        window.print();
+      }
+    }
+  };
+
+  const handleShare = async () => {
+    if (typeof window === "undefined") return;
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Quotation ${quotation.quotation_no}`,
+          text: `Quotation details for ${quotation.quotation_no}`,
+          url: url,
+        });
+      } catch (err) {
+        console.log("Error sharing", err);
+      }
+    } else {
+      navigator.clipboard.writeText(url);
+      alert("Quotation link copied to clipboard!");
+    }
+  };
+
+  const handleStatusChange = async (newStatus: string) => {
+    setStatus(newStatus);
+    const res = await updateQuotationStatus(quotation.id, newStatus);
+    if (res.success) {
+      router.refresh();
+    } else {
+      alert(res.error || "Failed to update status.");
+    }
+  };
+
   const handleGeneratePDF = async () => {
+    if (quotation.pdf_url) {
+      const link = document.createElement("a");
+      link.href = quotation.pdf_url;
+      link.target = "_blank";
+      link.download = `${quotation.quotation_no}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return;
+    }
+
     if (!previewRef.current) return;
     try {
       const originalStyle = previewRef.current.style.transform;
@@ -47,11 +99,58 @@ export function QuotationDetailView({ quotation }: { quotation: any }) {
         <Link href="/dashboard/ceo/quotations" className="text-muted-foreground hover:text-foreground flex items-center gap-1 font-medium transition-colors">
           <ArrowLeft size={16} /> Back to History
         </Link>
-        <div className="flex gap-3">
-          <button onClick={handleGeneratePDF} className="flex items-center gap-2 bg-secondary text-secondary-foreground px-4 py-2 rounded-xl font-bold hover:opacity-90 transition-opacity shadow-sm">
-            <Download size={18} /> Download PDF
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Link
+            href={`/dashboard/ceo/quotations/new?edit_id=${quotation.id}`}
+            className="flex items-center gap-1.5 bg-muted hover:bg-muted/80 text-foreground px-3.5 py-2 rounded-xl font-bold transition-all text-xs border border-border shadow-xs"
+          >
+            <Edit3 size={14} /> Edit
+          </Link>
+          <Link
+            href={`/dashboard/ceo/quotations/new?duplicate_id=${quotation.id}`}
+            className="flex items-center gap-1.5 bg-muted hover:bg-muted/80 text-foreground px-3.5 py-2 rounded-xl font-bold transition-all text-xs border border-border shadow-xs"
+          >
+            <Copy size={14} /> Duplicate
+          </Link>
+          <Link
+            href={`/dashboard/ceo/invoices/new?convert_quotation_id=${quotation.id}`}
+            className="flex items-center gap-1.5 bg-primary hover:bg-primary-hover text-white px-3.5 py-2 rounded-xl font-bold transition-all text-xs shadow-xs"
+          >
+            <FileCheck size={14} /> Convert to Invoice
+          </Link>
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-1.5 bg-muted hover:bg-muted/80 text-foreground px-3.5 py-2 rounded-xl font-bold transition-all text-xs border border-border shadow-xs"
+          >
+            <Printer size={14} /> Print
           </button>
-          {/* Payment actions removed for quotations */}
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1.5 bg-muted hover:bg-muted/80 text-foreground px-3.5 py-2 rounded-xl font-bold transition-all text-xs border border-border shadow-xs"
+          >
+            <Share2 size={14} /> Share
+          </button>
+          <button
+            onClick={handleGeneratePDF}
+            className="flex items-center gap-1.5 bg-secondary hover:opacity-95 text-secondary-foreground px-3.5 py-2 rounded-xl font-bold transition-all text-xs border border-border shadow-xs"
+          >
+            <Download size={14} /> PDF
+          </button>
+
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-black uppercase text-muted-foreground tracking-wider">Status:</span>
+            <select
+              value={status}
+              onChange={(e) => handleStatusChange(e.target.value)}
+              className="bg-card text-foreground border border-border rounded-xl px-2.5 py-1.5 text-xs font-bold outline-none focus:border-primary transition-all"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Sent">Sent</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Declined">Declined</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -63,7 +162,7 @@ export function QuotationDetailView({ quotation }: { quotation: any }) {
             <div>
               <h1 className="text-4xl font-black text-slate-800 tracking-tight">TAX QUOTATION</h1>
               <p className="text-slate-500 font-medium mt-1">Quotation No: {quotation.quotation_no}</p>
-              <p className="text-slate-500 font-medium">Date: {isMounted ? new Date(quotation.date).toLocaleDateString() : quotation.date}</p>
+              <p className="text-slate-500 font-medium" suppressHydrationWarning>Date: {isMounted ? new Date(quotation.date).toLocaleDateString() : quotation.date}</p>
             </div>
             <div className="text-right">
               <h2 className="text-2xl font-bold text-slate-800">{quotation.seller}</h2>
@@ -105,6 +204,16 @@ export function QuotationDetailView({ quotation }: { quotation: any }) {
                   <td className="py-3 px-4 text-right text-slate-800">₹{item.rate}</td>
                   <td className="py-3 px-4 text-right text-slate-800">₹{item.amount}</td>
                   <td className="py-3 px-4 text-right text-slate-800 font-bold">₹{item.amount}</td>
+                </tr>
+              ))}
+              {Array.isArray(quotation.additional_charges) && quotation.additional_charges.map((charge: any, idx: number) => (
+                <tr key={`charge-${idx}`} className="border-b border-slate-100">
+                  <td className="py-3 px-4 text-slate-800 font-bold">{charge.name || "Charge"}</td>
+                  <td className="py-3 px-4 text-right text-slate-400">-</td>
+                  <td className="py-3 px-4 text-right text-slate-400">-</td>
+                  <td className="py-3 px-4 text-right text-slate-800">₹{charge.amount}</td>
+                  <td className="py-3 px-4 text-right text-slate-800">₹{charge.amount}</td>
+                  <td className="py-3 px-4 text-right text-slate-800 font-bold">₹{charge.amount}</td>
                 </tr>
               ))}
             </tbody>

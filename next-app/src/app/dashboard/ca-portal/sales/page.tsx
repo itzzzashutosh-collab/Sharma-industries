@@ -2,10 +2,14 @@ import React from "react";
 import SalesLedgerClient from "./SalesLedgerClient";
 
 export const dynamic = "force-dynamic";
-export const metadata = {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   title: "CA Portal - Sales Ledger",
   description: "Auditor Mode - Sales Invoices Reverse Calculation Ledger",
-};
+  };
+}
 
 export default function CASalesLedgerPage() {
   return (

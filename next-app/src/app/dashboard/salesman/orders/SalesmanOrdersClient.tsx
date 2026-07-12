@@ -240,15 +240,9 @@ export default function SalesmanOrdersClient() {
             My Order Ledger
           </h1>
           <p className="text-slate-500 font-medium mt-2 text-sm">
-            View orders placed, track dispatch progress, and submit new stock orders.
+            View orders placed and track dispatch progress.
           </p>
         </div>
-        <button 
-          onClick={() => setIsOrderModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/95 text-white font-bold text-sm rounded-xl shadow-lg transition-all"
-        >
-          <PlusCircle size={16} /> Place New Order
-        </button>
       </div>
 
       {/* Filters */}

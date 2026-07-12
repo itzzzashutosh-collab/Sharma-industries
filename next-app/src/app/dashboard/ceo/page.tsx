@@ -81,7 +81,6 @@ export default async function CEODashboardRoot() {
   return (
     <CEODashboardClient
       pendingUsers={pendingUsers || []}
-      chartData={chartData}
       totalRawMaterialValue={totalRawMaterialValue}
       totalFinishedGoodsValue={totalFinishedGoodsValue}
     />

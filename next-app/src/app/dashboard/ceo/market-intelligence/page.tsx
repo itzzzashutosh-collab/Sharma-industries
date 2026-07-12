@@ -1,9 +1,14 @@
 import { createClient } from "@/utils/supabase/server";
 import { MarketIntelligenceClient } from "./MarketIntelligenceClient";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   title: "Market Intelligence | Sharma ERP",
-};
+  };
+}
+export const dynamic = "force-dynamic";
 
 export default async function MarketIntelligence() {
   const supabase = await createClient();
@@ -25,6 +30,11 @@ export default async function MarketIntelligence() {
     .from("competitor_products")
     .select("*");
 
+  // 4. Fetch Fleet, Dispatches and Routes
+  const { data: dbVehicles } = await supabase.from("fleet_vehicles").select("*");
+  const { data: dbDispatches } = await supabase.from("delivery_dispatches").select("*");
+  const { data: dbRoutes } = await supabase.from("delivery_routes").select("*");
+
   // Aggregate dealer performance
   const dealerPerformance =
     dealers
@@ -45,7 +55,7 @@ export default async function MarketIntelligence() {
            if (inv.items && Array.isArray(inv.items)) {
              inv.items.forEach((item: any) => {
                 if (item.name) {
-                  productCounts[item.name] = (productCounts[item.name] || 0) + (Number(item.qty || item.quantity) || 1);
+                   productCounts[item.name] = (productCounts[item.name] || 0) + (Number(item.qty || item.quantity) || 1);
                 }
              });
            }
@@ -106,9 +116,8 @@ export default async function MarketIntelligence() {
     });
   }
 
-  // Map competitor products to the dealers who are buying them (using invoices)
+  // Map competitor products
   const competitorSpyData: any[] = [];
-  
   if (rawCompetitorProducts && invoices && dealers) {
     rawCompetitorProducts.forEach((cp) => {
       let totalQty = 0;
@@ -152,11 +161,46 @@ export default async function MarketIntelligence() {
     });
   }
 
+  // Map fleet vehicles, dispatches, and routes
+  const vehicles = dbVehicles ? dbVehicles.map((v: any) => ({
+    id: v.id,
+    plateNumber: v.plate_number || "",
+    driverName: v.driver_name || "",
+    driverPhone: v.driver_phone || "",
+    type: v.vehicle_type || "",
+    status: v.status || "Idle",
+    capacity: v.capacity || "",
+    currentRoute: v.current_route || "Unassigned"
+  })) : [];
+
+  const dispatches = dbDispatches ? dbDispatches.map((d: any) => ({
+    id: d.id,
+    dealerName: d.dealer_name || "",
+    location: d.location || "",
+    items: d.items || "",
+    value: Number(d.value) || 0,
+    vehiclePlate: d.vehicle_plate || "",
+    status: d.status || "Pending",
+    date: d.dispatch_date || ""
+  })) : [];
+
+  const routes = dbRoutes ? dbRoutes.map((r: any) => ({
+    id: r.id,
+    name: r.route_name || "",
+    stopsCount: Number(r.stops_count) || 0,
+    mappedDealers: r.mapped_dealers || [],
+    assignedVehicle: r.assigned_vehicle || "",
+    progress: Number(r.progress) || 0
+  })) : [];
+
   return (
     <MarketIntelligenceClient
       dealerPerformance={dealerPerformance}
       competitorSpyData={competitorSpyData}
       heatmapData={heatmapData}
+      initialVehicles={vehicles}
+      initialDispatches={dispatches}
+      initialRoutes={routes}
     />
   );
 }

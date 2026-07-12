@@ -1,9 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
 import { POSForm } from "./POSForm";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   title: "POS Billing | Sharma ERP",
-};
+  };
+}
 
 export default async function POSPage() {
   const supabase = await createClient();

@@ -303,13 +303,15 @@ export default function AddPurchaseBillPage() {
         throw new Error(t("No readable text found in the document."));
       }
 
+      let parsedData;
       setExtractionStatus(t("AI Agent extracting invoice details..."));
       const aiRes = await analyzeInvoiceTextWithAI(text);
-      if (!aiRes.success) {
-        throw new Error(aiRes.error);
+      if (aiRes.success) {
+        parsedData = aiRes.data;
+      } else {
+        console.warn("AI extraction failed, falling back to deterministic local parsing:", aiRes.error);
+        parsedData = parseInvoiceText(text, rawMaterials);
       }
-
-      const parsedData = aiRes.data;
 
       // Match raw material IDs or Product IDs on the client side based on name matches
       const itemsWithIds = (parsedData.items || []).map((item: any) => {

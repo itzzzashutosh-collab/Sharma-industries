@@ -31,6 +31,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import { QUOTATION_TEMPLATES, ThemeConfig } from "./themes";
 import { INDIAN_STATES } from "@/lib/constants";
 import { getNextQuotationNumber } from "./actions";
+import { createClient } from "@/utils/supabase/client";
 
 // Alias for strict compliance with requested coding standards
 const useTranslation = useLanguage;
@@ -168,6 +169,7 @@ const DEFAULT_SELLER: SellerDetails = {
 };
 
 export function QuotationEngine() {
+  const supabase = createClient();
   const { t } = useTranslation();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -186,6 +188,62 @@ export function QuotationEngine() {
     state_code: "",
     pincode: "",
   });
+
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [targetItemRowId, setTargetItemRowId] = useState<string | null>(null);
+  const [newProductData, setNewProductData] = useState({
+    name: "",
+    hsn_code: "3209",
+    selling_price: 0,
+    packing_size_unit: "pcs",
+    category: "Accessory",
+  });
+
+  const handleSaveNewProduct = async () => {
+    if (!newProductData.name.trim()) {
+      alert("Product name is required");
+      return;
+    }
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product_name: newProductData.name,
+          hsn_code: newProductData.hsn_code,
+          selling_price: newProductData.selling_price,
+          packing_size_unit: newProductData.packing_size_unit,
+          tags: [newProductData.category],
+          stock: 0,
+          min_stock: 10,
+          tax_rate: 18,
+        }),
+      });
+      const data = await res.json();
+      if (data.success && data.data) {
+        const createdProduct = data.data;
+        setProducts([...products, createdProduct]);
+        
+        if (targetItemRowId) {
+          handleItemChange(targetItemRowId, "productId", createdProduct.id);
+        }
+        
+        setShowAddProductModal(false);
+        setNewProductData({
+          name: "",
+          hsn_code: "3209",
+          selling_price: 0,
+          packing_size_unit: "pcs",
+          category: "Accessory",
+        });
+        setTargetItemRowId(null);
+      } else {
+        alert(data.error || "Failed to save product");
+      }
+    } catch (err) {
+      alert("Error saving product");
+    }
+  };
 
   // Seller/Company Profile State
   const [sellerDetails, setSellerDetails] =
@@ -268,6 +326,79 @@ export function QuotationEngine() {
       }
     }
     loadInitialData();
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get("edit_id");
+    const duplicateId = params.get("duplicate_id");
+
+    async function loadFromParams() {
+      if (editId) {
+        try {
+          const res = await fetch(`/api/quotations/${editId}`).then(r => r.json());
+          if (res.success && res.data) {
+            const q = res.data;
+            setSavedQuotationId(q.id);
+            setQuotationNo(q.quotation_no);
+            if (q.date) setQuotationDate(q.date.split("T")[0]);
+            if (q.due_date) setDueDate(q.due_date.split("T")[0]);
+            setSelectedClientId(q.client_id || "");
+            setCustomerName(q.client_details?.name || "");
+            setCustomerPhone(q.client_details?.phone || "");
+            setCustomerAddress(q.client_details?.address || "");
+            setState(q.client_details?.state_code || q.client_details?.state || "");
+            setPincode(q.client_details?.pincode || "");
+            setGstin(q.client_details?.gstin || "");
+            setTaxType(q.is_tax_inclusive ? "inclusive" : "exclusive");
+            setItems((q.items || []).map((it: any) => ({
+              id: `item-${Math.random()}`,
+              productId: it.product_id || "",
+              name: it.name,
+              hsn: it.hsn_code || "3209",
+              qty: it.qty,
+              rate: it.rate,
+              taxRate: it.tax_rate || 18,
+              total: it.amount
+            })));
+            setNotes(q.notes || "");
+          }
+        } catch (e) {
+          console.error("Error loading edit quotation", e);
+        }
+      } else if (duplicateId) {
+        try {
+          const res = await fetch(`/api/quotations/${duplicateId}`).then(r => r.json());
+          if (res.success && res.data) {
+            const q = res.data;
+            setSelectedClientId(q.client_id || "");
+            setCustomerName(q.client_details?.name || "");
+            setCustomerPhone(q.client_details?.phone || "");
+            setCustomerAddress(q.client_details?.address || "");
+            setState(q.client_details?.state_code || q.client_details?.state || "");
+            setPincode(q.client_details?.pincode || "");
+            setGstin(q.client_details?.gstin || "");
+            setTaxType(q.is_tax_inclusive ? "inclusive" : "exclusive");
+            setItems((q.items || []).map((it: any) => ({
+              id: `item-${Math.random()}`,
+              productId: it.product_id || "",
+              name: it.name,
+              hsn: it.hsn_code || "3209",
+              qty: it.qty,
+              rate: it.rate,
+              taxRate: it.tax_rate || 18,
+              total: it.amount
+            })));
+            setNotes(q.notes || "");
+          }
+        } catch (e) {
+          console.error("Error loading duplicate quotation", e);
+        }
+      }
+    }
+
+    loadFromParams();
   }, []);
 
   const handleClientSelect = (clientId: string) => {
@@ -506,63 +637,13 @@ export function QuotationEngine() {
   };
 
   const handleSaveAndNext = async () => {
-    if (!customerName || !customerPhone || items.length === 0) {
-      alert(t("Please fill out the client details and add at least one item."));
+    if (!customerName || items.length === 0) {
+      alert(t("Please fill out the client details (Name) and add at least one item."));
       return;
     }
 
-    try {
-      // Execute the database save
-      const res = await fetch("/api/quotations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: savedQuotationId,
-          date: quotationDate,
-          due_date: dueDate,
-          quotation_no: quotationNo,
-          client_id: selectedClientId || null,
-          client_details: {
-            name: customerName,
-            phone: customerPhone,
-            gstin: gstin,
-            address: customerAddress,
-            state_code: state,
-            pincode: pincode || "000000",
-          },
-          items: items.map((item) => ({
-            product_id: item.productId,
-            name: item.name,
-            hsn_code: item.hsn,
-            qty: item.qty,
-            rate: item.rate,
-            amount: item.total,
-          })),
-          tax_breakdown: { cgst, sgst, igst },
-          
-          
-          subtotal,
-          total_tax: totalTax,
-          grand_total: grandTotal,
-          discount_amount: discountAmount,
-            additional_charges: additionalCharges,
-            round_off: roundOffDiff,
-          is_tax_inclusive: taxType === "inclusive",
-        }),
-      });
-      const data = await res.json();
-      if (data.success && data.data) {
-        setSavedQuotationId(data.data.id);
-        setCurrentStep(2);
-        // Pre-fetch the next quotation number so it's ready when user starts the next quotation
-        const nextNo = await getNextQuotationNumber();
-        setQuotationNo(nextNo);
-      } else {
-        alert(data.error || t("Error saving quotation data."));
-      }
-    } catch (err) {
-      alert(t("Failed to communicate with API."));
-    }
+    // Transition directly to preview step (does not save to database yet)
+    setCurrentStep(2);
   };
 
   const handleGeneratePDF = async () => {
@@ -571,13 +652,24 @@ export function QuotationEngine() {
     if (!previewRef.current) return;
 
     try {
-      // Temporary scaling fix for html2canvas representation
+      // 1. GENERATE PDF BLOB FIRST
       const originalStyle = previewRef.current.style.transform;
       previewRef.current.style.transform = "none";
       previewRef.current.style.marginBottom = "0";
 
-      // Temporarily patch getComputedStyle to convert oklch/oklab colors
       const originalGetComputedStyle = window.getComputedStyle;
+      const originalConsoleWarn = console.warn;
+      const originalConsoleError = console.error;
+
+      console.warn = (...args) => {
+        if (args[0] && typeof args[0] === "string" && args[0].includes("oklch")) return;
+        originalConsoleWarn(...args);
+      };
+      console.error = (...args) => {
+        if (args[0] && typeof args[0] === "string" && args[0].includes("oklch")) return;
+        originalConsoleError(...args);
+      };
+
       const colorCache = new Map<string, string>();
       const convertCssColorToRgb = (colorString: string) => {
         if (colorCache.has(colorString)) return colorCache.get(colorString)!;
@@ -637,36 +729,225 @@ export function QuotationEngine() {
         });
       };
 
-      try {
-        const opt = {
-          margin: 0,
-          filename: `${quotationNo}_${customerName}.pdf`,
-          image: { type: "jpeg" as const, quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-          pagebreak: { mode: "avoid-all" },
-          jsPDF: {
-            unit: "mm",
-            format: "a4" as const,
-            orientation: "portrait" as const,
-          },
-        };
+      let pdfBlob = null;
+      let base64Pdf = null;
+      let opt = {
+        margin: 0,
+        filename: `${quotationNo}_${customerName}.pdf`,
+        image: { type: "jpeg" as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0, logging: false },
+        pagebreak: { mode: "avoid-all" },
+        jsPDF: {
+          unit: "mm",
+          format: "a4" as const,
+          orientation: "portrait" as const,
+        },
+      };
 
+      try {
         const html2pdf = (await import("html2pdf.js")).default;
-        await html2pdf().set(opt).from(previewRef.current).save();
-        
-        // Redirect to quotation history after successful generation
-        router.push("/dashboard/ceo/quotations");
+        const pdfWorker = html2pdf().set(opt).from(previewRef.current);
+        pdfBlob = await pdfWorker.outputPdf("blob");
+
+        // Convert Blob to base64 string
+        const blobToBase64 = (blob: Blob): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+          });
+        };
+        base64Pdf = await blobToBase64(pdfBlob);
+      } catch (err) {
+        console.error("Failed to generate Quotation PDF blob locally:", err);
       } finally {
         window.getComputedStyle = originalGetComputedStyle;
+        console.warn = originalConsoleWarn;
+        console.error = originalConsoleError;
       }
+
+      // 3. SAVE TO DATABASE WITH THE pdf_base64 ATTACHED
+      const res = await fetch("/api/quotations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: savedQuotationId,
+          pdf_base64: base64Pdf, // Pass base64 to server to perform secure storage upload
+          date: quotationDate,
+          due_date: dueDate,
+          quotation_no: quotationNo,
+          client_id: selectedClientId || null,
+          client_details: {
+            name: customerName,
+            phone: customerPhone,
+            gstin: gstin,
+            address: customerAddress,
+            state_code: state,
+            pincode: pincode || "000000",
+          },
+          items: items.map((item) => ({
+            product_id: item.productId,
+            name: item.name,
+            hsn_code: item.hsn,
+            qty: item.qty,
+            rate: item.rate,
+            amount: item.total,
+          })),
+          tax_breakdown: { cgst, sgst, igst },
+          subtotal,
+          total_tax: totalTax,
+          grand_total: grandTotal,
+          discount_amount: discountAmount,
+          additional_charges: additionalCharges,
+          round_off: roundOffDiff,
+          is_tax_inclusive: taxType === "inclusive",
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        alert(data.error || t("Error saving quotation to server database."));
+        return;
+      }
+
+      const newSavedId = data.data.id;
+      setSavedQuotationId(newSavedId);
+
+      // 4. NOW TRIGGER LOCAL DOWNLOAD OF PDF FILE
+      if (pdfBlob) {
+        try {
+          const html2pdf = (await import("html2pdf.js")).default;
+          await html2pdf().set(opt).from(previewRef.current).save();
+        } catch (e) {
+          console.error("Local download trigger failed:", e);
+        }
+      }
+      
+      // Redirect to quotation history
+      router.push("/dashboard/ceo/quotations");
     } catch (error) {
-      console.error("PDF generation failed:", error);
-      alert(t("Failed to generate PDF."));
+      console.error("PDF generation or DB save failed:", error);
+      alert(t("Failed to save quotation or generate PDF."));
     }
   };
 
   return (
     <div className="space-y-6">
+      {showAddProductModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 ">
+          <div className="bg-card border border-border rounded-2xl p-6 w-[400px] shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-lg text-foreground">
+                {t("Add New Product / Accessory")}
+              </h3>
+              <button onClick={() => {
+                setShowAddProductModal(false);
+                setTargetItemRowId(null);
+              }}>
+                <X
+                  size={20}
+                  className="text-muted-foreground hover:text-foreground"
+                />
+              </button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                  {t("Product Name")} *
+                </label>
+                <input
+                  placeholder="Name (e.g. Brush 4 inch, Thinner)"
+                  value={newProductData.name}
+                  onChange={(e) =>
+                    setNewProductData({ ...newProductData, name: e.target.value })
+                  }
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                  {t("Selling Price / Rate")} (₹)
+                </label>
+                <input
+                  type="number"
+                  placeholder="Rate"
+                  value={newProductData.selling_price || ""}
+                  onChange={(e) =>
+                    setNewProductData({
+                      ...newProductData,
+                      selling_price: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                    {t("HSN Code")}
+                  </label>
+                  <input
+                    placeholder="HSN (e.g. 3209)"
+                    value={newProductData.hsn_code}
+                    onChange={(e) =>
+                      setNewProductData({ ...newProductData, hsn_code: e.target.value })
+                    }
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                    {t("Unit")}
+                  </label>
+                  <select
+                    value={newProductData.packing_size_unit}
+                    onChange={(e) =>
+                      setNewProductData({
+                        ...newProductData,
+                        packing_size_unit: e.target.value,
+                      })
+                    }
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                  >
+                    <option value="pcs">pcs</option>
+                    <option value="Ltr">Ltr</option>
+                    <option value="kg">kg</option>
+                    <option value="box">box</option>
+                    <option value="roll">roll</option>
+                    <option value="bag">bag</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                  {t("Category / Tag")}
+                </label>
+                <select
+                  value={newProductData.category}
+                  onChange={(e) =>
+                    setNewProductData({
+                      ...newProductData,
+                      category: e.target.value,
+                    })
+                  }
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                >
+                  <option value="Accessory">{t("Accessory")}</option>
+                  <option value="Standard">{t("Standard Product")}</option>
+                  <option value="Service">{t("Service / Labor")}</option>
+                </select>
+              </div>
+              <button
+                onClick={handleSaveNewProduct}
+                className="w-full py-2 mt-2 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-colors"
+              >
+                {t("Save Product")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showAddClientModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 ">
           <div className="bg-card border border-border rounded-2xl p-6 w-[400px] shadow-2xl">
@@ -875,38 +1156,6 @@ export function QuotationEngine() {
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2 flex gap-2 items-end">
-                    <div className="flex-1">
-                      <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
-                        {t("Select Client")}
-                      </label>
-                      <div className="relative">
-                        <Search
-                          size={16}
-                          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                        />
-                        <select
-                          value={selectedClientId}
-                          onChange={(e) => handleClientSelect(e.target.value)}
-                          className="w-full bg-background border border-border rounded-xl pl-10 pr-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium appearance-none"
-                        >
-                          <option value="">{t("-- Manual Entry --")}</option>
-                          {clients.map((c) => (
-                            <option key={c.id} value={c.id}>
-                              {c.name} ({c.phone || "No Phone"})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setShowAddClientModal(true)}
-                      className="px-4 py-2.5 bg-primary/10 text-primary hover:bg-primary/20 rounded-xl border border-primary/20 transition-all font-bold text-sm whitespace-nowrap flex items-center gap-2"
-                    >
-                      <Plus size={16} /> {t("Add New")}
-                    </button>
-                  </div>
-
                   <div className="md:col-span-2">
                     <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
                       {t("clientName")} ({t("Override")})
@@ -1267,9 +1516,21 @@ export function QuotationEngine() {
 
                       <div className="grid grid-cols-12 gap-3">
                         <div className="col-span-12 md:col-span-4">
-                          <label className="text-sm text-muted-foreground uppercase font-bold block mb-1">
-                            {t("Product Name")}
-                          </label>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="text-sm text-muted-foreground uppercase font-bold block">
+                              {t("Product Name")}
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTargetItemRowId(item.id);
+                                setShowAddProductModal(true);
+                              }}
+                              className="text-xs text-primary hover:underline font-extrabold flex items-center gap-0.5"
+                            >
+                              <Plus size={12} /> {t("Add New")}
+                            </button>
+                          </div>
                           <select
                             value={item.productId}
                             onChange={(e) =>
@@ -1654,37 +1915,72 @@ export function QuotationEngine() {
                               </tr>
                             </thead>
                             <tbody className="text-[11px] text-slate-800 align-top">
-                              {items.length > 0 ? (
-                                items.map((item, i) => (
-                                  <tr
-                                    key={item.id}
-                                    className={`${i % 2 === 0 ? currentTheme.colors.bgAccent : "bg-transparent"} border-b border-slate-200`}
-                                  >
-                                    <td className="py-2.5 px-3 text-center border-x border-slate-200">
-                                      {i + 1}.
-                                    </td>
-                                    <td className="py-2.5 px-3 font-medium border-r border-slate-200 leading-snug">
-                                      {item.name || "-"}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-center border-r border-slate-200">
-                                      {item.hsn || "-"}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-center border-r border-slate-200">
-                                      {item.qty}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-right border-r border-slate-200">
-                                      {item.rate.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                      })}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-right border-r border-slate-200 font-medium">
-                                      {item.taxableValue.toLocaleString(
-                                        undefined,
-                                        { minimumFractionDigits: 2 },
-                                      )}
-                                    </td>
-                                  </tr>
-                                ))
+                              {items.length > 0 || additionalCharges.length > 0 ? (
+                                <>
+                                  {items.map((item, i) => (
+                                    <tr
+                                      key={item.id}
+                                      className={`${i % 2 === 0 ? currentTheme.colors.bgAccent : "bg-transparent"} border-b border-slate-200`}
+                                    >
+                                      <td className="py-2.5 px-3 text-center border-x border-slate-200">
+                                        {i + 1}.
+                                      </td>
+                                      <td className="py-2.5 px-3 font-medium border-r border-slate-200 leading-snug">
+                                        {item.name || "-"}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center border-r border-slate-200">
+                                        {item.hsn || "-"}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center border-r border-slate-200">
+                                        {item.qty}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-right border-r border-slate-200">
+                                        {item.rate.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                        })}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-right border-r border-slate-200 font-medium">
+                                        {item.taxableValue.toLocaleString(
+                                          undefined,
+                                          { minimumFractionDigits: 2 },
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  {additionalCharges.map((charge, idx) => {
+                                    const i = items.length + idx;
+                                    return (
+                                      <tr
+                                        key={`charge-${idx}`}
+                                        className={`${i % 2 === 0 ? currentTheme.colors.bgAccent : "bg-transparent"} border-b border-slate-200`}
+                                      >
+                                        <td className="py-2.5 px-3 text-center border-x border-slate-200">
+                                          {i + 1}.
+                                        </td>
+                                        <td className="py-2.5 px-3 font-bold border-r border-slate-200 leading-snug text-slate-800">
+                                          {charge.name || "Charge"}
+                                        </td>
+                                        <td className="py-2.5 px-3 text-center border-r border-slate-200 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-2.5 px-3 text-center border-r border-slate-200 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-2.5 px-3 text-right border-r border-slate-200 font-semibold">
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                        <td className="py-2.5 px-3 text-right border-r border-slate-200 font-bold">
+                                          {(charge.amount || 0).toLocaleString(
+                                            undefined,
+                                            { minimumFractionDigits: 2 },
+                                          )}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </>
                               ) : (
                                 <tr>
                                   <td
@@ -1752,12 +2048,6 @@ export function QuotationEngine() {
     <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
   </div>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
   <div className="flex justify-between py-1 text-[11px] font-medium">
     <span className="opacity-80">Round Off</span>
@@ -1838,12 +2128,6 @@ export function QuotationEngine() {
     <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
   </div>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
   <div className="flex justify-between py-1 text-[11px] font-medium">
     <span className="opacity-80">Round Off</span>
@@ -2028,15 +2312,15 @@ export function QuotationEngine() {
                               <div
                                 className={`flex-1 flex items-center justify-center border-b ${currentTheme.colors.borderMain} p-2`}
                               >
-                                {sellerDetails.upiId ? (
-    <QRCodeSVG 
-      value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
-      size={80} 
-      level="M" 
-    />
-  ) : (
-    <QrCode className="w-20 h-20 text-slate-800 opacity-80" />
-  )}
+                                {isMounted && sellerDetails.upiId ? (
+                                  <QRCodeSVG 
+                                    value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
+                                    size={80} 
+                                    level="M" 
+                                  />
+                                ) : (
+                                  <QrCode className="w-20 h-20 text-slate-800 opacity-80" />
+                                )}
                               </div>
                               <div className="flex-1 p-2 bg-slate-50/50">
                                 <p className="font-semibold text-slate-700 mb-0.5">
@@ -2145,8 +2429,57 @@ export function QuotationEngine() {
                                       { minimumFractionDigits: 2 },
                                     )}
                                   </td>
-                                </tr>
+                               </tr>
                               ))}
+                              {additionalCharges.map((charge, idx) => {
+                                const i = items.length + idx;
+                                return (
+                                  <tr key={`charge-${idx}`}>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain}`}
+                                    >
+                                      {i + 1}
+                                    </td>
+                                    <td
+                                      className={`p-1 font-bold border-r ${currentTheme.colors.borderMain}`}
+                                    >
+                                      {charge.name || "Charge"}
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td
+                                      className={`p-1 text-right border-r ${currentTheme.colors.borderMain} font-semibold`}
+                                    >
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td className="p-1 text-right font-bold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                               {/* Totals inline in table body */}
                               <tr className="h-10">
                                 <td
@@ -2226,22 +2559,38 @@ export function QuotationEngine() {
                                 </>
                               )}
 {discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
+  <tr className={`border-t border-dashed ${currentTheme.colors.borderMain}`}>
+    <td
+      colSpan={4}
+      className={`border-r ${currentTheme.colors.borderMain}`}
+    ></td>
+    <td
+      colSpan={3}
+      className={`p-1 text-right font-bold text-rose-600 border-r ${currentTheme.colors.borderMain}`}
+    >
+      Markdown/Discount
+    </td>
+    <td className="p-1 text-right font-bold text-rose-600">
+      -₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}
+    </td>
+  </tr>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
+  <tr className={`border-t border-dashed ${currentTheme.colors.borderMain}`}>
+    <td
+      colSpan={4}
+      className={`border-r ${currentTheme.colors.borderMain}`}
+    ></td>
+    <td
+      colSpan={3}
+      className={`p-1 text-right font-medium opacity-80 border-r ${currentTheme.colors.borderMain}`}
+    >
+      Round Off
+    </td>
+    <td className="p-1 text-right font-medium">
+      {roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}
+    </td>
+  </tr>
 )}
 
                               <tr
@@ -2326,24 +2675,7 @@ export function QuotationEngine() {
                                     </th>
                                   </>
                                 )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
+
 
                                 <th className="p-1" rowSpan={2}>
                                   Total Tax Amount
@@ -2376,24 +2708,7 @@ export function QuotationEngine() {
                                     </th>
                                   </>
                                 )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
+
 
                               </tr>
                             </thead>
@@ -2463,24 +2778,6 @@ export function QuotationEngine() {
                                         </td>
                                       </>
                                     )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
 
                                     <td className="p-1">
                                       ₹
@@ -2535,15 +2832,15 @@ export function QuotationEngine() {
                                   <p className="font-bold text-slate-600 mb-1">
                                     Pay using UPI:
                                   </p>
-                                  {sellerDetails.upiId ? (
-    <QRCodeSVG 
-      value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
-      size={64} 
-      level="M" 
-    />
-  ) : (
-    <QrCode className="w-16 h-16 opacity-90" />
-  )}
+                                  {isMounted && sellerDetails.upiId ? (
+                                    <QRCodeSVG 
+                                      value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
+                                      size={64} 
+                                      level="M" 
+                                    />
+                                  ) : (
+                                    <QrCode className="w-16 h-16 opacity-90" />
+                                  )}
                                 </div>
                                 <div className="w-1/2 p-2 text-right relative flex flex-col items-end">
                                   {sellerDetails.companyStampUrl && (
@@ -2798,6 +3095,49 @@ export function QuotationEngine() {
                                   </td>
                                 </tr>
                               ))}
+                              {additionalCharges.map((charge, idx) => {
+                                const i = items.length + idx;
+                                return (
+                                  <tr
+                                    key={`charge-${idx}`}
+                                    className="border-b border-slate-200"
+                                  >
+                                    <td className="py-2 px-2 text-center">
+                                      {i + 1}
+                                    </td>
+                                    <td className="py-2 px-2 font-bold text-slate-800">
+                                      {charge.name || "Charge"}
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-semibold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-semibold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-bold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                               <tr className="bg-[#fff1f2] font-bold text-[#e11d48]">
                                 <td
                                   colSpan={6}
@@ -2966,12 +3306,6 @@ export function QuotationEngine() {
     <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
   </div>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
   <div className="flex justify-between py-1 text-[11px] font-medium">
     <span className="opacity-80">Round Off</span>
@@ -3259,52 +3593,101 @@ export function QuotationEngine() {
                               </tr>
                             </thead>
                             <tbody className="text-sm">
-                              {items.length > 0 ? (
-                                items.map((item, i) => (
-                                  <tr
-                                    key={item.id}
-                                    className={`border-b ${currentTheme.colors.borderLight}`}
-                                  >
-                                    <td
-                                      className={`py-1.5 px-2 text-center border-x ${currentTheme.colors.borderLight}`}
+                              {items.length > 0 || additionalCharges.length > 0 ? (
+                                <>
+                                  {items.map((item, i) => (
+                                    <tr
+                                      key={item.id}
+                                      className={`border-b ${currentTheme.colors.borderLight}`}
                                     >
-                                      {i + 1}
-                                    </td>
-                                    <td
-                                      className={`py-1.5 px-2 font-bold border-x ${currentTheme.colors.borderLight}`}
-                                    >
-                                      {item.name || "-"}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-500">
-                                      {item.hsn || "-"}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-center border-x border-slate-100">
-                                      {item.qty}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-right border-x border-slate-100">
-                                      ₹
-                                      {item.rate.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                      })}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-right border-x border-slate-100">
-                                      ₹
-                                      {item.taxableValue.toLocaleString(
-                                        undefined,
-                                        { minimumFractionDigits: 2 },
-                                      )}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-center border-x border-slate-100">
-                                      {item.taxPercent}%
-                                    </td>
-                                    <td className="py-1.5 px-2 text-right border-x border-slate-100 font-bold">
-                                      ₹
-                                      {item.total.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                      })}
-                                    </td>
-                                  </tr>
-                                ))
+                                      <td
+                                        className={`py-1.5 px-2 text-center border-x ${currentTheme.colors.borderLight}`}
+                                      >
+                                        {i + 1}
+                                      </td>
+                                      <td
+                                        className={`py-1.5 px-2 font-bold border-x ${currentTheme.colors.borderLight}`}
+                                      >
+                                        {item.name || "-"}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-500">
+                                        {item.hsn || "-"}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-center border-x border-slate-100">
+                                        {item.qty}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-right border-x border-slate-100">
+                                        ₹
+                                        {item.rate.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                        })}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-right border-x border-slate-100">
+                                        ₹
+                                        {item.taxableValue.toLocaleString(
+                                          undefined,
+                                          { minimumFractionDigits: 2 },
+                                        )}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-center border-x border-slate-100">
+                                        {item.taxPercent}%
+                                      </td>
+                                      <td className="py-1.5 px-2 text-right border-x border-slate-100 font-bold">
+                                        ₹
+                                        {item.total.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                        })}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  {additionalCharges.map((charge, idx) => {
+                                    const i = items.length + idx;
+                                    return (
+                                      <tr
+                                        key={`charge-${idx}`}
+                                        className={`border-b ${currentTheme.colors.borderLight}`}
+                                      >
+                                        <td
+                                          className={`py-1.5 px-2 text-center border-x ${currentTheme.colors.borderLight}`}
+                                        >
+                                          {i + 1}
+                                        </td>
+                                        <td
+                                          className={`py-1.5 px-2 font-bold border-x ${currentTheme.colors.borderLight} text-slate-800`}
+                                        >
+                                          {charge.name || "Charge"}
+                                        </td>
+                                        <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-1.5 px-2 text-right border-x border-slate-100 font-semibold">
+                                          ₹
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                        <td className="py-1.5 px-2 text-right border-x border-slate-100 font-semibold">
+                                          ₹
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                        <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-1.5 px-2 text-right border-x border-slate-100 font-bold">
+                                          ₹
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </>
                               ) : (
                                 <tr>
                                   <td
@@ -3316,9 +3699,9 @@ export function QuotationEngine() {
                                 </tr>
                               )}
                               {/* Empty rows to fill space */}
-                              {items.length > 0 &&
+                              {(items.length > 0 || additionalCharges.length > 0) &&
                                 Array.from({
-                                  length: Math.max(0, 5 - items.length),
+                                  length: Math.max(0, 5 - (items.length + additionalCharges.length)),
                                 }).map((_, i) => (
                                   <tr
                                     key={`empty-${i}`}
@@ -3449,24 +3832,26 @@ export function QuotationEngine() {
                                       </tr>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
+                                  {discountAmount > 0 && (
+                                    <tr className="border-b border-slate-100">
+                                      <td className="py-0.5 px-1 font-bold text-rose-600 text-right">
+                                        Markdown/Discount:
+                                      </td>
+                                      <td className="py-0.5 px-1 text-right font-semibold text-rose-600">
+                                        -₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                                      </td>
+                                    </tr>
+                                  )}
+                                  {enableRoundOff && roundOffDiff !== 0 && (
+                                    <tr className="border-b border-slate-100">
+                                      <td className="py-0.5 px-1 font-bold text-slate-500 text-right">
+                                        Round Off:
+                                      </td>
+                                      <td className="py-0.5 px-1 text-right font-semibold text-slate-900">
+                                        {roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}
+                                      </td>
+                                    </tr>
+                                  )}
 
                                   <tr className="border-b border-slate-100">
                                     <td className="py-0.5 px-1 font-bold text-slate-500 text-right">
@@ -4053,25 +4438,6 @@ export function QuotationEngine() {
                                       </th>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
                                   <th
                                     className="py-0.5 px-1 text-right w-20"
                                     rowSpan={2}
@@ -4101,25 +4467,6 @@ export function QuotationEngine() {
                                       </th>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
                                 </tr>
                               </thead>
                               <tbody
@@ -4179,25 +4526,6 @@ export function QuotationEngine() {
                                           </td>
                                         </>
                                       )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
                                       <td className="py-0.5 px-1 text-right font-bold">
                                         ₹
                                         {slab.tax.toLocaleString(undefined, {
@@ -4247,24 +4575,6 @@ export function QuotationEngine() {
                                       </td>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
 
                                   <td className="py-0.5 px-1 text-right">
                                     ₹

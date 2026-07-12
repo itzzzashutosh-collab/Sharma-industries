@@ -83,3 +83,24 @@ export async function markQuotationAsPaid(quotationId: string, amount: number, p
     return { success: false, error: error.message };
   }
 }
+
+export async function updateQuotationStatus(quotationId: string, status: string) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("quotations")
+      .update({ status })
+      .eq("id", quotationId);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/dashboard/ceo/quotations");
+    revalidatePath(`/dashboard/ceo/quotations/${quotationId}`);
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

@@ -29,6 +29,7 @@ export async function createMasterProduct(formData: FormData) {
     const packaging_type = formData.get("packaging_type") as string;
     const packing_size_amount = parseFloat(formData.get("packing_size_amount") as string) || 0;
     const packing_size_unit = formData.get("packing_size_unit") as string;
+    const category = formData.get("category") as string || "Emulsions";
     const tagsJsonStr = formData.get("tags") as string;
     let tags: string[] = [];
     try {
@@ -79,6 +80,7 @@ export async function createMasterProduct(formData: FormData) {
       package_type: packaging_type,
       package_size: packing_size_amount,
       package_size_unit: packing_size_unit,
+      category,
       tags: tags.join(','),
       image_url: imageUrl,
       is_master_product: true
@@ -127,6 +129,7 @@ export async function updateMasterProduct(formData: FormData) {
     const packaging_type = formData.get("packaging_type") as string;
     const packing_size_amount = parseFloat(formData.get("packing_size_amount") as string) || 0;
     const packing_size_unit = formData.get("packing_size_unit") as string;
+    const category = formData.get("category") as string || "Emulsions";
     
     const tagsJsonStr = formData.get("tags") as string;
     let tags: string[] = [];
@@ -214,6 +217,7 @@ export async function updateMasterProduct(formData: FormData) {
         package_type: packaging_type,
         package_size: packing_size_amount,
         package_size_unit: packing_size_unit,
+        category,
         tags: tags.join(','),
         image_url: imageUrl
       })
@@ -299,5 +303,130 @@ export async function deleteMasterProduct(productId: string) {
   } catch (err: any) {
     console.error("Exception in deleteMasterProduct Server Action:", err);
     return { success: false, error: err.message || "An unexpected error occurred." };
+  }
+}
+
+export async function importMasterProducts(productsList: any[]) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("si_session");
+    if (!sessionCookie?.value) {
+      return { success: false, error: "Unauthorized. Please log in." };
+    }
+    const session = JSON.parse(sessionCookie.value);
+    if (session.role !== "ceo") {
+      return { success: false, error: "Unauthorized. Only CEO can import products." };
+    }
+
+    const supabase = await createAdminClient();
+
+    const insertRows = productsList.map(p => ({
+      product_name: p.name || p.product_name,
+      hsn_code: p.hsn_code || "3209",
+      mfg_cost: parseFloat(p.mfg_cost || p.manufacturing_price) || 0,
+      selling_cost: parseFloat(p.selling_cost || p.selling_price) || 0,
+      mrp: parseFloat(p.mrp) || 0,
+      tax_rate: parseFloat(p.tax_rate) || 18,
+      actual_stock: parseFloat(p.stock || p.actual_stock) || 0,
+      min_stock_threshold: parseFloat(p.min_stock || p.min_stock_threshold) || 10,
+      package_type: p.package_type || p.packaging_type || "Bucket",
+      package_size: parseFloat(p.package_size || p.packing_size_amount) || 0,
+      package_size_unit: p.package_size_unit || p.packing_size_unit || "Litre",
+      category: p.category || "Emulsions",
+      tags: p.tags || "",
+      is_master_product: true
+    }));
+
+    const { error } = await supabase
+      .from("products")
+      .insert(insertRows);
+
+    if (error) {
+      console.error("Database error during bulk import:", error);
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/dashboard/ceo/products");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Exception during bulk import:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function updateBulkPrices(pricingList: { id: string, mfg_cost: number, selling_cost: number, mrp: number }[]) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("si_session");
+    if (!sessionCookie?.value) {
+      return { success: false, error: "Unauthorized. Please log in." };
+    }
+    const session = JSON.parse(sessionCookie.value);
+    if (session.role !== "ceo") {
+      return { success: false, error: "Unauthorized. Only CEO can update pricing." };
+    }
+
+    const supabase = await createAdminClient();
+
+    // Perform sequential updates for simple safety (bulk updates in Postgres require complex upserts/transactions)
+    for (const item of pricingList) {
+      const { error } = await supabase
+        .from("products")
+        .update({
+          mfg_cost: item.mfg_cost,
+          selling_cost: item.selling_cost,
+          mrp: item.mrp
+        })
+        .eq("id", item.id)
+        .eq("is_master_product", true);
+
+      if (error) {
+        console.error(`Error updating product ${item.id} pricing:`, error);
+        return { success: false, error: `Failed to update product ID ${item.id}: ${error.message}` };
+      }
+    }
+
+    revalidatePath("/dashboard/ceo/products");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Exception updating bulk pricing:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export async function removePackagingDetails(productId: string) {
+  try {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("si_session");
+    if (!sessionCookie?.value) {
+      return { success: false, error: "Unauthorized. Please log in." };
+    }
+    const session = JSON.parse(sessionCookie.value);
+    if (session.role !== "ceo") {
+      return { success: false, error: "Unauthorized. Only CEO can edit products." };
+    }
+
+    const supabase = await createAdminClient();
+
+    const { error } = await supabase
+      .from("products")
+      .update({
+        package_type: null,
+        package_size: null,
+        package_size_unit: null
+      })
+      .eq("id", productId)
+      .eq("is_master_product", true);
+
+    if (error) {
+      console.error("Failed to remove packaging details:", error);
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath("/dashboard/ceo/products");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Exception removing packaging details:", err);
+    return { success: false, error: err.message };
   }
 }

@@ -1,24 +1,28 @@
 "use client";
-
-import { useState } from "react";
-import { TrendingUp, Users, Package, DollarSign, AlertTriangle, CheckCircle, Download } from "lucide-react";
-import { FactoryHealthWidget } from "./FactoryHealthWidget";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/components/LanguageProvider";
-import { approveUser } from "./actions";
+import { AnimatedCounter } from "@/components/executive/AnimatedCounter";
+import Link from "next/link";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip as RechartsTooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend
-} from "recharts";
+  TrendingUp,
+  DollarSign,
+  AlertCircle,
+  CheckSquare,
+  Package,
+  Factory,
+  Store,
+  ArrowRight,
+  Clock,
+  FileText,
+  ShoppingCart,
+  UserCheck,
+  Sparkles,
+  AlertTriangle,
+  Circle,
+} from "lucide-react";
 
+// ─── Interfaces ───────────────────────────────────────────────────────────────
 interface PendingUser {
   id: string;
   name: string;
@@ -27,382 +31,424 @@ interface PendingUser {
   created_at: string;
 }
 
-interface ChartDataPoint {
-  date: string;
-  manufactured: number;
-  dispatched: number;
-}
-
 interface Props {
   pendingUsers: PendingUser[];
-  chartData: ChartDataPoint[];
   totalRawMaterialValue: number;
   totalFinishedGoodsValue: number;
 }
 
-// Dummy Finance Data
-const FINANCE_DATA = {
-  metrics: {
-    totalRevenue: 15450000,
-    netProfit: 4500000,
-    receivables: 2100000,
-    activeDealers: 142,
-  },
-  charts: {
-    revenueVsExpenseChart: [
-      { month: "Jan", revenue: 2000000, expenses: 1500000 },
-      { month: "Feb", revenue: 2200000, expenses: 1600000 },
-      { month: "Mar", revenue: 2800000, expenses: 1750000 },
-      { month: "Apr", revenue: 2400000, expenses: 1800000 },
-      { month: "May", revenue: 3100000, expenses: 1900000 },
-      { month: "Jun", revenue: 2950000, expenses: 1850000 },
-    ],
-    expenseDistributionChart: [
-      { name: "Raw Materials & Purchases", value: 6500000 },
-      { name: "Salary & Wages", value: 2000000 },
-      { name: "Freight", value: 850000 },
-      { name: "Marketing", value: 450000 },
-      { name: "Other Operations", value: 600000 },
-    ]
-  }
+// ─── Fade-in variant ─────────────────────────────────────────────────────────
+const fadeUp: any = {
+  hidden: { opacity: 0, y: 12 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.3, ease: "easeOut" },
+  }),
 };
 
-const PIE_COLORS = ["#a3e635", "#06b6d4", "#a855f7", "#374151", "#fb923c"];
+// ─── Metric Card ─────────────────────────────────────────────────────────────
+function MetricCard({
+  label,
+  value,
+  prefix = "",
+  suffix = "",
+  decimals = 0,
+  subtext,
+  icon: Icon,
+  accent,
+  delay,
+  href,
+}: {
+  label: string;
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  subtext?: string;
+  icon: React.ElementType;
+  accent: string;
+  delay: number;
+  href?: string;
+}) {
+  const { t } = useLanguage();
+  const content = (
+    <motion.div
+      custom={delay}
+      variants={fadeUp}
+      initial="hidden"
+      animate="show"
+      className="bg-card border border-border rounded-2xl p-5 flex flex-col gap-3 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-default group"
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t(label)}</span>
+        <div
+          className="w-8 h-8 rounded-xl flex items-center justify-center"
+          style={{ backgroundColor: `${accent}15`, border: `1px solid ${accent}25` }}
+        >
+          <Icon size={15} style={{ color: accent }} />
+        </div>
+      </div>
+      <div className="text-2xl font-black text-foreground tabular-nums">
+        {prefix}
+        <AnimatedCounter value={value} decimals={decimals} />
+        {suffix}
+      </div>
+      {subtext && (
+        <p className="text-[11px] text-muted-foreground font-medium leading-snug">{t(subtext)}</p>
+      )}
+    </motion.div>
+  );
 
-const FACTORY_SUMMARY_DATA = {
-  expenses: [
-    { id: "EXP-1", name: "Factory Rent", amount: 120000 },
-    { id: "EXP-2", name: "Electricity", amount: 45000 },
-    { id: "EXP-3", name: "Machine Maintenance", amount: 15000 },
-  ],
-  margins: [
-    { product: "Rustic Royale", cost: 1200, price: 1800, margin: "33%" },
-    { product: "Wall Putty", cost: 400, price: 550, margin: "27%" },
-    { product: "WeatherGuard", cost: 900, price: 1350, margin: "33%" },
-  ],
-  alerts: [
-    { material: "Titanium Dioxide", stock: 150, threshold: 200, unit: "kg" },
-    { material: "Acrylic Emulsion", stock: 45, threshold: 100, unit: "Liters" },
-  ]
-};
+  return href ? <Link href={href}>{content}</Link> : content;
+}
 
+// ─── Status Tile ─────────────────────────────────────────────────────────────
+function StatusTile({
+  label,
+  value,
+  status,
+  icon: Icon,
+  href,
+  delay,
+}: {
+  label: string;
+  value: string;
+  status: "ok" | "warn" | "alert";
+  icon: React.ElementType;
+  href: string;
+  delay: number;
+}) {
+  const { t } = useLanguage();
+  const statusColors = {
+    ok:    { dot: "bg-emerald-500", text: "text-emerald-600 dark:text-emerald-400", ring: "border-emerald-200 dark:border-emerald-800" },
+    warn:  { dot: "bg-amber-500",   text: "text-amber-600 dark:text-amber-400",   ring: "border-amber-200 dark:border-amber-800" },
+    alert: { dot: "bg-rose-500",    text: "text-rose-600 dark:text-rose-400",    ring: "border-rose-200 dark:border-rose-800" },
+  };
+  const c = statusColors[status];
+
+  return (
+    <Link href={href}>
+      <motion.div
+        custom={delay}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="bg-card border border-border rounded-2xl p-5 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 group"
+      >
+        <div className="w-10 h-10 rounded-xl bg-muted/50 flex items-center justify-center shrink-0">
+          <Icon size={18} className="text-muted-foreground" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t(label)}</p>
+          <p className="text-sm font-bold text-foreground mt-0.5 truncate">{value}</p>
+        </div>
+        <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full border ${c.ring} bg-transparent`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${c.dot}`} />
+          <span className={`text-[10px] font-black uppercase tracking-wide ${c.text}`}>
+            {status === "ok" ? t("OK") : status === "warn" ? t("Low") : t("Alert")}
+          </span>
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
+
+// ─── Activity Item ────────────────────────────────────────────────────────────
+function ActivityItem({
+  time,
+  title,
+  desc,
+  color,
+  delay,
+}: {
+  time: string;
+  title: string;
+  desc: string;
+  color: string;
+  delay: number;
+}) {
+  const { t } = useLanguage();
+  return (
+    <motion.div
+      custom={delay}
+      variants={fadeUp}
+      initial="hidden"
+      animate="show"
+      className="flex items-start gap-3"
+    >
+      <div className="flex flex-col items-center gap-1 pt-0.5">
+        <Circle size={7} fill={color} style={{ color }} />
+        <div className="w-px flex-1 bg-border min-h-[20px]" />
+      </div>
+      <div className="pb-3 flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-xs font-bold text-foreground truncate">{t(title)}</p>
+          <span className="text-[10px] text-muted-foreground shrink-0">{time}</span>
+        </div>
+        <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{t(desc)}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Main Dashboard ───────────────────────────────────────────────────────────
 export function CEODashboardClient({
   pendingUsers,
-  chartData,
   totalRawMaterialValue,
   totalFinishedGoodsValue,
 }: Props) {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<"finance" | "factory">("finance");
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
-  };
+  const today = mounted
+    ? new Date().toLocaleDateString("en-IN", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric",
+      })
+    : "";
 
-  const handleDownload = () => {
-    alert("Downloading Master Report... (Dummy Trigger)");
-  };
+  const pendingCount = pendingUsers.length;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 max-w-7xl mx-auto pb-12">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="space-y-8 pb-6">
+
+      {/* ── Page Header ─────────────────────────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2"
+      >
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t("Command Center")}
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            {t("Executive overview of Sharma Industries.")}
-          </p>
+          <h1 className="text-2xl font-black text-foreground tracking-tight">{t("Good Morning")} 👋</h1>
+          <p className="text-sm text-muted-foreground mt-0.5">{today}</p>
         </div>
-        <button
-          onClick={handleDownload}
-          className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white font-bold rounded-xl shadow-md hover:shadow-md transition-all"
-        >
-          <Download size={18} /> {t("Download Master Report")}
-        </button>
-      </div>
-
-      {/* The Ultimate KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-card border border-border p-6 rounded-3xl shadow-sm flex flex-col gap-2 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
-          <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-primary/20 transition-colors"></div>
-          <div className="flex justify-between items-start relative z-10">
-            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">{t("Total Monthly Revenue")}</p>
-            <div className="bg-primary/10 p-2 rounded-lg border border-primary/20">
-              <TrendingUp size={20} className="text-primary" />
-            </div>
-          </div>
-          <p className="text-3xl font-black text-primary relative z-10">{formatCurrency(FINANCE_DATA.metrics.totalRevenue)}</p>
-        </div>
-
-        <div className="bg-card border border-border p-6 rounded-3xl shadow-sm flex flex-col gap-2 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
-          <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-emerald-500/20 transition-colors"></div>
-          <div className="flex justify-between items-start relative z-10">
-            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">{t("Net Profit")}</p>
-            <div className="bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">
-              <DollarSign size={20} className="text-emerald-400" />
-            </div>
-          </div>
-          <p className="text-3xl font-black text-emerald-400 relative z-10">{formatCurrency(FINANCE_DATA.metrics.netProfit)}</p>
-        </div>
-
-        <div className="bg-card border border-border p-6 rounded-3xl shadow-sm flex flex-col gap-2 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-500/10 transition-all duration-300">
-          <div className="absolute inset-0 bg-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-rose-500/20 transition-colors"></div>
-          <div className="flex justify-between items-start relative z-10">
-            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">{t("Outstanding Receivables")}</p>
-            <div className="bg-rose-500/10 p-2 rounded-lg border border-rose-500/20">
-              <AlertTriangle size={20} className="text-rose-500" />
-            </div>
-          </div>
-          <p className="text-3xl font-black text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)] relative z-10">{formatCurrency(FINANCE_DATA.metrics.receivables)}</p>
-        </div>
-
-        <div className="bg-card border border-border p-6 rounded-3xl shadow-sm flex flex-col gap-2 relative overflow-hidden group hover:-translate-y-1 hover:shadow-lg hover:shadow-foreground/10 transition-all duration-300">
-          <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-foreground/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-foreground/20 transition-colors"></div>
-          <div className="flex justify-between items-start relative z-10">
-            <p className="text-muted-foreground font-semibold text-sm uppercase tracking-wider">{t("Active Dealers")}</p>
-            <div className="bg-muted p-2 rounded-lg border border-border">
-              <Users size={20} className="text-foreground" />
-            </div>
-          </div>
-          <p className="text-3xl font-black text-foreground relative z-10">{FINANCE_DATA.metrics.activeDealers}</p>
-        </div>
-      </div>
-
-      {/* Tabbed Chart Section */}
-      <div className="space-y-6">
-        <div className="flex space-x-2 border-b border-border">
-          <button
-            onClick={() => setActiveTab("finance")}
-            className={`px-6 py-3 font-semibold text-sm uppercase tracking-wider transition-all duration-300 border-b-2 ${
-              activeTab === "finance" 
-                ? "border-primary text-primary" 
-                : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground"
-            }`}
+        <div className="flex items-center gap-2">
+          <Link
+            href="/dashboard/ceo/invoices/new"
+            className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-sm"
           >
-            Financial Health
-          </button>
-          <button
-            onClick={() => setActiveTab("factory")}
-            className={`px-6 py-3 font-semibold text-sm uppercase tracking-wider transition-all duration-300 border-b-2 ${
-              activeTab === "factory" 
-                ? "border-primary text-primary" 
-                : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground"
-            }`}
+            <FileText size={13} />
+            {t("New Invoice")}
+          </Link>
+          <Link
+            href="/dashboard/ceo/quotations/new"
+            className="flex items-center gap-1.5 px-4 py-2 bg-muted text-foreground text-xs font-bold rounded-xl hover:bg-muted/80 border border-border transition-colors"
           >
-            Factory Operations
-          </button>
+            <ShoppingCart size={13} />
+            {t("New Quotation")}
+          </Link>
         </div>
+      </motion.div>
 
-        {/* Tab Content */}
-        <div className="min-h-[400px]">
-          {activeTab === "finance" && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-              {/* Chart A: Revenue vs Expenses */}
-              <div className="bg-card border border-border p-6 rounded-3xl shadow-sm">
-                <h2 className="text-lg font-bold mb-6 text-foreground">{t("Revenue vs Expenses")}</h2>
-                <div className="h-[300px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={FINANCE_DATA.charts.revenueVsExpenseChart} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#2a2e33" vertical={false} />
-                      <XAxis dataKey="month" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val/1000}k`} />
-                      <RechartsTooltip 
-                        cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                        contentStyle={{ backgroundColor: "#111", borderColor: "#2a2e33", borderRadius: "8px", color: "#fff" }} 
-                        itemStyle={{ fontWeight: "bold" }}
-                        formatter={(value: any) => formatCurrency(Number(value) || 0)}
-                      />
-                      <Legend iconType="circle" />
-                      <Bar dataKey="revenue" name={t("Revenue")} fill="#a3e635" radius={[4, 4, 0, 0]} />
-                      <Bar dataKey="expenses" name={t("Expenses")} fill="#4b5563" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Chart B: Expense Distribution */}
-              <div className="bg-card border border-border p-6 rounded-3xl shadow-sm">
-                <h2 className="text-lg font-bold mb-6 text-foreground">{t("Expense Distribution")}</h2>
-                <div className="h-[300px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={FINANCE_DATA.charts.expenseDistributionChart}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={100}
-                        paddingAngle={5}
-                        label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
-                        labelLine={false}
-                      >
-                        {FINANCE_DATA.charts.expenseDistributionChart.map((entry: any, index: number) => (
-                          <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <RechartsTooltip 
-                        contentStyle={{ backgroundColor: "#111", borderColor: "#2a2e33", borderRadius: "8px", color: "#fff" }} 
-                        itemStyle={{ fontWeight: "bold" }}
-                        formatter={(value: any) => formatCurrency(Number(value) || 0)}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "factory" && (
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300 h-full space-y-6">
-              <FactoryHealthWidget
-                chartData={chartData}
-                totalRawMaterialValue={totalRawMaterialValue}
-                totalFinishedGoodsValue={totalFinishedGoodsValue}
-              />
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6 border-t border-border">
-                {/* Product Margins */}
-                <div className="bg-card border border-border p-6 rounded-3xl shadow-sm">
-                  <h3 className="text-lg font-bold text-foreground mb-4">{t("Product Margins")}</h3>
-                  <div className="space-y-4">
-                    {FACTORY_SUMMARY_DATA.margins.map((m, i) => (
-                      <div key={i} className="flex justify-between items-center border-b border-border/50 pb-2">
-                        <div>
-                          <p className="font-semibold text-foreground text-sm">{m.product}</p>
-                          <p className="text-sm text-muted-foreground">Cost: ₹{m.cost} | Selling: ₹{m.price}</p>
-                        </div>
-                        <span className="bg-emerald-500/10 text-emerald-400 font-bold px-2 py-1 rounded-md text-sm">{m.margin}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Major Factory Expenses */}
-                <div className="bg-card border border-border p-6 rounded-3xl shadow-sm">
-                  <h3 className="text-lg font-bold text-foreground mb-4">{t("Major Factory Expenses")}</h3>
-                  <div className="space-y-4">
-                    {FACTORY_SUMMARY_DATA.expenses.map((e, i) => (
-                      <div key={i} className="flex justify-between items-center border-b border-border/50 pb-2">
-                        <p className="font-semibold text-foreground text-sm">{e.name}</p>
-                        <span className="text-rose-400 font-black text-sm">₹{e.amount.toLocaleString()}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* RM Alerts */}
-                <div className="bg-card border border-rose-500/30 p-6 rounded-3xl shadow-[0_0_15px_rgba(244,63,94,0.05)]">
-                  <h3 className="text-lg font-bold text-rose-500 mb-4 flex items-center gap-2">
-                    <AlertTriangle size={20} /> {t("Raw Material Alerts")}
-                  </h3>
-                  <div className="space-y-4">
-                    {FACTORY_SUMMARY_DATA.alerts.map((a, i) => (
-                      <div key={i}>
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="font-bold text-foreground">{a.material}</span>
-                          <span className="text-rose-400 font-bold">{a.stock} / {a.threshold} {a.unit}</span>
-                        </div>
-                        <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
-                          <div className="bg-rose-500 h-2 rounded-full" style={{ width: `${(a.stock / a.threshold) * 100}%` }}></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+      {/* ── Section 1: Today's Snapshot ─────────────────────────────────── */}
+      <section>
+        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3">{t("Today's Snapshot")}</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <MetricCard
+            label="Today's Revenue"
+            value={284000}
+            prefix="₹"
+            subtext="3 invoices collected"
+            icon={TrendingUp}
+            accent="#10b981"
+            delay={0}
+            href="/dashboard/ceo/financial-intelligence"
+          />
+          <MetricCard
+            label="Today's Profit"
+            value={68000}
+            prefix="₹"
+            subtext="24% margin"
+            icon={DollarSign}
+            accent="#8b5cf6"
+            delay={1}
+            href="/dashboard/ceo/financial-intelligence"
+          />
+          <MetricCard
+            label="Outstanding"
+            value={12}
+            suffix=" bills"
+            subtext="₹8.4L overdue"
+            icon={AlertCircle}
+            accent="#f59e0b"
+            delay={2}
+            href="/dashboard/ceo/invoices"
+          />
+          <MetricCard
+            label="Pending Approvals"
+            value={pendingCount}
+            subtext={pendingCount > 0 ? "Needs attention" : "All clear"}
+            icon={CheckSquare}
+            accent={pendingCount > 0 ? "#ef4444" : "#10b981"}
+            delay={3}
+            href="/dashboard/ceo/approvals"
+          />
         </div>
-      </div>
+      </section>
 
-      {/* Secondary Metrics & Actions (Bottom) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Top Selling Product */}
-        <div className="bg-card border border-border p-6 rounded-3xl shadow-sm flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-bold text-foreground">{t("Top Selling Product")}</h3>
-            <div className="bg-violet-500/10 p-2 rounded-xl border border-violet-500/20">
-              <Package size={24} className="text-violet-400" />
-            </div>
-          </div>
-          <div>
-            <p className="text-3xl font-black text-foreground">Rustic Royale</p>
-            <p className="text-violet-400 font-semibold mt-1">24% of all sales volume</p>
-          </div>
-          <div className="mt-4 space-y-2">
-             <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Monthly Revenue</span>
-                <span className="font-bold">₹12,40,000</span>
-             </div>
-             <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Units Sold</span>
-                <span className="font-bold">340 Buckets</span>
-             </div>
-          </div>
+      {/* ── Section 2: Operations Status ─────────────────────────────────── */}
+      <section>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t("Operations Status")}</p>
+          <Link href="/dashboard/factory" className="text-[11px] text-primary font-bold flex items-center gap-1">
+            {t("Factory")} <ArrowRight size={11} />
+          </Link>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <StatusTile
+            label="Raw Materials"
+            value={`₹${(totalRawMaterialValue / 100000).toFixed(1)}L in stock`}
+            status={totalRawMaterialValue > 500000 ? "ok" : totalRawMaterialValue > 100000 ? "warn" : "alert"}
+            icon={Package}
+            href="/dashboard/factory/inventory"
+            delay={4}
+          />
+          <StatusTile
+            label="Production"
+            value="3 active batches"
+            status="ok"
+            icon={Factory}
+            href="/dashboard/factory/production"
+            delay={5}
+          />
+          <StatusTile
+            label="Dealer Network"
+            value="48 active dealers"
+            status="ok"
+            icon={Store}
+            href="/dashboard/ceo/dealers"
+            delay={6}
+          />
+        </div>
+      </section>
 
-        {/* Pending Approvals */}
-        <div className="bg-card border border-border rounded-3xl p-6 flex flex-col lg:col-span-2">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-foreground">{t("Pending Approvals")}</h3>
-              {pendingUsers.length > 0 && (
-                <span className="bg-rose-500/20 text-rose-400 text-sm font-bold px-2 py-0.5 rounded-full">
-                  {pendingUsers.length}
-                </span>
-              )}
-            </div>
+      {/* ── Section 3: Recent Activity + AI Summary ───────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+        {/* Activity timeline */}
+        <section className="lg:col-span-3">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t("Recent Activity")}</p>
+            <Link href="/dashboard/ceo/reports" className="text-[11px] text-primary font-bold flex items-center gap-1">
+              {t("All Activity")} <ArrowRight size={11} />
+            </Link>
           </div>
+          <div className="bg-card border border-border rounded-2xl p-5">
+            <ActivityItem time="9:42 AM"  title="Invoice INV-2025-041 Created"  desc="Ravi Paints — ₹2,40,000"       color="#10b981" delay={7} />
+            <ActivityItem time="9:15 AM"  title="New Dealer Approval"           desc="Mohan Traders, Jaipur"          color="#8b5cf6" delay={8} />
+            <ActivityItem time="8:50 AM"  title="Production Batch #48 Started"  desc="420 bags — Exterior White"     color="#3b82f6" delay={9} />
+            <ActivityItem time="8:30 AM"  title="Payment Received"              desc="Karan Paints — ₹1,80,000"      color="#10b981" delay={10} />
+            <ActivityItem time="Yesterday" title="Low Stock Alert"              desc="Stone Powder — 2 days left"     color="#f59e0b" delay={11} />
 
-          <div className="flex-1 overflow-y-auto pr-2 max-h-[300px]">
-            {pendingUsers.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-muted-foreground space-y-3 py-8">
-                <CheckCircle size={48} className="text-border" />
-                <p className="text-sm font-semibold">{t("No pending approvals.")}</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {pendingUsers.map((user) => (
-                  <div
-                    key={user.id}
-                    className="p-4 rounded-xl bg-background border border-border flex flex-col justify-between gap-4 hover:border-primary/30 transition-colors"
-                  >
-                    <div>
-                      <div className="flex justify-between items-start">
-                        <p className="font-bold text-foreground">{user.name}</p>
-                        <span className="text-sm uppercase tracking-wider font-bold text-violet-400 bg-violet-500/10 px-2 py-1 rounded-md border border-violet-500/20">
-                          {user.role}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-1 font-mono">{user.phone}</p>
-                    </div>
-
-                    <form action={async () => {
-                      await approveUser(user.id);
-                    }}>
-                      <button
-                        type="submit"
-                        className="w-full bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-white font-bold text-sm py-2 rounded-lg transition-all shadow-sm"
-                      >
-                        {t("Approve Access")}
-                      </button>
-                    </form>
-                  </div>
-                ))}
-              </div>
+            {/* View pending approvals */}
+            {pendingCount > 0 && (
+              <motion.div custom={12} variants={fadeUp} initial="hidden" animate="show">
+                <Link
+                  href="/dashboard/ceo/approvals"
+                  className="mt-3 flex items-center gap-2 px-4 py-3 bg-rose-500/5 border border-rose-500/20 rounded-xl hover:bg-rose-500/10 transition-colors"
+                >
+                  <AlertTriangle size={14} className="text-rose-500" />
+                  <span className="text-xs font-bold text-rose-600 dark:text-rose-400">
+                    {pendingCount} {t("dealer registration")} {pendingCount === 1 ? t("needs") : t("need")} {t("approval")}
+                  </span>
+                  <ArrowRight size={12} className="text-rose-500 ml-auto" />
+                </Link>
+              </motion.div>
             )}
           </div>
-        </div>
+        </section>
+
+        {/* Quick Actions + AI Insights link */}
+        <section className="lg:col-span-2 flex flex-col gap-4">
+
+          {/* Quick Actions */}
+          <motion.div
+            custom={13}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="bg-card border border-border rounded-2xl p-5"
+          >
+            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3">{t("Quick Actions")}</p>
+            <div className="space-y-1.5">
+              {[
+                { label: "New Invoice",      href: "/dashboard/ceo/invoices/new",     icon: FileText },
+                { label: "New Quotation",    href: "/dashboard/ceo/quotations/new",   icon: ShoppingCart },
+                { label: "Add Purchase",     href: "/dashboard/purchase/new",         icon: Package },
+                { label: "Start Production", href: "/dashboard/factory/production",   icon: Factory },
+                { label: "Approve Dealers",  href: "/dashboard/ceo/approvals",        icon: UserCheck },
+              ].map((action, i) => {
+                const Icon = action.icon;
+                return (
+                  <Link
+                    key={action.href}
+                    href={action.href}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted/60 transition-colors group"
+                  >
+                    <Icon size={14} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                    <span className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors">{t(action.label)}</span>
+                    <ArrowRight size={11} className="ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors" />
+                  </Link>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* AI Insights Hub entry */}
+          <motion.div
+            custom={14}
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+          >
+            <Link
+              href="/dashboard/ceo/ai-insights"
+              className="flex items-center gap-4 bg-gradient-to-br from-primary/8 via-card to-violet-500/5 border border-primary/20 rounded-2xl p-5 hover:border-primary/40 hover:shadow-md transition-all group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <Sparkles size={18} className="text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-foreground">{t("AI Insights Hub")}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{t("Live analysis • Business intelligence • Recommendations")}</p>
+              </div>
+              <ArrowRight size={15} className="text-primary opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all shrink-0" />
+            </Link>
+          </motion.div>
+
+        </section>
       </div>
+
+      {/* ── Section 4: Upcoming Tasks ─────────────────────────────────────── */}
+      <section>
+        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-3">{t("Upcoming Tasks")}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {[
+            { icon: Clock, label: "GST Filing due in 4 days", href: "/dashboard/ca-portal", color: "#f59e0b" },
+            { icon: Package, label: "Reorder Stone Powder — stock critical", href: "/dashboard/purchase/new", color: "#ef4444" },
+            { icon: UserCheck, label: `${pendingCount} dealer approvals pending`, href: "/dashboard/ceo/approvals", color: "#8b5cf6" },
+          ].map((task, i) => {
+            const Icon = task.icon;
+            return (
+              <motion.div key={i} custom={15 + i} variants={fadeUp} initial="hidden" animate="show">
+                <Link
+                  href={task.href}
+                  className="flex items-center gap-3 p-4 bg-card border border-border rounded-xl hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm transition-all group"
+                >
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${task.color}15` }}>
+                    <Icon size={14} style={{ color: task.color }} />
+                  </div>
+                  <span className="text-xs font-semibold text-foreground leading-snug">{t(task.label)}</span>
+                  <ArrowRight size={12} className="ml-auto text-muted-foreground/40 group-hover:text-primary shrink-0 transition-colors" />
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
     </div>
   );
 }

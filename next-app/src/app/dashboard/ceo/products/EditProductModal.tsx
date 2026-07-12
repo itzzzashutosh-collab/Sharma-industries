@@ -20,9 +20,7 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
     tax_rate: "18",
     stock: "0",
     min_stock: "10",
-    packaging_type: "Bucket",
-    packing_size_amount: "",
-    packing_size_unit: "Litre"
+    category: "Emulsions"
   });
 
   const [tagInput, setTagInput] = useState("");
@@ -41,9 +39,7 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
         tax_rate: product.tax_rate?.toString() || "18",
         stock: product.actual_stock?.toString() || "0",
         min_stock: product.min_stock_threshold?.toString() || "10",
-        packaging_type: product.package_type || "Bucket",
-        packing_size_amount: product.package_size?.toString() || "",
-        packing_size_unit: product.package_size_unit || "Litre"
+        category: product.category || "Emulsions"
       });
       const initialTags = product.tags 
         ? (typeof product.tags === 'string' ? product.tags.split(',') : product.tags)
@@ -54,7 +50,7 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
   }, [isOpen, product]);
 
   const handleDelete = async () => {
-    if (confirm(`${t("Are you sure you want to delete this product?")} (${product.name})`)) {
+    if (confirm(`${t("Are you sure you want to delete this product?")} (${product.product_name})`)) {
       startTransition(async () => {
         try {
           const res = await deleteMasterProduct(product.id);
@@ -106,9 +102,7 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
     payload.append("tax_rate", formData.tax_rate);
     payload.append("stock", formData.stock);
     payload.append("min_stock", formData.min_stock);
-    payload.append("packaging_type", formData.packaging_type);
-    payload.append("packing_size_amount", formData.packing_size_amount);
-    payload.append("packing_size_unit", formData.packing_size_unit);
+    payload.append("category", formData.category);
     payload.append("tags", JSON.stringify(tags));
 
     if (imageFile) {
@@ -142,7 +136,7 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-end p-4 bg-black/40  animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-end p-4 bg-black/40 animate-in fade-in duration-200">
           <div className="bg-card border-l border-border h-full w-full max-w-lg shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col rounded-l-3xl">
             <div className="flex justify-between items-center p-6 border-b border-border bg-transparent/50 rounded-tl-3xl">
               <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
@@ -151,16 +145,19 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
               </h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                className="p-1 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
               >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="p-6 flex-1 overflow-y-auto">
-              <form id={`edit-form-${product.id}`} onSubmit={handleSubmit} className="space-y-6">
-                
-                {/* Basic Info */}
+            <div className="flex-1 overflow-y-auto p-6">
+              <form
+                id={`edit-form-${product.id}`}
+                onSubmit={handleSubmit}
+                className="space-y-5"
+              >
+                {/* Product Name */}
                 <div>
                   <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
                     {t("Product Name")}
@@ -168,13 +165,12 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
                   <input
                     type="text"
                     value={formData.name}
-                    required
-                    placeholder={t("e.g., Rustic Royale")}
                     className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary text-sm font-medium"
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                   />
                 </div>
 
+                {/* HSN Code */}
                 <div>
                   <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
                     {t("HSN Code")}
@@ -187,17 +183,17 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
                   />
                 </div>
 
-
-
-                {/* Pricing Details */}
+                {/* Costs Section */}
                 <div className="border-t border-border pt-4">
-                  <h4 className="text-sm font-bold text-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <h4 className="text-xs font-black text-foreground uppercase tracking-wider mb-3 flex items-center gap-1">
                     <Sparkles size={14} className="text-primary" />
-                    {t("Pricing Details")}
+                    {t("Costing & Margin")}
                   </h4>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="grid grid-cols-2 gap-4 mb-3">
                     <div>
-                      <label className="block text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("Manufacturing Cost (₹)")}</label>
+                      <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                        {t("Mfg Cost (₹)")}
+                      </label>
                       <input
                         type="number"
                         value={formData.manufacturing_cost}
@@ -207,7 +203,9 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">{t("Selling Cost (₹)")}</label>
+                      <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                        {t("Selling Price (₹)")}
+                      </label>
                       <input
                         type="number"
                         value={formData.selling_cost}
@@ -273,49 +271,24 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
                   </div>
                 </div>
 
-                {/* Packaging Details */}
-                <div className="grid grid-cols-3 gap-3 border-t border-border pt-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-muted-foreground mb-1">{t("Pkg Type")}</label>
-                    <select
-                      value={formData.packaging_type}
-                      className="w-full bg-background border border-border rounded-xl px-2 py-2 text-foreground text-sm outline-none focus:border-primary"
-                      onChange={e => setFormData({ ...formData, packaging_type: e.target.value })}
-                    >
-                      <option value="Bucket">Bucket</option>
-                      <option value="Container">Container</option>
-                      <option value="Bag">Bag</option>
-                      <option value="Pouch">Pouch</option>
-                      <option value="Drum">Drum</option>
-                      <option value="Box">Box</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-muted-foreground mb-1">{t("Size")}</label>
-                    <input
-                      type="number"
-                      value={formData.packing_size_amount}
-                      className="w-full bg-background border border-border rounded-xl px-2 py-2 text-foreground text-sm outline-none focus:border-primary"
-                      onChange={e => setFormData({ ...formData, packing_size_amount: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-muted-foreground mb-1">{t("Unit")}</label>
-                    <select
-                      value={formData.packing_size_unit}
-                      className="w-full bg-background border border-border rounded-xl px-2 py-2 text-foreground text-sm outline-none focus:border-primary"
-                      onChange={e => setFormData({ ...formData, packing_size_unit: e.target.value })}
-                    >
-                      <option value="Litre">Litre (L)</option>
-                      <option value="kg">kg</option>
-                      <option value="Gram">Gram (g)</option>
-                      <option value="ml">ml</option>
-                      <option value="Piece">Piece</option>
-                    </select>
-                  </div>
+                {/* Category Dropdown */}
+                <div className="border-t border-border pt-4">
+                  <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                    {t("Category")}
+                  </label>
+                  <select
+                    value={formData.category}
+                    className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground text-sm outline-none focus:border-primary font-medium"
+                    onChange={e => setFormData({ ...formData, category: e.target.value })}
+                  >
+                    <option value="Emulsions">Emulsions</option>
+                    <option value="Putty">Putty</option>
+                    <option value="Primers">Primers</option>
+                    <option value="Textures">Textures</option>
+                    <option value="Distempers">Distempers</option>
+                    <option value="Accessories">Accessories</option>
+                  </select>
                 </div>
-
-
 
                 {/* Variations / Tags */}
                 <div>
@@ -354,7 +327,7 @@ export function EditProductModal({ product, onSuccess }: { product: any; onSucce
                   </label>
                   <div className="border-2 border-dashed border-border rounded-xl p-4 flex flex-col items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary transition-all cursor-pointer">
                     <UploadCloud size={24} className="mb-1 text-primary" />
-                    <input type="file" className="text-sm" accept="image/*" onChange={(e) => { if(e.target.files) setImageFile(e.target.files[0]) }} />
+                    <input type="file" className="text-sm cursor-pointer" accept="image/*" onChange={(e) => { if(e.target.files) setImageFile(e.target.files[0]) }} />
                   </div>
                 </div>
 

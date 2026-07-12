@@ -132,6 +132,34 @@ export async function POST(request: Request) {
     const advancePaid = body.payment_terms?.advance_paid ? Number(body.payment_terms.advance_paid) : 0;
     const balanceDue = grandTotal - advancePaid;
 
+    let pdfUrl = body.pdf_url || null;
+    if (body.pdf_base64) {
+      try {
+        const base64Data = body.pdf_base64.replace(/^data:application\/pdf;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        const sanitizedInvNo = invoiceNo.replace(/[^a-zA-Z0-9]/g, "_");
+        const fileName = `${sanitizedInvNo}_${Date.now()}.pdf`;
+        
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("invoices")
+          .upload(fileName, buffer, {
+            contentType: "application/pdf",
+            upsert: true
+          });
+          
+        if (!uploadErr && uploadData) {
+          const { data: urlData } = supabase.storage
+            .from("invoices")
+            .getPublicUrl(uploadData.path);
+          pdfUrl = urlData?.publicUrl || null;
+        } else if (uploadErr) {
+          console.error("Storage upload error:", uploadErr);
+        }
+      } catch (err) {
+        console.error("Failed to parse and upload base64 PDF:", err);
+      }
+    }
+
     const payload = {
       id: newId,
       invoice_no: invoiceNo, // Server-validated sequential invoice number
@@ -163,7 +191,8 @@ export async function POST(request: Request) {
       grand_total: grandTotal,
       balance_due: balanceDue,
       is_tax_inclusive: Boolean(body.is_tax_inclusive),
-      qr_range: body.qr_range || null
+      qr_range: body.qr_range || null,
+      pdf_url: pdfUrl
     };
 
     const { data, error } = await supabase

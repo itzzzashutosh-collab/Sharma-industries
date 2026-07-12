@@ -77,6 +77,36 @@ export default async function PaintersPage() {
     console.error("Error fetching dealers:", dealersErr);
   }
 
+  // Fetch rewards catalog
+  const { data: dbRewards, error: rewardsErr } = await supabase
+    .from("rewards_catalog")
+    .select("*")
+    .order("points", { ascending: true });
+
+  if (rewardsErr) {
+    console.error("Error fetching rewards:", rewardsErr);
+  }
+
+  // Fetch schemes
+  const { data: dbSchemes, error: schemesErr } = await supabase
+    .from("schemes")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (schemesErr) {
+    console.error("Error fetching schemes:", schemesErr);
+  }
+
+  // Fetch competitions
+  const { data: dbCompetitions, error: compErr } = await supabase
+    .from("competitions")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (compErr) {
+    console.error("Error fetching competitions:", compErr);
+  }
+
   // Map scans to painters programmatically
   const paintersWithHistory = (painters || []).map((p) => {
     const scans = (qrRegistry || [])
@@ -116,5 +146,12 @@ export default async function PaintersPage() {
     };
   });
 
-  return <PaintersClient initialPainters={paintersWithHistory} />;
+  return (
+    <PaintersClient 
+      initialPainters={paintersWithHistory} 
+      initialRewards={dbRewards || []}
+      initialSchemes={dbSchemes || []}
+      initialCompetitions={dbCompetitions || []}
+    />
+  );
 }

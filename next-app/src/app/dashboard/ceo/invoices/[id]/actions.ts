@@ -83,3 +83,47 @@ export async function markInvoiceAsPaid(invoiceId: string, amount: number, payme
     return { success: false, error: error.message };
   }
 }
+
+export async function cancelInvoice(invoiceId: string) {
+  try {
+    const supabase = await createAdminClient();
+    const { data: invoice, error: fetchError } = await supabase
+      .from("invoices")
+      .select("*")
+      .eq("id", invoiceId)
+      .single();
+
+    if (fetchError || !invoice) {
+      return { success: false, error: "Invoice not found." };
+    }
+
+    const { error: updateError } = await supabase
+      .from("invoices")
+      .update({ status: 'Cancelled' })
+      .eq("id", invoiceId);
+
+    if (updateError) {
+      return { success: false, error: "Failed to cancel invoice: " + updateError.message };
+    }
+
+    // Record in ledger
+    const customerName = typeof invoice.customer === 'object' ? invoice.customer.name : invoice.customer;
+    const ledgerId = await generateSemanticId(supabase, "ledger_entries", "LED", customerName || "Unknown", "DR");
+    await supabase.from("ledger_entries").insert([{
+        id: ledgerId,
+        client_id: invoice.client_id,
+        date: new Date().toISOString().split("T")[0],
+        description: `Invoice Cancelled - ${invoiceId}`,
+        credit: 0,
+        debit: invoice.grand_total,
+        balance: 0 
+    }]);
+
+    revalidatePath("/dashboard/ceo/invoices");
+    revalidatePath(`/dashboard/ceo/invoices/${invoiceId}`);
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

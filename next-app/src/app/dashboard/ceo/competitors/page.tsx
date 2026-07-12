@@ -1,10 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 import { CompetitorsClient } from "./client";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   title: "Competitor Intelligence | Sharma ERP",
   description: "Track and analyze competitor paint brands, SKU pricing, dealer margins, and product specifications.",
-};
+  };
+}
 export const dynamic = "force-dynamic";
 
 export default async function CompetitorsPage() {

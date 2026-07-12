@@ -39,70 +39,92 @@
 
 @layer base {
   :root {
-    --radius: 1.25rem; /* Very rounded corners, 20px */
+    --radius: 1.0rem; /* Elegant rounded corners, 16px */
 
-    /* Light mode — Finly theme */
-    --background: #fdfcff;
-    --foreground: #1c1c21;
+    /* Light mode — Premium Command Center Theme */
+    --background: #fcfbfe;
+    --foreground: #09090b;
 
     --card: #ffffff;
-    --card-foreground: #1c1c21;
+    --card-foreground: #09090b;
 
     --popover: #ffffff;
-    --popover-foreground: #1c1c21;
+    --popover-foreground: #09090b;
 
-    /* Vivid Purple */
-    --primary: #8b5cf6;
+    /* Apple/Linear Vivid Purple */
+    --primary: #7c3aed;
     --primary-foreground: #ffffff;
-    --primary-hover: #7c3aed;
+    --primary-hover: #6d28d9;
 
-    --secondary: #f3f4f6;
-    --secondary-foreground: #1f2937;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
 
-    --muted: #f3f4f6;
-    --muted-foreground: #6b7280;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
 
-    --accent: #8b5cf6;
+    --accent: #7c3aed;
     --accent-foreground: #ffffff;
 
     --destructive: #ef4444;
     --success: #10b981;
     --warning: #f59e0b;
 
-    --border: #f3f4f6;
-    --input: #f3f4f6;
-    --ring: #8b5cf6;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #7c3aed;
 
-    /* Sidebar — Transparent to let gradient show */
     --sidebar: transparent;
-    --sidebar-foreground: #4b5563;
-    --sidebar-primary: #8b5cf6;
+    --sidebar-foreground: #71717a;
+    --sidebar-primary: #7c3aed;
     --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #f3f4f6;
-    --sidebar-accent-foreground: #1c1c21;
+    --sidebar-accent: #f4f4f5;
+    --sidebar-accent-foreground: #09090b;
     --sidebar-border: transparent;
+
+    /* TYPOGRAPHY SCALE */
+    --font-hero: 3.5rem;
+    --font-page-title: 1.75rem;
+    --font-section-title: 1.125rem;
+    --font-card-title: 0.875rem;
+    --font-subtitle: 0.8125rem;
+    --font-body: 0.75rem;
+    --font-caption: 0.6875rem;
+    --font-label: 0.625rem;
+
+    /* ELEVATIONS & SHADOWS */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02);
+    --shadow-xl: 0 20px 32px rgba(0, 0, 0, 0.07), 0 4px 10px rgba(0, 0, 0, 0.03);
+
+    /* GLASSMORPHISM */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(0, 0, 0, 0.06);
+
+    /* TRANSITIONS */
+    --transition-spring: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .dark {
-    /* Dark mode — Finly theme */
-    --background: #1c1c1e;
-    --foreground: #f9fafb;
+    /* Dark mode — Vercel/Linear style carbon theme */
+    --background: #09090b;
+    --foreground: #fafafa;
 
-    --card: #28282b;
-    --card-foreground: #f9fafb;
+    --card: #0c0a09;
+    --card-foreground: #fafafa;
 
-    --popover: #28282b;
-    --popover-foreground: #f9fafb;
+    --popover: #0c0a09;
+    --popover-foreground: #fafafa;
 
     --primary: #8b5cf6;
     --primary-foreground: #ffffff;
     --primary-hover: #a78bfa;
 
-    --secondary: #3f3f46;
-    --secondary-foreground: #f9fafb;
+    --secondary: #1c1917;
+    --secondary-foreground: #fafafa;
 
-    --muted: #3f3f46;
-    --muted-foreground: #9ca3af;
+    --muted: #1c1917;
+    --muted-foreground: #a8a29e;
 
     --accent: #8b5cf6;
     --accent-foreground: #ffffff;
@@ -111,17 +133,27 @@
     --success: #10b981;
     --warning: #f59e0b;
 
-    --border: #3f3f46;
-    --input: #3f3f46;
+    --border: #1c1917;
+    --input: #1c1917;
     --ring: #8b5cf6;
 
     --sidebar: transparent;
-    --sidebar-foreground: #d1d5db;
+    --sidebar-foreground: #a8a29e;
     --sidebar-primary: #8b5cf6;
     --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #3f3f46;
-    --sidebar-accent-foreground: #f9fafb;
+    --sidebar-accent: #1c1917;
+    --sidebar-accent-foreground: #fafafa;
     --sidebar-border: transparent;
+
+    /* GLASSMORPHISM */
+    --glass-bg: rgba(9, 9, 11, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    
+    /* ELEVATIONS */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.15);
+    --shadow-xl: 0 20px 32px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   * {

@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     const { data, error } = await supabase
       .from("competitor_products")
       .select("*")
-      .order("competitor_brand", { ascending: true });
+      .order("brand", { ascending: true });
 
     if (error) {
       console.error("Supabase Error (competitor_products):", error);

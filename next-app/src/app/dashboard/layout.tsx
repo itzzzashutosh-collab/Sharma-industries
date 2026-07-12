@@ -2,6 +2,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "@/app/dashboard/logout-button";
 import { Sidebar } from "@/components/Sidebar";
+import { LanguageSwitcher } from "@/components/executive/LanguageSwitcher";
+import { NotificationBell } from "@/components/NotificationBell";
+import { AIChatAssistant } from "@/components/AIChatAssistant";
 
 export default async function DashboardLayout({
   children,
@@ -22,56 +25,88 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+  const roleLabels: Record<string, string> = {
+    ceo:          "CEO",
+    cofounder:    "Co-Founder",
+    dealer:       "Dealer",
+    salesman:     "Sales Executive",
+    factory:      "Factory Manager",
+    "ca-portal":  "Chartered Accountant",
+  };
+
+  const roleLabel = roleLabels[session.role] || session.role;
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      {/* Sidebar Navigation */}
+      {/* Left Navigation */}
       <Sidebar role={session.role as any} />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* Main Area */}
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+
         {/* Top Header */}
-        <header className="h-24 flex items-center justify-between px-4 sm:px-6 lg:px-8 bg-transparent z-10 relative">
-          {/* Top Left Logo Container */}
-          <div className="flex items-center pl-10 lg:pl-0 shrink-0">
-            {/* Main Logo */}
+        <header className="h-[72px] flex items-center justify-between pl-14 lg:pl-5 pr-4 sm:pr-6 bg-background border-b border-border z-20 relative shrink-0">
+
+          {/* Left: Sharma Industries Logo — full logo with icon + text, seamless, slightly smaller */}
+          <div
+            className="shrink-0 relative overflow-hidden"
+            style={{ width: "240px", height: "50px" }}
+          >
             <img
-              src="/logo_day_cropped.png"
-              alt="Sharma Industries Logo"
-              className="w-[130px] sm:w-[150px] lg:w-[170px] h-auto object-contain transition-all"
+              src="https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/sign/Company%20Assets%20(logos,%20Watermarks)/Sharmaindustries_daytheme.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83YTU1YTAxNi0xYzI2LTRlZjctYjlkNy1iYWU1NTFkN2Q1ZmUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDb21wYW55IEFzc2V0cyAobG9nb3MsIFdhdGVybWFya3MpL1NoYXJtYWluZHVzdHJpZXNfZGF5dGhlbWUucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc4Mzc2NTQ0MiwiZXhwIjo0OTM3MzY1NDQyfQ.NsMmaKzUaevoBm81geF4haKk-DFIPlv9Wub_Isc3WqI"
+              alt="Sharma Industries"
+              className="absolute [mix-blend-mode:multiply]"
+              style={{
+                width: "225px",
+                height: "225px",
+                top: "-82px",
+                left: "-9px",
+              }}
             />
           </div>
 
-          {/* Centered Title */}
-          <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 flex-col items-center leading-tight">
-            <span className="text-2xl font-bold text-foreground tracking-tight">Sharma Industries</span>
-            <span className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mt-1">ERP Software</span>
+          {/* Center: Company name + tagline */}
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight pointer-events-none select-none">
+            <span className="text-sm font-black text-foreground tracking-tight">Sharma Industries</span>
+            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
+              Paint Operating System
+            </span>
           </div>
 
-          {/* User Info & Logout */}
-          <div className="flex items-center gap-4 ml-auto">
-            <div className="hidden sm:block text-right">
-              <p className="text-sm font-medium text-foreground">
-                {session.name}
-              </p>
-              <p className="text-sm text-muted-foreground capitalize">{session.role}</p>
+          {/* Right: Controls */}
+          <div className="flex items-center gap-2">
+
+            {/* Language */}
+            <LanguageSwitcher />
+
+            <NotificationBell />
+
+            <div className="h-5 w-px bg-border" />
+
+            {/* User info */}
+            <div className="hidden sm:flex flex-col items-end leading-tight">
+              <p className="text-xs font-bold text-foreground">{session.name}</p>
+              <p className="text-[10px] text-muted-foreground font-semibold">{roleLabel}</p>
             </div>
-            <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
-              <span className="text-sm font-bold text-primary">
-                {session.name.charAt(0).toUpperCase()}
-              </span>
+
+            {/* Avatar */}
+            <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+              <span className="text-xs font-bold text-primary">{session.name.charAt(0).toUpperCase()}</span>
             </div>
-            <div className="h-6 w-px bg-border mx-2" />
+
+            {/* Logout */}
             <LogoutButton />
           </div>
         </header>
 
-        {/* Scrollable Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-background">
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-5 sm:p-6 lg:p-8 bg-background">
           <div className="max-w-7xl mx-auto">
             {children}
           </div>
         </main>
       </div>
+      <AIChatAssistant />
     </div>
   );
 }

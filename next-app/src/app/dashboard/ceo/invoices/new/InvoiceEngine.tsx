@@ -32,6 +32,7 @@ import { INVOICE_TEMPLATES, ThemeConfig } from "./themes";
 import { INDIAN_STATES } from "@/lib/constants";
 import { getNextInvoiceNumber } from "./actions";
 import { getDealers } from "@/app/dashboard/ceo/dealers/actions";
+import { createClient } from "@/utils/supabase/client";
 
 // Alias for strict compliance with requested coding standards
 const useTranslation = useLanguage;
@@ -169,7 +170,8 @@ const DEFAULT_SELLER: SellerDetails = {
   upiId: "sharma@upi",
 };
 
-export function InvoiceEngine() {
+export function InvoiceEngine({ orderId }: { orderId?: string }) {
+  const supabase = createClient();
   const { t } = useTranslation();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -190,6 +192,62 @@ export function InvoiceEngine() {
     state_code: "",
     pincode: "",
   });
+
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [targetItemRowId, setTargetItemRowId] = useState<string | null>(null);
+  const [newProductData, setNewProductData] = useState({
+    name: "",
+    hsn_code: "3209",
+    selling_price: 0,
+    packing_size_unit: "pcs",
+    category: "Accessory",
+  });
+
+  const handleSaveNewProduct = async () => {
+    if (!newProductData.name.trim()) {
+      alert("Product name is required");
+      return;
+    }
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product_name: newProductData.name,
+          hsn_code: newProductData.hsn_code,
+          selling_price: newProductData.selling_price,
+          packing_size_unit: newProductData.packing_size_unit,
+          tags: [newProductData.category],
+          stock: 0,
+          min_stock: 10,
+          tax_rate: 18,
+        }),
+      });
+      const data = await res.json();
+      if (data.success && data.data) {
+        const createdProduct = data.data;
+        setProducts([...products, createdProduct]);
+        
+        if (targetItemRowId) {
+          handleItemChange(targetItemRowId, "productId", createdProduct.id);
+        }
+        
+        setShowAddProductModal(false);
+        setNewProductData({
+          name: "",
+          hsn_code: "3209",
+          selling_price: 0,
+          packing_size_unit: "pcs",
+          category: "Accessory",
+        });
+        setTargetItemRowId(null);
+      } else {
+        alert(data.error || "Failed to save product");
+      }
+    } catch (err) {
+      alert("Error saving product");
+    }
+  };
 
   // Seller/Company Profile State
   const [sellerDetails, setSellerDetails] =
@@ -220,6 +278,9 @@ export function InvoiceEngine() {
   const [transportDate, setTransportDate] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
   const [isSameAsBilling, setIsSameAsBilling] = useState<boolean>(false);
+  const [transporterName, setTransporterName] = useState<string>("");
+  const [lrBiltyNo, setLrBiltyNo] = useState<string>("");
+  const [ewayBillNo, setEwayBillNo] = useState<string>("");
 
   // Payment Terms State
   const [advancePaid, setAdvancePaid] = useState<number>(0);
@@ -233,6 +294,7 @@ export function InvoiceEngine() {
   const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<1 | 2>(1);
   const [savedInvoiceId, setSavedInvoiceId] = useState<string | null>(null);
+  const [currentDraftId, setCurrentDraftId] = useState<string | null>(null);
   useEffect(() => {
     if (paymentMode === "Credit" && invoiceDate) {
       const dateObj = new Date(invoiceDate);
@@ -294,6 +356,322 @@ export function InvoiceEngine() {
     }
     loadInitialData();
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const editId = params.get("edit_id");
+    const duplicateId = params.get("duplicate_id");
+    const convertQuotationId = params.get("convert_quotation_id");
+    const draftId = params.get("draft");
+
+    const activeOrderId = orderId || params.get("orderId");
+
+    async function loadFromParams() {
+      if (draftId) {
+        try {
+          const raw = localStorage.getItem("invoice_drafts");
+          if (raw) {
+            const drafts = JSON.parse(raw);
+            const d = drafts.find((x: any) => x.id === draftId);
+            if (d && d.data) {
+              setCurrentDraftId(d.id);
+              setClientType(d.data.clientType || "Customer");
+              setSelectedClientId(d.data.selectedClientId || "");
+              setCustomerName(d.data.customerName || "");
+              setCustomerPhone(d.data.customerPhone || "");
+              setCustomerAddress(d.data.customerAddress || "");
+              setState(d.data.state || "");
+              setPincode(d.data.pincode || "");
+              setGstin(d.data.gstin || "");
+              setTaxType(d.data.taxType || "exclusive");
+              setTemplate(d.data.template || "classic_default");
+              setItems(d.data.items || []);
+              setInvoiceNo(d.data.invoiceNo || "");
+              if (d.data.invoiceDate) setInvoiceDate(d.data.invoiceDate);
+              if (d.data.dueDate) setDueDate(d.data.dueDate);
+              setNotes(d.data.notes || "");
+              setQrRange(d.data.qrRange || "");
+              setTransportMode(d.data.transportMode || "Road");
+              setVehicleNo(d.data.vehicleNo || "");
+              setTransportDate(d.data.transportDate || "");
+              setDestination(d.data.destination || "");
+              setIsSameAsBilling(d.data.isSameAsBilling || false);
+              setAdvancePaid(d.data.advancePaid || 0);
+              setPaymentMode(d.data.paymentMode || "Cash");
+              setCreditDays(d.data.creditDays || 0);
+              setDiscountAmount(d.data.discountAmount || 0);
+              setAdditionalCharges(d.data.additionalCharges || []);
+              setEnableRoundOff(d.data.enableRoundOff || false);
+            }
+          }
+        } catch (e) {
+          console.error("Error loading draft", e);
+        }
+      } else if (editId) {
+        try {
+          const res = await fetch(`/api/invoices/${editId}`).then(r => r.json());
+          if (res.success && res.data) {
+            const inv = res.data;
+            setSavedInvoiceId(inv.id);
+            setInvoiceNo(inv.invoice_no);
+            if (inv.date) setInvoiceDate(inv.date.split("T")[0]);
+            if (inv.due_date) setDueDate(inv.due_date.split("T")[0]);
+            setSelectedClientId(inv.client_id || "");
+            setClientType(inv.client_type || "Customer");
+            setCustomerName(inv.client_details?.name || "");
+            setCustomerPhone(inv.client_details?.phone || "");
+            setCustomerAddress(inv.client_details?.address || "");
+            setState(inv.client_details?.state_code || inv.client_details?.state || "");
+            setPincode(inv.client_details?.pincode || "");
+            setGstin(inv.client_details?.gstin || "");
+            setTaxType(inv.is_tax_inclusive ? "inclusive" : "exclusive");
+            setItems((inv.items || []).map((it: any) => ({
+              id: `item-${Math.random()}`,
+              productId: it.product_id || "",
+              name: it.name,
+              hsn: it.hsn_code || "3209",
+              qty: it.qty,
+              rate: it.rate,
+              taxRate: it.tax_rate || 18,
+              total: it.amount
+            })));
+            setNotes(inv.notes || "");
+            setQrRange(inv.qr_range || "");
+          }
+        } catch (e) {
+          console.error("Error loading edit invoice", e);
+        }
+      } else if (duplicateId) {
+        try {
+          const res = await fetch(`/api/invoices/${duplicateId}`).then(r => r.json());
+          if (res.success && res.data) {
+            const inv = res.data;
+            setSelectedClientId(inv.client_id || "");
+            setClientType(inv.client_type || "Customer");
+            setCustomerName(inv.client_details?.name || "");
+            setCustomerPhone(inv.client_details?.phone || "");
+            setCustomerAddress(inv.client_details?.address || "");
+            setState(inv.client_details?.state_code || inv.client_details?.state || "");
+            setPincode(inv.client_details?.pincode || "");
+            setGstin(inv.client_details?.gstin || "");
+            setTaxType(inv.is_tax_inclusive ? "inclusive" : "exclusive");
+            setItems((inv.items || []).map((it: any) => ({
+              id: `item-${Math.random()}`,
+              productId: it.product_id || "",
+              name: it.name,
+              hsn: it.hsn_code || "3209",
+              qty: it.qty,
+              rate: it.rate,
+              taxRate: it.tax_rate || 18,
+              total: it.amount
+            })));
+            setNotes(inv.notes || "");
+            setQrRange(inv.qr_range || "");
+          }
+        } catch (e) {
+          console.error("Error loading duplicate invoice", e);
+        }
+      } else if (convertQuotationId) {
+        try {
+          const res = await fetch(`/api/quotations/${convertQuotationId}`).then(r => r.json());
+          if (res.success && res.data) {
+            const q = res.data;
+            setSelectedClientId(q.client_id || "");
+            setCustomerName(q.client_details?.name || "");
+            setCustomerPhone(q.client_details?.phone || "");
+            setCustomerAddress(q.client_details?.address || "");
+            setState(q.client_details?.state_code || q.client_details?.state || "");
+            setPincode(q.client_details?.pincode || "");
+            setGstin(q.client_details?.gstin || "");
+            setTaxType(q.is_tax_inclusive ? "inclusive" : "exclusive");
+            setItems((q.items || []).map((it: any) => ({
+              id: `item-${Math.random()}`,
+              productId: it.product_id || "",
+              name: it.name,
+              hsn: it.hsn_code || "3209",
+              qty: it.qty,
+              rate: it.rate,
+              taxRate: it.tax_rate || 18,
+              total: it.amount
+            })));
+            setNotes(q.notes || `Converted from Quotation ${q.quotation_no}`);
+          }
+        } catch (e) {
+          console.error("Error converting quotation to invoice", e);
+        }
+      } else if (activeOrderId) {
+        try {
+          const { data: order, error } = await supabase
+            .from("orders")
+            .select("*, order_items(*)")
+            .eq("id", activeOrderId)
+            .single();
+
+          if (error) throw error;
+          
+          if (order) {
+            setCustomerName(order.dealer_name || "");
+            setClientType("Dealer");
+            if (order.dealer_id) {
+              setSelectedClientId(order.dealer_id);
+              const { data: client } = await supabase
+                .from("clients")
+                .select("*")
+                .eq("id", order.dealer_id)
+                .single();
+              if (client) {
+                setCustomerPhone(client.phone || "");
+                setCustomerAddress(client.address || "");
+                setState(client.state_code || client.state || "");
+                setPincode(client.pincode || "");
+                setGstin(client.gstin || "");
+              }
+            }
+
+            if (order.order_items && Array.isArray(order.order_items)) {
+              setItems(order.order_items.map((it: any) => {
+                const sub = Number(it.quantity) * Number(it.unit_price);
+                const taxRate = 18;
+                const taxable = sub;
+                const tax = sub * (taxRate / 100);
+                const itemTotal = sub + tax;
+
+                return {
+                  id: `item-${Math.random()}`,
+                  productId: it.product_id || it.id || "",
+                  name: it.product_name,
+                  hsn: "3209",
+                  qty: Number(it.quantity),
+                  rate: Number(it.unit_price),
+                  taxPercent: taxRate,
+                  taxableValue: taxable,
+                  taxAmount: tax,
+                  total: itemTotal,
+                  per: it.size || "20L"
+                };
+              }));
+            }
+            
+            setNotes(`Generated automatically from Sales Order: ${order.id}`);
+            if (order.vehicle_no) setVehicleNo(order.vehicle_no);
+            if (order.transporter_name) setTransporterName(order.transporter_name);
+            if (order.lr_bilty_no) setLrBiltyNo(order.lr_bilty_no);
+            if (order.eway_bill_no) setEwayBillNo(order.eway_bill_no);
+          }
+        } catch (e) {
+          console.warn("Database order lookup failed, falling back to dummy orders:", e);
+          const DUMMY_ORDERS = [
+            {
+              id: "SO-2026-001",
+              dealer_name: "Jaipur Builders Association",
+              dealer_id: "dl-1",
+              order_items: [
+                { id: "item-1-1", product_name: "Rustic Royale Superfine", size: "20L", quantity: 50, unit_price: 4500 },
+                { id: "item-1-2", product_name: "Wall Putty (Premium)", size: "40Kg", quantity: 100, unit_price: 1200 }
+              ]
+            },
+            {
+              id: "SO-2026-002",
+              dealer_name: "Karan Johar Paints",
+              dealer_id: "dl-2",
+              order_items: [
+                { id: "item-2-1", product_name: "WeatherGuard Matte", size: "10L", quantity: 30, unit_price: 3500 },
+                { id: "item-2-2", product_name: "Rustic Royale Superfine", size: "4L", quantity: 40, unit_price: 2000 }
+              ]
+            },
+            {
+              id: "SO-2026-003",
+              dealer_name: "Rajesh Sharma",
+              dealer_id: "dl-3",
+              transporter_name: "SafeExpress Logistics",
+              vehicle_no: "RJ-14-GA-9876",
+              lr_bilty_no: "LR-6655102",
+              eway_bill_no: "889910223849",
+              order_items: [
+                { id: "item-3-1", product_name: "Classic Acrylic Emulsion", size: "20L", quantity: 15, unit_price: 3000 }
+              ]
+            },
+            {
+              id: "SO-2026-004",
+              dealer_name: "Vijay Singh",
+              dealer_id: "dl-4",
+              transporter_name: "Gati Transport",
+              vehicle_no: "DL-3C-AY-2134",
+              lr_bilty_no: "LR-7711203",
+              eway_bill_no: "992817263540",
+              order_items: [
+                { id: "item-4-1", product_name: "Wall Putty (Premium)", size: "40Kg", quantity: 80, unit_price: 1200 },
+                { id: "item-4-2", product_name: "WeatherGuard Matte", size: "20L", quantity: 5, unit_price: 5800 }
+              ]
+            },
+            {
+              id: "SO-2026-005",
+              dealer_name: "Jaipur Builders Association",
+              dealer_id: "dl-1",
+              order_items: [
+                { id: "item-5-1", product_name: "Rustic Royale Superfine", size: "20L", quantity: 20, unit_price: 4900 }
+              ]
+            }
+          ];
+          const localOrder = DUMMY_ORDERS.find(o => o.id === activeOrderId);
+          if (localOrder) {
+            setCustomerName(localOrder.dealer_name || "");
+            setClientType("Dealer");
+            if (localOrder.dealer_name === "Jaipur Builders Association") {
+              setCustomerPhone("9829012345");
+              setCustomerAddress("12, Industrial Area, Malviya Nagar, Jaipur, Rajasthan");
+              setState("Rajasthan");
+              setPincode("302017");
+              setGstin("08AAAAA1111A1Z1");
+            } else if (localOrder.dealer_name === "Karan Johar Paints") {
+              setCustomerPhone("9414098765");
+              setCustomerAddress("B-4, Shopping Centre, Mansarovar, Jaipur, Rajasthan");
+              setState("Rajasthan");
+              setPincode("302020");
+              setGstin("08BBBBB2222B1Z2");
+            } else {
+              setCustomerPhone("9988776655");
+              setCustomerAddress("Station Road, Jaipur, Rajasthan");
+              setState("Rajasthan");
+              setPincode("302001");
+              setGstin("08CCCCC3333C1Z3");
+            }
+            if (localOrder.order_items) {
+              setItems(localOrder.order_items.map((it: any) => {
+                const sub = Number(it.quantity) * Number(it.unit_price);
+                const taxRate = 18;
+                const taxable = sub;
+                const tax = sub * (taxRate / 100);
+                const itemTotal = sub + tax;
+
+                return {
+                  id: `item-${Math.random()}`,
+                  productId: it.product_id || it.id || "",
+                  name: it.product_name,
+                  hsn: "3209",
+                  qty: Number(it.quantity),
+                  rate: Number(it.unit_price),
+                  taxPercent: taxRate,
+                  taxableValue: taxable,
+                  taxAmount: tax,
+                  total: itemTotal,
+                  per: it.size || "20L"
+                };
+              }));
+            }
+            setNotes(`Generated automatically from local Sales Order fallback: ${localOrder.id}`);
+            if (localOrder.vehicle_no) setVehicleNo(localOrder.vehicle_no);
+            if (localOrder.transporter_name) setTransporterName(localOrder.transporter_name);
+            if (localOrder.lr_bilty_no) setLrBiltyNo(localOrder.lr_bilty_no);
+            if (localOrder.eway_bill_no) setEwayBillNo(localOrder.eway_bill_no);
+          }
+        }
+      }
+    }
+
+    loadFromParams();
+  }, [orderId]);
 
   const handleClientSelect = (clientId: string) => {
     setSelectedClientId(clientId);
@@ -550,76 +928,95 @@ export function InvoiceEngine() {
     setInvoiceNo(nextNo);
   };
 
+  const saveAsDraft = (silent = false) => {
+    if (!customerName) {
+      if (!silent) alert(t("Please enter at least a Client Name to save a draft."));
+      return null;
+    }
+
+    try {
+      const raw = localStorage.getItem("invoice_drafts");
+      let currentDrafts: any[] = [];
+      if (raw) {
+        currentDrafts = JSON.parse(raw);
+      }
+
+      const draftIdToUse = currentDraftId || `draft-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      
+      const newDraftData = {
+        clientType,
+        selectedClientId,
+        customerName,
+        customerPhone,
+        customerAddress,
+        state,
+        pincode,
+        gstin,
+        taxType,
+        template,
+        items,
+        invoiceNo,
+        invoiceDate,
+        dueDate,
+        notes,
+        qrRange,
+        transportMode,
+        vehicleNo,
+        transportDate,
+        destination,
+        isSameAsBilling,
+        advancePaid,
+        paymentMode,
+        creditDays,
+        discountAmount,
+        additionalCharges,
+        enableRoundOff
+      };
+
+      const updatedDraft = {
+        id: draftIdToUse,
+        title: `Invoice ${invoiceNo || "Draft"}`,
+        customer: customerName,
+        amount: grandTotal,
+        savedAt: new Date().toISOString(),
+        data: newDraftData
+      };
+
+      const filteredDrafts = currentDrafts.filter((d: any) => d.id !== draftIdToUse);
+      const finalDrafts = [updatedDraft, ...filteredDrafts];
+
+      localStorage.setItem("invoice_drafts", JSON.stringify(finalDrafts));
+      setCurrentDraftId(draftIdToUse);
+
+      if (!silent) {
+        alert(t("Draft saved successfully!"));
+      }
+      return draftIdToUse;
+    } catch (err) {
+      console.error("Failed to save draft:", err);
+      if (!silent) alert(t("Failed to save draft."));
+      return null;
+    }
+  };
+
+  const handleSaveDraftOnly = () => {
+    const savedId = saveAsDraft(false);
+    if (savedId) {
+      router.push("/dashboard/ceo/invoices");
+    }
+  };
+
   const handleSaveAndNext = async () => {
     if (!customerName || !customerPhone || items.length === 0) {
       alert(t("Please fill out the client details and add at least one item."));
       return;
     }
 
-    try {
-      // Execute the database save
-      const res = await fetch("/api/invoices", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: savedInvoiceId,
-          date: invoiceDate,
-          due_date: dueDate,
-          invoice_no: invoiceNo,
-          client_type: clientType,
-          client_id: selectedClientId || null,
-          client_details: {
-            name: customerName,
-            phone: customerPhone,
-            gstin: gstin,
-            address: customerAddress,
-            state_code: state,
-            pincode: pincode || "000000",
-          },
-          items: items.map((item) => ({
-            product_id: item.productId,
-            name: item.name,
-            hsn_code: item.hsn,
-            qty: item.qty,
-            rate: item.rate,
-            amount: item.total,
-            qr_range: item.qrRange || null,
-          })),
-          tax_breakdown: { cgst, sgst, igst },
-          transport_details: {
-            transport_mode: transportMode,
-            vehicle_no: vehicleNo,
-            transport_date: transportDate,
-            destination: destination,
-            is_same_as_billing: isSameAsBilling,
-          },
-          payment_terms: {
-            advance_paid: advancePaid,
-            payment_mode: paymentMode,
-            credit_days: creditDays,
-          },
-          subtotal,
-          total_tax: totalTax,
-          grand_total: grandTotal,
-          discount_amount: discountAmount,
-            additional_charges: additionalCharges,
-            round_off: roundOffDiff,
-          is_tax_inclusive: taxType === "inclusive",
-        }),
-      });
-      const data = await res.json();
-      if (data.success && data.data) {
-        setSavedInvoiceId(data.data.id);
-        setCurrentStep(2);
-        // Pre-fetch the next invoice number so it's ready when user starts the next invoice
-        const nextNo = await getNextInvoiceNumber();
-        setInvoiceNo(nextNo);
-      } else {
-        alert(data.error || t("Error saving invoice data."));
-      }
-    } catch (err) {
-      alert(t("Failed to communicate with API."));
-    }
+    // Auto-save the draft locally
+    saveAsDraft(true);
+
+    // Transition to preview step directly (does not save to database yet)
+    setCurrentStep(2);
   };
 
   const handleGeneratePDF = async () => {
@@ -628,13 +1025,24 @@ export function InvoiceEngine() {
     if (!previewRef.current) return;
 
     try {
-      // Temporary scaling fix for html2canvas representation
+      // 1. GENERATE PDF BLOB FIRST
       const originalStyle = previewRef.current.style.transform;
       previewRef.current.style.transform = "none";
       previewRef.current.style.marginBottom = "0";
 
-      // Temporarily patch getComputedStyle to convert oklch/oklab colors
       const originalGetComputedStyle = window.getComputedStyle;
+      const originalConsoleWarn = console.warn;
+      const originalConsoleError = console.error;
+
+      console.warn = (...args) => {
+        if (args[0] && typeof args[0] === "string" && args[0].includes("oklch")) return;
+        originalConsoleWarn(...args);
+      };
+      console.error = (...args) => {
+        if (args[0] && typeof args[0] === "string" && args[0].includes("oklch")) return;
+        originalConsoleError(...args);
+      };
+
       const colorCache = new Map<string, string>();
       const convertCssColorToRgb = (colorString: string) => {
         if (colorCache.has(colorString)) return colorCache.get(colorString)!;
@@ -694,36 +1102,297 @@ export function InvoiceEngine() {
         });
       };
 
-      try {
-        const opt = {
-          margin: 0,
-          filename: `${invoiceNo}_${customerName}.pdf`,
-          image: { type: "jpeg" as const, quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-          pagebreak: { mode: "avoid-all" },
-          jsPDF: {
-            unit: "mm",
-            format: "a4" as const,
-            orientation: "portrait" as const,
-          },
-        };
+      let pdfBlob = null;
+      let base64Pdf = null;
+      let opt = {
+        margin: 0,
+        filename: `${invoiceNo}_${customerName}.pdf`,
+        image: { type: "jpeg" as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0, logging: false },
+        pagebreak: { mode: "avoid-all" },
+        jsPDF: {
+          unit: "mm",
+          format: "a4" as const,
+          orientation: "portrait" as const,
+        },
+      };
 
+      try {
         const html2pdf = (await import("html2pdf.js")).default;
-        await html2pdf().set(opt).from(previewRef.current).save();
-        
-        // Redirect to invoice history after successful generation
-        router.push("/dashboard/ceo/invoices");
+        const pdfWorker = html2pdf().set(opt).from(previewRef.current);
+        pdfBlob = await pdfWorker.outputPdf("blob");
+
+        // Convert Blob to base64 string
+        const blobToBase64 = (blob: Blob): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+          });
+        };
+        base64Pdf = await blobToBase64(pdfBlob);
+      } catch (err) {
+        console.error("Failed to generate PDF blob locally:", err);
       } finally {
         window.getComputedStyle = originalGetComputedStyle;
+        console.warn = originalConsoleWarn;
+        console.error = originalConsoleError;
       }
+
+      // 3. SAVE TO DATABASE WITH THE pdf_base64 ATTACHED
+      const res = await fetch("/api/invoices", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: savedInvoiceId,
+          pdf_base64: base64Pdf, // Pass base64 to server to perform secure storage upload
+          date: invoiceDate,
+          due_date: dueDate,
+          invoice_no: invoiceNo,
+          client_type: clientType,
+          client_id: selectedClientId || null,
+          client_details: {
+            name: customerName,
+            phone: customerPhone,
+            gstin: gstin,
+            address: customerAddress,
+            state_code: state,
+            pincode: pincode || "000000",
+          },
+          items: items.map((item) => ({
+            product_id: item.productId,
+            name: item.name,
+            hsn_code: item.hsn,
+            qty: item.qty,
+            rate: item.rate,
+            amount: item.total,
+            qr_range: item.qrRange || null,
+          })),
+          tax_breakdown: { cgst, sgst, igst },
+          transport_details: {
+            transport_mode: transportMode,
+            vehicle_no: vehicleNo,
+            transport_date: transportDate,
+            destination: destination,
+            is_same_as_billing: isSameAsBilling,
+          },
+          payment_terms: {
+            advance_paid: advancePaid,
+            payment_mode: paymentMode,
+            credit_days: creditDays,
+          },
+          subtotal,
+          total_tax: totalTax,
+          grand_total: grandTotal,
+          discount_amount: discountAmount,
+          additional_charges: additionalCharges,
+          round_off: roundOffDiff,
+          is_tax_inclusive: taxType === "inclusive",
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        alert(data.error || t("Error saving invoice to server database."));
+        return;
+      }
+
+      const newSavedId = data.data.id;
+      setSavedInvoiceId(newSavedId);
+
+      // --- BACKEND INTEGRATION: IF GENERATED FROM SALES ORDER, AUTOMATICALLY DISPATCH THE ORDER ---
+      const activeOrderId = orderId || (typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("orderId") : null);
+      if (activeOrderId) {
+        try {
+          await supabase
+            .from("orders")
+            .update({
+              status: "Dispatched",
+              transporter_name: transporterName || "SafeExpress Logistics",
+              vehicle_no: vehicleNo || "N/A",
+              lr_bilty_no: lrBiltyNo || "LR-TEMP",
+              eway_bill_no: ewayBillNo || "EWAY-TEMP"
+            })
+            .eq("id", activeOrderId);
+          console.log(`Associated Sales Order ${activeOrderId} marked as Dispatched successfully!`);
+        } catch (e) {
+          console.error("Failed to update associated order status:", e);
+        }
+
+        // Sync local_orders list in localStorage for offline/mock data fallback
+        try {
+          const localStr = localStorage.getItem("local_orders");
+          if (localStr) {
+            const currentOrders = JSON.parse(localStr);
+            const updated = currentOrders.map((o: any) => {
+              if (o.id === activeOrderId) {
+                return {
+                  ...o,
+                  status: "Dispatched",
+                  transporter_name: transporterName || "SafeExpress Logistics",
+                  vehicle_no: vehicleNo || "N/A",
+                  lr_bilty_no: lrBiltyNo || "LR-TEMP",
+                  eway_bill_no: ewayBillNo || "EWAY-TEMP"
+                };
+              }
+              return o;
+            });
+            localStorage.setItem("local_orders", JSON.stringify(updated));
+          }
+        } catch (localErr) {
+          console.error("Failed to sync local_orders in localStorage:", localErr);
+        }
+      }
+
+      // 4. NOW TRIGGER LOCAL DOWNLOAD OF PDF FILE
+      if (pdfBlob) {
+        try {
+          const html2pdf = (await import("html2pdf.js")).default;
+          await html2pdf().set(opt).from(previewRef.current).save();
+        } catch (e) {
+          console.error("Local download trigger failed:", e);
+        }
+      }
+
+      // 5. DELETE DRAFT RECORD UPON SUCCESSFUL FINALIZATION
+      if (currentDraftId) {
+        try {
+          const raw = localStorage.getItem("invoice_drafts");
+          if (raw) {
+            const drafts = JSON.parse(raw);
+            const updated = drafts.filter((d: any) => d.id !== currentDraftId);
+            localStorage.setItem("invoice_drafts", JSON.stringify(updated));
+          }
+        } catch (e) {
+          console.error("Failed to delete draft from localStorage:", e);
+        }
+      }
+      
+      // Redirect to invoice history
+      router.push("/dashboard/ceo/invoices");
     } catch (error) {
-      console.error("PDF generation failed:", error);
-      alert(t("Failed to generate PDF."));
+      console.error("PDF generation or DB save failed:", error);
+      alert(t("Failed to save invoice or generate PDF."));
     }
   };
 
   return (
     <div className="space-y-6">
+      {showAddProductModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 ">
+          <div className="bg-card border border-border rounded-2xl p-6 w-[400px] shadow-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-lg text-foreground">
+                {t("Add New Product / Accessory")}
+              </h3>
+              <button onClick={() => {
+                setShowAddProductModal(false);
+                setTargetItemRowId(null);
+              }}>
+                <X
+                  size={20}
+                  className="text-muted-foreground hover:text-foreground"
+                />
+              </button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                  {t("Product Name")} *
+                </label>
+                <input
+                  placeholder="Name (e.g. Brush 4 inch, Thinner)"
+                  value={newProductData.name}
+                  onChange={(e) =>
+                    setNewProductData({ ...newProductData, name: e.target.value })
+                  }
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                  {t("Selling Price / Rate")} (₹)
+                </label>
+                <input
+                  type="number"
+                  placeholder="Rate"
+                  value={newProductData.selling_price || ""}
+                  onChange={(e) =>
+                    setNewProductData({
+                      ...newProductData,
+                      selling_price: parseFloat(e.target.value) || 0,
+                    })
+                  }
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                    {t("HSN Code")}
+                  </label>
+                  <input
+                    placeholder="HSN (e.g. 3209)"
+                    value={newProductData.hsn_code}
+                    onChange={(e) =>
+                      setNewProductData({ ...newProductData, hsn_code: e.target.value })
+                    }
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                    {t("Unit")}
+                  </label>
+                  <select
+                    value={newProductData.packing_size_unit}
+                    onChange={(e) =>
+                      setNewProductData({
+                        ...newProductData,
+                        packing_size_unit: e.target.value,
+                      })
+                    }
+                    className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                  >
+                    <option value="pcs">pcs</option>
+                    <option value="Ltr">Ltr</option>
+                    <option value="kg">kg</option>
+                    <option value="box">box</option>
+                    <option value="roll">roll</option>
+                    <option value="bag">bag</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+                  {t("Category / Tag")}
+                </label>
+                <select
+                  value={newProductData.category}
+                  onChange={(e) =>
+                    setNewProductData({
+                      ...newProductData,
+                      category: e.target.value,
+                    })
+                  }
+                  className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+                >
+                  <option value="Accessory">{t("Accessory")}</option>
+                  <option value="Standard">{t("Standard Product")}</option>
+                  <option value="Service">{t("Service / Labor")}</option>
+                </select>
+              </div>
+              <button
+                onClick={handleSaveNewProduct}
+                className="w-full py-2 mt-2 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-colors"
+              >
+                {t("Save Product")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showAddClientModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 ">
           <div className="bg-card border border-border rounded-2xl p-6 w-[400px] shadow-2xl">
@@ -1159,6 +1828,42 @@ export function InvoiceEngine() {
                     />
                   </div>
                   <div>
+                    <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                      {t("Transporter Name")}
+                    </label>
+                    <input
+                      type="text"
+                      value={transporterName}
+                      onChange={(e) => setTransporterName(e.target.value)}
+                      placeholder="e.g. SafeExpress Logistics"
+                      className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                      {t("LR / Bilty Number")}
+                    </label>
+                    <input
+                      type="text"
+                      value={lrBiltyNo}
+                      onChange={(e) => setLrBiltyNo(e.target.value)}
+                      placeholder="e.g. LR-6655102"
+                      className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-2">
+                      {t("E-Way Bill Number")}
+                    </label>
+                    <input
+                      type="text"
+                      value={ewayBillNo}
+                      onChange={(e) => setEwayBillNo(e.target.value)}
+                      placeholder="e.g. 889910223849"
+                      className="w-full bg-background border border-border rounded-xl px-4 py-2.5 text-foreground outline-none focus:border-primary transition-all text-sm font-medium"
+                    />
+                  </div>
+                  <div>
                     <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block flex justify-between items-center mb-2">
                       {t("Destination")}
                       <label className="flex items-center gap-1 cursor-pointer text-sm text-primary lowercase normal-case">
@@ -1357,9 +2062,21 @@ export function InvoiceEngine() {
 
                       <div className="grid grid-cols-12 gap-3">
                         <div className="col-span-12 md:col-span-4">
-                          <label className="text-sm text-muted-foreground uppercase font-bold block mb-1">
-                            {t("Product Name")}
-                          </label>
+                          <div className="flex justify-between items-center mb-1">
+                            <label className="text-sm text-muted-foreground uppercase font-bold block">
+                              {t("Product Name")}
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTargetItemRowId(item.id);
+                                setShowAddProductModal(true);
+                              }}
+                              className="text-xs text-primary hover:underline font-extrabold flex items-center gap-0.5"
+                            >
+                              <Plus size={12} /> {t("Add New")}
+                            </button>
+                          </div>
                           <select
                             value={item.productId}
                             onChange={(e) =>
@@ -1567,13 +2284,21 @@ export function InvoiceEngine() {
                 </div>
               </div>
 
-              {/* Save & Next Action */}
-              <div className="pt-6 border-t border-border">
+              {/* Save Draft & Save & Next Actions */}
+              <div className="pt-6 border-t border-border flex gap-4">
                 <button
-                  onClick={handleSaveAndNext}
-                  className="w-full flex items-center justify-center gap-2 py-4 bg-primary hover:bg-primary/90 text-white font-extrabold rounded-xl transition-all shadow-lg"
+                  type="button"
+                  onClick={handleSaveDraftOnly}
+                  className="flex-1 flex items-center justify-center gap-2 py-4 bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground font-extrabold rounded-xl transition-all border border-border"
                 >
-                  {t("Save & Next")}
+                  {t("Save Draft")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveAndNext}
+                  className="flex-[2] flex items-center justify-center gap-2 py-4 bg-primary hover:bg-primary/90 text-white font-extrabold rounded-xl transition-all shadow-lg"
+                >
+                  {t("Preview & Next")}
                 </button>
               </div>
             </div>
@@ -1761,37 +2486,72 @@ export function InvoiceEngine() {
                               </tr>
                             </thead>
                             <tbody className="text-[11px] text-slate-800 align-top">
-                              {items.length > 0 ? (
-                                items.map((item, i) => (
-                                  <tr
-                                    key={item.id}
-                                    className={`${i % 2 === 0 ? currentTheme.colors.bgAccent : "bg-transparent"} border-b border-slate-200`}
-                                  >
-                                    <td className="py-2.5 px-3 text-center border-x border-slate-200">
-                                      {i + 1}.
-                                    </td>
-                                    <td className="py-2.5 px-3 font-medium border-r border-slate-200 leading-snug">
-                                      {item.name || "-"}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-center border-r border-slate-200">
-                                      {item.hsn || "-"}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-center border-r border-slate-200">
-                                      {item.qty}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-right border-r border-slate-200">
-                                      {item.rate.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                      })}
-                                    </td>
-                                    <td className="py-2.5 px-3 text-right border-r border-slate-200 font-medium">
-                                      {item.taxableValue.toLocaleString(
-                                        undefined,
-                                        { minimumFractionDigits: 2 },
-                                      )}
-                                    </td>
-                                  </tr>
-                                ))
+                              {items.length > 0 || additionalCharges.length > 0 ? (
+                                <>
+                                  {items.map((item, i) => (
+                                    <tr
+                                      key={item.id}
+                                      className={`${i % 2 === 0 ? currentTheme.colors.bgAccent : "bg-transparent"} border-b border-slate-200`}
+                                    >
+                                      <td className="py-2.5 px-3 text-center border-x border-slate-200">
+                                        {i + 1}.
+                                      </td>
+                                      <td className="py-2.5 px-3 font-medium border-r border-slate-200 leading-snug">
+                                        {item.name || "-"}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center border-r border-slate-200">
+                                        {item.hsn || "-"}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-center border-r border-slate-200">
+                                        {item.qty}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-right border-r border-slate-200">
+                                        {item.rate.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                        })}
+                                      </td>
+                                      <td className="py-2.5 px-3 text-right border-r border-slate-200 font-medium">
+                                        {item.taxableValue.toLocaleString(
+                                          undefined,
+                                          { minimumFractionDigits: 2 },
+                                        )}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  {additionalCharges.map((charge, idx) => {
+                                    const i = items.length + idx;
+                                    return (
+                                      <tr
+                                        key={`charge-${idx}`}
+                                        className={`${i % 2 === 0 ? currentTheme.colors.bgAccent : "bg-transparent"} border-b border-slate-200`}
+                                      >
+                                        <td className="py-2.5 px-3 text-center border-x border-slate-200">
+                                          {i + 1}.
+                                        </td>
+                                        <td className="py-2.5 px-3 font-bold border-r border-slate-200 leading-snug text-slate-800">
+                                          {charge.name || "Charge"}
+                                        </td>
+                                        <td className="py-2.5 px-3 text-center border-r border-slate-200 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-2.5 px-3 text-center border-r border-slate-200 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-2.5 px-3 text-right border-r border-slate-200 font-semibold">
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                        <td className="py-2.5 px-3 text-right border-r border-slate-200 font-bold">
+                                          {(charge.amount || 0).toLocaleString(
+                                            undefined,
+                                            { minimumFractionDigits: 2 },
+                                          )}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </>
                               ) : (
                                 <tr>
                                   <td
@@ -1859,26 +2619,6 @@ export function InvoiceEngine() {
     <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
   </div>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
-
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px]">
-    <span className="font-semibold text-foreground">{charge.name}</span>
-    <span className="text-foreground">+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
   <div className="flex justify-between py-1 text-[11px]">
     <span className="font-semibold text-foreground">Round Off</span>
@@ -1959,12 +2699,6 @@ export function InvoiceEngine() {
     <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
   </div>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
   <div className="flex justify-between py-1 text-[11px] font-medium">
     <span className="opacity-80">Round Off</span>
@@ -2149,15 +2883,15 @@ export function InvoiceEngine() {
                               <div
                                 className={`flex-1 flex items-center justify-center border-b ${currentTheme.colors.borderMain} p-2`}
                               >
-                                {sellerDetails.upiId ? (
-    <QRCodeSVG 
-      value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
-      size={80} 
-      level="M" 
-    />
-  ) : (
-    <QrCode className="w-20 h-20 text-slate-800 opacity-80" />
-  )}
+                                {isMounted && sellerDetails.upiId ? (
+                                  <QRCodeSVG 
+                                    value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
+                                    size={80} 
+                                    level="M" 
+                                  />
+                                ) : (
+                                  <QrCode className="w-20 h-20 text-slate-800 opacity-80" />
+                                )}
                               </div>
                               <div className="flex-1 p-2 bg-slate-50/50">
                                 <p className="font-semibold text-slate-700 mb-0.5">
@@ -2266,8 +3000,57 @@ export function InvoiceEngine() {
                                       { minimumFractionDigits: 2 },
                                     )}
                                   </td>
-                                </tr>
+                               </tr>
                               ))}
+                              {additionalCharges.map((charge, idx) => {
+                                const i = items.length + idx;
+                                return (
+                                  <tr key={`charge-${idx}`}>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain}`}
+                                    >
+                                      {i + 1}
+                                    </td>
+                                    <td
+                                      className={`p-1 font-bold border-r ${currentTheme.colors.borderMain}`}
+                                    >
+                                      {charge.name || "Charge"}
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td
+                                      className={`p-1 text-right border-r ${currentTheme.colors.borderMain} font-semibold`}
+                                    >
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                    <td
+                                      className={`p-1 text-center border-r ${currentTheme.colors.borderMain} text-slate-400`}
+                                    >
+                                      -
+                                    </td>
+                                    <td className="p-1 text-right font-bold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                               {/* Totals inline in table body */}
                               <tr className="h-10">
                                 <td
@@ -2347,22 +3130,38 @@ export function InvoiceEngine() {
                                 </>
                               )}
 {discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
+  <tr className={`border-t border-dashed ${currentTheme.colors.borderMain}`}>
+    <td
+      colSpan={4}
+      className={`border-r ${currentTheme.colors.borderMain}`}
+    ></td>
+    <td
+      colSpan={3}
+      className={`p-1 text-right font-bold text-rose-600 border-r ${currentTheme.colors.borderMain}`}
+    >
+      Markdown/Discount
+    </td>
+    <td className="p-1 text-right font-bold text-rose-600">
+      -₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}
+    </td>
+  </tr>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
+  <tr className={`border-t border-dashed ${currentTheme.colors.borderMain}`}>
+    <td
+      colSpan={4}
+      className={`border-r ${currentTheme.colors.borderMain}`}
+    ></td>
+    <td
+      colSpan={3}
+      className={`p-1 text-right font-medium opacity-80 border-r ${currentTheme.colors.borderMain}`}
+    >
+      Round Off
+    </td>
+    <td className="p-1 text-right font-medium">
+      {roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}
+    </td>
+  </tr>
 )}
 
                               <tr
@@ -2447,24 +3246,7 @@ export function InvoiceEngine() {
                                     </th>
                                   </>
                                 )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
+
 
                                 <th className="p-1" rowSpan={2}>
                                   Total Tax Amount
@@ -2497,24 +3279,7 @@ export function InvoiceEngine() {
                                     </th>
                                   </>
                                 )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
+
 
                               </tr>
                             </thead>
@@ -2584,24 +3349,6 @@ export function InvoiceEngine() {
                                         </td>
                                       </>
                                     )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
 
                                     <td className="p-1">
                                       ₹
@@ -2656,15 +3403,15 @@ export function InvoiceEngine() {
                                   <p className="font-bold text-slate-600 mb-1">
                                     Pay using UPI:
                                   </p>
-                                  {sellerDetails.upiId ? (
-    <QRCodeSVG 
-      value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
-      size={64} 
-      level="M" 
-    />
-  ) : (
-    <QrCode className="w-16 h-16 opacity-90" />
-  )}
+                                  {isMounted && sellerDetails.upiId ? (
+                                    <QRCodeSVG 
+                                      value={`upi://pay?pa=${sellerDetails.upiId}&pn=${sellerDetails.ownerName || sellerDetails.companyName}&am=${grandTotal}&cu=INR`} 
+                                      size={64} 
+                                      level="M" 
+                                    />
+                                  ) : (
+                                    <QrCode className="w-16 h-16 opacity-90" />
+                                  )}
                                 </div>
                                 <div className="w-1/2 p-2 text-right relative flex flex-col items-end">
                                   {sellerDetails.companyStampUrl && (
@@ -2919,6 +3666,49 @@ export function InvoiceEngine() {
                                   </td>
                                 </tr>
                               ))}
+                              {additionalCharges.map((charge, idx) => {
+                                const i = items.length + idx;
+                                return (
+                                  <tr
+                                    key={`charge-${idx}`}
+                                    className="border-b border-slate-200"
+                                  >
+                                    <td className="py-2 px-2 text-center">
+                                      {i + 1}
+                                    </td>
+                                    <td className="py-2 px-2 font-bold text-slate-800">
+                                      {charge.name || "Charge"}
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-semibold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-semibold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-slate-400">
+                                      -
+                                    </td>
+                                    <td className="py-2 px-2 text-right font-bold">
+                                      {(charge.amount || 0).toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                      })}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
                               <tr className="bg-[#fff1f2] font-bold text-[#e11d48]">
                                 <td
                                   colSpan={6}
@@ -3087,12 +3877,6 @@ export function InvoiceEngine() {
     <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
   </div>
 )}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
 {enableRoundOff && roundOffDiff !== 0 && (
   <div className="flex justify-between py-1 text-[11px] font-medium">
     <span className="opacity-80">Round Off</span>
@@ -3380,52 +4164,101 @@ export function InvoiceEngine() {
                               </tr>
                             </thead>
                             <tbody className="text-sm">
-                              {items.length > 0 ? (
-                                items.map((item, i) => (
-                                  <tr
-                                    key={item.id}
-                                    className={`border-b ${currentTheme.colors.borderLight}`}
-                                  >
-                                    <td
-                                      className={`py-1.5 px-2 text-center border-x ${currentTheme.colors.borderLight}`}
+                              {items.length > 0 || additionalCharges.length > 0 ? (
+                                <>
+                                  {items.map((item, i) => (
+                                    <tr
+                                      key={item.id}
+                                      className={`border-b ${currentTheme.colors.borderLight}`}
                                     >
-                                      {i + 1}
-                                    </td>
-                                    <td
-                                      className={`py-1.5 px-2 font-bold border-x ${currentTheme.colors.borderLight}`}
-                                    >
-                                      {item.name || "-"}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-500">
-                                      {item.hsn || "-"}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-center border-x border-slate-100">
-                                      {item.qty}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-right border-x border-slate-100">
-                                      ₹
-                                      {item.rate.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                      })}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-right border-x border-slate-100">
-                                      ₹
-                                      {item.taxableValue.toLocaleString(
-                                        undefined,
-                                        { minimumFractionDigits: 2 },
-                                      )}
-                                    </td>
-                                    <td className="py-1.5 px-2 text-center border-x border-slate-100">
-                                      {item.taxPercent}%
-                                    </td>
-                                    <td className="py-1.5 px-2 text-right border-x border-slate-100 font-bold">
-                                      ₹
-                                      {item.total.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                      })}
-                                    </td>
-                                  </tr>
-                                ))
+                                      <td
+                                        className={`py-1.5 px-2 text-center border-x ${currentTheme.colors.borderLight}`}
+                                      >
+                                        {i + 1}
+                                      </td>
+                                      <td
+                                        className={`py-1.5 px-2 font-bold border-x ${currentTheme.colors.borderLight}`}
+                                      >
+                                        {item.name || "-"}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-500">
+                                        {item.hsn || "-"}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-center border-x border-slate-100">
+                                        {item.qty}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-right border-x border-slate-100">
+                                        ₹
+                                        {item.rate.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                        })}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-right border-x border-slate-100">
+                                        ₹
+                                        {item.taxableValue.toLocaleString(
+                                          undefined,
+                                          { minimumFractionDigits: 2 },
+                                        )}
+                                      </td>
+                                      <td className="py-1.5 px-2 text-center border-x border-slate-100">
+                                        {item.taxPercent}%
+                                      </td>
+                                      <td className="py-1.5 px-2 text-right border-x border-slate-100 font-bold">
+                                        ₹
+                                        {item.total.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                        })}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                  {additionalCharges.map((charge, idx) => {
+                                    const i = items.length + idx;
+                                    return (
+                                      <tr
+                                        key={`charge-${idx}`}
+                                        className={`border-b ${currentTheme.colors.borderLight}`}
+                                      >
+                                        <td
+                                          className={`py-1.5 px-2 text-center border-x ${currentTheme.colors.borderLight}`}
+                                        >
+                                          {i + 1}
+                                        </td>
+                                        <td
+                                          className={`py-1.5 px-2 font-bold border-x ${currentTheme.colors.borderLight} text-slate-800`}
+                                        >
+                                          {charge.name || "Charge"}
+                                        </td>
+                                        <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-1.5 px-2 text-right border-x border-slate-100 font-semibold">
+                                          ₹
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                        <td className="py-1.5 px-2 text-right border-x border-slate-100 font-semibold">
+                                          ₹
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                        <td className="py-1.5 px-2 text-center border-x border-slate-100 text-slate-400">
+                                          -
+                                        </td>
+                                        <td className="py-1.5 px-2 text-right border-x border-slate-100 font-bold">
+                                          ₹
+                                          {(charge.amount || 0).toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                          })}
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </>
                               ) : (
                                 <tr>
                                   <td
@@ -3437,9 +4270,9 @@ export function InvoiceEngine() {
                                 </tr>
                               )}
                               {/* Empty rows to fill space */}
-                              {items.length > 0 &&
+                              {(items.length > 0 || additionalCharges.length > 0) &&
                                 Array.from({
-                                  length: Math.max(0, 5 - items.length),
+                                  length: Math.max(0, 5 - (items.length + additionalCharges.length)),
                                 }).map((_, i) => (
                                   <tr
                                     key={`empty-${i}`}
@@ -3570,24 +4403,26 @@ export function InvoiceEngine() {
                                       </tr>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
+                                  {discountAmount > 0 && (
+                                    <tr className="border-b border-slate-100">
+                                      <td className="py-0.5 px-1 font-bold text-rose-600 text-right">
+                                        Markdown/Discount:
+                                      </td>
+                                      <td className="py-0.5 px-1 text-right font-semibold text-rose-600">
+                                        -₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}
+                                      </td>
+                                    </tr>
+                                  )}
+                                  {enableRoundOff && roundOffDiff !== 0 && (
+                                    <tr className="border-b border-slate-100">
+                                      <td className="py-0.5 px-1 font-bold text-slate-500 text-right">
+                                        Round Off:
+                                      </td>
+                                      <td className="py-0.5 px-1 text-right font-semibold text-slate-900">
+                                        {roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}
+                                      </td>
+                                    </tr>
+                                  )}
 
                                   <tr className="border-b border-slate-100">
                                     <td className="py-0.5 px-1 font-bold text-slate-500 text-right">
@@ -4174,25 +5009,6 @@ export function InvoiceEngine() {
                                       </th>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
                                   <th
                                     className="py-0.5 px-1 text-right w-20"
                                     rowSpan={2}
@@ -4222,25 +5038,6 @@ export function InvoiceEngine() {
                                       </th>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
                                 </tr>
                               </thead>
                               <tbody
@@ -4300,25 +5097,6 @@ export function InvoiceEngine() {
                                           </td>
                                         </>
                                       )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
-
                                       <td className="py-0.5 px-1 text-right font-bold">
                                         ₹
                                         {slab.tax.toLocaleString(undefined, {
@@ -4368,24 +5146,6 @@ export function InvoiceEngine() {
                                       </td>
                                     </>
                                   )}
-{discountAmount > 0 && (
-  <div className="flex justify-between py-1.5 text-[11px] border-b border-slate-300">
-    <span className="font-semibold text-rose-600">Markdown/Discount</span>
-    <span className="text-rose-600">-₹{discountAmount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-)}
-{additionalCharges.map((charge, idx) => (
-  <div key={'add_'+idx} className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">{charge.name}</span>
-    <span>+₹{charge.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-  </div>
-))}
-{enableRoundOff && roundOffDiff !== 0 && (
-  <div className="flex justify-between py-1 text-[11px] font-medium">
-    <span className="opacity-80">Round Off</span>
-    <span>{roundOffDiff > 0 ? '+' : ''}₹{roundOffDiff.toFixed(2)}</span>
-  </div>
-)}
 
                                   <td className="py-0.5 px-1 text-right">
                                     ₹

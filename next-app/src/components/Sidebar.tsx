@@ -1,154 +1,408 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LanguageToggle } from "./LanguageToggle";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
 import {
   LayoutDashboard,
-  LineChart,
-  Users,
-  CheckSquare,
-  ShoppingCart,
-  Store,
-  Wallet,
+  FileText,
   Receipt,
+  ShoppingCart,
+  Users,
+  ClipboardList,
+  Package,
+  FlaskConical,
+  Warehouse,
+  Layers,
+  Factory,
+  Store,
+  Paintbrush,
+  UserCog,
+  Truck,
+  FolderOpen,
+  TrendingUp,
+  CreditCard,
+  BookOpen,
+  FileBarChart,
+  Banknote,
+  PieChart,
+  Building2,
+  UserCheck,
+  CheckSquare,
+  BarChart2,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
   Menu,
   X,
-  UserSquare2,
-  Boxes,
-  BookOpen,
-  Wrench,
-  FileText,
-  Settings,
-  Factory,
-  Package,
-  Box,
-  Crosshair,
-  Scale,
-  UserPlus,
+  LineChart,
+  Wallet,
+  Sparkles,
 } from "lucide-react";
 
-type Role = "ceo" | "dealer" | "salesman" | "ca";
+// ─── Types ───────────────────────────────────────────────────────────────────
+type Role = "ceo" | "cofounder" | "dealer" | "salesman" | "ca" | "factory" | string;
 
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
+}
+
+interface NavGroup {
+  group: string;
+  items: NavItem[];
+}
+
+// ─── Navigation Config ────────────────────────────────────────────────────────
+const CEO_NAV: NavGroup[] = [
+  {
+    group: "Dashboard",
+    items: [
+      { name: "Dashboard",      href: "/dashboard/ceo",                  icon: LayoutDashboard },
+      { name: "AI Dashboard",   href: "/dashboard/ceo/ai-dashboard",     icon: Sparkles },
+    ],
+  },
+  {
+    group: "Business",
+    items: [
+      { name: "Invoices",       href: "/dashboard/ceo/invoices",          icon: FileText },
+      { name: "Quotations",     href: "/dashboard/ceo/quotations",        icon: Receipt },
+      { name: "Purchase Bills", href: "/dashboard/purchase",              icon: ShoppingCart },
+      { name: "Customers",      href: "/dashboard/ceo/customer-intelligence", icon: Users },
+      { name: "Orders",         href: "/dashboard/admin/orders",          icon: ClipboardList },
+    ],
+  },
+  {
+    group: "Products",
+    items: [
+      { name: "Products",                  href: "/dashboard/ceo/products",          icon: Package },
+      { name: "Raw materials & inventory", href: "/dashboard/factory/inventory",     icon: Warehouse },
+      { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
+      { name: "Production",                href: "/dashboard/factory/production",    icon: Factory },
+    ],
+  },
+  {
+    group: "Sales",
+    items: [
+      { name: "Dealers",        href: "/dashboard/ceo/dealers",           icon: Store },
+      { name: "Painters",       href: "/dashboard/admin/painters",        icon: Paintbrush },
+      { name: "Sales Team",     href: "/dashboard/admin/sales-team",      icon: UserCog },
+      { name: "Distribution",   href: "/dashboard/ceo/market-intelligence", icon: Truck },
+    ],
+  },
+  {
+    group: "Finance",
+    items: [
+      { name: "Revenue",        href: "/dashboard/ceo/financial-intelligence", icon: TrendingUp },
+      { name: "Expenses",       href: "/dashboard/factory/expenses",      icon: CreditCard },
+      { name: "Ledger",         href: "/dashboard/ca-portal/sales",       icon: BookOpen },
+      { name: "Cash Flow",      href: "/dashboard/ceo/cash-flow",         icon: Banknote },
+      { name: "Profit & Loss",  href: "/dashboard/dealer/pnl",            icon: PieChart },
+    ],
+  },
+  {
+    group: "Intelligence",
+    items: [
+      { name: "Competitors",     href: "/dashboard/ceo/competitors",        icon: BarChart2 },
+      { name: "AI Spend",        href: "/dashboard/ceo/ai-spend",          icon: Wallet },
+    ],
+  },
+  {
+    group: "Company",
+    items: [
+      { name: "Factory",        href: "/dashboard/factory",               icon: Building2 },
+      { name: "Employees",      href: "/dashboard/employees",             icon: UserCheck },
+      { name: "Approvals",      href: "/dashboard/ceo/approvals",         icon: CheckSquare },
+      { name: "Reports",        href: "/dashboard/ceo/reports",           icon: BarChart2 },
+      { name: "Settings",       href: "/dashboard/ceo/organization",      icon: Settings },
+    ],
+  },
+];
+
+const COFOUNDER_NAV: NavGroup[] = [
+  {
+    group: "Dashboard",
+    items: [
+      { name: "Dashboard",      href: "/dashboard/cofounder",             icon: LayoutDashboard },
+      { name: "AI Dashboard",   href: "/dashboard/ceo/ai-dashboard",     icon: Sparkles },
+    ],
+  },
+  {
+    group: "Factory",
+    items: [
+      { name: "Production",                href: "/dashboard/factory/production",    icon: Factory },
+      { name: "Raw materials & inventory", href: "/dashboard/factory/inventory",     icon: Warehouse },
+      { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
+      { name: "Expenses",                  href: "/dashboard/factory/expenses",      icon: CreditCard },
+      { name: "Purchase Bills",            href: "/dashboard/purchase",              icon: ShoppingCart },
+      { name: "Suppliers",                 href: "/dashboard/ceo/suppliers",         icon: Truck },
+    ],
+  },
+  {
+    group: "Business",
+    items: [
+      { name: "Products",       href: "/dashboard/ceo/products",          icon: Package },
+      { name: "Invoices",       href: "/dashboard/ceo/invoices",          icon: FileText },
+      { name: "Dealers",        href: "/dashboard/ceo/dealers",           icon: Users },
+      { name: "Sales Team",     href: "/dashboard/admin/sales-team",      icon: UserCog },
+      { name: "Approvals",      href: "/dashboard/admin/approvals",       icon: CheckSquare },
+    ],
+  },
+  {
+    group: "People",
+    items: [
+      { name: "Employees",      href: "/dashboard/employees",             icon: UserCheck },
+      { name: "Painters",       href: "/dashboard/admin/painters",        icon: Paintbrush },
+    ],
+  },
+];
+
+const FACTORY_NAV: NavGroup[] = [
+  {
+    group: "Dashboard",
+    items: [
+      { name: "Dashboard",      href: "/dashboard/factory",               icon: LayoutDashboard },
+    ],
+  },
+  {
+    group: "Operations",
+    items: [
+      { name: "Production",                href: "/dashboard/factory/production",    icon: Factory },
+      { name: "Raw materials & inventory", href: "/dashboard/factory/inventory",     icon: Warehouse },
+      { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
+      { name: "Expenses",                  href: "/dashboard/factory/expenses",      icon: CreditCard },
+    ],
+  },
+];
+
+const DEALER_NAV: NavGroup[] = [
+  {
+    group: "Operations",
+    items: [
+      { name: "New Bill",       href: "/dashboard/dealer/pos",            icon: FileText },
+      { name: "Profit & Loss",  href: "/dashboard/dealer/pnl",            icon: LineChart },
+      { name: "Expenses",       href: "/dashboard/factory/expenses",      icon: Wallet },
+    ],
+  },
+];
+
+const SALESMAN_NAV: NavGroup[] = [
+  {
+    group: "Dashboard",
+    items: [
+      { name: "Dashboard",      href: "/dashboard/salesman",              icon: LayoutDashboard },
+    ],
+  },
+  {
+    group: "Work",
+    items: [
+      { name: "My Orders",      href: "/dashboard/salesman/orders",       icon: ClipboardList },
+      { name: "Customers",      href: "/dashboard/salesman/customers",    icon: Users },
+      { name: "Add Customer",   href: "/dashboard/salesman/onboard",      icon: UserCheck },
+    ],
+  },
+];
+
+const CA_NAV: NavGroup[] = [
+  {
+    group: "Dashboard",
+    items: [
+      { name: "Dashboard",      href: "/dashboard/ca-portal",             icon: LayoutDashboard },
+      { name: "Sales Ledger",   href: "/dashboard/ca-portal/sales",       icon: FileText },
+    ],
+  },
+];
+
+const NAV_MAP: Record<string, NavGroup[]> = {
+  ceo:       CEO_NAV,
+  cofounder: COFOUNDER_NAV,
+  factory:   FACTORY_NAV,
+  dealer:    DEALER_NAV,
+  salesman:  SALESMAN_NAV,
+  ca:        CA_NAV,
+};
+
+// ─── Component ────────────────────────────────────────────────────────────────
 interface SidebarProps {
   role: Role;
 }
 
 export function Sidebar({ role }: SidebarProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { t } = useLanguage();
 
-  // Define navigation items based on role
-  const navLinks = {
-    ceo: [
-      { name: "Command Center", href: "/dashboard/ceo", icon: LayoutDashboard },
-      { name: "Smart Invoicing", href: "/dashboard/ceo/invoices", icon: FileText },
-      { name: "Company Quotations", href: "/dashboard/ceo/quotations", icon: FileText },
-      { name: "Order Book & Dispatch", href: "/dashboard/admin/orders", icon: Package },
-      { name: "Company Products", href: "/dashboard/ceo/products", icon: Package },
-      { name: "Purchase History", href: "/dashboard/purchase", icon: ShoppingCart },
-      { name: "Suppliers Registry", href: "/dashboard/ceo/suppliers", icon: Users },
-      { name: "Inventory", href: "/dashboard/factory/inventory", icon: Boxes },
-      { name: "Batch Management", href: "/dashboard/factory/production", icon: Wrench },
-      { name: "Factory Expenses", href: "/dashboard/factory/expenses", icon: Receipt },
-      { name: "Factory Cash Flow", href: "/dashboard/ceo/cash-flow", icon: LineChart },
-      { name: "Team & HR", href: "/dashboard/employees", icon: Users },
-      { name: "Salesmen Management", href: "/dashboard/admin/sales-team", icon: Users },
-      { name: "Traceability & Token Engine", href: "/dashboard/admin/approvals", icon: CheckSquare },
-      { name: "Painters Directory", href: "/dashboard/admin/painters", icon: Users },
-      { name: "Market Intelligence", href: "/dashboard/ceo/market-intelligence", icon: LineChart },
-      { name: "Competitors", href: "/dashboard/ceo/competitors", icon: Crosshair },
-      { name: "All Dealers", href: "/dashboard/ceo/dealers", icon: Users },
-      { name: "Company Settings", href: "/dashboard/ceo/settings", icon: Settings },
-    ],
-    ca: [
-      { name: "Command Center", href: "/dashboard/ca-portal", icon: LayoutDashboard },
-      { name: "Sales Ledger", href: "/dashboard/ca-portal/sales", icon: FileText },
-    ],
-    dealer: [
-      { name: "New POS Bill", href: "/dashboard/dealer/pos", icon: ShoppingCart },
-      { name: "Storefront", href: "/dashboard/dealer/store", icon: Store },
-      { name: "My P&L", href: "/dashboard/dealer/pnl", icon: LineChart },
-      { name: "Expense Tracker", href: "/dashboard/dealer/expenses", icon: Wallet },
-    ],
-    salesman: [
-      { name: "Dashboard", href: "/dashboard/salesman", icon: LayoutDashboard },
-      { name: "My Orders", href: "/dashboard/salesman/orders", icon: Receipt },
-      { name: "Partners", href: "/dashboard/salesman/customers", icon: UserSquare2 },
-    ],
-  };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const links = navLinks[role] || navLinks.salesman;
+  const groups = NAV_MAP[role] ?? CEO_NAV;
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
+  // Keyboard shortcut: [ toggles sidebar
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.key === "[") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        const active = document.activeElement?.tagName;
+        if (active !== "INPUT" && active !== "TEXTAREA") {
+          setIsCollapsed(prev => !prev);
+        }
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  const isActive = (href: string) => {
+    if (!mounted) return false;
+    const basePaths = ["/dashboard/ceo", "/dashboard/cofounder"];
+    if (basePaths.includes(href)) return pathname === href;
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   return (
     <>
-      {/* Mobile Hamburger Button */}
+      {/* Mobile hamburger */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-md border border-border/50 text-foreground shadow-md hover:bg-background transition-all duration-200"
-        onClick={() => setIsOpen(!isOpen)}
+        className="lg:hidden fixed top-5 left-4 z-50 p-2 rounded-xl bg-background/90 backdrop-blur-sm border border-border shadow-sm text-foreground"
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        aria-label="Toggle menu"
       >
-        {isOpen ? <X size={20} /> : <Menu size={20} />}
+        {isMobileOpen ? <X size={18} /> : <Menu size={18} />}
       </button>
 
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-xs z-40 transition-opacity duration-300"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {/* Mobile overlay */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Sidebar Container */}
-      <aside
-        className={`fixed lg:static top-0 left-0 z-40 h-full w-64 shrink-0 flex flex-col transition-transform duration-300 ease-in-out border-r border-border/40 lg:border-r-0 shadow-2xl lg:shadow-none bg-gradient-to-b from-[#f5e6fd] via-[#e8f0fe] to-[#fdfbfb] dark:from-[#1c1c1e] dark:to-[#1c1c1e] lg:bg-transparent lg:bg-none ${
-          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
+      {/* Sidebar panel */}
+      <motion.aside
+        suppressHydrationWarning
+        animate={{ width: isCollapsed ? 64 : 240 }}
+        transition={{ type: "spring", stiffness: 340, damping: 28 }}
+        className={`
+          fixed lg:relative top-0 left-0 z-40 h-full shrink-0
+          flex flex-col bg-background border-r border-border
+          overflow-hidden
+          ${isMobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full lg:translate-x-0"}
+          transition-transform lg:transition-none duration-250
+        `}
       >
-        {/* Top spacer so nav doesn't start at absolute top on mobile */}
-        <div className="h-16 lg:h-4" />
+        {/* Navigation — starts from top, no wasted header space */}
+        <nav className="flex-1 overflow-y-auto pt-4 pb-2 px-2 space-y-1">
+          {groups.map((group, gi) => (
+            <div key={gi} className="mb-3">
+              {/* Group label */}
+              {!isCollapsed && group.group !== "Dashboard" && (
+                <p className="text-[9px] font-black text-muted-foreground/50 uppercase tracking-[0.12em] px-3 mb-1 mt-2">
+                  {t(group.group)}
+                </p>
+              )}
+              {isCollapsed && group.group !== "Dashboard" && gi > 0 && (
+                <div className="h-px bg-border/60 my-2 mx-2" />
+              )}
 
-        {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-1">
-          {links.map((link) => {
-            const Icon = link.icon;
-            const isActive = pathname === link.href;
+              {/* Items */}
+              <div className="space-y-0.5">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
 
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)} // Close on mobile after click
-                className={`flex items-center gap-3 px-4 py-3 rounded-full text-sm font-semibold transition-colors duration-200 ${
-                  isActive
-                    ? "bg-primary text-white shadow-md shadow-primary/25"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
-                }`}
-              >
-                <Icon
-                  size={18}
-                  className="shrink-0"
-                />
-                {t(link.name)}
-              </Link>
-            );
-          })}
+                  return (
+                    <Link
+                      key={item.href + item.name}
+                      href={item.href}
+                      title={isCollapsed ? t(item.name) : undefined}
+                      className={`
+                        relative flex items-center rounded-lg transition-all duration-150 group
+                        ${isCollapsed
+                          ? "justify-center w-10 h-10 mx-auto"
+                          : "gap-2.5 px-3 py-2"
+                        }
+                        ${active
+                          ? "bg-primary/8 text-primary"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                        }
+                      `}
+                    >
+                      {/* Active indicator strip */}
+                      {active && !isCollapsed && (
+                        <motion.div
+                          layoutId={`nav-active-${role}`}
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-full bg-primary"
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                      {active && isCollapsed && (
+                        <span className="absolute inset-0 rounded-lg bg-primary/10" />
+                      )}
+
+                      <Icon
+                        size={15}
+                        className={`shrink-0 relative z-10 transition-colors ${active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}
+                      />
+                      {!isCollapsed && (
+                        <span className="text-[12px] font-semibold truncate relative z-10">
+                          {t(item.name)}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
-        {/* Sidebar Footer */}
-        <div className="p-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-medium text-sidebar-foreground/50">{t("System Online")}</span>
-          </div>
-          <LanguageToggle />
+        {/* Footer: status + collapse toggle */}
+        <div className="border-t border-border shrink-0">
+          {!isCollapsed ? (
+            <div className="px-3 py-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[10px] text-muted-foreground font-medium">{t("System Online")}</span>
+              </div>
+              <button
+                onClick={() => setIsCollapsed(true)}
+                title="Collapse sidebar ([ key)"
+                className="hidden lg:flex p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ChevronLeft size={13} />
+              </button>
+            </div>
+          ) : (
+            <div className="py-3 flex flex-col items-center gap-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <button
+                onClick={() => setIsCollapsed(false)}
+                title="Expand sidebar ([ key)"
+                className="hidden lg:flex p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ChevronRight size={13} />
+              </button>
+            </div>
+          )}
         </div>
-        <div className="px-5 py-3 text-[11px] text-sidebar-foreground/30">
-          © {new Date().getFullYear()} Sharma Industries
-        </div>
-      </aside>
+      </motion.aside>
     </>
   );
 }
