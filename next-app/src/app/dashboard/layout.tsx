@@ -31,7 +31,8 @@ export default async function DashboardLayout({
     dealer:       "Dealer",
     salesman:     "Sales Executive",
     factory:      "Factory Manager",
-    "ca-portal":  "Chartered Accountant",
+    "ca-portal":  "CA Auditor Mode",
+    ca:           "CA Auditor Mode",
   };
 
   const roleLabel = roleLabels[session.role] || session.role;

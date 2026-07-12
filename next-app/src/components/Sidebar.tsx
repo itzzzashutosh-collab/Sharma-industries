@@ -40,6 +40,26 @@ import {
   LineChart,
   Wallet,
   Sparkles,
+  BookMarked,
+  Landmark,
+  Scale,
+  FileClock,
+  FileSearch,
+  Upload,
+  User,
+  Building,
+  SlidersHorizontal,
+  Calculator,
+  ScrollText,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  CalendarDays,
+  FileSpreadsheet,
+  FileCheck,
+  FolderArchive,
+  AlertCircle,
+  Download,
+  Columns,
 } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -210,19 +230,88 @@ const CA_NAV: NavGroup[] = [
   {
     group: "Dashboard",
     items: [
-      { name: "Dashboard",      href: "/dashboard/ca-portal",             icon: LayoutDashboard },
-      { name: "Sales Ledger",   href: "/dashboard/ca-portal/sales",       icon: FileText },
+      { name: "Dashboard",        href: "/dashboard/ca-portal",                    icon: LayoutDashboard },
+    ],
+  },
+  {
+    group: "Accounting",
+    items: [
+      { name: "Ledger",           href: "/dashboard/ca-portal/accounting/ledger",  icon: BookMarked },
+      { name: "Cash Book",        href: "/dashboard/ca-portal/accounting/cash-book", icon: Banknote },
+      { name: "Bank Book",        href: "/dashboard/ca-portal/accounting/bank-book", icon: Landmark },
+      { name: "Journal",          href: "/dashboard/ca-portal/accounting/journal", icon: ScrollText },
+      { name: "Receipts",         href: "/dashboard/ca-portal/accounting/receipts", icon: ArrowDownCircle },
+      { name: "Payments",         href: "/dashboard/ca-portal/accounting/payments", icon: ArrowUpCircle },
+      { name: "Day Book",         href: "/dashboard/ca-portal/accounting/day-book", icon: CalendarDays },
+    ],
+  },
+  {
+    group: "GST & Tax",
+    items: [
+      { name: "GST Dashboard",    href: "/dashboard/ca-portal/gst/dashboard",      icon: Calculator },
+      { name: "Purchase Register",href: "/dashboard/ca-portal/gst/purchase-register", icon: ShoppingCart },
+      { name: "Sales Register",   href: "/dashboard/ca-portal/gst/sales-register", icon: FileSpreadsheet },
+      { name: "Input GST",        href: "/dashboard/ca-portal/gst/input-gst",      icon: ArrowDownCircle },
+      { name: "Output GST",       href: "/dashboard/ca-portal/gst/output-gst",     icon: ArrowUpCircle },
+      { name: "GST Reconciliation",href: "/dashboard/ca-portal/gst/reconciliation",icon: Scale },
+      { name: "HSN Summary",      href: "/dashboard/ca-portal/gst/hsn-summary",    icon: BookMarked },
+      { name: "GST Filing Center",href: "/dashboard/ca-portal/gst/filing-center",   icon: FileCheck },
+      { name: "Tax Reports",      href: "/dashboard/ca-portal/gst/tax-reports",    icon: FileBarChart },
+    ],
+  },
+  {
+    group: "Audit",
+    items: [
+      { name: "Audit Dashboard",  href: "/dashboard/ca-portal/audit/dashboard",     icon: LayoutDashboard },
+      { name: "Purchase Bills",   href: "/dashboard/ca-portal/audit/purchase-bills", icon: ShoppingCart },
+      { name: "Sales Invoices",   href: "/dashboard/ca-portal/audit/sales-invoices", icon: FileText },
+      { name: "Expense Register", href: "/dashboard/ca-portal/audit/expense-register", icon: CreditCard },
+      { name: "Payment Register", href: "/dashboard/ca-portal/audit/payment-register", icon: Receipt },
+      { name: "Stock Register",   href: "/dashboard/ca-portal/audit/stock-register", icon: Warehouse },
+      { name: "Bank Statements",  href: "/dashboard/ca-portal/audit/bank-statements", icon: BookOpen },
+      { name: "Audit Trail",      href: "/dashboard/ca-portal/audit/audit-trail",  icon: FileClock },
+    ],
+  },
+  {
+    group: "Reports",
+    items: [
+      { name: "Profit & Loss",    href: "/dashboard/ca-portal/reports/pnl",         icon: TrendingUp },
+      { name: "Balance Sheet",    href: "/dashboard/ca-portal/reports/balance-sheet", icon: Scale },
+      { name: "Trial Balance",    href: "/dashboard/ca-portal/reports/trial-balance", icon: BarChart2 },
+      { name: "Cash Flow",        href: "/dashboard/ca-portal/reports/cash-flow",    icon: LineChart },
+      { name: "Financial Reports",href: "/dashboard/ca-portal/reports/financial",    icon: FileBarChart },
+      { name: "Outstanding Reports", href: "/dashboard/ca-portal/reports/outstanding", icon: AlertCircle },
+      { name: "Financial Comparison", href: "/dashboard/ca-portal/reports/comparison", icon: Columns },
+      { name: "Download Center",  href: "/dashboard/ca-portal/reports/downloads",    icon: Download },
+    ],
+  },
+  {
+    group: "Documents",
+    items: [
+      { name: "Company Documents",href: "/dashboard/ca-portal/documents/company",   icon: FolderOpen },
+      { name: "GST Files",        href: "/dashboard/ca-portal/documents/gst-files", icon: FileCheck },
+      { name: "Audit Files",      href: "/dashboard/ca-portal/documents/audit-files", icon: FolderArchive },
+      { name: "Statements",       href: "/dashboard/ca-portal/documents/statements", icon: FileSearch },
+    ],
+  },
+  {
+    group: "Settings",
+    items: [
+      { name: "Profile",          href: "/dashboard/ca-portal/settings/profile",    icon: User },
+      { name: "Firm Details",     href: "/dashboard/ca-portal/settings/firm",       icon: Building },
+      { name: "App Settings",     href: "/dashboard/ca-portal/settings/app",        icon: SlidersHorizontal },
     ],
   },
 ];
 
 const NAV_MAP: Record<string, NavGroup[]> = {
-  ceo:       CEO_NAV,
-  cofounder: COFOUNDER_NAV,
-  factory:   FACTORY_NAV,
-  dealer:    DEALER_NAV,
-  salesman:  SALESMAN_NAV,
-  ca:        CA_NAV,
+  ceo:         CEO_NAV,
+  cofounder:   COFOUNDER_NAV,
+  factory:     FACTORY_NAV,
+  dealer:      DEALER_NAV,
+  salesman:    SALESMAN_NAV,
+  ca:          CA_NAV,
+  "ca-portal": CA_NAV,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
