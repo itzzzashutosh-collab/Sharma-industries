@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CouponsAuditingClient } from "./CouponsAuditingClient";
-import { getDealerCoupons } from "../../actions";
+import { getDealerCoupons, getDealerPainters } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const res = await getDealerCoupons();
-  const data = (res as any).list || ((res as any).data ? [(res as any).data] : []);
-  return <CouponsAuditingClient initialData={data} />;
+  const [couponsRes, paintersRes] = await Promise.all([
+    getDealerCoupons(),
+    getDealerPainters()
+  ]);
+
+  return (
+    <CouponsAuditingClient
+      initialData={(couponsRes.list || []) as any[]}
+      painters={(paintersRes.list || []) as any[]}
+    />
+  );
 }

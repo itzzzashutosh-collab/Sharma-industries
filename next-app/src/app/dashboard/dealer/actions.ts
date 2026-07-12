@@ -772,6 +772,56 @@ export async function createDealerBankAccount(bank: any) {
   }
 }
 
+export async function createDealerPainter(painter: any) {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+    const { error } = await supabase
+      .from("painters")
+      .insert({
+        name: painter.name,
+        phone: painter.phone,
+        address: painter.address || null,
+        locality: painter.locality || null,
+        aadhar_no: painter.aadhar_no || null,
+        status: "Active",
+        dealer_id: dId,
+        total_tokens: 0,
+        total_redeemed: 0,
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/dealer/painters/list");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function verifyDealerCoupon(c: any) {
+  try {
+    const supabase = await createAdminClient();
+    // Increment total_tokens of the painter
+    const { data: p } = await supabase
+      .from("painters")
+      .select("total_tokens")
+      .eq("name", c.painter)
+      .single();
+
+    const newTokens = Number(p?.total_tokens || 0) + Number(c.amount || 500);
+    const { error } = await supabase
+      .from("painters")
+      .update({ total_tokens: newTokens })
+      .eq("name", c.painter);
+    if (error) throw error;
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
 
 

@@ -5,11 +5,10 @@ import { getDealerPainters } from "../../actions";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Painters Portfolio | Dealer Workspace" };
+  return { title: "Painters Directory | Dealer Workspace" };
 }
 
 export default async function Page() {
   const res = await getDealerPainters();
-  const data = (res as any).list || ((res as any).data ? [(res as any).data] : []);
-  return <PaintersPortfolioClient initialData={data} />;
+  return <PaintersPortfolioClient initialData={(res.list || []) as any[]} />;
 }
