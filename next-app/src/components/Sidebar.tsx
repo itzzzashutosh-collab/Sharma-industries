@@ -382,6 +382,60 @@ const CA_NAV: NavGroup[] = [
   },
 ];
 
+const PAINTER_NAV: NavGroup[] = [
+  {
+    group: "Dashboard",
+    items: [
+      { name: "Dashboard",        href: "/dashboard/painter",                         icon: LayoutDashboard },
+    ],
+  },
+  {
+    group: "Profile",
+    items: [
+      { name: "My Profile",       href: "/dashboard/painter/profile",                 icon: User },
+      { name: "My Portfolio",     href: "/dashboard/painter/portfolio",               icon: FileSearch },
+      { name: "Achievements",     href: "/dashboard/painter/achievements",             icon: Sparkles },
+    ],
+  },
+  {
+    group: "Rewards",
+    items: [
+      { name: "Coupon Wallet",    href: "/dashboard/painter/rewards/coupons",         icon: CheckSquare },
+      { name: "Reward Points",    href: "/dashboard/painter/rewards/points",          icon: TrendingUp },
+      { name: "Cash Wallet",      href: "/dashboard/painter/rewards/cash",            icon: Wallet },
+      { name: "Referral Program",  href: "/dashboard/painter/rewards/referrals",       icon: UserCog },
+      { name: "Reward Store",     href: "/dashboard/painter/rewards/store",           icon: Store },
+    ],
+  },
+  {
+    group: "Work",
+    items: [
+      { name: "Projects",         href: "/dashboard/painter/work/projects",           icon: ClipboardList },
+      { name: "AI Paint Assistant", href: "/dashboard/painter/work/ai-assistant",       icon: Paintbrush },
+      { name: "House Color Studio", href: "/dashboard/painter/work/color-studio",       icon: Paintbrush },
+      { name: "Material Calculator", href: "/dashboard/painter/work/calculator",        icon: Calculator },
+    ],
+  },
+  {
+    group: "Community",
+    items: [
+      { name: "Meetings",         href: "/dashboard/painter/community/meetings",       icon: CalendarDays },
+      { name: "Schemes",          href: "/dashboard/painter/community/schemes",        icon: Sparkles },
+      { name: "Competitions",     href: "/dashboard/painter/community/competitions",   icon: FileCheck },
+      { name: "Leaderboard",      href: "/dashboard/painter/community/leaderboard",    icon: BarChart2 },
+      { name: "Learning Center",  href: "/dashboard/painter/community/learning",       icon: BookOpen },
+    ],
+  },
+  {
+    group: "Account",
+    items: [
+      { name: "Notifications",    href: "/dashboard/painter/account/notifications",   icon: AlertCircle },
+      { name: "Support",          href: "/dashboard/painter/account/support",         icon: UserCog },
+      { name: "Settings",         href: "/dashboard/painter/account/settings",        icon: Settings },
+    ],
+  },
+];
+
 const NAV_MAP: Record<string, NavGroup[]> = {
   ceo:         CEO_NAV,
   cofounder:   COFOUNDER_NAV,
@@ -390,7 +444,9 @@ const NAV_MAP: Record<string, NavGroup[]> = {
   salesman:    SALESMAN_NAV,
   ca:          CA_NAV,
   "ca-portal": CA_NAV,
+  painter:     PAINTER_NAV,
 };
+
 
 // ─── Component ────────────────────────────────────────────────────────────────
 interface SidebarProps {

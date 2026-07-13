@@ -33,7 +33,9 @@ export default async function DashboardLayout({
     factory:      "Factory Manager",
     "ca-portal":  "CA Auditor Mode",
     ca:           "CA Auditor Mode",
+    painter:      "Professional Painter",
   };
+
 
   const roleLabel = roleLabels[session.role] || session.role;
 
