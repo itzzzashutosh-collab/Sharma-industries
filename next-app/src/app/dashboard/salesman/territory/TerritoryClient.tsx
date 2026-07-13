@@ -18,6 +18,7 @@ interface Props {
       mtdRevenue: number;
       targetRevenue: number;
     };
+    assignedTerritory?: string;
   };
 }
 
@@ -66,7 +67,7 @@ export function TerritoryClient({ initialData }: Props) {
       <div className="grid grid-cols-2 gap-4 bg-card border border-border rounded-3xl p-4 shadow-sm">
         <div className="space-y-1">
           <span className="text-[9px] font-black text-muted-foreground uppercase">Assigned Region</span>
-          <p className="text-lg font-black text-foreground">Rajasthan East</p>
+          <p className="text-lg font-black text-foreground">{initialData.assignedTerritory || "Rajasthan East"}</p>
         </div>
         <div className="space-y-1 text-right">
           <span className="text-[9px] font-black text-muted-foreground uppercase">MTD Revenue</span>

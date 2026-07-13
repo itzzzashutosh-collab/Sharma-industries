@@ -29,7 +29,8 @@ export default async function Page() {
 
   const payload = {
     cities,
-    targetStats: res.targetStats || { mtdRevenue: 0, targetRevenue: 500000 }
+    targetStats: res.targetStats || { mtdRevenue: 0, targetRevenue: 500000 },
+    assignedTerritory: res.assignedTerritory || "Rajasthan East"
   };
 
   return <TerritoryClient initialData={payload} />;

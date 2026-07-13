@@ -40,13 +40,20 @@ export async function getSalesmanDashboardData() {
 
     const mtdRevenue = (orders || []).reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
 
+    // Fetch dynamic targets from DB
+    const { data: dbTargets } = await supabase
+      .from("salesman_targets")
+      .select("*")
+      .eq("salesman_id", salesmanId)
+      .maybeSingle();
+
     const targetStats = {
       mtdRevenue,
-      targetRevenue: 500000,
+      targetRevenue: dbTargets ? Number(dbTargets.target_revenue) : 500000,
       visitsCompleted: (visits || []).filter(v => v.status === "Completed").length,
       visitsTarget: (visits || []).length || 5,
       paintersRegistered: 4,
-      paintersTarget: 10
+      paintersTarget: dbTargets ? Number(dbTargets.target_painters) : 10
     };
 
     return {
@@ -54,7 +61,8 @@ export async function getSalesmanDashboardData() {
       dealers: dealers || [],
       visits: visits || [],
       activities: activities || [],
-      targetStats
+      targetStats,
+      assignedTerritory: dbTargets ? dbTargets.assigned_territory : "Rajasthan East"
     };
   } catch (err: any) {
     return { success: false, error: err.message };
