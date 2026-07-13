@@ -53,34 +53,43 @@ export default async function DashboardLayout({
         {/* Top Header */}
         <header className="h-[72px] flex items-center justify-between pl-14 lg:pl-5 pr-4 sm:pr-6 bg-background border-b border-border z-20 relative shrink-0">
 
-          {/* Left: Sharma Industries Logo — responsive width to fit mobile screens */}
+          {/* ── DESKTOP: Left-positioned logo ── */}
           <div
-            className="shrink-0 relative overflow-hidden w-12 sm:w-[240px]"
-            style={{ height: "50px" }}
+            className="hidden lg:block shrink-0 relative overflow-hidden"
+            style={{ width: "240px", height: "50px" }}
           >
             <img
               src="https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/sign/Company%20Assets%20(logos,%20Watermarks)/Sharmaindustries_daytheme.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83YTU1YTAxNi0xYzI2LTRlZjctYjlkNy1iYWU1NTFkN2Q1ZmUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDb21wYW55IEFzc2V0cyAobG9nb3MsIFdhdGVybWFya3MpL1NoYXJtYWluZHVzdHJpZXNfZGF5dGhlbWUucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc4Mzc2NTQ0MiwiZXhwIjo0OTM3MzY1NDQyfQ.NsMmaKzUaevoBm81geF4haKk-DFIPlv9Wub_Isc3WqI"
               alt="Sharma Industries"
-              className="absolute [mix-blend-mode:multiply] max-none"
-              style={{
-                width: "225px",
-                height: "225px",
-                top: "-82px",
-                left: "-9px",
-              }}
+              className="absolute [mix-blend-mode:multiply]"
+              style={{ width: "225px", height: "225px", top: "-82px", left: "-9px" }}
             />
           </div>
 
-          {/* Center: Company name + tagline */}
-          <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center leading-tight pointer-events-none select-none">
+          {/* ── DESKTOP: Center company name + tagline ── */}
+          <div className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center leading-tight pointer-events-none select-none">
             <span className="text-sm font-black text-foreground tracking-tight">Sharma Industries</span>
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
               Paint Operating System
             </span>
           </div>
 
+          {/* ── MOBILE: Full logo centered in header ── */}
+          <div className="lg:hidden absolute left-1/2 -translate-x-1/2 pointer-events-none select-none"
+            style={{ width: "160px", height: "50px" }}
+          >
+            <div className="relative overflow-hidden w-full h-full">
+              <img
+                src="https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/sign/Company%20Assets%20(logos,%20Watermarks)/Sharmaindustries_daytheme.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83YTU1YTAxNi0xYzI2LTRlZjctYjlkNy1iYWU1NTFkN2Q1ZmUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDb21wYW55IEFzc2V0cyAobG9nb3MsIFdhdGVybWFya3MpL1NoYXJtYWluZHVzdHJpZXNfZGF5dGhlbWUucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc4Mzc2NTQ0MiwiZXhwIjo0OTM3MzY1NDQyfQ.NsMmaKzUaevoBm81geF4haKk-DFIPlv9Wub_Isc3WqI"
+                alt="Sharma Industries"
+                className="absolute [mix-blend-mode:multiply]"
+                style={{ width: "160px", height: "160px", top: "-55px", left: "-5px" }}
+              />
+            </div>
+          </div>
+
           {/* Right: Controls — hidden on mobile, shown in sidebar instead */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-auto">
 
             {/* Notification bell always visible */}
             <NotificationBell />
