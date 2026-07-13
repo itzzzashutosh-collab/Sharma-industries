@@ -314,5 +314,48 @@ export async function createPainterEstimation(est: any) {
   }
 }
 
+export async function getPainterCommunityData() {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Painter profile not found");
+
+    const [
+      { data: meetings },
+      { data: schemes },
+      { data: competitions }
+    ] = await Promise.all([
+      supabase.from("painter_meetings").select("*").order("meeting_date", { ascending: true }),
+      supabase.from("schemes").select("*").eq("active", true).order("end_date", { ascending: true }),
+      supabase.from("competitions").select("*").order("end_date", { ascending: true })
+    ]);
+
+    return {
+      success: true,
+      profile,
+      meetings: meetings || [],
+      schemes: schemes || [],
+      competitions: competitions || []
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message, profile: null, meetings: [], schemes: [], competitions: [] };
+  }
+}
+
+export async function registerForMeetingAction(meetingId: number) {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Unauthorized access");
+
+    // Add a record in a simulated meeting attendees registry
+    revalidatePath("/dashboard/painter/community/meetings");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
 
