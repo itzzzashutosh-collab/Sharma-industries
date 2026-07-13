@@ -300,6 +300,7 @@ const SALESMAN_NAV: NavGroup[] = [
       { name: "Field Visits",   href: "/dashboard/salesman/visits",       icon: CalendarDays },
       { name: "My Orders",      href: "/dashboard/salesman/orders",       icon: ClipboardList },
       { name: "Collections",    href: "/dashboard/salesman/collections",  icon: Wallet },
+      { name: "Shop Branding",  href: "/dashboard/salesman/branding",     icon: Store },
       { name: "Painter Network", href: "/dashboard/salesman/painters",     icon: Paintbrush },
       { name: "Customers",      href: "/dashboard/salesman/customers",    icon: Users },
       { name: "Add Customer",   href: "/dashboard/salesman/onboard",      icon: UserCheck },
