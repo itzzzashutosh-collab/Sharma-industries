@@ -301,6 +301,7 @@ const SALESMAN_NAV: NavGroup[] = [
       { name: "Field Visits",   href: "/dashboard/salesman/visits",       icon: CalendarDays },
       { name: "My Orders",      href: "/dashboard/salesman/orders",       icon: ClipboardList },
       { name: "Collections",    href: "/dashboard/salesman/collections",  icon: Wallet },
+      { name: "Targets & Salary", href: "/dashboard/salesman/performance", icon: TrendingUp },
       { name: "Shop Branding",  href: "/dashboard/salesman/branding",     icon: Store },
       { name: "Sales Academy",  href: "/dashboard/salesman/learning",     icon: BookOpen },
       { name: "Territory Info", href: "/dashboard/salesman/territory",    icon: BarChart2 },
