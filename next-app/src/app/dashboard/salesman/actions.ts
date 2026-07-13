@@ -113,3 +113,69 @@ export async function createSalesVisit(visit: any) {
     return { success: false, error: err.message };
   }
 }
+
+export async function syncOfflineQueue(items: any[]) {
+  try {
+    const supabase = await createAdminClient();
+    for (const item of items) {
+      if (item.type === "visit") {
+        await supabase
+          .from("sales_visits")
+          .insert({
+            id: `VISIT_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+            salesman_id: salesmanId,
+            dealer_name: item.data.dealer_name,
+            location: item.data.location || "Store Outlet",
+            visit_date: item.data.visit_date,
+            purpose: item.data.purpose,
+            status: "Completed"
+          });
+      } else if (item.type === "painter") {
+        await supabase
+          .from("users")
+          .insert({
+            phone: item.data.phone,
+            name: item.data.name,
+            role: "painter",
+            is_active: true,
+            is_approved: true,
+            address: item.data.address || null,
+            territory: item.data.territory || null,
+            status: "APPROVED"
+          });
+      }
+    }
+    revalidatePath("/dashboard/salesman");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function logCollectionPayment(payload: { dealerId: string; amount: number; paymentMode: string; referenceId: string }) {
+  try {
+    const supabase = await createAdminClient();
+    
+    // Log payment activity
+    const { error } = await supabase
+      .from("sales_activities")
+      .insert({
+        id: `ACT_${Date.now()}`,
+        salesman_id: salesmanId,
+        activity_type: "Collection Recorded",
+        description: `Collected ${fmt(payload.amount)} via ${payload.paymentMode} (Ref: ${payload.referenceId})`,
+        created_at: new Date().toISOString()
+      });
+
+    if (error) throw error;
+    revalidatePath("/dashboard/salesman");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+function fmt(n: number) {
+  return `₹${Number(n).toLocaleString("en-IN")}`;
+}
+
