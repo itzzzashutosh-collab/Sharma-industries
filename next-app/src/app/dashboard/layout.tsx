@@ -6,6 +6,9 @@ import { LanguageSwitcher } from "@/components/executive/LanguageSwitcher";
 import { NotificationBell } from "@/components/NotificationBell";
 import { AIChatAssistant } from "@/components/AIChatAssistant";
 
+// All dashboard routes use cookies() for auth — must be dynamic.
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({
   children,
 }: {

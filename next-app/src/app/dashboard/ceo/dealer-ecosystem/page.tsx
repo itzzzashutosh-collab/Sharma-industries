@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { ExecutivePageTemplate } from "@/components/executive/ExecutivePageTemplate";
 
 const KPIS = [
