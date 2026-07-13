@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
+import { logout } from "@/app/login/actions";
 import {
   LayoutDashboard,
   FileText,
@@ -635,6 +636,30 @@ export function Sidebar({ role }: SidebarProps) {
             </div>
           )}
         </div>
+
+        {/* Profile & Logout Section */}
+        {!isCollapsed && (
+          <div className="px-3 py-2 border-t border-border bg-muted/20">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <span className="text-[10px] font-bold text-primary">{role.charAt(0).toUpperCase()}</span>
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-black text-foreground truncate uppercase">{role}</span>
+                </div>
+              </div>
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="px-2.5 py-1 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 text-[10px] font-black uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  Logout
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
       </motion.aside>
     </>
   );
