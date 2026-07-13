@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
 import { logout } from "@/app/login/actions";
+import { LanguageSwitcher } from "@/components/executive/LanguageSwitcher";
 import {
   LayoutDashboard,
   FileText,
@@ -459,12 +460,16 @@ const NAV_MAP: Record<string, NavGroup[]> = {
 };
 
 
+
 // ─── Component ────────────────────────────────────────────────────────────────
+
 interface SidebarProps {
   role: Role;
+  userName?: string;
+  roleLabel?: string;
 }
 
-export function Sidebar({ role }: SidebarProps) {
+export function Sidebar({ role, userName, roleLabel }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -637,18 +642,29 @@ export function Sidebar({ role }: SidebarProps) {
           )}
         </div>
 
-        {/* Profile & Logout Section */}
+        {/* Profile & Logout Section — always in sidebar, visible on mobile via drawer */}
         {!isCollapsed && (
-          <div className="px-3 py-2 border-t border-border bg-muted/20">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                  <span className="text-[10px] font-bold text-primary">{role.charAt(0).toUpperCase()}</span>
-                </div>
-                <div className="flex flex-col min-w-0">
-                  <span className="text-[10px] font-black text-foreground truncate uppercase">{role}</span>
-                </div>
+          <div className="border-t border-border bg-muted/20">
+            {/* User card */}
+            <div className="px-3 pt-3 pb-2 flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <span className="text-xs font-bold text-primary">
+                  {userName ? userName.charAt(0).toUpperCase() : role.charAt(0).toUpperCase()}
+                </span>
               </div>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="text-[11px] font-black text-foreground truncate">
+                  {userName || role}
+                </span>
+                <span className="text-[9px] text-muted-foreground font-semibold uppercase tracking-wide truncate">
+                  {roleLabel || role}
+                </span>
+              </div>
+            </div>
+
+            {/* Language + Logout row */}
+            <div className="px-3 pb-3 flex items-center justify-between gap-2">
+              <LanguageSwitcher />
               <form action={logout}>
                 <button
                   type="submit"
@@ -658,6 +674,25 @@ export function Sidebar({ role }: SidebarProps) {
                 </button>
               </form>
             </div>
+          </div>
+        )}
+
+        {/* Collapsed: just logout icon */}
+        {isCollapsed && (
+          <div className="py-2 flex justify-center border-t border-border">
+            <form action={logout}>
+              <button
+                type="submit"
+                title="Logout"
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 transition-colors cursor-pointer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                  <polyline points="16 17 21 12 16 7"/>
+                  <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+              </button>
+            </form>
           </div>
         )}
       </motion.aside>

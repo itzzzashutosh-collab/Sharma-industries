@@ -45,7 +45,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Left Navigation */}
-      <Sidebar role={session.role as any} />
+      <Sidebar role={session.role as any} userName={session.name} roleLabel={roleLabel} />
 
       {/* Main Area */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
@@ -79,29 +79,32 @@ export default async function DashboardLayout({
             </span>
           </div>
 
-          {/* Right: Controls */}
+          {/* Right: Controls — hidden on mobile, shown in sidebar instead */}
           <div className="flex items-center gap-2">
 
-            {/* Language */}
-            <LanguageSwitcher />
-
+            {/* Notification bell always visible */}
             <NotificationBell />
 
-            <div className="h-5 w-px bg-border" />
+            {/* Language, avatar, user info, logout: desktop only */}
+            <div className="hidden lg:flex items-center gap-2">
+              <LanguageSwitcher />
 
-            {/* User info */}
-            <div className="hidden sm:flex flex-col items-end leading-tight">
-              <p className="text-xs font-bold text-foreground">{session.name}</p>
-              <p className="text-[10px] text-muted-foreground font-semibold">{roleLabel}</p>
+              <div className="h-5 w-px bg-border" />
+
+              {/* User info */}
+              <div className="flex flex-col items-end leading-tight">
+                <p className="text-xs font-bold text-foreground">{session.name}</p>
+                <p className="text-[10px] text-muted-foreground font-semibold">{roleLabel}</p>
+              </div>
+
+              {/* Avatar */}
+              <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <span className="text-xs font-bold text-primary">{session.name.charAt(0).toUpperCase()}</span>
+              </div>
+
+              {/* Logout */}
+              <LogoutButton />
             </div>
-
-            {/* Avatar */}
-            <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-              <span className="text-xs font-bold text-primary">{session.name.charAt(0).toUpperCase()}</span>
-            </div>
-
-            {/* Logout */}
-            <LogoutButton />
           </div>
         </header>
 
