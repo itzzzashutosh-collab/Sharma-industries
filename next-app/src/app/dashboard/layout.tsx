@@ -50,15 +50,15 @@ export default async function DashboardLayout({
         {/* Top Header */}
         <header className="h-[72px] flex items-center justify-between pl-14 lg:pl-5 pr-4 sm:pr-6 bg-background border-b border-border z-20 relative shrink-0">
 
-          {/* Left: Sharma Industries Logo — full logo with icon + text, seamless, slightly smaller */}
+          {/* Left: Sharma Industries Logo — responsive width to fit mobile screens */}
           <div
-            className="shrink-0 relative overflow-hidden"
-            style={{ width: "240px", height: "50px" }}
+            className="shrink-0 relative overflow-hidden w-12 sm:w-[240px]"
+            style={{ height: "50px" }}
           >
             <img
               src="https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/sign/Company%20Assets%20(logos,%20Watermarks)/Sharmaindustries_daytheme.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83YTU1YTAxNi0xYzI2LTRlZjctYjlkNy1iYWU1NTFkN2Q1ZmUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDb21wYW55IEFzc2V0cyAobG9nb3MsIFdhdGVybWFya3MpL1NoYXJtYWluZHVzdHJpZXNfZGF5dGhlbWUucG5nIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc4Mzc2NTQ0MiwiZXhwIjo0OTM3MzY1NDQyfQ.NsMmaKzUaevoBm81geF4haKk-DFIPlv9Wub_Isc3WqI"
               alt="Sharma Industries"
-              className="absolute [mix-blend-mode:multiply]"
+              className="absolute [mix-blend-mode:multiply] max-none"
               style={{
                 width: "225px",
                 height: "225px",
