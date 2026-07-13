@@ -1,20 +1,24 @@
-import React from "react";
+import type { Metadata } from "next";
 import SalesmanCustomersClient from "./SalesmanCustomersClient";
+import { getSalesmanDashboardData } from "../actions";
 
 export const dynamic = "force-dynamic";
-import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
-  title: "Salesman Portal - Customers Directory",
-  description: "View mapped dealers and upload regional KYC onboarding materials.",
-  };
+  return { title: "Partners & Leads | Sales Executive" };
 }
 
-export default function SalesmanCustomersPage() {
-  return (
-    <div className="min-h-screen bg-slate-50/50">
-      <SalesmanCustomersClient />
-    </div>
-  );
+export default async function Page() {
+  const res = await getSalesmanDashboardData();
+
+  if (!res.success) {
+    return (
+      <div className="p-8 text-center text-xs text-muted-foreground">
+        <p className="font-bold text-red-500">Failed to load customers</p>
+        <p className="mt-1">{res.error}</p>
+      </div>
+    );
+  }
+
+  return <SalesmanCustomersClient initialData={(res as any)} />;
 }
