@@ -1008,6 +1008,49 @@ export async function createDealerComplaint(comp: any) {
   }
 }
 
+export async function parsePurchaseBillOCR(base64File: string) {
+  try {
+    // Simulate OCR processing delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Sample mock return data parsed by OCR
+    const parsedData = {
+      invoice_no: `OCR-${Date.now().toString().slice(-5)}`,
+      bill_date: new Date().toISOString().slice(0, 10),
+      supplier_name: "Supreme Raw Materials Corp",
+      supplier_gstin: "08SUPREMERM123Z",
+      sub_total: 45000,
+      total_amount: 53100,
+      items: [
+        { id: "PUTTY", name: "Premium Putty Bags", qty: 50, rate: 450 },
+        { id: "PRIMER", name: "Acrylic Wall Primer 20L", qty: 10, rate: 2250 }
+      ]
+    };
+
+    return { success: true, data: parsedData };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function runAIVisualizationJob(projectId: string, colors: any) {
+  try {
+    // Simulate AI Background Job processing
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return {
+      success: true,
+      design: {
+        id: `AI_DSN_${Date.now()}`,
+        colors,
+        remarks: "Surface contours optimized by AI Visualizer"
+      }
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
 
 
