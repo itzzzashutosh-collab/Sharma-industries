@@ -105,3 +105,56 @@ export async function scanPainterCoupon(code: string) {
     return { success: false, error: err.message };
   }
 }
+
+export async function getPainterPortfolioData() {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Painter profile not found");
+
+    const [
+      { data: projects },
+      { data: reviews }
+    ] = await Promise.all([
+      supabase.from("painter_projects").select("*").eq("painter_id", profile.id).order("created_at", { ascending: false }),
+      supabase.from("painter_reviews").select("*").eq("painter_id", profile.id).order("created_at", { ascending: false })
+    ]);
+
+    return {
+      success: true,
+      profile,
+      projects: projects || [],
+      reviews: reviews || []
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message, profile: null, projects: [], reviews: [] };
+  }
+}
+
+export async function createPainterProject(proj: any) {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Unauthorized access");
+
+    const { error } = await supabase
+      .from("painter_projects")
+      .insert({
+        painter_id: profile.id,
+        project_name: proj.project_name,
+        customer_name: proj.customer_name || null,
+        project_type: proj.project_type || "Residential House",
+        area_sqft: Number(proj.area_sqft || 0),
+        description: proj.description || null,
+        status: "Pending",
+        rating: 5,
+        created_at: new Date().toISOString()
+      });
+    if (error) throw error;
+    revalidatePath("/dashboard/painter/portfolio");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
