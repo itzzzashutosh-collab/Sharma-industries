@@ -60,6 +60,7 @@ import {
   AlertCircle,
   Download,
   Columns,
+  Award,
 } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -303,6 +304,7 @@ const SALESMAN_NAV: NavGroup[] = [
       { name: "Collections",    href: "/dashboard/salesman/collections",  icon: Wallet },
       { name: "Targets & Salary", href: "/dashboard/salesman/performance", icon: TrendingUp },
       { name: "Shop Branding",  href: "/dashboard/salesman/branding",     icon: Store },
+      { name: "Growth Programs", href: "/dashboard/salesman/schemes",      icon: Award },
       { name: "Sales Academy",  href: "/dashboard/salesman/learning",     icon: BookOpen },
       { name: "Territory Info", href: "/dashboard/salesman/territory",    icon: BarChart2 },
       { name: "Painter Network", href: "/dashboard/salesman/painters",     icon: Paintbrush },

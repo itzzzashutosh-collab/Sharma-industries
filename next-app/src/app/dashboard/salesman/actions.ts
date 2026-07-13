@@ -183,6 +183,50 @@ export async function logCollectionPayment(payload: { dealerId: string; amount: 
   }
 }
 
+export async function getDealerGrowthPrograms() {
+  try {
+    const supabase = await createAdminClient();
+    const { data, error } = await supabase
+      .from("dealer_growth_programs")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return { success: true, programs: data || [] };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function proposeDealerGrowthProgram(payload: {
+  name: string;
+  details: string;
+  criteria: string;
+  eligibility: string;
+  rewards: string;
+}) {
+  try {
+    const supabase = await createAdminClient();
+    const { error } = await supabase
+      .from("dealer_growth_programs")
+      .insert({
+        id: `PROG_${Date.now()}`,
+        name: payload.name,
+        details: payload.details,
+        criteria: payload.criteria,
+        eligibility: payload.eligibility,
+        rewards: payload.rewards,
+        status: "Proposed"
+      });
+
+    if (error) throw error;
+    revalidatePath("/dashboard/salesman/schemes");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
 function fmt(n: number) {
   return `₹${Number(n).toLocaleString("en-IN")}`;
 }
