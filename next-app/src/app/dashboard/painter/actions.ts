@@ -261,4 +261,58 @@ export async function getPainterReferrals() {
   }
 }
 
+export async function getPainterEstimations() {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Painter profile not found");
+
+    const { data: estimations, error } = await supabase
+      .from("painter_estimations")
+      .select("*")
+      .eq("painter_id", profile.id)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      profile,
+      estimations: estimations || []
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message, profile: null, estimations: [] };
+  }
+}
+
+export async function createPainterEstimation(est: any) {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Unauthorized access");
+
+    const { error } = await supabase
+      .from("painter_estimations")
+      .insert({
+        painter_id: profile.id,
+        customer_name: est.customer_name,
+        project_name: est.project_name,
+        area_sqft: Number(est.area_sqft),
+        material_cost: Number(est.material_cost || 0),
+        labour_cost: Number(est.labour_cost || 0),
+        total_cost: Number(est.material_cost || 0) + Number(est.labour_cost || 0),
+        status: "Saved",
+        created_at: new Date().toISOString()
+      });
+
+    if (error) throw error;
+    revalidatePath("/dashboard/painter/work/calculator");
+    revalidatePath("/dashboard/painter/work/ai-assistant");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+
 
