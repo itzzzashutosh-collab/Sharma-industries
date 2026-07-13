@@ -87,24 +87,103 @@ export async function scanPainterCoupon(code: string) {
     const profile = await getActivePainter(supabase);
     if (!profile) throw new Error("Unauthorized access");
 
-    // Check if duplicate token scanner
-    const { count } = await supabase
-      .from("dealer_stock_register")
-      .select("*", { count: "exact", head: true })
-      .eq("remarks", `Scanned by painter ${profile.name}`);
+    // 1. Check duplicate coupon code
+    const { data: duplicate } = await supabase
+      .from("painter_coupons")
+      .select("id")
+      .eq("coupon_code", code)
+      .maybeSingle();
 
-    if (count && count > 0) throw new Error("Coupon already scanned");
+    if (duplicate) throw new Error("Coupon already scanned");
 
-    // Verify code format (e.g. COUP-100-XXX)
     const points = code.includes("-500-") ? 500 : 200;
 
-    // Simulate coupon scan verification request submission to dealer
+    // 2. Insert scanned coupon
+    const { error } = await supabase
+      .from("painter_coupons")
+      .insert({
+        painter_id: profile.id,
+        coupon_code: code,
+        points,
+        status: "Pending",
+        remarks: "Submitted via Painter Companion App Portal"
+      });
+
+    if (error) throw error;
+
     revalidatePath("/dashboard/painter");
+    revalidatePath("/dashboard/painter/rewards/coupons");
     return { success: true, points };
   } catch (err: any) {
     return { success: false, error: err.message };
   }
 }
+
+export async function getPainterRewardsData() {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Painter profile not found");
+
+    const [
+      { data: coupons },
+      { data: ledger },
+      { data: catalog }
+    ] = await Promise.all([
+      supabase.from("painter_coupons").select("*").eq("painter_id", profile.id).order("scanned_at", { ascending: false }),
+      supabase.from("painter_ledger").select("*").eq("painter_id", profile.id).order("created_at", { ascending: false }),
+      supabase.from("rewards_catalog").select("*").order("points", { ascending: true })
+    ]);
+
+    return {
+      success: true,
+      profile,
+      coupons: coupons || [],
+      ledger: ledger || [],
+      catalog: catalog || []
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message, profile: null, coupons: [], ledger: [], catalog: [] };
+  }
+}
+
+export async function redeemCatalogReward(itemId: string, itemPoints: number) {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Unauthorized access");
+
+    if (Number(profile.total_tokens || 0) < itemPoints) {
+      throw new Error("Insufficient points balance in rewards wallet");
+    }
+
+    // Subtract points from painter profile
+    const newPoints = Number(profile.total_tokens || 0) - itemPoints;
+    const { error: errUpdate } = await supabase
+      .from("painters")
+      .update({ total_tokens: newPoints })
+      .eq("id", profile.id);
+
+    if (errUpdate) throw errUpdate;
+
+    // Log withdrawal
+    const { error: errWithdraw } = await supabase
+      .from("withdrawal_history")
+      .insert({
+        painter_id: profile.id,
+        amount: itemPoints
+      });
+
+    if (errWithdraw) throw errWithdraw;
+
+    revalidatePath("/dashboard/painter");
+    revalidatePath("/dashboard/painter/rewards/store");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
 
 export async function getPainterPortfolioData() {
   try {
