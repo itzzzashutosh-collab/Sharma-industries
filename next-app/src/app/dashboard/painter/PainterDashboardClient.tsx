@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Sparkles, Wallet, Award, CheckCircle, Clock, Calendar, ArrowRight, Scan, PlusCircle, HelpCircle, X } from "lucide-react";
+import { Sparkles, Wallet, Award, CheckCircle, Clock, Calendar, ArrowRight, Scan, PlusCircle, HelpCircle, X, AlertCircle } from "lucide-react";
 import { scanPainterCoupon } from "./actions";
 
 interface Props {
@@ -35,9 +35,35 @@ export function PainterDashboardClient({ initialData }: Props) {
   const [couponCode, setCouponCode] = useState("");
   const [isPending, startTransition] = useTransition();
 
+  // Offline support states
+  const [isOffline, setIsOffline] = useState(false);
+  const [offlineQueue, setOfflineQueue] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        return JSON.parse(localStorage.getItem("si_offline_coupons") || "[]");
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
   const handleScanSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!couponCode) return;
+
+    if (isOffline) {
+      // Offline mode: queue in local storage
+      const newQueue = [...offlineQueue, couponCode];
+      setOfflineQueue(newQueue);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("si_offline_coupons", JSON.stringify(newQueue));
+      }
+      alert(`[Offline Mode] Coupon ${couponCode} queued locally. It will sync automatically when you are back online.`);
+      setShowScanModal(false);
+      setCouponCode("");
+      return;
+    }
 
     startTransition(async () => {
       const res = await scanPainterCoupon(couponCode);
@@ -45,7 +71,6 @@ export function PainterDashboardClient({ initialData }: Props) {
         alert(`Coupon ${couponCode} submitted for approval. Estimated reward: ${res.points} points.`);
         setShowScanModal(false);
         setCouponCode("");
-        // Optimistically increment pending
         setMetrics(m => ({ ...m, pendingCoupons: m.pendingCoupons + 1 }));
       } else {
         alert(res.error || "Failed to scan coupon");
@@ -53,8 +78,56 @@ export function PainterDashboardClient({ initialData }: Props) {
     });
   };
 
+  const handleSyncQueue = () => {
+    if (offlineQueue.length === 0) return;
+
+    startTransition(async () => {
+      let succeeded = 0;
+      for (const code of offlineQueue) {
+        const res = await scanPainterCoupon(code);
+        if (res.success) succeeded++;
+      }
+
+      alert(`Sync Complete! Successfully uploaded ${succeeded} queued coupons.`);
+      setOfflineQueue([]);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("si_offline_coupons");
+      }
+      setMetrics(m => ({ ...m, pendingCoupons: m.pendingCoupons + succeeded }));
+    });
+  };
+
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-20 max-w-md mx-auto">
+      {/* Connectivity Status Switch */}
+      <div className="flex items-center justify-between bg-card border border-border px-4 py-2.5 rounded-2xl shadow-xs">
+        <span className="text-[10px] font-black text-muted-foreground uppercase">Connection Mode</span>
+        <button onClick={() => setIsOffline(!isOffline)} className={`px-3 py-1 rounded-xl font-bold text-[9px] uppercase tracking-wider transition-colors cursor-pointer border ${
+          isOffline 
+            ? "bg-amber-500/10 text-amber-600 border-amber-500/20" 
+            : "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+        }`}>
+          {isOffline ? "Offline Mode" : "Online Mode"}
+        </button>
+      </div>
+
+      {/* Offline Sync Alert Banner */}
+      {offlineQueue.length > 0 && (
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex flex-col space-y-3">
+          <div className="flex items-start gap-2.5 text-xs text-amber-700">
+            <AlertCircle size={15} className="shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold">Pending Coupon Sync Queue</p>
+              <p className="text-[10px] opacity-90 mt-0.5">You have {offlineQueue.length} scanned coupons queued locally in offline storage.</p>
+            </div>
+          </div>
+          <button onClick={handleSyncQueue} className="w-full py-2 bg-amber-600 text-white font-bold rounded-xl text-center text-[10px] hover:bg-amber-700 transition-colors cursor-pointer">
+            Sync Queued Coupons Now
+          </button>
+        </div>
+      )}
+
       {/* Welcome Card */}
       <div className="bg-gradient-to-r from-primary to-primary-focus text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
         <div className="absolute -right-10 -bottom-10 opacity-15">
@@ -63,6 +136,7 @@ export function PainterDashboardClient({ initialData }: Props) {
         <div className="space-y-1">
           <p className="text-[10px] font-black tracking-widest uppercase opacity-75">Welcome back</p>
           <h2 className="text-lg font-black">{profile.name}</h2>
+
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 border border-white/10 text-[9px] font-black uppercase tracking-wider mt-1">
             <Sparkles size={9} /> {metrics.currentRank}
           </div>
