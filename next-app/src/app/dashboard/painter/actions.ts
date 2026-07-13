@@ -237,3 +237,28 @@ export async function createPainterProject(proj: any) {
   }
 }
 
+export async function getPainterReferrals() {
+  try {
+    const supabase = await createAdminClient();
+    const profile = await getActivePainter(supabase);
+    if (!profile) throw new Error("Painter profile not found");
+
+    const { data: list, error } = await supabase
+      .from("painters")
+      .select("id, name, phone, status, total_tokens, created_at")
+      .eq("referred_by", profile.id)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return {
+      success: true,
+      profile,
+      list: list || []
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message, profile: null, list: [] };
+  }
+}
+
+
