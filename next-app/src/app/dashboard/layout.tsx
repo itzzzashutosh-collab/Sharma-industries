@@ -69,7 +69,7 @@ export default async function DashboardLayout({
           </div>
 
           {/* Center: Company name + tagline */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight pointer-events-none select-none">
+          <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center leading-tight pointer-events-none select-none">
             <span className="text-sm font-black text-foreground tracking-tight">Sharma Industries</span>
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">
               Paint Operating System
