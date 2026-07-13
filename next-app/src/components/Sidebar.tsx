@@ -292,6 +292,7 @@ const SALESMAN_NAV: NavGroup[] = [
     group: "Dashboard",
     items: [
       { name: "Dashboard",      href: "/dashboard/salesman",              icon: LayoutDashboard },
+      { name: "AI Sales Coach", href: "/dashboard/salesman/ai-assistant", icon: Sparkles },
     ],
   },
   {
