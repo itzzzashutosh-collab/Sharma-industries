@@ -154,7 +154,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
       // ── Finance Pages ────────────────────────────────────────────────────
       "Finance": "वित्त",
-      "Dealer Workspace": "डीलर कार्यक्षेत्र",
+      // "Dealer Workspace" already defined above
       "Revenue Summary": "राजस्व सारांश",
       "Dealer Sales Revenue Summary": "डीलर बिक्री राजस्व सारांश",
       "Track gross sales revenue, UPI digital settlements, cash collections, and credit receivables stream": "सकल बिक्री राजस्व, UPI डिजिटल निपटान, नकद संग्रह और क्रेडिट प्राप्य की निगरानी करें",
@@ -331,8 +331,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "Register Painter": "पेंटर पंजीकृत करें",
       "Cancel": "रद्द करें",
 
-      // Loyalty Schemes
-      "Loyalty Schemes": "लॉयल्टी स्कीम",
+      // Loyalty Schemes ("Loyalty Schemes" key already defined above)
       "Painter Reward Programs": "पेंटर रिवॉर्ड कार्यक्रम",
       "Manage loyalty programs and reward schemes for painters and contractors": "पेंटर और ठेकेदारों के लिए लॉयल्टी कार्यक्रम और रिवॉर्ड स्कीम प्रबंधित करें",
       "Active Schemes": "सक्रिय स्कीम",
@@ -387,8 +386,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "View Details": "विवरण देखें",
       "No submissions found.": "कोई प्रस्तुति नहीं मिली।",
 
-      // ── Settings Pages ───────────────────────────────────────────────────
-      "Shop Profile": "दुकान प्रोफाइल",
+      // ── Settings Pages ("Shop Profile", "Business Settings", "Application Settings" already defined above)
       "Store Profile & Branding Settings": "स्टोर प्रोफाइल एवं ब्रांडिंग सेटिंग्स",
       "Manage your store profile, upload logo, signature, and customize invoice branding": "अपनी दुकान प्रोफाइल प्रबंधित करें, लोगो, हस्ताक्षर अपलोड करें और चालान ब्रांडिंग कस्टमाइज़ करें",
       "Store Name": "दुकान का नाम",
@@ -403,7 +401,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "Save Store Profile": "दुकान प्रोफाइल सहेजें",
       "Save & Apply Changes": "सहेजें एवं परिवर्तन लागू करें",
 
-      "Business Settings": "व्यवसाय सेटिंग्स",
+      // "Business Settings" already defined above
       "Invoice & Business Customization": "चालान एवं व्यवसाय अनुकूलन",
       "Configure invoice prefix, GST settings, payment terms, and business rules": "चालान उपसर्ग, GST सेटिंग्स, भुगतान शर्तें और व्यावसायिक नियम कॉन्फ़िगर करें",
       "Invoice Prefix": "चालान उपसर्ग",
@@ -414,7 +412,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "Save Settings": "सेटिंग्स सहेजें",
       "Reset to Default": "डिफ़ॉल्ट पर रीसेट करें",
 
-      "Application Settings": "एप्लिकेशन सेटिंग्स",
+      // "Application Settings" already defined above
       "App Preferences & Configuration": "ऐप प्राथमिकताएं एवं कॉन्फ़िगरेशन",
       "Configure language, theme, notifications, and application display preferences": "भाषा, थीम, सूचनाएं और एप्लिकेशन प्रदर्शन प्राथमिकताएं कॉन्फ़िगर करें",
       "Language": "भाषा",
@@ -426,10 +424,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "Save Preferences": "प्राथमिकताएं सहेजें",
       "English": "अंग्रेज़ी",
       "Hindi": "हिन्दी",
-      "Save App Preferences": "ऐप प्राथमिकताएं सहेजें",
+      // "Save App Preferences" already defined above
 
-      // ── Reports Pages ────────────────────────────────────────────────────
-      "Sales Reports": "बिक्री रिपोर्ट",
+      // ── Reports Pages ("Sales Reports", "Inventory Reports", "Finance Reports" already defined above)
       "Sales Performance Analysis": "बिक्री प्रदर्शन विश्लेषण",
       "Comprehensive sales reports including revenue breakdown, top products, and customer analysis": "राजस्व विभाजन, शीर्ष उत्पाद और ग्राहक विश्लेषण सहित व्यापक बिक्री रिपोर्ट",
       "Total Sales": "कुल बिक्री",
@@ -439,11 +436,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "Export Report": "रिपोर्ट निर्यात करें",
       "Download PDF": "PDF डाउनलोड करें",
 
-      "Inventory Reports": "इन्वेंट्री रिपोर्ट",
+      // "Inventory Reports" already defined above
       "Stock & Inventory Analysis": "स्टॉक एवं इन्वेंट्री विश्लेषण",
       "Comprehensive inventory reports including stock movements, valuations, and turnover analysis": "स्टॉक आवाजाही, मूल्यांकन और टर्नओवर विश्लेषण सहित व्यापक इन्वेंट्री रिपोर्ट",
 
-      "Finance Reports": "वित्त रिपोर्ट",
+      // "Finance Reports" already defined above
       "Financial Performance Analysis": "वित्तीय प्रदर्शन विश्लेषण",
       "Comprehensive financial reports including revenue, expenses, P&L, and cash flow analysis": "राजस्व, खर्च, लाभ-हानि और नकद प्रवाह विश्लेषण सहित व्यापक वित्तीय रिपोर्ट",
       "Total Revenue": "कुल राजस्व",
@@ -453,14 +450,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
       // ── Common across all pages ──────────────────────────────────────────
       "Save": "सहेजें",
-      "Cancel": "रद्द करें",
+      // "Cancel" already defined above (L332)
       "Search": "खोजें",
       "Filter": "फ़िल्टर",
       "Export": "निर्यात",
       "Download": "डाउनलोड",
       "Print": "प्रिंट",
       "Add": "जोड़ें",
-      "Edit": "संपादित करें",
+      // "Edit" already defined above (L234)
       "Delete": "हटाएं",
       "View": "देखें",
       "Submit": "जमा करें",
@@ -479,11 +476,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       "Confirm": "पुष्टि करें",
       "Apply": "लागू करें",
       "Reset": "रीसेट",
-      "Close": "बंद करें",
+      // "Close" already defined above (L232)
       "Open": "खोलें",
       "Upload": "अपलोड करें",
       "Remove": "हटाएं",
-      "Clear": "साफ़ करें",
+      // "Clear" already defined above (L235)
       "Select": "चुनें",
       "Create": "बनाएं",
       "Update": "अपडेट करें",
