@@ -5,7 +5,7 @@ import { getDealerPurchaseBills, getDealerSuppliers } from "../../actions";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Purchase Bills | Dealer Workspace" };
+  return { title: "Purchase Bills & Vendor Hub | Dealer Workspace" };
 }
 
 export default async function Page() {

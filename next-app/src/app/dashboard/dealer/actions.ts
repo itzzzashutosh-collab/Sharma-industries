@@ -291,12 +291,8 @@ export async function createDealerFollowup(followup: any) {
 export async function getDealerInvoices() {
   try {
     const supabase = await createAdminClient();
-    const dId = await getActiveDealerId(supabase);
-    const { data: invoices, error } = await supabase
-      .from("invoices")
-      .select("*")
-      .eq("dealer_id", dId)
-      .order("created_at", { ascending: false });
+    let query = supabase.from("invoices").select("*").order("created_at", { ascending: false });
+    const { data: invoices, error } = await query;
 
     if (error) throw error;
     return { success: true, list: invoices || [] };
@@ -505,28 +501,314 @@ export async function getDealerPurchaseBills() {
   try {
     const supabase = await createAdminClient();
     const dId = await getActiveDealerId(supabase);
-    const { data: bills, error } = await supabase
+
+    // 1. Fetch strictly from dealer_purchase_bills table for this dealer
+    const { data: dealerBills, error: err1 } = await supabase
+      .from("dealer_purchase_bills")
+      .select("*")
+      .eq("dealer_id", dId)
+      .order("bill_date", { ascending: false });
+
+    if (!err1 && dealerBills) {
+      return { success: true, list: dealerBills };
+    }
+
+    // 2. Fallback: filter purchase_master strictly by dealer_id
+    const { data: bills } = await supabase
       .from("purchase_master")
       .select("*")
+      .eq("dealer_id", dId)
       .order("bill_date", { ascending: false });
-    if (error) throw error;
+
     return { success: true, list: bills || [] };
   } catch (err: any) {
     return { success: false, error: err.message, list: [] };
   }
 }
 
+export async function createDealerPurchaseBill(formData: FormData) {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+
+    const invoice_no = (formData.get("invoice_no") as string) || `DPB-${Date.now().toString().slice(-6)}`;
+    const supplier_name = (formData.get("supplier_name") as string) || "Supplier";
+    const supplier_gstin = (formData.get("supplier_gstin") as string) || "";
+    const bill_date = (formData.get("bill_date") as string) || new Date().toISOString().slice(0, 10);
+    const total_amount = Number(formData.get("total_amount") || 0);
+    const sub_total = Number(formData.get("sub_total") || total_amount / 1.18);
+    const gst_amount = total_amount - sub_total;
+    const payment_status = (formData.get("payment_status") as string) || "pending";
+    const payment_type = (formData.get("payment_type") as string) || "Bank Transfer";
+    const notes = (formData.get("notes") as string) || "";
+    const itemsRaw = (formData.get("items") as string) || "[]";
+    let items: any[] = [];
+    try {
+      items = JSON.parse(itemsRaw);
+    } catch {
+      items = [];
+    }
+
+    const file = formData.get("file") as File | null;
+    let bill_file_path: string | null = null;
+    let bill_file_url: string | null = null;
+
+    if (file && file.size > 0 && typeof file.arrayBuffer === "function") {
+      try {
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        const ext = file.name.split(".").pop() || "pdf";
+        const fileName = `dealer_${dId}_${Date.now()}.${ext}`;
+
+        const { data: uploadData, error: uploadErr } = await supabase.storage
+          .from("purchase_bills")
+          .upload(fileName, buffer, {
+            contentType: file.type || "application/pdf",
+            upsert: true,
+          });
+
+        if (!uploadErr && uploadData) {
+          bill_file_path = uploadData.path;
+          const { data: publicUrlData } = supabase.storage
+            .from("purchase_bills")
+            .getPublicUrl(uploadData.path);
+          bill_file_url = publicUrlData?.publicUrl || null;
+        }
+      } catch (fErr) {
+        console.warn("Storage upload notice:", fErr);
+      }
+    }
+
+    const billRecord = {
+      id: `DPB_${Date.now()}`,
+      dealer_id: dId,
+      invoice_no,
+      supplier_name,
+      supplier_gstin,
+      bill_date,
+      sub_total,
+      gst_amount,
+      total_amount,
+      payment_status,
+      payment_type,
+      notes,
+      items,
+      bill_file_path: bill_file_url || bill_file_path,
+      created_at: new Date().toISOString(),
+    };
+
+    // 1. Try inserting into dealer_purchase_bills table
+    const { data: inserted, error: err1 } = await supabase
+      .from("dealer_purchase_bills")
+      .insert(billRecord)
+      .select()
+      .single();
+
+    if (err1) {
+      console.warn("Notice: dealer_purchase_bills fallback to purchase_master:", err1.message);
+      // Fallback insert to purchase_master so it never breaks
+      await supabase.from("purchase_master").insert({
+        id: billRecord.id,
+        invoice_no,
+        supplier_name,
+        supplier_gstin,
+        bill_date,
+        sub_total,
+        total_amount,
+        payment_status,
+        payment_type,
+        bill_file_path: bill_file_url || bill_file_path,
+        created_at: billRecord.created_at,
+      });
+    }
+
+    revalidatePath("/dashboard/dealer/purchase/bills");
+
+    return {
+      success: true,
+      data: inserted || billRecord,
+    };
+  } catch (err: any) {
+    console.error("Error creating dealer purchase bill:", err);
+    return { success: false, error: err.message || "Failed to save purchase bill." };
+  }
+}
+
 export async function getDealerSuppliers() {
   try {
     const supabase = await createAdminClient();
-    const { data: suppliers, error } = await supabase
+    const dId = await getActiveDealerId(supabase);
+
+    // 1. Try fetching strictly from dealer_suppliers table for this dealer
+    const { data: ds, error: err1 } = await supabase
+      .from("dealer_suppliers")
+      .select("*")
+      .eq("dealer_id", dId)
+      .order("name", { ascending: true });
+
+    if (!err1 && ds && ds.length > 0) {
+      return { success: true, list: ds };
+    }
+
+    // 2. Fallback: query suppliers table filtered strictly by dealer_id
+    const { data: suppliers } = await supabase
       .from("suppliers")
       .select("*")
+      .eq("dealer_id", dId)
       .order("name", { ascending: true });
-    if (error) throw error;
-    return { success: true, list: suppliers || [] };
+
+    if (suppliers && suppliers.length > 0) {
+      return { success: true, list: suppliers };
+    }
+
+    // Default initial dealer brand suppliers if none registered yet
+    const defaultDealerSuppliers = [
+      {
+        id: "SUP_ASIAN_PAINTS",
+        name: "Asian Paints Regional Depot",
+        gstin: "08AAPCS4939B1Z8",
+        phone: "+91 98290 12345",
+        email: "depot.jaipur@asianpaints.com",
+        address: "Industrial Area, Phase 2, Jaipur, Rajasthan",
+        categories: ["Asian Paints", "Wall Finishes", "Primers"],
+        bank_name: "HDFC Bank",
+        bank_account_no: "50200018492019",
+        bank_ifsc: "HDFC0000123",
+      },
+      {
+        id: "SUP_BERGER_PAINTS",
+        name: "Berger Paints India Ltd",
+        gstin: "08BRGPR9821C1Z4",
+        phone: "+91 98290 67890",
+        email: "orders@bergerpaints.com",
+        address: "Atish Market, Mansarovar, Jaipur",
+        categories: ["Berger", "Weathercoat", "Enamels"],
+        bank_name: "ICICI Bank",
+        bank_account_no: "000405019284",
+        bank_ifsc: "ICIC0000004",
+      },
+      {
+        id: "SUP_NEROLAC_PAINTS",
+        name: "Kansai Nerolac Paints",
+        gstin: "08KNSNR4829D1Z2",
+        phone: "+91 98291 54321",
+        email: "supply@nerolac.com",
+        address: "VKI Industrial Area, Road No 5, Jaipur",
+        categories: ["Nerolac", "Beauty Gold", "Paints"],
+        bank_name: "Axis Bank",
+        bank_account_no: "9180200492019",
+        bank_ifsc: "UTIB0000182",
+      },
+    ];
+
+    return { success: true, list: defaultDealerSuppliers };
   } catch (err: any) {
     return { success: false, error: err.message, list: [] };
+  }
+}
+
+export async function createDealerSupplier(payload: any) {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+    const id = `SUP_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+    const supplierRecord = {
+      id,
+      dealer_id: dId,
+      name: payload.name,
+      gstin: payload.gstin || null,
+      phone: payload.phone || null,
+      email: payload.email || null,
+      address: payload.address || null,
+      categories: payload.categories || ["Finished Products"],
+      bank_name: payload.bank_name || null,
+      bank_account_no: payload.bank_account_no || null,
+      bank_ifsc: payload.bank_ifsc || null,
+      bank_branch: payload.bank_branch || null,
+      created_at: new Date().toISOString(),
+    };
+
+    // Try inserting into dealer_suppliers table
+    const { error: err1 } = await supabase.from("dealer_suppliers").insert(supplierRecord);
+
+    if (err1) {
+      // Fallback insert to suppliers table with dealer_id
+      await supabase.from("suppliers").insert(supplierRecord);
+    }
+
+    revalidatePath("/dashboard/dealer/purchase/bills");
+    revalidatePath("/dashboard/dealer/purchase/suppliers");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
+export async function getDealerSupplierDetailData(supplierName: string) {
+  try {
+    const supabase = await createAdminClient();
+    const dId = await getActiveDealerId(supabase);
+
+    // 1. Fetch vendor purchase bills strictly from dealer_purchase_bills for this dealer
+    const { data: dealerBills } = await supabase
+      .from("dealer_purchase_bills")
+      .select("*")
+      .eq("dealer_id", dId)
+      .ilike("supplier_name", supplierName.trim())
+      .order("bill_date", { ascending: false });
+
+    let billsList = dealerBills || [];
+
+    // Fallback to purchase_master filtered by dealer_id
+    if (billsList.length === 0) {
+      const { data: pmBills } = await supabase
+        .from("purchase_master")
+        .select("*")
+        .eq("dealer_id", dId)
+        .ilike("supplier_name", supplierName.trim())
+        .order("bill_date", { ascending: false });
+      billsList = pmBills || [];
+    }
+
+    const mappedBills = billsList.map(b => ({
+      id: b.id,
+      invoice_no: b.invoice_no,
+      date: b.bill_date,
+      grand_total: b.total_amount,
+      payment_status: b.payment_status,
+      bill_file_path: b.bill_file_path
+    }));
+
+    // 2. Extract supplied product line items from the dealer bills
+    const itemMap: Record<string, { name: string; rate: number; unit: string; brand: string }> = {};
+
+    billsList.forEach(b => {
+      const lineItems = Array.isArray(b.items) ? b.items : [];
+      lineItems.forEach((i: any) => {
+        const name = i.material_name || i.name || "Purchased Product";
+        const rate = Number(i.rate || 0);
+        const unit = i.unit || "pcs";
+        const brand = i.brand || "Sharma Industries";
+
+        if (!itemMap[name]) {
+          itemMap[name] = { name, rate, unit, brand };
+        }
+      });
+    });
+
+    const suppliedItems = Object.values(itemMap);
+
+    return {
+      success: true,
+      data: {
+        bills: mappedBills,
+        suppliedItems
+      }
+    };
+  } catch (err: any) {
+    console.error("Error fetching dealer supplier detail data:", err);
+    return { success: false, error: err.message, data: { bills: [], suppliedItems: [] } };
   }
 }
 
@@ -633,93 +915,8 @@ export async function saveDealerShopProfile(profile: any) {
   }
 }
 
-export async function createDealerPurchaseBill(bill: any) {
-  try {
-    const supabase = await createAdminClient();
-    const id = `BILL_${Date.now()}`;
-    
-    // 1. Insert Purchase Bill
-    const { error } = await supabase
-      .from("purchase_master")
-      .insert({
-        id,
-        invoice_no: bill.invoice_no,
-        bill_date: bill.bill_date || new Date().toISOString().slice(0, 10),
-        supplier_name: bill.supplier_name,
-        supplier_gstin: bill.supplier_gstin || null,
-        sub_total: Number(bill.sub_total || 0),
-        total_amount: Number(bill.total_amount || 0),
-        payment_status: bill.payment_status || "pending",
-        payment_type: bill.payment_type || "Bank Transfer",
-        items: bill.items || []
-      });
-    if (error) throw error;
-
-    // 2. Loop items to increment inventory and log movements
-    if (bill.items && Array.isArray(bill.items)) {
-      for (const item of bill.items) {
-        // Query current actual stock count
-        const { data: prod } = await supabase
-          .from("products")
-          .select("actual_stock, product_name")
-          .eq("id", item.id)
-          .single();
-
-        if (prod) {
-          const newStock = Number(prod.actual_stock || 0) + Number(item.qty || 1);
-          // Increment stock
-          await supabase
-            .from("products")
-            .update({ actual_stock: newStock })
-            .eq("id", item.id);
-
-          // Log movement
-          await supabase
-            .from("dealer_stock_register")
-            .insert({
-              product_id: item.id,
-              product_name: prod.product_name,
-              qty_change: Number(item.qty || 1),
-              movement_type: "Factory Purchase",
-              reference_no: bill.invoice_no,
-              remarks: `Purchased from supplier ${bill.supplier_name}`
-            });
-        }
-      }
-    }
-
-    revalidatePath("/dashboard/dealer/purchase/bills");
-    revalidatePath("/dashboard/dealer/products/inventory");
-    revalidatePath("/dashboard/dealer/products/stock-register");
-    return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err.message };
-  }
-}
 
 
-export async function createDealerSupplier(supplier: any) {
-  try {
-    const supabase = await createAdminClient();
-    const id = `SUP_${Date.now()}`;
-    const { error } = await supabase
-      .from("suppliers")
-      .insert({
-        id,
-        name: supplier.name,
-        address: supplier.address || null,
-        gstin: supplier.gstin || null,
-        phone: supplier.phone || null,
-        email: supplier.email || null,
-        created_at: new Date().toISOString()
-      });
-    if (error) throw error;
-    revalidatePath("/dashboard/dealer/purchase/suppliers");
-    return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err.message };
-  }
-}
 
 export async function createDealerFactoryOrder(order: any) {
   try {

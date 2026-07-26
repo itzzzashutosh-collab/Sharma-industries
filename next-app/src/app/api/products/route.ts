@@ -4,11 +4,10 @@ import { generateSemanticId } from "@/lib/idGenerator";
 
 export async function GET() {
   try {
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
     const { data, error } = await supabase
       .from("products")
       .select("*")
-      .eq("is_master_product", true)
       .order("product_name", { ascending: true })
       .limit(10000);
 
@@ -17,11 +16,14 @@ export async function GET() {
     // Map database columns to the frontend Product interface
     const mappedData = data.map((p: any) => ({
       id: p.id,
-      name: p.product_name,
-      hsn_code: p.hsn_code,
-      selling_price: p.selling_cost,
+      name: p.product_name || p.name || "",
+      hsn_code: p.hsn_code || "3209",
+      purchase_price: Number(p.purchase_price || p.cost_price || 0),
+      selling_price: Number(p.selling_cost || p.selling_price || 0),
+      mrp: Number(p.mrp || p.selling_cost || p.selling_price || 0),
       tags: p.tags,
-      packing_size_unit: p.package_size_unit,
+      brand: p.brand || (Array.isArray(p.tags) && p.tags[0]) || "Sharma Industries",
+      packing_size_unit: p.package_size_unit || p.packing_size_unit || "pcs",
       stock: p.actual_stock,
       min_stock: p.min_stock_threshold
     }));
