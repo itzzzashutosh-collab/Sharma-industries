@@ -3,16 +3,18 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import en from "@/i18n/dictionaries/en.json";
 import hi from "@/i18n/dictionaries/hi.json";
+import dealerEn from "@/i18n/dictionaries/dealer_en.json";
+import dealerHi from "@/i18n/dictionaries/dealer_hi.json";
 
 type Language = "en" | "hi";
 
 type Dictionaries = {
-  [key in Language]: Record<string, string>;
+  [key in Language]: Record<string, any>;
 };
 
 const dictionaries: Dictionaries = {
-  en,
-  hi,
+  en: { ...en, dealer: dealerEn },
+  hi: { ...hi, dealer: dealerHi },
 };
 
 interface LanguageContextType {
