@@ -1134,14 +1134,13 @@ export function POSClient() {
               {/* Template 1: Thermal Slip 80mm */}
               {previewTemplateTheme === "thermal" && (
                 <div id="print-content" className="relative overflow-hidden bg-white text-black p-5 rounded-xl text-xs font-mono border border-slate-300 space-y-3 max-w-sm mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Watermark Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-                    <div className="text-center transform -rotate-12">
-                      <div className="w-20 h-20 mx-auto rounded-full border-4 border-slate-900 flex items-center justify-center mb-1">
-                        <span className="text-3xl font-black text-slate-900 font-sans">SP</span>
-                      </div>
-                      <span className="text-xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
-                    </div>
+                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
+                    <img
+                      src={SWATCH_PAINTS_LOGO_URL}
+                      alt="Swatch Paints Watermark"
+                      className="w-44 h-44 object-contain transform -rotate-12"
+                    />
                   </div>
 
                   <div className="relative z-10 text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
@@ -1197,15 +1196,13 @@ export function POSClient() {
               {/* Template 2: Classic GST Tax Invoice (A4) */}
               {previewTemplateTheme === "classic" && (
                 <div id="print-content" className="relative overflow-hidden bg-white text-slate-900 p-6 rounded-xl text-xs font-sans border border-slate-300 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Watermark Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-                    <div className="text-center transform -rotate-12">
-                      <div className="w-32 h-32 mx-auto rounded-full border-8 border-slate-900 flex items-center justify-center mb-2">
-                        <span className="text-5xl font-black text-slate-900 font-sans">SP</span>
-                      </div>
-                      <span className="text-3xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
-                      <span className="text-xs font-extrabold tracking-widest text-slate-700 uppercase block font-sans">AUTHENTIC QUALITY COATINGS</span>
-                    </div>
+                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
+                    <img
+                      src={SWATCH_PAINTS_LOGO_URL}
+                      alt="Swatch Paints Watermark"
+                      className="w-72 h-72 object-contain transform -rotate-12"
+                    />
                   </div>
 
                   <div className="relative z-10 flex items-start justify-between border-b-2 border-slate-800 pb-4">
@@ -1288,15 +1285,13 @@ export function POSClient() {
               {/* Template 3: Modern Minimal */}
               {previewTemplateTheme === "modern" && (
                 <div id="print-content" className="relative overflow-hidden bg-slate-950 text-white p-6 rounded-xl text-xs font-sans border border-slate-800 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Watermark Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-                    <div className="text-center transform -rotate-12">
-                      <div className="w-32 h-32 mx-auto rounded-full border-8 border-white flex items-center justify-center mb-2">
-                        <span className="text-5xl font-black text-white font-sans">SP</span>
-                      </div>
-                      <span className="text-3xl font-black tracking-widest text-white uppercase block font-sans">SWATCH PAINTS</span>
-                      <span className="text-xs font-extrabold tracking-widest text-slate-300 uppercase block font-sans">AUTHENTIC QUALITY COATINGS</span>
-                    </div>
+                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.12] select-none z-0">
+                    <img
+                      src={SWATCH_PAINTS_LOGO_URL}
+                      alt="Swatch Paints Watermark"
+                      className="w-72 h-72 object-contain transform -rotate-12 filter brightness-200"
+                    />
                   </div>
 
                   <div className="relative z-10 flex items-start justify-between border-b border-slate-800 pb-4">
@@ -1369,21 +1364,19 @@ export function POSClient() {
               {/* Template 4: Paint Brand Theme */}
               {previewTemplateTheme === "brand" && (
                 <div id="print-content" className="relative overflow-hidden bg-gradient-to-br from-amber-500/5 via-primary/5 to-rose-500/5 text-slate-900 p-6 rounded-xl text-xs font-sans border-2 border-primary/20 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Watermark Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-                    <div className="text-center transform -rotate-12">
-                      <div className="w-32 h-32 mx-auto rounded-full border-8 border-slate-900 flex items-center justify-center mb-2">
-                        <span className="text-5xl font-black text-slate-900 font-sans">SP</span>
-                      </div>
-                      <span className="text-3xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
-                      <span className="text-xs font-extrabold tracking-widest text-slate-700 uppercase block font-sans">AUTHENTIC QUALITY COATINGS</span>
-                    </div>
+                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
+                    <img
+                      src={SWATCH_PAINTS_LOGO_URL}
+                      alt="Swatch Paints Watermark"
+                      className="w-72 h-72 object-contain transform -rotate-12"
+                    />
                   </div>
 
                   <div className="relative z-10 flex items-start justify-between border-b-2 border-primary/30 pb-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="w-8 h-8 rounded-lg bg-primary text-white font-black flex items-center justify-center text-sm shadow-xs">SP</span>
+                        <img src={SWATCH_PAINTS_LOGO_URL} alt="Swatch Paints Logo" className="w-8 h-8 object-contain" />
                         <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">{dealerUPI.payeeName || "Shree Ram Paints & Hardware"}</h2>
                       </div>
                       <p className="text-xs font-bold text-primary">Authorized Swatch Paints Dealer Outlet</p>

@@ -11,6 +11,8 @@ import { DealerSettlementModal } from "./DealerSettlementModal";
 import { cancelDealerInvoice } from "./actions";
 import { getDealerUPIConfig, generateUPIPaymentURI, getUPIQRCodeURL } from "@/lib/upi";
 
+const SWATCH_PAINTS_LOGO_URL = "https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/sign/Company%20Assets%20(logos,%20Watermarks)/Swatchpaints.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83YTU1YTAxNi0xYzI2LTRlZjctYjlkNy1iYWU1NTFkN2Q1ZmUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDb21wYW55IEFzc2V0cyAobG9nb3MsIFdhdGVybWFya3MpL1N3YXRjaHBhaW50cy5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzg1MDQ5OTIyLCJleHAiOjMzMzIxMDQ5OTIyfQ.bnnDOZgHJLx_KMlknv0Wd6PnUb72JIZBiEp24TK5Vu8";
+
 interface Props {
   invoice: any;
 }
@@ -229,14 +231,13 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
         {/* Template 1: Thermal Slip 80mm */}
         {selectedTemplate === "thermal" && (
           <div id="print-content" className="relative overflow-hidden bg-white text-black p-5 rounded-2xl text-xs font-mono border border-slate-300 space-y-3 w-full max-w-sm shadow-md">
-            {/* Swatch Paints Logo Watermark Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-              <div className="text-center transform -rotate-12">
-                <div className="w-24 h-24 mx-auto rounded-full border-4 border-slate-900 flex items-center justify-center mb-1">
-                  <span className="text-4xl font-black text-slate-900 font-sans">SP</span>
-                </div>
-                <span className="text-2xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
-              </div>
+            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
+              <img
+                src={SWATCH_PAINTS_LOGO_URL}
+                alt="Swatch Paints Watermark"
+                className="w-48 h-48 object-contain transform -rotate-12"
+              />
             </div>
 
             <div className="relative z-10 text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
@@ -297,19 +298,13 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             id="print-content"
             className="relative overflow-hidden bg-white text-slate-900 p-8 rounded-2xl text-xs font-sans border border-slate-300 space-y-5 w-[794px] min-h-[1050px] shadow-lg"
           >
-            {/* Swatch Paints Logo Watermark Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-              <div className="text-center transform -rotate-12">
-                <div className="w-36 h-36 mx-auto rounded-full border-8 border-slate-900 flex items-center justify-center mb-2">
-                  <span className="text-6xl font-black tracking-tighter text-slate-900 font-sans">SP</span>
-                </div>
-                <span className="text-4xl font-black tracking-widest text-slate-900 uppercase block font-sans">
-                  SWATCH PAINTS
-                </span>
-                <span className="text-sm font-extrabold tracking-widest text-slate-700 uppercase block font-sans">
-                  AUTHENTIC QUALITY COATINGS
-                </span>
-              </div>
+            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
+              <img
+                src={SWATCH_PAINTS_LOGO_URL}
+                alt="Swatch Paints Watermark"
+                className="w-96 h-96 object-contain transform -rotate-12"
+              />
             </div>
 
             <div className="relative z-10 flex items-start justify-between border-b-2 border-slate-900 pb-5">
@@ -403,19 +398,13 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             id="print-content"
             className="relative overflow-hidden bg-slate-950 text-white p-8 rounded-2xl text-xs font-sans border border-slate-800 space-y-5 w-[794px] min-h-[1050px] shadow-lg"
           >
-            {/* Swatch Paints Logo Watermark Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-              <div className="text-center transform -rotate-12">
-                <div className="w-36 h-36 mx-auto rounded-full border-8 border-white flex items-center justify-center mb-2">
-                  <span className="text-6xl font-black tracking-tighter text-white font-sans">SP</span>
-                </div>
-                <span className="text-4xl font-black tracking-widest text-white uppercase block font-sans">
-                  SWATCH PAINTS
-                </span>
-                <span className="text-sm font-extrabold tracking-widest text-slate-300 uppercase block font-sans">
-                  AUTHENTIC QUALITY COATINGS
-                </span>
-              </div>
+            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.12] select-none z-0">
+              <img
+                src={SWATCH_PAINTS_LOGO_URL}
+                alt="Swatch Paints Watermark"
+                className="w-96 h-96 object-contain transform -rotate-12 filter brightness-200"
+              />
             </div>
 
             <div className="relative z-10 flex items-start justify-between border-b border-slate-800 pb-5">
@@ -493,25 +482,19 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             id="print-content"
             className="relative overflow-hidden bg-gradient-to-br from-amber-500/5 via-primary/5 to-rose-500/5 text-slate-900 p-8 rounded-2xl text-xs font-sans border-2 border-primary/20 space-y-5 w-[794px] min-h-[1050px] shadow-lg"
           >
-            {/* Swatch Paints Logo Watermark Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
-              <div className="text-center transform -rotate-12">
-                <div className="w-36 h-36 mx-auto rounded-full border-8 border-slate-900 flex items-center justify-center mb-2">
-                  <span className="text-6xl font-black tracking-tighter text-slate-900 font-sans">SP</span>
-                </div>
-                <span className="text-4xl font-black tracking-widest text-slate-900 uppercase block font-sans">
-                  SWATCH PAINTS
-                </span>
-                <span className="text-sm font-extrabold tracking-widest text-slate-700 uppercase block font-sans">
-                  AUTHENTIC QUALITY COATINGS
-                </span>
-              </div>
+            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
+              <img
+                src={SWATCH_PAINTS_LOGO_URL}
+                alt="Swatch Paints Watermark"
+                className="w-96 h-96 object-contain transform -rotate-12"
+              />
             </div>
 
             <div className="relative z-10 flex items-start justify-between border-b-2 border-primary/30 pb-5">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="w-9 h-9 rounded-xl bg-primary text-white font-black flex items-center justify-center text-base shadow-xs">SP</span>
+                  <img src={SWATCH_PAINTS_LOGO_URL} alt="Swatch Paints Logo" className="w-9 h-9 object-contain" />
                   <h1 className="text-2xl font-black text-slate-900 tracking-tight uppercase">{shopTitle}</h1>
                 </div>
                 <p className="text-xs font-bold text-primary">Authorized Swatch Paints Dealer</p>
