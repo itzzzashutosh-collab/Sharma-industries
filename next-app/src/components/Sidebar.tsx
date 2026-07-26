@@ -32,6 +32,8 @@ import {
   PieChart,
   Building2,
   UserCheck,
+  UserPlus,
+  Trophy,
   CheckSquare,
   BarChart2,
   Settings,
@@ -234,40 +236,31 @@ const DEALER_NAV: NavGroup[] = [
   {
     group: "Products",
     items: [
-      { name: "Products",         href: "/dashboard/dealer/products/list",           icon: Package },
-      { name: "Inventory",        href: "/dashboard/dealer/products/inventory",      icon: Warehouse },
-      { name: "Stock Register",   href: "/dashboard/dealer/products/stock-register", icon: BookOpen },
-      { name: "Warehouse",        href: "/dashboard/dealer/products/warehouse",      icon: Layers },
+      { name: "Products Catalogue", href: "/dashboard/dealer/products/list",           icon: Package },
+      { name: "Stock Register & Inventory", href: "/dashboard/dealer/products/inventory", icon: Warehouse },
     ],
   },
-  {
-    group: "Logistics & After-Sales",
-    items: [
-      { name: "Logistics Tracking", href: "/dashboard/dealer/logistics/orders",      icon: Truck },
-      { name: "Dispatches & Returns", href: "/dashboard/dealer/logistics/dispatches", icon: ArrowUpCircle },
-      { name: "Complaints & Claims", href: "/dashboard/dealer/logistics/complaints", icon: AlertCircle },
-    ],
-  },
+
 
   {
     group: "Finance",
     items: [
-      { name: "Revenue",          href: "/dashboard/dealer/finance/revenue",         icon: TrendingUp },
-      { name: "Expenses",         href: "/dashboard/dealer/finance/expenses",        icon: Wallet },
-      { name: "Profit & Loss",    href: "/dashboard/dealer/finance/pnl",             icon: LineChart },
-      { name: "Cash Flow",        href: "/dashboard/dealer/finance/cash-flow",       icon: ArrowDownCircle },
-      { name: "Payment Register", href: "/dashboard/dealer/finance/payments",        icon: BookMarked },
+      { name: "Revenue Summary",          href: "/dashboard/dealer/finance/revenue",         icon: TrendingUp },
+      { name: "Store Expenses & Wages",   href: "/dashboard/dealer/finance/expenses",        icon: Wallet },
+      { name: "Customer & Client Ledger", href: "/dashboard/dealer/finance/ledger",          icon: BookMarked },
+      { name: "Profit & Loss",            href: "/dashboard/dealer/finance/pnl",             icon: LineChart },
+      { name: "Cash Flow",                href: "/dashboard/dealer/finance/cash-flow",       icon: ArrowDownCircle },
+      { name: "Payment Register",         href: "/dashboard/dealer/finance/payments",        icon: BookMarked },
     ],
   },
   {
     group: "Painters",
     items: [
       { name: "Painters",         href: "/dashboard/dealer/painters/list",           icon: UserCheck },
-      { name: "Coupons",          href: "/dashboard/dealer/painters/coupons",        icon: CheckSquare },
       { name: "Schemes",          href: "/dashboard/dealer/painters/schemes",        icon: Sparkles },
-      { name: "Meetings",         href: "/dashboard/dealer/painters/meetings",       icon: CalendarDays },
-      { name: "Competitions",     href: "/dashboard/dealer/painters/competitions",   icon: FileCheck },
-      { name: "Portfolio Review", href: "/dashboard/dealer/painters/portfolio",      icon: FileSearch },
+      { name: "Meetings",             href: "/dashboard/dealer/painters/meetings",       icon: CalendarDays },
+      { name: "Contractor Leaderboard", href: "/dashboard/dealer/painters/competitions",   icon: Trophy },
+      { name: "Portfolio Review",     href: "/dashboard/dealer/painters/portfolio",      icon: FileSearch },
     ],
   },
   {

@@ -1,14 +1,5 @@
-import type { Metadata } from "next";
-import { DispatchesReturnsClient } from "./DispatchesReturnsClient";
-import { getDealerDispatches } from "../../actions";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Dispatches & Manifests | Dealer Workspace" };
-}
-
-export default async function Page() {
-  const res = await getDealerDispatches();
-  return <DispatchesReturnsClient initialData={(res.list || []) as any[]} />;
+export default function Page() {
+  redirect("/dashboard/dealer/sales/invoices");
 }

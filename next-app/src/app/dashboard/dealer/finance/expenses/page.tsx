@@ -5,7 +5,7 @@ import { getDealerExpenses } from "../../actions";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Business Expenses | Dealer Workspace" };
+  return { title: "Store Expenses & Daily Wages | Dealer Workspace" };
 }
 
 export default async function Page() {

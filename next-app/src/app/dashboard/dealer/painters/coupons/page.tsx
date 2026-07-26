@@ -1,23 +1,5 @@
-import type { Metadata } from "next";
-import { CouponsAuditingClient } from "./CouponsAuditingClient";
-import { getDealerCoupons, getDealerPainters } from "../../actions";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Coupons Auditing | Dealer Workspace" };
-}
-
-export default async function Page() {
-  const [couponsRes, paintersRes] = await Promise.all([
-    getDealerCoupons(),
-    getDealerPainters()
-  ]);
-
-  return (
-    <CouponsAuditingClient
-      initialData={(couponsRes.list || []) as any[]}
-      painters={(paintersRes.list || []) as any[]}
-    />
-  );
+export default function Page() {
+  redirect("/dashboard/dealer/painters/list");
 }

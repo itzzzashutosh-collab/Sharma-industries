@@ -1,15 +1,27 @@
 import type { Metadata } from "next";
 import { EstimatedPnLClient } from "./EstimatedPnLClient";
-import { getDealerInvoices } from "../../actions";
+import { getDealerInvoices, getDealerExpenses, getDealerPurchaseBills, getDealerCustomerLedger } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Estimated Profit & Loss | Dealer Workspace" };
+  return { title: "Profit & Loss Statement | Dealer Workspace" };
 }
 
 export default async function Page() {
-  const res = await getDealerInvoices();
-  const data = (res as any).list || ((res as any).data ? [(res as any).data] : []);
-  return <EstimatedPnLClient initialData={data} />;
+  const [invRes, expRes, billRes, ledgerRes] = await Promise.all([
+    getDealerInvoices(),
+    getDealerExpenses(),
+    getDealerPurchaseBills(),
+    getDealerCustomerLedger()
+  ]);
+
+  return (
+    <EstimatedPnLClient
+      initialInvoices={(invRes.list || []) as any[]}
+      initialExpenses={(expRes.list || []) as any[]}
+      initialPurchaseBills={(billRes.list || []) as any[]}
+      initialClients={(ledgerRes.clients || []) as any[]}
+    />
+  );
 }

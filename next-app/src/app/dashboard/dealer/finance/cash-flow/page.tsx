@@ -1,15 +1,27 @@
 import type { Metadata } from "next";
 import { CashFlowLedgerClient } from "./CashFlowLedgerClient";
-import { getDealerInvoices } from "../../actions";
+import { getDealerInvoices, getDealerExpenses, getDealerPurchaseBills, getDealerCustomerLedger } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Cash Flow Ledger | Dealer Workspace" };
+  return { title: "Cash Flow & Liquidity | Dealer Workspace" };
 }
 
 export default async function Page() {
-  const res = await getDealerInvoices();
-  const data = (res as any).list || ((res as any).data ? [(res as any).data] : []);
-  return <CashFlowLedgerClient initialData={data} />;
+  const [invRes, expRes, billRes, ledgerRes] = await Promise.all([
+    getDealerInvoices(),
+    getDealerExpenses(),
+    getDealerPurchaseBills(),
+    getDealerCustomerLedger()
+  ]);
+
+  return (
+    <CashFlowLedgerClient
+      initialInvoices={(invRes.list || []) as any[]}
+      initialExpenses={(expRes.list || []) as any[]}
+      initialPurchaseBills={(billRes.list || []) as any[]}
+      initialClients={(ledgerRes.clients || []) as any[]}
+    />
+  );
 }

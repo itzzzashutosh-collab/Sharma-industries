@@ -1,14 +1,5 @@
-import type { Metadata } from "next";
-import { WarehouseLocationsClient } from "./WarehouseLocationsClient";
-import { getDealerProductsList } from "../../actions";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Warehouse Locations | Dealer Workspace" };
-}
-
-export default async function Page() {
-  const res = await getDealerProductsList();
-  return <WarehouseLocationsClient initialData={(res.list || []) as any[]} />;
+export default function Page() {
+  redirect("/dashboard/dealer/products/inventory");
 }

@@ -9,6 +9,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const res = await getDealerInvoices();
-  return <RevenueSummaryClient initialData={(res.list || []) as any[]} />;
+  const invRes = await getDealerInvoices();
+  return <RevenueSummaryClient initialInvoices={(invRes.list || []) as any[]} />;
 }

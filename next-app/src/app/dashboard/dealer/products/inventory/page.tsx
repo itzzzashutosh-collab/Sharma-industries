@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
 import { StockLevelsClient } from "./StockLevelsClient";
-import { getDealerProductsList } from "../../actions";
+import { getDealerProductsList, getDealerStockMovement } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Stock Levels | Dealer Workspace" };
+  return { title: "Stock Register & Inventory | Dealer Workspace" };
 }
 
 export default async function Page() {
-  const res = await getDealerProductsList();
-  return <StockLevelsClient initialData={(res.list || []) as any[]} />;
+  const [prodRes, moveRes] = await Promise.all([
+    getDealerProductsList(),
+    getDealerStockMovement()
+  ]);
+
+  return (
+    <StockLevelsClient
+      initialProducts={(prodRes.list || []) as any[]}
+      initialMovements={(moveRes.list || []) as any[]}
+    />
+  );
 }

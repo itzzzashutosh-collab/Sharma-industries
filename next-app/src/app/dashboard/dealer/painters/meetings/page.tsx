@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 import { MeetingsLogClient } from "./MeetingsLogClient";
-import { getDealerMeetings } from "../../actions";
+import { getDealerMeetings, getDealerPainters } from "../../actions";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Meetings Log | Dealer Workspace" };
+  return { title: "Meetings & Contractor Invites | Dealer Workspace" };
 }
 
 export default async function Page() {
-  const res = await getDealerMeetings();
-  const data = (res as any).list || ((res as any).data ? [(res as any).data] : []);
-  return <MeetingsLogClient initialData={data} />;
+  const [meetingsRes, paintersRes] = await Promise.all([
+    getDealerMeetings(),
+    getDealerPainters()
+  ]);
+
+  const meetingsData = (meetingsRes as any).list || [];
+  const paintersData = (paintersRes as any).list || [];
+
+  return <MeetingsLogClient initialData={meetingsData} initialPainters={paintersData} />;
 }
