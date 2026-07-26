@@ -42,11 +42,11 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
 
   const cards = [
     {
-      label: "Today's Gross Sales",
+      label: t("Today's Gross Sales"),
       value: fmt(metrics.todaySales),
       change: "+14.2% vs yesterday",
       trend: "up",
-      desc: "Direct checkout & contractor bookings",
+      desc: t("Direct checkout & contractor bookings"),
       icon: DollarSign,
       color: "from-emerald-500/20 to-teal-500/20",
       text: "text-emerald-500",
@@ -54,11 +54,11 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
       badge: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
     },
     {
-      label: "Cash & UPI Collections",
+      label: t("Cash & UPI Collections"),
       value: fmt(metrics.todayCollections),
       change: "82.7% cleared rate",
       trend: "up",
-      desc: "Instant liquid cash inflow today",
+      desc: t("Instant liquid cash inflow today"),
       icon: Zap,
       color: "from-blue-500/20 to-indigo-500/20",
       text: "text-blue-500",
@@ -66,11 +66,11 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
       badge: "bg-blue-500/10 text-blue-600 border-blue-500/20"
     },
     {
-      label: "Outstanding Khata Balance",
+      label: t("Outstanding Khata Balance"),
       value: fmt(metrics.outstanding),
       change: "4 active credit Khatas",
       trend: "neutral",
-      desc: "Awaiting contractor repayment",
+      desc: t("Awaiting contractor repayment"),
       icon: FileText,
       color: "from-rose-500/20 to-orange-500/20",
       text: "text-rose-500",
@@ -78,11 +78,11 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
       badge: "bg-rose-500/10 text-rose-600 border-rose-500/20"
     },
     {
-      label: "Estimated Net Profit Margin",
+      label: t("Estimated Net Profit Margin"),
       value: fmt(metrics.todayProfit),
       change: "15% net margin",
       trend: "up",
-      desc: "Gross sales minus COGS & overheads",
+      desc: t("Gross sales minus COGS & overheads"),
       icon: TrendingUp,
       color: "from-amber-500/20 to-yellow-500/20",
       text: "text-amber-500",
@@ -92,16 +92,16 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
   ];
 
   const topProducts = [
-    { name: "Royale Luxury Emulsion (Silk Finish)", category: "Interior Paint", volume: "480 Liters", sales: "₹1,44,000", pct: 85 },
-    { name: "Weather Proof Exterior Primer", category: "Exterior Primer", volume: "320 Liters", sales: "₹76,800", pct: 65 },
-    { name: "Acrylic Wall Putty (Superfine 20kg)", category: "Wall Putty", volume: "1,200 Kg", sales: "₹54,000", pct: 50 },
-    { name: "PU High Gloss Wood Finish", category: "Wood Coating", volume: "140 Liters", sales: "₹42,000", pct: 38 },
+    { name: "Royale Luxury Emulsion (Silk Finish)", category: t("Interior Paint"), volume: "480 Liters", sales: "₹1,44,000", pct: 85 },
+    { name: "Weather Proof Exterior Primer", category: t("Exterior Primer"), volume: "320 Liters", sales: "₹76,800", pct: 65 },
+    { name: "Acrylic Wall Putty (Superfine 20kg)", category: t("Wall Putty"), volume: "1,200 Kg", sales: "₹54,000", pct: 50 },
+    { name: "PU High Gloss Wood Finish", category: t("Wood Coating"), volume: "140 Liters", sales: "₹42,000", pct: 38 },
   ];
 
   const topContractors = [
-    { name: "Rajesh Kumar (Verma Builders)", tier: "Gold Contractor", liters: "840 L", points: "4,200 Pts", status: "Top #1 Rank" },
-    { name: "Vikram Singh (Modern Painters)", tier: "Silver Contractor", liters: "620 L", points: "3,100 Pts", status: "Top #2 Rank" },
-    { name: "Suresh Sharma (Shree Interior)", tier: "Silver Contractor", liters: "450 L", points: "2,250 Pts", status: "Top #3 Rank" },
+    { name: "Rajesh Kumar (Verma Builders)", tier: t("Gold Contractor"), liters: "840 L", points: "4,200 Pts", status: t("Top #1 Rank") },
+    { name: "Vikram Singh (Modern Painters)", tier: t("Silver Contractor"), liters: "620 L", points: "3,100 Pts", status: t("Top #2 Rank") },
+    { name: "Suresh Sharma (Shree Interior)", tier: t("Silver Contractor"), liters: "450 L", points: "2,250 Pts", status: t("Top #3 Rank") },
   ];
 
   return (
@@ -114,29 +114,29 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
           <div className="space-y-1">
             <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
               <Store size={14} className="text-primary" />
-              <span>Dealer Workspace</span><span className="opacity-40">/</span><span className="text-foreground">Command Center</span>
+              <span>{t("Dealer Workspace")}</span><span className="opacity-40">/</span><span className="text-foreground">{t("Command Center")}</span>
             </div>
             <h1 className="text-2xl font-black text-foreground flex items-center gap-2">
-              Welcome back, {session.name} <span className="text-lg">🏪</span>
+              {t("Welcome back,")} {session.name} <span className="text-lg">🏪</span>
             </h1>
             <p className="text-xs text-muted-foreground flex items-center gap-2">
-              <span>Authorized Store Outlet #SRP-9812</span>
+              <span>{t("Authorized Store Outlet #SRP-9812")}</span>
               <span className="opacity-30">•</span>
-              <span>Sharma Industries ERP Portal</span>
+              <span>{t("Sharma Industries ERP Portal")}</span>
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-2xl text-xs font-bold text-emerald-600">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>POS Terminal Online</span>
+              <span>{t("POS Terminal Online")}</span>
             </div>
 
             <Link
               href="/dashboard/dealer/invoices/new"
               className="px-5 py-2.5 bg-primary text-white text-xs font-black rounded-2xl shadow-md hover:bg-primary/90 transition-all flex items-center gap-2 cursor-pointer"
             >
-              <Plus size={15} /> + New POS Invoice
+              <Plus size={15} /> + {t("New POS Bill")}
             </Link>
           </div>
         </div>
@@ -150,12 +150,12 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
         <div className="space-y-1 flex-1 text-xs">
           <div className="flex items-center justify-between">
             <span className="font-black text-foreground uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-              AI Dealer Executive Advisor
+              {t("AI Dealer Executive Advisor")}
             </span>
-            <span className="text-[10px] font-mono text-muted-foreground">Live Telemetry</span>
+            <span className="text-[10px] font-mono text-muted-foreground">{t("Live Telemetry")}</span>
           </div>
           <p className="text-muted-foreground leading-relaxed">
-            <span className="font-bold text-foreground">Smart Sales Insight:</span> Today&apos;s billing revenue is <span className="text-emerald-600 font-bold">14.2% higher</span> than average. <span className="font-bold text-foreground">Royale Acrylic Emulsion (Silk)</span> is in high demand. Reorder suggested for 10 buckets before Tuesday to avoid stockout.
+            <span className="font-bold text-foreground">{t("Smart Sales Insight:")}</span> {t("Today's billing revenue is")} <span className="text-emerald-600 font-bold">{t("14.2% higher")}</span> {t("than average.")} <span className="font-bold text-foreground">Royale Acrylic Emulsion (Silk)</span> {t("is in high demand. Reorder suggested for 10 buckets before Tuesday to avoid stockout.")}
           </p>
         </div>
       </div>
@@ -194,20 +194,20 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
       {/* ── QUICK ACTION LAUNCHER GRID (1-CLICK SHORTCUTS) ───────────────── */}
       <div className="bg-card border border-border rounded-3xl p-5 space-y-4 shadow-xs">
         <h3 className="text-xs font-black text-foreground uppercase tracking-wider flex items-center justify-between">
-          <span>Quick Store Action Shortcuts</span>
+          <span>{t("Quick Store Action Shortcuts")}</span>
           <span className="text-[10px] text-muted-foreground font-normal">1-Click Launchers</span>
         </h3>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
           {[
-            { label: "New POS Bill", icon: FileText, href: "/dashboard/dealer/invoices/new", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
-            { label: "Bills History", icon: Receipt, href: "/dashboard/dealer/invoices", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
-            { label: "Khata Ledger", icon: Calculator, href: "/dashboard/dealer/finance/ledger", color: "text-rose-500 bg-rose-500/10 border-rose-500/20" },
-            { label: "Painters List", icon: Users, href: "/dashboard/dealer/painters/list", color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
-            { label: "Painter KYC", icon: ShieldCheck, href: "/dashboard/dealer/painters/register", color: "text-purple-500 bg-purple-500/10 border-purple-500/20" },
-            { label: "Loyalty Schemes", icon: Award, href: "/dashboard/dealer/painters/schemes", color: "text-teal-500 bg-teal-500/10 border-teal-500/20" },
-            { label: "Leaderboard", icon: TrendingUp, href: "/dashboard/dealer/painters/competitions", color: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20" },
-            { label: "Shop Profile", icon: Store, href: "/dashboard/dealer/settings/shop", color: "text-slate-500 bg-slate-500/10 border-slate-500/20" },
+            { label: t("New POS Bill"), icon: FileText, href: "/dashboard/dealer/invoices/new", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
+            { label: t("Bills History"), icon: Receipt, href: "/dashboard/dealer/invoices", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
+            { label: t("Khata Ledger"), icon: Calculator, href: "/dashboard/dealer/finance/ledger", color: "text-rose-500 bg-rose-500/10 border-rose-500/20" },
+            { label: t("Painters List"), icon: Users, href: "/dashboard/dealer/painters/list", color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
+            { label: t("Painter KYC"), icon: ShieldCheck, href: "/dashboard/dealer/painters/register", color: "text-purple-500 bg-purple-500/10 border-purple-500/20" },
+            { label: t("Loyalty Schemes"), icon: Award, href: "/dashboard/dealer/painters/schemes", color: "text-teal-500 bg-teal-500/10 border-teal-500/20" },
+            { label: t("Leaderboard"), icon: TrendingUp, href: "/dashboard/dealer/painters/competitions", color: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20" },
+            { label: t("Shop Profile"), icon: Store, href: "/dashboard/dealer/settings/shop", color: "text-slate-500 bg-slate-500/10 border-slate-500/20" },
           ].map((action, i) => (
             <Link
               key={i}
@@ -230,9 +230,9 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
             <div>
               <h3 className="text-sm font-black text-foreground uppercase tracking-wider flex items-center gap-2">
-                <BarChart3 size={18} className="text-primary" /> Store Analytics & Performance Insights
+                <BarChart3 size={18} className="text-primary" /> {t("Store Analytics & Performance Insights")}
               </h3>
-              <p className="text-xs text-muted-foreground">Deep analysis of weekly sales, bestselling products, and contractor loyalty</p>
+              <p className="text-xs text-muted-foreground">{t("Deep analysis of weekly sales, bestselling products, and contractor loyalty")}</p>
             </div>
 
             <div className="flex items-center gap-1.5 bg-muted/50 p-1 rounded-xl border border-border text-xs font-bold">
@@ -243,7 +243,7 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
                   analyticsTab === "sales" ? "bg-primary text-white shadow-2xs" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Weekly Sales
+                {t("Weekly Sales")}
               </button>
               <button
                 type="button"
@@ -252,7 +252,7 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
                   analyticsTab === "products" ? "bg-primary text-white shadow-2xs" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Top Products
+                {t("Top Products")}
               </button>
               <button
                 type="button"
@@ -261,7 +261,7 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
                   analyticsTab === "contractors" ? "bg-primary text-white shadow-2xs" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                Contractors
+                {t("Contractors")}
               </button>
             </div>
           </div>
@@ -271,13 +271,13 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
             <div className="space-y-4 animate-in fade-in duration-300">
               <div className="h-56 flex items-end justify-between gap-3 pt-8 px-2">
                 {[
-                  { day: "Mon", val: 45, sales: "₹90,000" },
-                  { day: "Tue", val: 60, sales: "₹1,20,000" },
-                  { day: "Wed", val: 55, sales: "₹1,10,000" },
-                  { day: "Thu", val: 75, sales: "₹1,50,000" },
-                  { day: "Fri", val: 90, sales: "₹1,80,000" },
-                  { day: "Sat", val: 100, sales: "₹2,00,000" },
-                  { day: "Sun", val: 72.5, sales: "₹1,45,000" },
+                  { day: t("Mon"), val: 45, sales: "₹90,000" },
+                  { day: t("Tue"), val: 60, sales: "₹1,20,000" },
+                  { day: t("Wed"), val: 55, sales: "₹1,10,000" },
+                  { day: t("Thu"), val: 75, sales: "₹1,50,000" },
+                  { day: t("Fri"), val: 90, sales: "₹1,80,000" },
+                  { day: t("Sat"), val: 100, sales: "₹2,00,000" },
+                  { day: t("Sun"), val: 72.5, sales: "₹1,45,000" },
                 ].map((item, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group">
                     <div
@@ -345,7 +345,7 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
         <div className="bg-card border border-border rounded-3xl p-6 space-y-4 shadow-xs">
           <div className="flex items-center justify-between border-b border-border pb-3">
             <h3 className="text-xs font-black text-foreground uppercase tracking-wider flex items-center gap-2">
-              <Activity size={14} className="text-primary" /> Live Store Activity Log
+              <Activity size={14} className="text-primary" /> {t("Live Store Activity Log")}
             </h3>
             <span className="text-[10px] font-mono text-muted-foreground">Real-Time</span>
           </div>
@@ -356,9 +356,9 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
                 <div className="space-y-0.5">
                   <p className="font-bold text-foreground flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    <span>{a.action}</span>
+                    <span>{t(a.action)}</span>
                   </p>
-                  <p className="text-[10px] text-muted-foreground">{a.details}</p>
+                  <p className="text-[10px] text-muted-foreground">{t(a.details)}</p>
                 </div>
                 <span className="text-[10px] font-mono text-muted-foreground whitespace-nowrap bg-muted px-2 py-0.5 rounded-md">
                   {a.time}
