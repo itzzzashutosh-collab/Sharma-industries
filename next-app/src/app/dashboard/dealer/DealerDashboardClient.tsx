@@ -90,7 +90,7 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
             { label: "New Invoice", icon: FileText, href: "/dashboard/dealer/sales/invoices", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
             { label: "New Quotation", icon: Receipt, href: "/dashboard/dealer/sales/quotations", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
             { label: "Add Customer", icon: Users, href: "/dashboard/dealer/customers", color: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20" },
-            { label: "Place Factory Order", icon: ShoppingCart, href: "/dashboard/dealer/purchase/factory-orders", color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
+            { label: "Purchase Bills", icon: ShoppingCart, href: "/dashboard/dealer/purchase/bills", color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
           ].map((action, i) => (
             <Link key={i} href={action.href} className="flex flex-col items-center justify-center p-4 rounded-xl border border-border bg-card hover:bg-muted/30 hover:border-primary/20 transition-all text-center group">
               <div className={`p-2.5 rounded-lg mb-2 border ${action.color} group-hover:scale-110 transition-transform`}><action.icon size={16} /></div>
