@@ -79,7 +79,7 @@ export function PaletteBar({ role, userName }: PaletteBarProps) {
       ];
     } else if (role === "dealer") {
       return [
-        { name: "POS Bill", hiName: "नया बिल", href: "/dashboard/dealer/pos", icon: FileText, color: "#3b82f6" },
+        { name: "Invoices", hiName: "इन्वॉइस", href: "/dashboard/dealer/sales/invoices", icon: FileText, color: "#3b82f6" },
         { name: "P&L", hiName: "लाभ-हानि", href: "/dashboard/dealer/pnl", icon: BarChart2, color: "#22c55e" },
       ];
     } else {

@@ -221,7 +221,6 @@ const DEALER_NAV: NavGroup[] = [
     items: [
       { name: "Invoices",         href: "/dashboard/dealer/sales/invoices",          icon: FileText },
       { name: "Quotations",       href: "/dashboard/dealer/sales/quotations",        icon: Receipt },
-      { name: "POS Billing",      href: "/dashboard/dealer/sales/pos",               icon: Calculator },
       { name: "Payments",         href: "/dashboard/dealer/sales/payments",          icon: CreditCard },
     ],
   },
