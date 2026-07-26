@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   TrendingUp, Download, Search, Sparkles, CreditCard, Landmark,
   IndianRupee, ArrowUpRight, ArrowDownRight, Filter, FileText, CheckCircle2,
@@ -71,6 +72,7 @@ const INITIAL_MOCK_INVOICES: Invoice[] = [
 ];
 
 export function RevenueSummaryClient({ initialInvoices }: Props) {
+  const { t } = useLanguage();
   const [invoices] = useState<Invoice[]>(initialInvoices || []);
 
   const [search, setSearch] = useState("");
@@ -98,7 +100,7 @@ export function RevenueSummaryClient({ initialInvoices }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Finance</span><span className="opacity-40">/</span><span className="text-foreground">Revenue Summary</span>
+            <span>{t("Dealer Workspace")}</span><span className="opacity-40">/</span><span>{t("Finance")}</span><span className="opacity-40">/</span><span className="text-foreground">{t("Revenue Summary")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
@@ -106,10 +108,9 @@ export function RevenueSummaryClient({ initialInvoices }: Props) {
             </div>
             <div>
               <h1 className="text-xl font-black text-foreground flex items-center gap-2">
-                Dealer Sales Revenue Summary
-              </h1>
+                {t("Dealer Sales Revenue Summary")}`n              </h1>
               <p className="text-xs text-muted-foreground">
-                Track gross sales revenue, UPI digital settlements, cash collections, and credit receivables stream
+                {t("Track gross sales revenue, UPI digital settlements, cash collections, and credit receivables stream")}
               </p>
             </div>
           </div>
@@ -119,27 +120,27 @@ export function RevenueSummaryClient({ initialInvoices }: Props) {
       {/* ── Key Metrics Cards ───────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Total Billed Sales Revenue</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Total Billed Sales Revenue")}</span>
           <p className="text-2xl font-black text-foreground font-mono">{fmt(totalRev)}</p>
-          <p className="text-[11px] text-muted-foreground">{invoices.length} Sales Invoices Generated</p>
+          <p className="text-[11px] text-muted-foreground">{invoices.length} {t("Sales Invoices Generated")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">UPI & Digital Receipts</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("UPI & Digital Receipts")}</span>
           <p className="text-2xl font-black text-emerald-600 font-mono">{fmt(upiRev)}</p>
-          <p className="text-[11px] text-emerald-700 font-bold">Direct Bank Instant Settlement</p>
+          <p className="text-[11px] text-emerald-700 font-bold">{t("Direct Bank Instant Settlement")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Cash Collections</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Cash Collections")}</span>
           <p className="text-2xl font-black text-blue-600 font-mono">{fmt(cashRev)}</p>
-          <p className="text-[11px] text-muted-foreground">Store Cash Drawer Balances</p>
+          <p className="text-[11px] text-muted-foreground">{t("Store Cash Drawer Balances")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Credit Sales Receivables</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Credit Sales Receivables")}</span>
           <p className="text-2xl font-black text-amber-500 font-mono">{fmt(creditRev)}</p>
-          <p className="text-[11px] text-amber-600 font-bold">Khata Outstanding Credit</p>
+          <p className="text-[11px] text-amber-600 font-bold">{t("Khata Outstanding Credit")}</p>
         </div>
       </div>
 
@@ -184,14 +185,14 @@ export function RevenueSummaryClient({ initialInvoices }: Props) {
           <table className="w-full text-xs text-left">
             <thead className="border-b border-border bg-muted/40 uppercase font-black text-[10px] text-muted-foreground">
               <tr>
-                <th className="px-4 py-3.5">Invoice #</th>
-                <th className="px-4 py-3.5">Date</th>
-                <th className="px-4 py-3.5">Customer / Client</th>
-                <th className="px-4 py-3.5">Payment Mode</th>
-                <th className="px-4 py-3.5 text-right">Taxable Subtotal</th>
-                <th className="px-4 py-3.5 text-right">GST Tax</th>
-                <th className="px-4 py-3.5 text-right">Grand Total Revenue</th>
-                <th className="px-4 py-3.5 text-center">Status</th>
+                <th className="px-4 py-3.5">{t("Invoice #")}</th>
+                <th className="px-4 py-3.5">{t("Date")}</th>
+                <th className="px-4 py-3.5">{t("Customer / Client")}</th>
+                <th className="px-4 py-3.5">{t("Payment Mode")}</th>
+                <th className="px-4 py-3.5 text-right">{t("Taxable Subtotal")}</th>
+                <th className="px-4 py-3.5 text-right">{t("GST Tax")}</th>
+                <th className="px-4 py-3.5 text-right">{t("Grand Total Revenue")}</th>
+                <th className="px-4 py-3.5 text-center">{t("Status")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/50 font-medium">
@@ -225,7 +226,7 @@ export function RevenueSummaryClient({ initialInvoices }: Props) {
                           ? "bg-amber-500/10 text-amber-600 border-amber-500/20"
                           : "bg-blue-500/10 text-blue-600 border-blue-500/20"
                       }`}>
-                        {isPaid ? "Fully Paid" : "Credit Due"}
+                        {isPaid ? t("Fully Paid") : t("Credit Due")}
                       </span>
                     </td>
                   </tr>
@@ -234,7 +235,7 @@ export function RevenueSummaryClient({ initialInvoices }: Props) {
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={8} className="text-center py-12 text-muted-foreground font-medium">
-                    No revenue invoices found.
+                    {t("No revenue invoices found.")}
                   </td>
                 </tr>
               )}

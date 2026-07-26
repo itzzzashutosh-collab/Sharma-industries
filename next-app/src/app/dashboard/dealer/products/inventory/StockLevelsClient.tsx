@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   ClipboardList, Plus, Minus, Search, Sparkles, X, PlusCircle,
   AlertTriangle, Warehouse, History, ArrowUpRight, ArrowDownRight,
@@ -73,6 +74,7 @@ const INITIAL_MOCK_MOVEMENTS: StockMovement[] = [
 ];
 
 export function StockLevelsClient({ initialProducts = [], initialMovements = [] }: Props) {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>(() => {
     if (Array.isArray(initialProducts) && initialProducts.length > 0) return initialProducts;
     return [
@@ -318,11 +320,11 @@ export function StockLevelsClient({ initialProducts = [], initialMovements = [] 
             <table className="w-full text-xs text-left">
               <thead className="border-b border-border bg-muted/40 uppercase font-black text-[10px] text-muted-foreground">
                 <tr>
-                  <th className="px-4 py-3.5">Product Name</th>
-                  <th className="px-4 py-3.5">Category</th>
+                  <th className="px-4 py-3.5">{t("Product Name")}</th>
+                  <th className="px-4 py-3.5">{t("Category")}</th>
                   <th className="px-4 py-3.5 text-right">Actual Stock Count</th>
                   <th className="px-4 py-3.5 text-right">Threshold Alert Limit</th>
-                  <th className="px-4 py-3.5 text-center">Status</th>
+                  <th className="px-4 py-3.5 text-center">{t("Status")}</th>
                   <th className="px-4 py-3.5 text-right">Stock Actions</th>
                 </tr>
               </thead>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   Wallet, Plus, Search, Sparkles, X, PlusCircle, Calendar,
   Building2, IndianRupee, Tag, Filter, CheckCircle2, ShieldAlert
@@ -68,6 +69,7 @@ const INITIAL_MOCK_EXPENSES: Expense[] = [
 ];
 
 export function BusinessExpensesClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [list, setList] = useState<Expense[]>(() => {
     if (initialData && initialData.length > 0) return initialData;
     return INITIAL_MOCK_EXPENSES;

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   Store, Building2, Phone, Mail, MapPin, CreditCard, Landmark, Clock,
   Upload, Save, Sparkles, CheckCircle2, ShieldCheck, FileText, QrCode,
@@ -47,6 +48,7 @@ interface Props {
 }
 
 export function ShopProfileSettingsClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<"credentials" | "location" | "banking" | "stamps" | "operations">("credentials");
   const [profile, setProfile] = useState<DealerProfile>({
@@ -131,7 +133,7 @@ export function ShopProfileSettingsClient({ initialData }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Settings</span><span className="opacity-40">/</span><span className="text-foreground">Shop Profile</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Settings</span><span className="opacity-40">/</span><span className="text-foreground">{t("Shop Profile")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">

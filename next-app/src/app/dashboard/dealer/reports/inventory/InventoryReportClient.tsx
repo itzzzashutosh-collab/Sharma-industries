@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   FileSpreadsheet, Download, Search, Package, AlertTriangle, AlertCircle,
   CheckCircle2, ShoppingCart, Layers, Printer, ShieldCheck, ArrowUpRight,
@@ -43,6 +44,7 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
 export function InventoryReportClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");

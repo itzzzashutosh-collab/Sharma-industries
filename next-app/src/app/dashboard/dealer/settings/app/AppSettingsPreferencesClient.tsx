@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import { useTheme } from "next-themes";
 import {
   Settings, Moon, Sun, Monitor, Bell, Shield, Database, Save, CheckCircle2,
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export function AppSettingsPreferencesClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -114,7 +116,7 @@ export function AppSettingsPreferencesClient({ initialData }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Settings</span><span className="opacity-40">/</span><span className="text-foreground">Application Settings</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Settings</span><span className="opacity-40">/</span><span className="text-foreground">{t("Application Settings")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">

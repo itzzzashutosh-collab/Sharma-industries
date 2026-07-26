@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   BookMarked, Plus, Search, Sparkles, X, User, Phone, MapPin,
   IndianRupee, CreditCard, Landmark, CheckCircle2, Clock, ShieldAlert,
@@ -117,6 +118,7 @@ const INITIAL_MOCK_INVOICES: Invoice[] = [
 ];
 
 export function CustomerLedgerClient({ initialInvoices, initialClients }: Props) {
+  const { t } = useLanguage();
   const [invoices] = useState<Invoice[]>(() => {
     if (initialInvoices && initialInvoices.length > 0) return initialInvoices;
     return INITIAL_MOCK_INVOICES;
@@ -227,7 +229,7 @@ export function CustomerLedgerClient({ initialInvoices, initialClients }: Props)
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Finance</span><span className="opacity-40">/</span><span className="text-foreground">Customer Ledger</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Finance</span><span className="opacity-40">/</span><span className="text-foreground">{t("Customer Ledger")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
@@ -323,7 +325,7 @@ export function CustomerLedgerClient({ initialInvoices, initialClients }: Props)
                   <th className="px-4 py-3.5 text-right">Total Paid</th>
                   <th className="px-4 py-3.5 text-right">Outstanding Credit</th>
                   <th className="px-4 py-3.5 text-center">Credit Term</th>
-                  <th className="px-4 py-3.5 text-right">Actions</th>
+                  <th className="px-4 py-3.5 text-right">{t("Actions")}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50 font-medium">
@@ -393,11 +395,11 @@ export function CustomerLedgerClient({ initialInvoices, initialClients }: Props)
                 <tr>
                   <th className="px-4 py-3.5">Invoice #</th>
                   <th className="px-4 py-3.5">Date</th>
-                  <th className="px-4 py-3.5">Customer Name</th>
+                  <th className="px-4 py-3.5">{t("Customer Name")}</th>
                   <th className="px-4 py-3.5">Payment Terms</th>
                   <th className="px-4 py-3.5 text-right">Invoice Total</th>
                   <th className="px-4 py-3.5 text-right">Advance / Paid</th>
-                  <th className="px-4 py-3.5 text-right">Balance Due</th>
+                  <th className="px-4 py-3.5 text-right">{t("Balance Due")}</th>
                   <th className="px-4 py-3.5 text-center">Ledger Status</th>
                 </tr>
               </thead>

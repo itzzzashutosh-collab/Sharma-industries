@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   ArrowDownCircle, ArrowUpCircle, Download, Search, Sparkles, TrendingUp,
   TrendingDown, IndianRupee, CreditCard, Landmark, CheckCircle2, ShieldAlert,
@@ -72,6 +73,7 @@ export function CashFlowLedgerClient({
   initialPurchaseBills,
   initialClients
 }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [flowFilter, setFlowFilter] = useState<"all" | "inflow" | "outflow" | "cash_drawer" | "bank">("all");
@@ -208,7 +210,7 @@ export function CashFlowLedgerClient({
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Finance</span><span className="opacity-40">/</span><span className="text-foreground">Cash Flow & Liquidity</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Finance</span><span className="opacity-40">/</span><span className="text-foreground">{t("Cash Flow & Liquidity")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
@@ -244,29 +246,29 @@ export function CashFlowLedgerClient({
       {/* ── Key Metrics Overview Cards ──────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Total Operating Cash Inflows</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Total Operating Cash Inflows")}</span>
           <p className="text-2xl font-black text-emerald-600 font-mono">{fmt(totalInflows)}</p>
-          <p className="text-[11px] text-emerald-700 font-bold">POS Cash & Digital UPI Receipts</p>
+          <p className="text-[11px] text-emerald-700 font-bold">{t("POS Cash & Digital UPI Receipts")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Total Cash Outflows</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Total Cash Outflows")}</span>
           <p className="text-2xl font-black text-rose-500 font-mono">{fmt(totalOutflows)}</p>
-          <p className="text-[11px] text-muted-foreground">Store Wages, Rent & Factory Bills</p>
+          <p className="text-[11px] text-muted-foreground">{t("Store Wages, Rent & Factory Bills")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Net Cashflow Surplus</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Net Cashflow Surplus")}</span>
           <p className={`text-2xl font-black font-mono ${netCashSurplus >= 0 ? "text-emerald-600" : "text-rose-600"}`}>
             {fmt(netCashSurplus)}
           </p>
-          <p className="text-[11px] text-emerald-700 font-bold">Positive Operating Liquidity</p>
+          <p className="text-[11px] text-emerald-700 font-bold">{t("Positive Operating Liquidity")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Cash Register Drawer</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Cash Register Drawer")}</span>
           <p className="text-2xl font-black text-blue-600 font-mono">{fmt(cashDrawerBalance)}</p>
-          <p className="text-[11px] text-muted-foreground">Physical Store Cash in Hand</p>
+          <p className="text-[11px] text-muted-foreground">{t("Physical Store Cash in Hand")}</p>
         </div>
       </div>
 

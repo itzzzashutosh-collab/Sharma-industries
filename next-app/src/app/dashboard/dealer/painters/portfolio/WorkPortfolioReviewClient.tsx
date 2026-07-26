@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   FolderOpen, Plus, Search, MapPin, Star, Sparkles, CheckCircle2, X,
   ArrowRight, ShieldCheck, FileText, Image as ImageIcon, Layers, Eye,
@@ -40,6 +41,7 @@ interface Props {
 }
 
 export function WorkPortfolioReviewClient({ initialData, paintersList = [] }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [portfolios, setPortfolios] = useState<PortfolioProject[]>(initialData || []);
   const [search, setSearch] = useState("");

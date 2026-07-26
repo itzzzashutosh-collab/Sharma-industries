@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   SlidersHorizontal, FileText, CheckCircle2, Save, Sparkles, ShieldCheck,
   Receipt, Building2, QrCode, FileSignature, Stamp, CreditCard, MessageSquare,
@@ -30,6 +31,7 @@ interface Props {
 }
 
 export function InvoiceCustomizerClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [settings, setSettings] = useState<BusinessSettings>({
     invoice_prefix: "INV-2026-",
@@ -86,7 +88,7 @@ export function InvoiceCustomizerClient({ initialData }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Settings</span><span className="opacity-40">/</span><span className="text-foreground">Business Settings</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Settings</span><span className="opacity-40">/</span><span className="text-foreground">{t("Business Settings")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
@@ -173,7 +175,7 @@ export function InvoiceCustomizerClient({ initialData }: Props) {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-black text-muted-foreground uppercase">Payment Terms</label>
+                <label className="text-[10px] font-black text-muted-foreground uppercase">{t("Payment Terms")}</label>
                 <select
                   value={settings.default_payment_terms}
                   onChange={e => setSettings({ ...settings, default_payment_terms: e.target.value })}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   Users, Plus, Search, Phone, MapPin, Calendar, CreditCard, Landmark,
   ShieldCheck, AlertCircle, FileText, ExternalLink, X, Eye, CheckCircle2,
@@ -47,6 +48,7 @@ interface Props {
 }
 
 export function PaintersPortfolioClient({ initialData, initialMeetings = [] }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -89,7 +91,7 @@ export function PaintersPortfolioClient({ initialData, initialMeetings = [] }: P
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Painters</span><span className="opacity-40">/</span><span className="text-foreground">Painters Directory</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Painters</span><span className="opacity-40">/</span><span className="text-foreground">{t("Painters Directory")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-primary/10 rounded-2xl border border-primary/20">
@@ -97,10 +99,10 @@ export function PaintersPortfolioClient({ initialData, initialMeetings = [] }: P
             </div>
             <div>
               <h1 className="text-xl font-black text-foreground flex items-center gap-2">
-                Registered Painters & Contractors Hub
+                {t("Registered Painters & Contractors Hub")}
               </h1>
               <p className="text-xs text-muted-foreground">
-                Manage painter KYC document verification (Aadhaar, PAN, Bank Passbook), coupon points balance, and onboarding
+                {t("Manage painter KYC document verification (Aadhaar, PAN, Bank Passbook), coupon points balance, and onboarding")}
               </p>
             </div>
           </div>
@@ -110,32 +112,32 @@ export function PaintersPortfolioClient({ initialData, initialMeetings = [] }: P
           href="/dashboard/dealer/painters/register"
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all shadow-2xs cursor-pointer"
         >
-          <Plus size={15} /> + Onboard New Painter & KYC
+          <Plus size={15} /> {t("+ Onboard New Painter & KYC")}
         </Link>
       </div>
 
       {/* ── Key Metrics Cards ───────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Total Registered Painters</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Total Registered Painters")}</span>
           <p className="text-2xl font-black text-foreground font-mono">{list.length}</p>
-          <p className="text-[11px] text-muted-foreground">Store Loyalty Scheme Members</p>
+          <p className="text-[11px] text-muted-foreground">{t("Store Loyalty Scheme Members")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">KYC Verified Painters</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("KYC Verified Painters")}</span>
           <p className="text-2xl font-black text-emerald-600 font-mono">
             {list.filter(p => p.kyc_status === "Verified").length}
           </p>
-          <p className="text-[11px] text-emerald-700 font-bold">Aadhaar & Bank Details Approved</p>
+          <p className="text-[11px] text-emerald-700 font-bold">{t("Aadhaar & Bank Details Approved")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Total Scanned Points Balance</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Total Scanned Points Balance")}</span>
           <p className="text-2xl font-black text-amber-500 font-mono">
             {list.reduce((s, p) => s + Number(p.points_balance || 0), 0).toLocaleString("en-IN")} Pts
           </p>
-          <p className="text-[11px] text-muted-foreground">Store Reward Scheme Points</p>
+          <p className="text-[11px] text-muted-foreground">{t("Store Reward Scheme Points")}</p>
         </div>
       </div>
 

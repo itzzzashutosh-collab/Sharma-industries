@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   LineChart, Download, Search, Sparkles, TrendingUp, TrendingDown,
   DollarSign, IndianRupee, ShieldAlert, CheckCircle2, ArrowUpRight,
@@ -84,6 +85,7 @@ export function EstimatedPnLClient({
   initialPurchaseBills,
   initialClients
 }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [period, setPeriod] = useState<"today" | "week" | "month" | "quarter" | "ytd">("month");
   const [activeTab, setActiveTab] = useState<"statement" | "intelligence">("statement");

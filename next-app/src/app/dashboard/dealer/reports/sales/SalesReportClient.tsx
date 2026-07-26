@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   FileSpreadsheet, Download, Search, TrendingUp, Calendar, ArrowUpRight,
   DollarSign, Package, Users, Receipt, FileText, CheckCircle2, AlertCircle,
@@ -50,6 +51,7 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
 export function SalesReportClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [timeframe, setTimeframe] = useState<"today" | "weekly" | "monthly" | "quarterly" | "yearly">("monthly");
   const [search, setSearch] = useState("");
@@ -128,7 +130,7 @@ export function SalesReportClient({ initialData }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Reports</span><span className="opacity-40">/</span><span className="text-foreground">Sales Reports</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Reports</span><span className="opacity-40">/</span><span className="text-foreground">{t("Sales Reports")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   Sparkles, Plus, Search, Tag, Calendar, Users, ShieldCheck, FileText,
   AlertCircle, CheckCircle2, X, ArrowRight, TrendingUp, Percent, Award,
@@ -40,6 +41,7 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
 export function LoyaltySchemesClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [schemes, setSchemes] = useState<Scheme[]>(initialData || []);
   const [search, setSearch] = useState("");
@@ -130,7 +132,7 @@ export function LoyaltySchemesClient({ initialData }: Props) {
   if (!mounted) {
     return (
       <div className="p-12 text-center text-xs font-bold text-muted-foreground animate-pulse bg-card rounded-2xl border border-border">
-        Loading Dealer Loyalty Schemes & Discount Engine...
+        {t("Loading Dealer Loyalty Schemes & Discount Engine...")}
       </div>
     );
   }
@@ -141,7 +143,7 @@ export function LoyaltySchemesClient({ initialData }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Painters</span><span className="opacity-40">/</span><span className="text-foreground">Loyalty & Product Schemes</span>
+                      <span>{t("Dealer Workspace")}</span><span className="opacity-40">/</span><span>{t("Painters")}</span><span className="opacity-40">/</span><span className="text-foreground">{t("Loyalty & Product Schemes")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20">
@@ -149,10 +151,10 @@ export function LoyaltySchemesClient({ initialData }: Props) {
             </div>
             <div>
               <h1 className="text-xl font-black text-foreground flex items-center gap-2">
-                Dealer Loyalty Schemes & Product Discount Hub
+                {t("Dealer Loyalty Schemes & Product Discount Hub")}
               </h1>
               <p className="text-xs text-muted-foreground">
-                Manage painter product discounts, extra reward bonus points, terms & rules, and enrolled contractor progress
+                {t("Manage painter product discounts, extra reward bonus points, terms & rules, and enrolled contractor progress")}
               </p>
             </div>
           </div>
@@ -162,34 +164,34 @@ export function LoyaltySchemesClient({ initialData }: Props) {
           onClick={() => setIsCreatingModal(true)}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all shadow-2xs cursor-pointer"
         >
-          <Plus size={15} /> + Launch New Scheme & Discount
+          <Plus size={15} /> {t("+ Launch New Scheme & Discount")}
         </button>
       </div>
 
       {/* ── Key Metrics Cards ───────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Active Dealer Schemes</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Active Dealer Schemes")}</span>
           <p className="text-2xl font-black text-foreground font-mono">{totalActive}</p>
-          <p className="text-[11px] text-emerald-600 font-bold">Currently Running Offers</p>
+          <p className="text-[11px] text-emerald-600 font-bold">{t("Currently Running Offers")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Participating Contractors</span>
-          <p className="text-2xl font-black text-primary font-mono">{totalParticipants} Painters</p>
-          <p className="text-[11px] text-muted-foreground">Active Target Achievers</p>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Participating Contractors")}</span>
+          <p className="text-2xl font-black text-primary font-mono">{totalParticipants} {t("Painters")}</p>
+          <p className="text-[11px] text-muted-foreground">{t("Active Target Achievers")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Total Scheme Savings Provided</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Total Scheme Savings Provided")}</span>
           <p className="text-2xl font-black text-emerald-600 font-mono">{fmt(totalDiscountSavings)}</p>
-          <p className="text-[11px] text-muted-foreground">Direct Product Discounts</p>
+          <p className="text-[11px] text-muted-foreground">{t("Direct Product Discounts")}</p>
         </div>
 
         <div className="bg-card border border-border rounded-2xl p-5 space-y-2 shadow-2xs">
-          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">Extra Bonus Reward Points</span>
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block">{t("Extra Bonus Reward Points")}</span>
           <p className="text-2xl font-black text-amber-500 font-mono">14,200 Pts</p>
-          <p className="text-[11px] text-muted-foreground">Credited to Painter Wallets</p>
+          <p className="text-[11px] text-muted-foreground">{t("Credited to Painter Wallets")}</p>
         </div>
       </div>
 

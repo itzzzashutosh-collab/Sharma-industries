@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   Package, Plus, Search, Sparkles, AlertTriangle, Layers, LayoutGrid,
   List, Tag, IndianRupee, SlidersHorizontal, Edit3, X, Check, Eye,
@@ -112,6 +113,7 @@ const INITIAL_DEALER_PRODUCTS: Product[] = [
 ];
 
 export function ProductsCatalogueClient({ initialData }: Props) {
+  const { t } = useLanguage();
   // Combine initialData with default dealer store products if initial is empty
   const [list, setList] = useState<Product[]>(() => {
     if (initialData && initialData.length > 0) return initialData;
@@ -370,8 +372,8 @@ export function ProductsCatalogueClient({ initialData }: Props) {
             <table className="w-full text-xs text-left">
               <thead className="border-b border-border bg-muted/40 uppercase font-black text-[10px] text-muted-foreground">
                 <tr>
-                  <th className="px-4 py-3.5">Product Name</th>
-                  <th className="px-4 py-3.5">Category</th>
+                  <th className="px-4 py-3.5">{t("Product Name")}</th>
+                  <th className="px-4 py-3.5">{t("Category")}</th>
                   <th className="px-4 py-3.5 text-right">Purchase Rate (₹)</th>
                   <th className="px-4 py-3.5 text-right">Selling Rate (₹)</th>
                   <th className="px-4 py-3.5 text-right">MRP (₹)</th>

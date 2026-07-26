@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   BookMarked, Download, Search, Sparkles, TrendingUp, TrendingDown,
   IndianRupee, CreditCard, Landmark, CheckCircle2, ShieldAlert,
@@ -71,6 +72,7 @@ export function PaymentRegistryClient({
   initialExpenses,
   initialClients
 }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "collection" | "disbursal" | "upi" | "cash">("all");
@@ -307,10 +309,10 @@ export function PaymentRegistryClient({
             <thead className="border-b border-border bg-muted/40 uppercase font-black text-[10px] text-muted-foreground">
               <tr>
                 <th className="px-4 py-3.5">Voucher #</th>
-                <th className="px-4 py-3.5">Date</th>
+                <th className="px-4 py-3.5">{t("Date")}</th>
                 <th className="px-4 py-3.5">Party / Customer Name</th>
                 <th className="px-4 py-3.5">Voucher Type</th>
-                <th className="px-4 py-3.5">Payment Mode</th>
+                <th className="px-4 py-3.5">{t("Payment Mode")}</th>
                 <th className="px-4 py-3.5 text-right">Amount (₹)</th>
                 <th className="px-4 py-3.5 text-center">Voucher Action</th>
               </tr>
@@ -439,7 +441,7 @@ export function PaymentRegistryClient({
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Payment Mode</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">{t("Payment Mode")}</label>
                   <select
                     value={form.payment_mode}
                     onChange={e => setForm(f => ({ ...f, payment_mode: e.target.value }))}

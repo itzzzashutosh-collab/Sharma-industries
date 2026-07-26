@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   CalendarDays, Plus, Search, MapPin, Clock, Users, Gift, Coffee,
   Sparkles, CheckCircle2, X, ArrowRight, ShieldCheck, FileText,
@@ -50,6 +51,7 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
 export function MeetingsLogClient({ initialData, initialPainters }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [meetings, setMeetings] = useState<Meeting[]>(initialData || []);
   const [painters, setPainters] = useState<Painter[]>(initialPainters || []);

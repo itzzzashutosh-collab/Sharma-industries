@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect, useMemo } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   Trophy, Award, Sparkles, Search, Crown, Medal, TrendingUp, Calendar,
   Users, Gift, CheckCircle2, ShieldCheck, Phone, ArrowUpRight, Flame,
@@ -30,6 +31,7 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
 export function ContestsBoardClient({ initialData }: Props) {
+  const { t } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [timeframe, setTimeframe] = useState<"weekly" | "monthly" | "quarterly" | "semi_annual" | "yearly">("monthly");
   const [search, setSearch] = useState("");
@@ -92,7 +94,7 @@ export function ContestsBoardClient({ initialData }: Props) {
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-5 rounded-2xl shadow-2xs">
         <div>
           <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 mb-1">
-            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Painters</span><span className="opacity-40">/</span><span className="text-foreground">Contractor Leaderboard</span>
+            <span>Dealer Workspace</span><span className="opacity-40">/</span><span>Painters</span><span className="opacity-40">/</span><span className="text-foreground">{t("Contractor Leaderboard")}</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20">
@@ -341,7 +343,7 @@ export function ContestsBoardClient({ initialData }: Props) {
           <table className="w-full text-left text-xs">
             <thead>
               <tr className="border-b border-border text-[10px] font-black text-muted-foreground uppercase tracking-wider">
-                <th className="py-3 px-3">Rank</th>
+                <th className="py-3 px-3">{t("Rank")}</th>
                 <th className="py-3 px-3">Contractor / Painter</th>
                 <th className="py-3 px-3">Tier</th>
                 <th className="py-3 px-3 text-right">Liters Consumed</th>

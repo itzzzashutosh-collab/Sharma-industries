@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useEffect } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   UserPlus, Upload, ShieldCheck, CheckCircle2, Landmark, CreditCard,
   Phone, MapPin, Calendar, Image as ImageIcon, ArrowRight, ArrowLeft,
@@ -10,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { createDealerPainter } from "../../actions";
 
 export function PainterRegisterClient() {
+  const { t } = useLanguage();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
