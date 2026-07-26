@@ -228,33 +228,24 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
 
       {/* ── Live Interactive Invoice Preview Canvas ────────────────────────── */}
       <div className="bg-muted/40 p-4 rounded-3xl border border-border/60 overflow-x-auto shadow-inner flex justify-center">
-        {/* Template 1: Thermal Slip 80mm */}
+        {/* Template 1: Thermal Slip 80mm (No Watermark as requested) */}
         {selectedTemplate === "thermal" && (
-          <div id="print-content" className="relative overflow-hidden bg-white text-black p-5 rounded-2xl text-xs font-mono border border-slate-300 space-y-3 w-full max-w-sm shadow-md">
-            {/* Big Swatch Paints Logo Image Watermark Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
-              <img
-                src={SWATCH_PAINTS_LOGO_URL}
-                alt="Swatch Paints Watermark"
-                className="w-48 h-48 object-contain transform -rotate-12"
-              />
-            </div>
-
-            <div className="relative z-10 text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
+          <div id="print-content" className="bg-white text-black p-5 rounded-2xl text-xs font-mono border border-slate-300 space-y-3 w-full max-w-sm shadow-md">
+            <div className="text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
               <h2 className="text-base font-black text-slate-900 tracking-tight uppercase">{shopTitle}</h2>
               <p className="text-[10px] text-slate-600 font-sans">Authorized Swatch Paints Dealer · GSTIN: 08AABCU9603R1ZX</p>
               <p className="text-[10px] text-slate-600 font-sans">POS RECEIPT · #{invoice.invoice_no}</p>
               <p className="text-[10px] text-slate-500 font-sans">{invoice.date}</p>
             </div>
 
-            <div className="relative z-10 text-[11px] border-b border-dashed border-slate-400 pb-2 space-y-0.5 font-sans">
+            <div className="text-[11px] border-b border-dashed border-slate-400 pb-2 space-y-0.5 font-sans">
               <p><strong>Customer:</strong> {getCustomerName()}</p>
               {getCustomerPhone() && <p><strong>Phone:</strong> {getCustomerPhone()}</p>}
               {getCustomerAddress() && <p><strong>Address:</strong> {getCustomerAddress()}</p>}
               <p><strong>Payment Mode:</strong> {invoice.payment_mode || "Cash"}</p>
             </div>
 
-            <div className="relative z-10 space-y-1 py-1 border-b border-dashed border-slate-400">
+            <div className="space-y-1 py-1 border-b border-dashed border-slate-400">
               <div className="grid grid-cols-12 font-bold text-[10px] uppercase border-b border-slate-200 pb-1">
                 <span className="col-span-6">Item</span>
                 <span className="col-span-2 text-center">Qty</span>
@@ -269,7 +260,7 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
               ))}
             </div>
 
-            <div className="relative z-10 space-y-0.5 pt-1 text-[11px] font-sans">
+            <div className="space-y-0.5 pt-1 text-[11px] font-sans">
               <div className="flex justify-between"><span>Subtotal:</span><span>₹{subtotal.toFixed(2)}</span></div>
               <div className="flex justify-between"><span>GST (18%):</span><span>₹{totalTax.toFixed(2)}</span></div>
               <div className="flex justify-between font-black text-sm pt-1 border-t border-slate-800">
@@ -278,7 +269,7 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             </div>
 
             {/* Embedded Dealer UPI QR Code */}
-            <div className="relative z-10 text-center pt-3 border-t border-dashed border-slate-400 space-y-1 font-sans">
+            <div className="text-center pt-3 border-t border-dashed border-slate-400 space-y-1 font-sans">
               <span className="text-[10px] font-bold text-slate-700 block">Scan to Pay via UPI</span>
               <img
                 src={getUPIQRCodeURL(generateUPIPaymentURI(dealerUPI.upiId, dealerUPI.payeeName, grandTotal, `Bill ${invoice.invoice_no}`), 140)}
@@ -298,12 +289,12 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             id="print-content"
             className="relative overflow-hidden bg-white text-slate-900 p-8 rounded-2xl text-xs font-sans border border-slate-300 space-y-5 w-[794px] min-h-[1050px] shadow-lg"
           >
-            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            {/* Straight & Bigger Swatch Paints Logo Image Watermark Overlay */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
               <img
                 src={SWATCH_PAINTS_LOGO_URL}
                 alt="Swatch Paints Watermark"
-                className="w-96 h-96 object-contain transform -rotate-12"
+                className="w-[450px] h-[450px] object-contain"
               />
             </div>
 
@@ -398,12 +389,12 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             id="print-content"
             className="relative overflow-hidden bg-slate-950 text-white p-8 rounded-2xl text-xs font-sans border border-slate-800 space-y-5 w-[794px] min-h-[1050px] shadow-lg"
           >
-            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            {/* Straight & Bigger Swatch Paints Logo Image Watermark Overlay */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.12] select-none z-0">
               <img
                 src={SWATCH_PAINTS_LOGO_URL}
                 alt="Swatch Paints Watermark"
-                className="w-96 h-96 object-contain transform -rotate-12 filter brightness-200"
+                className="w-[450px] h-[450px] object-contain filter brightness-200"
               />
             </div>
 
@@ -482,12 +473,12 @@ export function DealerInvoiceDetailView({ invoice }: Props) {
             id="print-content"
             className="relative overflow-hidden bg-gradient-to-br from-amber-500/5 via-primary/5 to-rose-500/5 text-slate-900 p-8 rounded-2xl text-xs font-sans border-2 border-primary/20 space-y-5 w-[794px] min-h-[1050px] shadow-lg"
           >
-            {/* Big Swatch Paints Logo Image Watermark Overlay */}
+            {/* Straight & Bigger Swatch Paints Logo Image Watermark Overlay */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
               <img
                 src={SWATCH_PAINTS_LOGO_URL}
                 alt="Swatch Paints Watermark"
-                className="w-96 h-96 object-contain transform -rotate-12"
+                className="w-[450px] h-[450px] object-contain"
               />
             </div>
 

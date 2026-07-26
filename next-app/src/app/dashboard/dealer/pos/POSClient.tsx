@@ -1135,31 +1135,22 @@ export function POSClient() {
             <div className="bg-muted/30 p-4 rounded-2xl border border-border/50 max-h-[60vh] overflow-y-auto">
               {/* Template 1: Thermal Slip 80mm */}
               {previewTemplateTheme === "thermal" && (
-                <div id="print-content" className="relative overflow-hidden bg-white text-black p-5 rounded-xl text-xs font-mono border border-slate-300 space-y-3 max-w-sm mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Image Watermark Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
-                    <img
-                      src={SWATCH_PAINTS_LOGO_URL}
-                      alt="Swatch Paints Watermark"
-                      className="w-44 h-44 object-contain transform -rotate-12"
-                    />
-                  </div>
-
-                  <div className="relative z-10 text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
+                <div id="print-content" className="bg-white text-black p-5 rounded-xl text-xs font-mono border border-slate-300 space-y-3 max-w-sm mx-auto shadow-sm">
+                  <div className="text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
                     <h2 className="text-base font-black text-slate-900 tracking-tight uppercase">{dealerUPI.payeeName || "Shree Ram Paints & Hardware"}</h2>
                     <p className="text-[10px] text-slate-600 font-sans">Authorized Swatch Paints Dealer · GSTIN: 08AABCU9603R1ZX</p>
                     <p className="text-[10px] text-slate-600 font-sans">POS RECEIPT · {lastSavedInvoice?.invoice_no || invoiceNo}</p>
                     <p className="text-[10px] text-slate-500 font-sans">{new Date().toLocaleString("en-IN")}</p>
                   </div>
 
-                  <div className="relative z-10 text-[11px] border-b border-dashed border-slate-400 pb-2 space-y-0.5 font-sans">
+                  <div className="text-[11px] border-b border-dashed border-slate-400 pb-2 space-y-0.5 font-sans">
                     <p><strong>Customer:</strong> {lastSavedInvoice?.customer?.name || customerName}</p>
                     {(lastSavedInvoice?.customer?.phone || customerPhone) && <p><strong>Phone:</strong> {lastSavedInvoice?.customer?.phone || customerPhone}</p>}
                     {(lastSavedInvoice?.client_details?.address || customerAddress) && <p><strong>Address:</strong> {lastSavedInvoice?.client_details?.address || customerAddress}</p>}
                     <p><strong>Mode:</strong> {lastSavedInvoice?.payment_mode || paymentMode} {paymentMode === "Credit" ? `(${finalCreditDays} Days)` : ""}</p>
                   </div>
 
-                  <div className="relative z-10 space-y-1 py-1 border-b border-dashed border-slate-400">
+                  <div className="space-y-1 py-1 border-b border-dashed border-slate-400">
                     <div className="grid grid-cols-12 font-bold text-[10px] uppercase border-b border-slate-200 pb-1">
                       <span className="col-span-6">Item</span>
                       <span className="col-span-2 text-center">Qty</span>
@@ -1174,7 +1165,7 @@ export function POSClient() {
                     ))}
                   </div>
 
-                  <div className="relative z-10 space-y-0.5 pt-1 text-[11px] font-sans">
+                  <div className="space-y-0.5 pt-1 text-[11px] font-sans">
                     <div className="flex justify-between"><span>Subtotal:</span><span>₹{Number(lastSavedInvoice?.subtotal || subtotal).toFixed(2)}</span></div>
                     <div className="flex justify-between"><span>GST (18%):</span><span>₹{Number(lastSavedInvoice?.total_gst || totalTax).toFixed(2)}</span></div>
                     <div className="flex justify-between font-black text-sm pt-1 border-t border-slate-800">
@@ -1182,7 +1173,7 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <div className="relative z-10 text-center pt-3 border-t border-dashed border-slate-400 space-y-1 font-sans">
+                  <div className="text-center pt-3 border-t border-dashed border-slate-400 space-y-1 font-sans">
                     <span className="text-[10px] font-bold text-slate-700 block">Scan to Pay via UPI</span>
                     <img
                       src={getUPIQRCodeURL(generateUPIPaymentURI(dealerUPI.upiId, dealerUPI.payeeName, Number(lastSavedInvoice?.grand_total || grandTotal), `Bill ${lastSavedInvoice?.invoice_no || invoiceNo}`), 140)}
@@ -1198,12 +1189,12 @@ export function POSClient() {
               {/* Template 2: Classic GST Tax Invoice (A4) */}
               {previewTemplateTheme === "classic" && (
                 <div id="print-content" className="relative overflow-hidden bg-white text-slate-900 p-6 rounded-xl text-xs font-sans border border-slate-300 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  {/* Swatch Paints Logo Image Watermark Overlay (Straight & Large) */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
                     <img
                       src={SWATCH_PAINTS_LOGO_URL}
                       alt="Swatch Paints Watermark"
-                      className="w-72 h-72 object-contain transform -rotate-12"
+                      className="w-[320px] h-[320px] object-contain"
                     />
                   </div>
 
@@ -1287,12 +1278,12 @@ export function POSClient() {
               {/* Template 3: Modern Minimal */}
               {previewTemplateTheme === "modern" && (
                 <div id="print-content" className="relative overflow-hidden bg-slate-950 text-white p-6 rounded-xl text-xs font-sans border border-slate-800 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  {/* Swatch Paints Logo Image Watermark Overlay (Straight & Large) */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.12] select-none z-0">
                     <img
                       src={SWATCH_PAINTS_LOGO_URL}
                       alt="Swatch Paints Watermark"
-                      className="w-72 h-72 object-contain transform -rotate-12 filter brightness-200"
+                      className="w-[320px] h-[320px] object-contain filter brightness-200"
                     />
                   </div>
 
@@ -1366,12 +1357,12 @@ export function POSClient() {
               {/* Template 4: Paint Brand Theme */}
               {previewTemplateTheme === "brand" && (
                 <div id="print-content" className="relative overflow-hidden bg-gradient-to-br from-amber-500/5 via-primary/5 to-rose-500/5 text-slate-900 p-6 rounded-xl text-xs font-sans border-2 border-primary/20 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  {/* Swatch Paints Logo Image Watermark Overlay */}
+                  {/* Swatch Paints Logo Image Watermark Overlay (Straight & Large) */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.10] select-none z-0">
                     <img
                       src={SWATCH_PAINTS_LOGO_URL}
                       alt="Swatch Paints Watermark"
-                      className="w-72 h-72 object-contain transform -rotate-12"
+                      className="w-[320px] h-[320px] object-contain"
                     />
                   </div>
 
