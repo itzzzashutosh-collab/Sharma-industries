@@ -16,6 +16,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getDealerNextPOSInvoiceNumber, saveDealerPOSInvoice } from "./actions";
 import { getDealerUPIConfig, generateUPIPaymentURI, getUPIQRCodeURL } from "@/lib/upi";
 
+const SWATCH_PAINTS_LOGO_URL = "https://mwqjdhwlfuwhyslqtpwd.supabase.co/storage/v1/object/sign/Company%20Assets%20(logos,%20Watermarks)/Swatchpaints.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83YTU1YTAxNi0xYzI2LTRlZjctYjlkNy1iYWU1NTFkN2Q1ZmUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDb21wYW55IEFzc2V0cyAobG9nb3MsIFdhdGVybWFya3MpL1N3YXRjaHBhaW50cy5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzg1MDQ5OTIyLCJleHAiOjMzMzIxMDQ5OTIyfQ.bnnDOZgHJLx_KMlknv0Wd6PnUb72JIZBiEp24TK5Vu8";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface DealerProduct {
   id: string;
