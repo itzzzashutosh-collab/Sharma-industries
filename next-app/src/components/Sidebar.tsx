@@ -228,8 +228,8 @@ const DEALER_NAV: NavGroup[] = [
     group: "Purchase",
     items: [
       { name: "Purchase Bills",   href: "/dashboard/dealer/purchase/bills",          icon: ShoppingCart },
-      { name: "Suppliers",        href: "/dashboard/dealer/purchase/suppliers",      icon: Truck },
-      { name: "Factory Orders",   href: "/dashboard/dealer/purchase/factory-orders", icon: ArrowUpCircle },
+      { name: "Suppliers & Vendors", href: "/dashboard/dealer/purchase/suppliers",    icon: Truck },
+      { name: "Stock Purchase Orders", href: "/dashboard/dealer/purchase/factory-orders", icon: ArrowUpCircle },
     ],
   },
   {

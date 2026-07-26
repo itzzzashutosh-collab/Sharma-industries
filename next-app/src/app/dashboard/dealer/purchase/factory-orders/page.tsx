@@ -5,7 +5,7 @@ import { getDealerFactoryOrders } from "../../actions";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Factory Orders Log | Dealer Workspace" };
+  return { title: "Stock Purchase Orders | Dealer Workspace" };
 }
 
 export default async function Page() {
