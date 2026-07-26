@@ -1133,22 +1133,32 @@ export function POSClient() {
             <div className="bg-muted/30 p-4 rounded-2xl border border-border/50 max-h-[60vh] overflow-y-auto">
               {/* Template 1: Thermal Slip 80mm */}
               {previewTemplateTheme === "thermal" && (
-                <div id="print-content" className="bg-white text-black p-5 rounded-xl text-xs font-mono border border-slate-300 space-y-3 max-w-sm mx-auto shadow-sm">
-                  <div className="text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
-                    <h2 className="text-base font-black text-slate-900 tracking-tight">SHARMA INDUSTRIES</h2>
-                    <p className="text-[10px] text-slate-600 font-sans">{dealerUPI.payeeName} · GSTIN: 08AABCU9603R1ZX</p>
+                <div id="print-content" className="relative overflow-hidden bg-white text-black p-5 rounded-xl text-xs font-mono border border-slate-300 space-y-3 max-w-sm mx-auto shadow-sm">
+                  {/* Swatch Paints Logo Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
+                    <div className="text-center transform -rotate-12">
+                      <div className="w-20 h-20 mx-auto rounded-full border-4 border-slate-900 flex items-center justify-center mb-1">
+                        <span className="text-3xl font-black text-slate-900 font-sans">SP</span>
+                      </div>
+                      <span className="text-xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 text-center space-y-0.5 border-b border-dashed border-slate-400 pb-3">
+                    <h2 className="text-base font-black text-slate-900 tracking-tight uppercase">{dealerUPI.payeeName || "Shree Ram Paints & Hardware"}</h2>
+                    <p className="text-[10px] text-slate-600 font-sans">Authorized Swatch Paints Dealer · GSTIN: 08AABCU9603R1ZX</p>
                     <p className="text-[10px] text-slate-600 font-sans">POS RECEIPT · {lastSavedInvoice?.invoice_no || invoiceNo}</p>
                     <p className="text-[10px] text-slate-500 font-sans">{new Date().toLocaleString("en-IN")}</p>
                   </div>
 
-                  <div className="text-[11px] border-b border-dashed border-slate-400 pb-2 space-y-0.5 font-sans">
+                  <div className="relative z-10 text-[11px] border-b border-dashed border-slate-400 pb-2 space-y-0.5 font-sans">
                     <p><strong>Customer:</strong> {lastSavedInvoice?.customer?.name || customerName}</p>
                     {(lastSavedInvoice?.customer?.phone || customerPhone) && <p><strong>Phone:</strong> {lastSavedInvoice?.customer?.phone || customerPhone}</p>}
                     {(lastSavedInvoice?.client_details?.address || customerAddress) && <p><strong>Address:</strong> {lastSavedInvoice?.client_details?.address || customerAddress}</p>}
                     <p><strong>Mode:</strong> {lastSavedInvoice?.payment_mode || paymentMode} {paymentMode === "Credit" ? `(${finalCreditDays} Days)` : ""}</p>
                   </div>
 
-                  <div className="space-y-1 py-1 border-b border-dashed border-slate-400">
+                  <div className="relative z-10 space-y-1 py-1 border-b border-dashed border-slate-400">
                     <div className="grid grid-cols-12 font-bold text-[10px] uppercase border-b border-slate-200 pb-1">
                       <span className="col-span-6">Item</span>
                       <span className="col-span-2 text-center">Qty</span>
@@ -1163,7 +1173,7 @@ export function POSClient() {
                     ))}
                   </div>
 
-                  <div className="space-y-0.5 pt-1 text-[11px] font-sans">
+                  <div className="relative z-10 space-y-0.5 pt-1 text-[11px] font-sans">
                     <div className="flex justify-between"><span>Subtotal:</span><span>₹{Number(lastSavedInvoice?.subtotal || subtotal).toFixed(2)}</span></div>
                     <div className="flex justify-between"><span>GST (18%):</span><span>₹{Number(lastSavedInvoice?.total_gst || totalTax).toFixed(2)}</span></div>
                     <div className="flex justify-between font-black text-sm pt-1 border-t border-slate-800">
@@ -1171,7 +1181,7 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <div className="text-center pt-3 border-t border-dashed border-slate-400 space-y-1 font-sans">
+                  <div className="relative z-10 text-center pt-3 border-t border-dashed border-slate-400 space-y-1 font-sans">
                     <span className="text-[10px] font-bold text-slate-700 block">Scan to Pay via UPI</span>
                     <img
                       src={getUPIQRCodeURL(generateUPIPaymentURI(dealerUPI.upiId, dealerUPI.payeeName, Number(lastSavedInvoice?.grand_total || grandTotal), `Bill ${lastSavedInvoice?.invoice_no || invoiceNo}`), 140)}
@@ -1186,12 +1196,23 @@ export function POSClient() {
 
               {/* Template 2: Classic GST Tax Invoice (A4) */}
               {previewTemplateTheme === "classic" && (
-                <div id="print-content" className="bg-white text-slate-900 p-6 rounded-xl text-xs font-sans border border-slate-300 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  <div className="flex items-start justify-between border-b-2 border-slate-800 pb-4">
+                <div id="print-content" className="relative overflow-hidden bg-white text-slate-900 p-6 rounded-xl text-xs font-sans border border-slate-300 space-y-4 max-w-2xl mx-auto shadow-sm">
+                  {/* Swatch Paints Logo Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
+                    <div className="text-center transform -rotate-12">
+                      <div className="w-32 h-32 mx-auto rounded-full border-8 border-slate-900 flex items-center justify-center mb-2">
+                        <span className="text-5xl font-black text-slate-900 font-sans">SP</span>
+                      </div>
+                      <span className="text-3xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
+                      <span className="text-xs font-extrabold tracking-widest text-slate-700 uppercase block font-sans">AUTHENTIC QUALITY COATINGS</span>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 flex items-start justify-between border-b-2 border-slate-800 pb-4">
                     <div>
-                      <h2 className="text-lg font-black text-slate-900 tracking-tight">SHARMA INDUSTRIES</h2>
-                      <p className="text-xs font-bold text-slate-700">{dealerUPI.payeeName}</p>
-                      <p className="text-[11px] text-slate-600">Bundi, Rajasthan · GSTIN: 08AABCU9603R1ZX</p>
+                      <h2 className="text-lg font-black text-slate-900 tracking-tight uppercase">{dealerUPI.payeeName || "Shree Ram Paints & Hardware"}</h2>
+                      <p className="text-xs font-bold text-slate-700">Authorized Swatch Paints Dealer Outlet</p>
+                      <p className="text-[11px] text-slate-600">Bundi, Rajasthan · Phone: +91 98290 12345 · GSTIN: 08AABCU9603R1ZX</p>
                     </div>
                     <div className="text-right space-y-0.5">
                       <span className="px-3 py-1 bg-slate-900 text-white font-black text-xs uppercase rounded">TAX INVOICE</span>
@@ -1200,7 +1221,7 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-lg border border-slate-200 text-[11px]">
+                  <div className="relative z-10 grid grid-cols-2 gap-4 bg-slate-50 p-3 rounded-lg border border-slate-200 text-[11px]">
                     <div>
                       <span className="font-bold text-slate-500 uppercase text-[10px] block mb-0.5">Billed To (Customer):</span>
                       <p className="font-bold text-slate-900 text-xs">{lastSavedInvoice?.customer?.name || customerName}</p>
@@ -1213,30 +1234,32 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <table className="w-full text-left border-collapse text-xs">
-                    <thead>
-                      <tr className="bg-slate-900 text-white font-bold text-[10px] uppercase">
-                        <th className="p-2 pl-3">S.No</th>
-                        <th className="p-2">Item Description</th>
-                        <th className="p-2 text-center">Qty</th>
-                        <th className="p-2 text-right">Rate</th>
-                        <th className="p-2 text-right pr-3">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200 border-b border-slate-300 font-medium">
-                      {(lastSavedInvoice?.items || cartItems).map((item: any, idx: number) => (
-                        <tr key={idx}>
-                          <td className="p-2 pl-3 text-slate-500">{idx + 1}</td>
-                          <td className="p-2 font-bold text-slate-900">{item.name}</td>
-                          <td className="p-2 text-center font-bold">{item.qty}</td>
-                          <td className="p-2 text-right font-mono">₹{Number(item.selling_price || item.price || 0).toFixed(2)}</td>
-                          <td className="p-2 text-right pr-3 font-bold font-mono">₹{Number(item.amount || item.total || 0).toFixed(2)}</td>
+                  <div className="relative z-10">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-slate-900 text-white font-bold text-[10px] uppercase">
+                          <th className="p-2 pl-3">S.No</th>
+                          <th className="p-2">Item Description</th>
+                          <th className="p-2 text-center">Qty</th>
+                          <th className="p-2 text-right">Rate</th>
+                          <th className="p-2 text-right pr-3">Total</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200 border-b border-slate-300 font-medium">
+                        {(lastSavedInvoice?.items || cartItems).map((item: any, idx: number) => (
+                          <tr key={idx}>
+                            <td className="p-2 pl-3 text-slate-500">{idx + 1}</td>
+                            <td className="p-2 font-bold text-slate-900">{item.name}</td>
+                            <td className="p-2 text-center font-bold">{item.qty}</td>
+                            <td className="p-2 text-right font-mono">₹{Number(item.selling_price || item.price || 0).toFixed(2)}</td>
+                            <td className="p-2 text-right pr-3 font-bold font-mono">₹{Number(item.amount || item.total || 0).toFixed(2)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-                  <div className="grid grid-cols-12 gap-4 pt-2 border-t border-slate-300">
+                  <div className="relative z-10 grid grid-cols-12 gap-4 pt-2 border-t border-slate-300">
                     <div className="col-span-7 bg-slate-50 p-3 rounded-lg border border-slate-200 flex items-center gap-3">
                       <img
                         src={getUPIQRCodeURL(generateUPIPaymentURI(dealerUPI.upiId, dealerUPI.payeeName, Number(lastSavedInvoice?.grand_total || grandTotal), `Bill ${lastSavedInvoice?.invoice_no || invoiceNo}`), 140)}
@@ -1264,12 +1287,23 @@ export function POSClient() {
 
               {/* Template 3: Modern Minimal */}
               {previewTemplateTheme === "modern" && (
-                <div id="print-content" className="bg-slate-950 text-white p-6 rounded-xl text-xs font-sans border border-slate-800 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  <div className="flex items-start justify-between border-b border-slate-800 pb-4">
+                <div id="print-content" className="relative overflow-hidden bg-slate-950 text-white p-6 rounded-xl text-xs font-sans border border-slate-800 space-y-4 max-w-2xl mx-auto shadow-sm">
+                  {/* Swatch Paints Logo Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
+                    <div className="text-center transform -rotate-12">
+                      <div className="w-32 h-32 mx-auto rounded-full border-8 border-white flex items-center justify-center mb-2">
+                        <span className="text-5xl font-black text-white font-sans">SP</span>
+                      </div>
+                      <span className="text-3xl font-black tracking-widest text-white uppercase block font-sans">SWATCH PAINTS</span>
+                      <span className="text-xs font-extrabold tracking-widest text-slate-300 uppercase block font-sans">AUTHENTIC QUALITY COATINGS</span>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 flex items-start justify-between border-b border-slate-800 pb-4">
                     <div className="space-y-1">
                       <span className="px-2.5 py-1 bg-primary text-white font-black text-[10px] rounded uppercase tracking-wider">OFFICIAL POS INVOICE</span>
-                      <h2 className="text-xl font-black text-white">{dealerUPI.payeeName}</h2>
-                      <p className="text-xs text-slate-400">Sharma Industries Authorized Paint Depot · GSTIN: 08AABCU9603R1ZX</p>
+                      <h2 className="text-xl font-black text-white uppercase">{dealerUPI.payeeName || "Shree Ram Paints & Hardware"}</h2>
+                      <p className="text-xs text-slate-400">Authorized Swatch Paints Dealer Outlet · GSTIN: 08AABCU9603R1ZX</p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-mono font-black text-primary">#{lastSavedInvoice?.invoice_no || invoiceNo}</p>
@@ -1277,7 +1311,7 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 text-xs">
+                  <div className="relative z-10 grid grid-cols-2 gap-4 text-xs">
                     <div>
                       <span className="text-slate-500 uppercase text-[10px] font-bold block mb-1">Customer</span>
                       <p className="font-bold text-white text-sm">{lastSavedInvoice?.customer?.name || customerName}</p>
@@ -1289,7 +1323,7 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <div className="border border-slate-800 rounded-xl overflow-hidden">
+                  <div className="relative z-10 border border-slate-800 rounded-xl overflow-hidden">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-slate-900 border-b border-slate-800 text-[10px] uppercase font-bold text-slate-400">
                         <tr>
@@ -1310,7 +1344,7 @@ export function POSClient() {
                     </table>
                   </div>
 
-                  <div className="grid grid-cols-12 gap-4 pt-2 border-t border-slate-800">
+                  <div className="relative z-10 grid grid-cols-12 gap-4 pt-2 border-t border-slate-800">
                     <div className="col-span-7 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 flex items-center gap-3">
                       <img
                         src={getUPIQRCodeURL(generateUPIPaymentURI(dealerUPI.upiId, dealerUPI.payeeName, Number(lastSavedInvoice?.grand_total || grandTotal), `Bill ${lastSavedInvoice?.invoice_no || invoiceNo}`), 140)}
@@ -1334,14 +1368,25 @@ export function POSClient() {
 
               {/* Template 4: Paint Brand Theme */}
               {previewTemplateTheme === "brand" && (
-                <div id="print-content" className="bg-gradient-to-br from-amber-500/5 via-primary/5 to-rose-500/5 text-slate-900 p-6 rounded-xl text-xs font-sans border-2 border-primary/20 space-y-4 max-w-2xl mx-auto shadow-sm">
-                  <div className="flex items-start justify-between border-b-2 border-primary/30 pb-4">
+                <div id="print-content" className="relative overflow-hidden bg-gradient-to-br from-amber-500/5 via-primary/5 to-rose-500/5 text-slate-900 p-6 rounded-xl text-xs font-sans border-2 border-primary/20 space-y-4 max-w-2xl mx-auto shadow-sm">
+                  {/* Swatch Paints Logo Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.06] select-none z-0">
+                    <div className="text-center transform -rotate-12">
+                      <div className="w-32 h-32 mx-auto rounded-full border-8 border-slate-900 flex items-center justify-center mb-2">
+                        <span className="text-5xl font-black text-slate-900 font-sans">SP</span>
+                      </div>
+                      <span className="text-3xl font-black tracking-widest text-slate-900 uppercase block font-sans">SWATCH PAINTS</span>
+                      <span className="text-xs font-extrabold tracking-widest text-slate-700 uppercase block font-sans">AUTHENTIC QUALITY COATINGS</span>
+                    </div>
+                  </div>
+
+                  <div className="relative z-10 flex items-start justify-between border-b-2 border-primary/30 pb-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="w-8 h-8 rounded-lg bg-primary text-white font-black flex items-center justify-center text-sm shadow-xs">SI</span>
-                        <h2 className="text-xl font-black text-slate-900 tracking-tight">SHARMA INDUSTRIES</h2>
+                        <span className="w-8 h-8 rounded-lg bg-primary text-white font-black flex items-center justify-center text-sm shadow-xs">SP</span>
+                        <h2 className="text-xl font-black text-slate-900 tracking-tight uppercase">{dealerUPI.payeeName || "Shree Ram Paints & Hardware"}</h2>
                       </div>
-                      <p className="text-xs font-bold text-primary">{dealerUPI.payeeName} · Authorized Paint Dealer</p>
+                      <p className="text-xs font-bold text-primary">Authorized Swatch Paints Dealer Outlet</p>
                     </div>
                     <div className="text-right space-y-0.5">
                       <span className="px-3 py-1 bg-primary text-white font-black text-xs uppercase rounded-full shadow-2xs">PAINT BILL</span>
@@ -1349,7 +1394,7 @@ export function POSClient() {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl border border-primary/20 overflow-hidden">
+                  <div className="relative z-10 bg-white rounded-xl border border-primary/20 overflow-hidden">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-primary text-white font-bold text-[10px] uppercase">
                         <tr>
@@ -1370,7 +1415,7 @@ export function POSClient() {
                     </table>
                   </div>
 
-                  <div className="grid grid-cols-12 gap-4 pt-2 border-t-2 border-primary/20">
+                  <div className="relative z-10 grid grid-cols-12 gap-4 pt-2 border-t-2 border-primary/20">
                     <div className="col-span-7 bg-white p-3.5 rounded-xl border border-primary/20 flex items-center gap-3">
                       <img
                         src={getUPIQRCodeURL(generateUPIPaymentURI(dealerUPI.upiId, dealerUPI.payeeName, Number(lastSavedInvoice?.grand_total || grandTotal), `Bill ${lastSavedInvoice?.invoice_no || invoiceNo}`), 140)}
