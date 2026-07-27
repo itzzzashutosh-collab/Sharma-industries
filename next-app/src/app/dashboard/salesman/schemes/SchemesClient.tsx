@@ -15,7 +15,7 @@ import { proposeDealerGrowthProgram } from "../actions";
 interface GrowthProgram {
   id: string;
   name: string;
-  category: "Volume Booster" | "Tier Upgrade" | "Painter Cashback" | "Seasonal Dhamaka" | "Focus SKU";
+  category: "Volume Booster" | "Tier Upgrade" | "Painter Cashback" | "Seasonal Dhamaka" | "Festive Dhamaka" | "Focus SKU";
   details: string;
   criteria: string;
   eligibility: string;
