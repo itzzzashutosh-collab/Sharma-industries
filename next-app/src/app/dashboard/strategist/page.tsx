@@ -13,6 +13,18 @@ export default async function StrategistPage() {
     redirect("/login");
   }
 
+  let session: { userId: string; name: string; role: string; phone: string };
+  try {
+    session = JSON.parse(sessionCookie.value);
+  } catch {
+    redirect("/login");
+  }
+
+  // Strictly enforce CEO-ONLY access
+  if (session.role !== "ceo") {
+    redirect("/dashboard");
+  }
+
   const res = await getStrategist360Data();
 
   return (
