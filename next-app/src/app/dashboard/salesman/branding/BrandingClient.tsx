@@ -4,7 +4,7 @@ import React, { useState, useMemo, useTransition } from "react";
 import {
   Store, ShieldAlert, Sparkles, Plus, Image as ImageIcon, Camera, CheckCircle2,
   ChevronRight, X, Calendar, Shield, Copy, Check, Share2, Upload, FileText,
-  Building2, Eye, Award, Palette, Layers, ArrowRight, Download, Printer, Tag, Info
+  Building2, Eye, Award, Palette, Layers, ArrowRight, Download, Printer, Tag, Info, Search
 } from "lucide-react";
 import { requestShopBrandingAsset } from "../actions";
 
