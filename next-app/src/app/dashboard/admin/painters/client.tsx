@@ -111,12 +111,14 @@ export default function PaintersClient({
   initialPainters,
   initialRewards,
   initialSchemes,
-  initialCompetitions
+  initialCompetitions,
+  initialMeetings
 }: { 
   initialPainters: Painter[];
   initialRewards: RewardItem[];
   initialSchemes: SchemeItem[];
   initialCompetitions: CompetitionItem[];
+  initialMeetings?: any[];
 }) {
   const { t } = useLanguage();
   const [painters, setPainters] = useState<Painter[]>(initialPainters);

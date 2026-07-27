@@ -107,7 +107,20 @@ export default async function PaintersPage() {
     console.error("Error fetching competitions:", compErr);
   }
 
-  // Map scans to painters programmatically
+  // Fetch Painter Projects (Portfolio), Estimations (Material Calculations), Coupons, and Meetings for CEO Mode
+  const [
+    { data: allProjects },
+    { data: allEstimations },
+    { data: allCoupons },
+    { data: allMeetings }
+  ] = await Promise.all([
+    supabase.from("painter_projects").select("*").order("created_at", { ascending: false }),
+    supabase.from("painter_estimations").select("*").order("created_at", { ascending: false }),
+    supabase.from("painter_coupons").select("*").order("scanned_at", { ascending: false }),
+    supabase.from("painter_meetings").select("*").order("meeting_date", { ascending: true })
+  ]);
+
+  // Map scans, projects, and estimations to painters programmatically for CEO Mode
   const paintersWithHistory = (painters || []).map((p) => {
     const scans = (qrRegistry || [])
       .filter((qr) => qr.scanned_by === p.id)
@@ -115,8 +128,7 @@ export default async function PaintersPage() {
         const prod = (products || []).find((pr) => pr.id === qr.product_id);
         const dlr = (dealers || []).find((d) => d.id === qr.dealer_id);
         
-        // Find quantity from invoice if available
-        let qty = 1; // Default fallback
+        let qty = 1;
         if (qr.invoice_id) {
           const inv = (invoices || []).find((i) => i.id === qr.invoice_id);
           if (inv && inv.items && Array.isArray(inv.items)) {
@@ -140,9 +152,16 @@ export default async function PaintersPage() {
         };
       });
 
+    const painterProjects = (allProjects || []).filter(proj => proj.painter_id === p.id);
+    const painterEstimations = (allEstimations || []).filter(est => est.painter_id === p.id);
+    const painterCoupons = (allCoupons || []).filter(c => c.painter_id === p.id);
+
     return {
       ...p,
-      scans
+      scans,
+      projects: painterProjects,
+      estimations: painterEstimations,
+      coupons: painterCoupons
     };
   });
 
@@ -152,6 +171,7 @@ export default async function PaintersPage() {
       initialRewards={dbRewards || []}
       initialSchemes={dbSchemes || []}
       initialCompetitions={dbCompetitions || []}
+      initialMeetings={allMeetings || []}
     />
   );
 }
