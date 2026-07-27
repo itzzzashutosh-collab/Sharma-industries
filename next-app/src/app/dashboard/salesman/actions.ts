@@ -263,8 +263,29 @@ export async function createSalesmanOrder(orderPayload: any) {
   }
 }
 
+export async function requestShopBrandingAsset(payload: { dealerName: string; itemType: string; dimensions?: string; notes?: string }) {
+  try {
+    const supabase = await createAdminClient();
+    
+    // Log activity
+    await supabase.from("sales_activities").insert({
+      id: `ACT_${Date.now()}`,
+      salesman_id: salesmanId,
+      activity_type: "Branding Requested",
+      description: `Requested Swatch Paints ${payload.itemType} for ${payload.dealerName} (${payload.dimensions || "Standard"})`,
+      created_at: new Date().toISOString()
+    });
+
+    revalidatePath("/dashboard/salesman/branding");
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message };
+  }
+}
+
 function fmt(n: number) {
   return `₹${Number(n).toLocaleString("en-IN")}`;
 }
+
 
 
