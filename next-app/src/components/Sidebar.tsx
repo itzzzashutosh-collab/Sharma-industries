@@ -302,6 +302,7 @@ const SALESMAN_NAV: NavGroup[] = [
       { name: "Territory Info", href: "/dashboard/salesman/territory",    icon: BarChart2 },
       { name: "Painter Network", href: "/dashboard/salesman/painters",     icon: Paintbrush },
       { name: "Customers",      href: "/dashboard/salesman/customers",    icon: Users },
+      { name: "Settings",       href: "/dashboard/salesman/settings",     icon: Settings },
     ],
   },
 ];
