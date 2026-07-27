@@ -661,12 +661,24 @@ export function QuotationEngine() {
       const originalConsoleWarn = console.warn;
       const originalConsoleError = console.error;
 
+      const isOklchColorErr = (args: any[]) => {
+        return args.some(arg => {
+          if (!arg) return false;
+          const str = typeof arg === "string" ? arg : (arg.message || arg.stack || String(arg));
+          return typeof str === "string" && (
+            str.toLowerCase().includes("oklch") ||
+            str.toLowerCase().includes("oklab") ||
+            str.toLowerCase().includes("unsupported color function")
+          );
+        });
+      };
+
       console.warn = (...args) => {
-        if (args[0] && typeof args[0] === "string" && args[0].includes("oklch")) return;
+        if (isOklchColorErr(args)) return;
         originalConsoleWarn(...args);
       };
       console.error = (...args) => {
-        if (args[0] && typeof args[0] === "string" && args[0].includes("oklch")) return;
+        if (isOklchColorErr(args)) return;
         originalConsoleError(...args);
       };
 
