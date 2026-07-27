@@ -140,6 +140,7 @@ export async function createSalesVisit(visit: { dealer_name: string; location?: 
 // 2. MY ORDERS BACKEND
 // ─────────────────────────────────────────────────────────────────────────────
 export async function createSalesmanOrder(orderPayload: {
+  id?: string;
   dealer_name: string;
   total_amount: number;
   payment_terms: string;
@@ -148,7 +149,7 @@ export async function createSalesmanOrder(orderPayload: {
 }) {
   try {
     const supabase = await createAdminClient();
-    const orderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderId = orderPayload.id || `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const { error } = await supabase
       .from("orders")
