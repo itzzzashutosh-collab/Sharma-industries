@@ -1,12 +1,18 @@
 "use client";
 
-import React, { useState, useMemo, useTransition } from "react";
+import React, { useState, useMemo, useEffect, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Store, Users, PlusCircle, Search, Sparkles, Phone, MessageSquare, ClipboardList, Target, AlertCircle,
   ShieldCheck, Shield, Copy, Check, Share2, Upload, TrendingUp, Building2, Flame, Zap, HelpCircle,
-  Award, Wallet, Gift, QrCode, CreditCard, ArrowRight, DollarSign, CheckCircle2, Calendar, UserPlus, Clock, RefreshCw, X
+  Award, Wallet, Gift, QrCode, CreditCard, ArrowRight, DollarSign, CheckCircle2, Calendar, UserPlus, Clock, RefreshCw, X, FileText, Loader2
 } from "lucide-react";
-import { createSalesVisit } from "../actions";
+import { createClient } from "@supabase/supabase-js";
+
+// Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -58,7 +64,7 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n).toLocaleString("en-IN")}`;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Swatch Paints B2B Customer Acquisition Objection Playbook
+// Swatch Paints B2B Customer Acquisition & Onboarding Objection Playbook
 // ─────────────────────────────────────────────────────────────────────────────
 const SWATCH_CUSTOMER_OBJECTIONS = [
   {
@@ -103,7 +109,7 @@ const SWATCH_CUSTOMER_OBJECTIONS = [
   },
   {
     id: "CUST_OBJ_5",
-    category: "Territory Territory Protection",
+    category: "Territory Protection",
     title: "Can I get exclusive dealership rights for my entire pincode area?",
     problemText: "Kya Swatch Paints mere pincode mein kisi aur dukaan ko supply nahi karega?",
     strategy: "Enforce Strict 2km Radius Price & Territory Protection Policy",
@@ -124,6 +130,9 @@ const MOCK_SWATCH_DEALERS: DBDealer[] = [
 ];
 
 export default function SalesmanCustomersClient({ initialData }: Props) {
+  const searchParams = useSearchParams();
+  const defaultTab = searchParams.get("tab") === "onboard" ? "onboard" : "dealers";
+
   // Normalize Dealers List
   const dealersList: DBDealer[] = useMemo(() => {
     if (initialData.dealers && initialData.dealers.length > 0) {
@@ -160,18 +169,23 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
 
   // States
   const [dealers, setDealers] = useState<DBDealer[]>(dealersList);
-  const [activeTab, setActiveTab] = useState<"dealers" | "leads" | "followups" | "playbook" | "analytics">("dealers");
+  const [activeTab, setActiveTab] = useState<"dealers" | "onboard" | "leads" | "followups" | "playbook" | "analytics">(defaultTab as any);
   const [searchTerm, setSearchTerm] = useState("");
   const [copiedObjId, setCopiedObjId] = useState<string | null>(null);
-  const [showAddLeadModal, setShowAddLeadModal] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  // New Lead Form State
-  const [newLeadName, setNewLeadName] = useState("");
-  const [newLeadOwner, setNewLeadOwner] = useState("");
-  const [newLeadPhone, setNewLeadPhone] = useState("");
-  const [newLeadLocality, setNewLeadLocality] = useState("");
-  const [newLeadVolume, setNewLeadVolume] = useState(150000);
+  // Onboarding Form State
+  const [onboardForm, setOnboardForm] = useState({
+    name: "",
+    designation: "Owner / Proprietor",
+    phone: "",
+    address: "",
+    localities: "Jaipur Central",
+    gst_number: "",
+    tier: "Silver Partner",
+    credit_limit: 200000
+  });
+  const [isOnboardingSubmitting, setIsOnboardingSubmitting] = useState(false);
 
   // Metrics
   const metrics = useMemo(() => {
@@ -192,32 +206,56 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
   }, [dealers, searchTerm]);
 
   // Handlers
-  const handleAddLeadSubmit = (e: React.FormEvent) => {
+  const handleOnboardSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newLeadName || !newLeadPhone) {
-      alert("Please fill in Lead Name and Phone Number.");
+    if (!onboardForm.name || !onboardForm.address) {
+      alert("Please fill in Shop / Agency Name and Registered Address.");
       return;
     }
 
-    const newLead: ProspectLead = {
-      id: `L_${Date.now()}`,
-      name: newLeadName,
-      owner: newLeadOwner || "Proprietor",
-      phone: newLeadPhone,
-      locality: newLeadLocality || "Jaipur Territory",
-      stage: "Initial Pitch",
-      est_monthly_volume: Number(newLeadVolume) || 150000,
-      probability: 50,
-      notes: "Newly captured Swatch Paints B2B prospect lead."
-    };
+    setIsOnboardingSubmitting(true);
+    try {
+      const newD: DBDealer = {
+        id: `D_${Date.now()}`,
+        name: onboardForm.name,
+        address: onboardForm.address,
+        localities: onboardForm.localities || "Jaipur Territory",
+        designation: onboardForm.designation || "Owner",
+        gst_number: onboardForm.gst_number || "UNREGISTERED",
+        tier: onboardForm.tier as any,
+        annual_revenue: Number(onboardForm.credit_limit) * 3,
+        credit_limit: Number(onboardForm.credit_limit) || 200000,
+        credit_used: 0,
+        health_status: "Healthy"
+      };
 
-    setLeads(prev => [newLead, ...prev]);
-    setShowAddLeadModal(false);
-    setNewLeadName("");
-    setNewLeadOwner("");
-    setNewLeadPhone("");
-    setNewLeadLocality("");
-    alert(`New Swatch B2B Lead "${newLead.name}" added to pipeline successfully!`);
+      await supabase.from('dealers').insert([{
+        name: onboardForm.name,
+        address: onboardForm.address,
+        localities: onboardForm.localities,
+        designation: onboardForm.designation,
+        gst_number: onboardForm.gst_number,
+        assigned_salesman_id: "SM-101"
+      }]);
+
+      setDealers(prev => [newD, ...prev]);
+      setActiveTab("dealers");
+      setOnboardForm({
+        name: "",
+        designation: "Owner / Proprietor",
+        phone: "",
+        address: "",
+        localities: "Jaipur Central",
+        gst_number: "",
+        tier: "Silver Partner",
+        credit_limit: 200000
+      });
+      alert(`Dealer "${newD.name}" onboarded to Swatch Paints network successfully! Starter Glow Sign Board and Credit Limit assigned.`);
+    } catch (err: any) {
+      alert("Failed to save dealer to database. Added to local list.");
+    } finally {
+      setIsOnboardingSubmitting(false);
+    }
   };
 
   const copyScript = (id: string, text: string) => {
@@ -243,18 +281,18 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
-              <Store size={22} className="text-indigo-400" /> Swatch Paints Partners & Lead Command Center
+              <Store size={22} className="text-indigo-400" /> Swatch Paints Partners & Dealer Command Center
             </h1>
             <p className="text-slate-400 text-[11px] max-w-xl">
-              Manage active Swatch dealer accounts, convert B2B prospect leads into agencies, conquer dealer acquisition objections, and schedule territory follow-ups.
+              Onboard new Swatch Paints dealers, manage active retail agency accounts, convert B2B prospect leads, and handle dealer acquisition objections.
             </p>
           </div>
 
           <button
-            onClick={() => setShowAddLeadModal(true)}
-            className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-black text-xs hover:opacity-95 shadow-lg shadow-indigo-500/25 transition-all cursor-pointer border border-indigo-400/30"
+            onClick={() => setActiveTab("onboard")}
+            className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs hover:opacity-95 shadow-lg shadow-emerald-500/25 transition-all cursor-pointer border border-emerald-400/30"
           >
-            <UserPlus size={16} /> Add Swatch B2B Lead
+            <UserPlus size={16} /> Onboard New Swatch Dealer
           </button>
         </div>
 
@@ -290,7 +328,8 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
       <div className="flex items-center gap-1.5 bg-muted/60 p-1.5 rounded-2xl border border-border overflow-x-auto">
         {[
           { id: "dealers", label: "Active Swatch Dealers", icon: Store, badge: metrics.totalDealers },
-          { id: "leads", label: "Prospect Leads Pipeline", icon: UserPlus, badge: metrics.totalLeads },
+          { id: "onboard", label: "Onboard New Dealer", icon: UserPlus, highlight: true },
+          { id: "leads", label: "Prospect Leads Pipeline", icon: Target, badge: metrics.totalLeads },
           { id: "followups", label: "Territory Follow-ups", icon: Calendar, badge: followups.length },
           { id: "playbook", label: "Dealer Acquisition Playbook", icon: Shield, badge: "5 Strategies" },
           { id: "analytics", label: "Conversion Analytics", icon: TrendingUp }
@@ -304,6 +343,8 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
               className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-black transition-all cursor-pointer whitespace-nowrap text-[11px] ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-md"
+                  : tab.highlight
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
               }`}
             >
@@ -336,6 +377,13 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
                 className="w-full pl-10 pr-4 py-2.5 bg-card border border-border rounded-xl text-xs outline-none focus:border-primary transition-colors text-foreground shadow-xs"
               />
             </div>
+
+            <button
+              onClick={() => setActiveTab("onboard")}
+              className="px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-black text-[11px] hover:bg-emerald-700 transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs"
+            >
+              <UserPlus size={14} /> Onboard New Dealer
+            </button>
           </div>
 
           {/* Dealers Cards Grid */}
@@ -410,13 +458,187 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          TAB 2: PROSPECT LEADS PIPELINE
+          TAB 2: ONBOARD NEW SWATCH DEALER FORM (MERGED WORKFLOW)
+      ══════════════════════════════════════════════════════════════════════ */}
+      {activeTab === "onboard" && (
+        <div className="bg-card border border-border rounded-3xl p-5 sm:p-6 shadow-sm space-y-6">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <span className="text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-widest block mb-0.5">Official Agency Registration</span>
+              <h2 className="text-sm sm:text-base font-black text-foreground flex items-center gap-2">
+                <UserPlus size={18} className="text-emerald-500" /> Onboard New Swatch Paints Dealer Store
+              </h2>
+              <p className="text-muted-foreground text-[11px]">
+                Register new paint & hardware shops into the official Swatch Paints retail partner network with credit limits and glow signboard allocations.
+              </p>
+            </div>
+            <button
+              onClick={() => setActiveTab("dealers")}
+              className="px-3 py-1.5 rounded-xl border border-border text-muted-foreground hover:bg-muted font-bold text-[10px]"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <form onSubmit={handleOnboardSubmit} className="space-y-5 text-xs">
+            {/* Store Information */}
+            <div className="space-y-3">
+              <span className="text-[10px] font-black uppercase text-indigo-500 tracking-wider block">
+                1. Store & Partnership Details
+              </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                    Shop / Agency Name *
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    value={onboardForm.name}
+                    onChange={e => setOnboardForm(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="e.g. Shree Ram Paints & Hardware"
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs font-bold text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                    Owner / Proprietor Name
+                  </label>
+                  <input
+                    type="text"
+                    value={onboardForm.designation}
+                    onChange={e => setOnboardForm(prev => ({ ...prev, designation: e.target.value }))}
+                    placeholder="e.g. Rajesh Kumar Verma"
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                    10-Digit Mobile Phone Number *
+                  </label>
+                  <input
+                    required
+                    type="tel"
+                    maxLength={10}
+                    value={onboardForm.phone}
+                    onChange={e => setOnboardForm(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="98290XXXXX"
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs font-mono text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                    GSTIN Number (or PAN Starter)
+                  </label>
+                  <input
+                    type="text"
+                    value={onboardForm.gst_number}
+                    onChange={e => setOnboardForm(prev => ({ ...prev, gst_number: e.target.value }))}
+                    placeholder="e.g. 08AABCS1429B1Z2"
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs font-mono text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                  Registered Shop Address & Locality Hub *
+                </label>
+                <input
+                  required
+                  type="text"
+                  value={onboardForm.address}
+                  onChange={e => setOnboardForm(prev => ({ ...prev, address: e.target.value }))}
+                  placeholder="e.g. Shop 12, Main Market, Malviya Nagar, Jaipur"
+                  className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs text-foreground outline-none focus:border-primary"
+                />
+              </div>
+            </div>
+
+            {/* Credit & Tier Allocation */}
+            <div className="space-y-3 pt-3 border-t border-border">
+              <span className="text-[10px] font-black uppercase text-indigo-500 tracking-wider block">
+                2. Partnership Tier & Credit Facility Allocation
+              </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                    Swatch Partnership Tier
+                  </label>
+                  <select
+                    value={onboardForm.tier}
+                    onChange={e => setOnboardForm(prev => ({ ...prev, tier: e.target.value as any }))}
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs font-bold text-foreground outline-none focus:border-primary"
+                  >
+                    <option value="Gold Partner">Gold Partner (3.5% Margin + Free Signboard)</option>
+                    <option value="Silver Partner">Silver Partner (2.5% Margin + Standee Kit)</option>
+                    <option value="Standard Partner">Standard Partner (2.0% Starter Margin)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1.5">
+                    Approved Credit Limit (₹)
+                  </label>
+                  <input
+                    type="number"
+                    value={onboardForm.credit_limit}
+                    onChange={e => setOnboardForm(prev => ({ ...prev, credit_limit: Number(e.target.value) }))}
+                    className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs font-mono font-bold text-foreground outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Document Upload Simulator */}
+            <div className="space-y-3 pt-3 border-t border-border">
+              <span className="text-[10px] font-black uppercase text-indigo-500 tracking-wider block">
+                3. KYC Documents & Store Facade Upload
+              </span>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="border border-dashed border-border rounded-2xl p-3 flex flex-col items-center justify-center bg-muted/10 space-y-1 cursor-pointer">
+                  <Upload size={16} className="text-primary" />
+                  <span className="text-[10px] font-bold text-foreground">Attach PAN Card</span>
+                </div>
+                <div className="border border-dashed border-border rounded-2xl p-3 flex flex-col items-center justify-center bg-muted/10 space-y-1 cursor-pointer">
+                  <Upload size={16} className="text-primary" />
+                  <span className="text-[10px] font-bold text-foreground">Attach Aadhaar Card</span>
+                </div>
+                <div className="border border-dashed border-border rounded-2xl p-3 flex flex-col items-center justify-center bg-muted/10 space-y-1 cursor-pointer">
+                  <Upload size={16} className="text-primary" />
+                  <span className="text-[10px] font-bold text-foreground">Store Facade Photo</span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isOnboardingSubmitting}
+              className="w-full py-3.5 bg-emerald-600 text-white font-black text-xs rounded-2xl hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+            >
+              {isOnboardingSubmitting ? <Loader2 className="animate-spin" size={16} /> : <CheckCircle2 size={16} />}
+              Confirm Swatch Paints Dealer Onboarding
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          TAB 3: PROSPECT LEADS PIPELINE
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === "leads" && (
         <div className="space-y-4">
           <div className="bg-card border border-border rounded-3xl p-5 space-y-2 shadow-xs">
             <h2 className="text-sm font-black text-foreground flex items-center gap-2">
-              <UserPlus size={16} className="text-indigo-500" /> Swatch B2B Dealer Acquisition Pipeline
+              <Target size={16} className="text-indigo-500" /> Swatch B2B Dealer Acquisition Pipeline
             </h2>
             <p className="text-[11px] text-muted-foreground">
               Track prospective paint & hardware stores, pitch Swatch Paints dealer starter kits, and convert leads to registered agencies.
@@ -479,7 +701,7 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          TAB 3: TERRITORY FOLLOW-UPS & REMINDERS
+          TAB 4: TERRITORY FOLLOW-UPS & REMINDERS
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === "followups" && (
         <div className="space-y-4">
@@ -534,7 +756,7 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          TAB 4: SWATCH B2B DEALER ACQUISITION PLAYBOOK
+          TAB 5: SWATCH B2B DEALER ACQUISITION PLAYBOOK
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === "playbook" && (
         <div className="space-y-4">
@@ -603,7 +825,7 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          TAB 5: CONVERSION ANALYTICS
+          TAB 6: CONVERSION ANALYTICS
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === "analytics" && (
         <div className="space-y-4">
@@ -629,111 +851,6 @@ export default function SalesmanCustomersClient({ initialData }: Props) {
                 <span className="text-[9px] text-indigo-400 font-bold">Zero dealer churn</span>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* ══════════════════════════════════════════════════════════════════════
-          ADD B2B PROSPECT LEAD MODAL
-      ══════════════════════════════════════════════════════════════════════ */}
-      {showAddLeadModal && (
-        <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setShowAddLeadModal(false)}
-        >
-          <div
-            className="bg-card border border-border rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="p-5 border-b border-border bg-indigo-500/10 flex items-center justify-between">
-              <div>
-                <span className="text-[9px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-widest">Swatch B2B Lead Pipeline</span>
-                <h3 className="text-xs font-black text-foreground">Add New Prospect Store Lead</h3>
-              </div>
-              <button onClick={() => setShowAddLeadModal(false)} className="p-1 rounded-lg hover:bg-muted text-muted-foreground">
-                <X size={14} />
-              </button>
-            </div>
-
-            <form onSubmit={handleAddLeadSubmit} className="p-5 space-y-4 text-xs">
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block">
-                  Store / Shop Name *
-                </label>
-                <input
-                  required
-                  type="text"
-                  value={newLeadName}
-                  onChange={e => setNewLeadName(e.target.value)}
-                  placeholder="e.g. Jaipur Paint & Hardware Depot"
-                  className="w-full bg-background border border-border rounded-xl px-3.5 py-2.5 text-xs font-bold text-foreground outline-none focus:border-primary"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1">
-                    Owner Name
-                  </label>
-                  <input
-                    type="text"
-                    value={newLeadOwner}
-                    onChange={e => setNewLeadOwner(e.target.value)}
-                    placeholder="e.g. Rakesh Verma"
-                    className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1">
-                    Phone Number *
-                  </label>
-                  <input
-                    required
-                    type="tel"
-                    maxLength={10}
-                    value={newLeadPhone}
-                    onChange={e => setNewLeadPhone(e.target.value)}
-                    placeholder="98290XXXXX"
-                    className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs font-mono text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1">
-                    Locality Area
-                  </label>
-                  <input
-                    type="text"
-                    value={newLeadLocality}
-                    onChange={e => setNewLeadLocality(e.target.value)}
-                    placeholder="e.g. Malviya Nagar"
-                    className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10px] font-black uppercase text-muted-foreground tracking-wider block mb-1">
-                    Est. Monthly Vol (₹)
-                  </label>
-                  <input
-                    type="number"
-                    value={newLeadVolume}
-                    onChange={e => setNewLeadVolume(Number(e.target.value))}
-                    className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs font-mono text-foreground outline-none focus:border-primary"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-indigo-600 text-white font-black text-[11px] rounded-xl hover:bg-indigo-700 cursor-pointer flex items-center justify-center gap-1.5"
-              >
-                <CheckCircle2 size={14} /> Save Swatch Prospect Lead
-              </button>
-            </form>
           </div>
         </div>
       )}
