@@ -4,7 +4,7 @@ import React, { useState, useMemo, useRef, useEffect, useTransition } from "reac
 import {
   Sparkles, Wallet, Award, CheckCircle2, Clock, Calendar, ArrowRight, Scan, PlusCircle, HelpCircle, X, AlertCircle,
   QrCode, Shield, Copy, Check, Share2, Phone, TrendingUp, Building2, Zap, ArrowDownCircle, ArrowUpRight, Calculator,
-  Paintbrush, CheckSquare, Gift, DollarSign, Loader2, UserCheck, Camera, SwitchCamera, Video, Eye
+  Paintbrush, CheckSquare, Gift, DollarSign, Loader2, UserCheck, Camera, SwitchCamera, Video, Eye, Wand2, RefreshCw
 } from "lucide-react";
 import { scanPainterCoupon } from "./actions";
 
@@ -71,7 +71,7 @@ const SWATCH_PAINTER_OBJECTIONS = [
     title: "Can Swatch Damp Kicker stop wall seepage permanently?",
     problemText: "Deewar par seelan (dampness) aur faphoondi bahut ziada hai, kya Swatch Damp Kicker ise rokeyga?",
     strategy: "7-Year Hydro-Lok Waterproofing Warranty + Free Swatch Tech Demo",
-    solutionHindi: "Sir, Swatch Damp Kicker 7-Year Waterproof Hydro-Lok Warranty ke sath aata enters. Humari Swatch Technical Team free site inspection karke moisture reading check karti hai aur 100% dry wall guarantee deti hai!",
+    solutionHindi: "Sir, Swatch Damp Kicker 7-Year Waterproof Hydro-Lok Warranty ke sath aata hai. Humari Swatch Technical Team free site inspection karke moisture reading check karti hai aur 100% dry wall guarantee deti hai!",
     salesPitch: "7-Year Waterproof Hydro-Lok Warranty + FREE Swatch Technical Site Inspection.",
     whatsappTemplate: "Sir, Swatch Damp Kicker Waterproofing: 7-Year Seepage Guarantee! Moisture inspection test + sample waterproofing demonstration at your house. Book inspection today! 🛡️"
   },
@@ -91,7 +91,7 @@ export function PainterDashboardClient({ initialData }: Props) {
   const [profile, setProfile] = useState(initialData.profile);
   const [metrics, setMetrics] = useState(initialData.metrics);
   const [activities, setActivities] = useState(initialData.activities);
-  const [activeTab, setActiveTab] = useState<"overview" | "playbook" | "tokens" | "calculator" | "meetings">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "playbook" | "tokens" | "generator" | "calculator" | "meetings">("overview");
 
   // QR Scan Modal & Camera State
   const [showScanModal, setShowScanModal] = useState(false);
@@ -101,6 +101,20 @@ export function PainterDashboardClient({ initialData }: Props) {
   const [facingMode, setFacingMode] = useState<"environment" | "user">("environment");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  // Scan Payout Result Modal State
+  const [scanResult, setScanResult] = useState<{
+    productName: string;
+    points: number;
+    cashAmount: number;
+    newTotalCash: number;
+    newTotalPoints: number;
+  } | null>(null);
+
+  // Coupon Generator State
+  const [genProduct, setGenProduct] = useState("SWATCH-DAMP");
+  const [genPoints, setGenPoints] = useState(500);
+  const [generatedCouponCode, setGeneratedCouponCode] = useState("SWATCH-DAMP-500");
 
   // Withdraw Modal State
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
@@ -147,7 +161,7 @@ export function PainterDashboardClient({ initialData }: Props) {
         throw new Error("Live camera video stream is not supported in this browser.");
       }
 
-      stopCameraStream(); // Stop existing track before re-requesting
+      stopCameraStream();
 
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
@@ -185,10 +199,17 @@ export function PainterDashboardClient({ initialData }: Props) {
 
   // Simulate Frame Capture & Detection
   const handleAutoDetectFromCamera = () => {
-    const presets = ["SWATCH-DAMP-500", "SWATCH-ROYALE-300", "SWATCH-SHINE-200"];
+    const presets = ["SWATCH-DAMP-500", "SWATCH-ROYALE-1000", "SWATCH-SHINE-300", "SWATCH-PUTTY-200"];
     const randomPreset = presets[Math.floor(Math.random() * presets.length)];
     setCouponCode(randomPreset);
-    alert(`📷 Camera Frame Captured!\nDetected QR Code Token: ${randomPreset}`);
+    alert(`📷 Camera Frame Captured!\nDetected Swatch Bucket QR Token: ${randomPreset}`);
+  };
+
+  // Generate Custom Swatch QR Coupon Code
+  const handleGenerateCoupon = () => {
+    const code = `${genProduct}-${genPoints}`;
+    setGeneratedCouponCode(code);
+    setCouponCode(code);
   };
 
   // Scan Submission
@@ -212,16 +233,43 @@ export function PainterDashboardClient({ initialData }: Props) {
     startTransition(async () => {
       const res = await scanPainterCoupon(couponCode);
       if (res.success) {
-        alert(`🎉 Swatch Token ${couponCode} Scanned Successfully!\nPoints Added: +${res.points || 250} Swatch Points.\nCash Wallet Updated!`);
         stopCameraStream();
         setShowScanModal(false);
-        setCouponCode("");
+
+        const pts = res.points || 250;
+        const cash = res.cashAmount || (pts * 1.5);
+        const prod = res.productName || "Swatch Paints Bucket";
+
+        const updatedCash = metrics.cashWallet + cash;
+        const updatedPts = metrics.rewardPoints + pts;
+
         setMetrics(m => ({
           ...m,
-          rewardPoints: m.rewardPoints + (res.points || 250),
-          cashWallet: m.cashWallet + ((res.points || 250) * 1.5),
+          rewardPoints: updatedPts,
+          cashWallet: updatedCash,
           approvedCoupons: m.approvedCoupons + 1
         }));
+
+        setActivities(prev => [
+          {
+            id: `act_${Date.now()}`,
+            type: "Coupon Scanned",
+            desc: `Scanned ${couponCode} (+${pts} PTS / +${fmt(cash)})`,
+            time: "Just now"
+          },
+          ...prev
+        ]);
+
+        // Trigger Detailed Payout Result Modal
+        setScanResult({
+          productName: prod,
+          points: pts,
+          cashAmount: cash,
+          newTotalCash: updatedCash,
+          newTotalPoints: updatedPts
+        });
+
+        setCouponCode("");
       } else {
         alert(res.error || "Failed to scan Swatch coupon code.");
       }
@@ -316,6 +364,7 @@ export function PainterDashboardClient({ initialData }: Props) {
           { id: "overview", label: "Overview", icon: Zap },
           { id: "playbook", label: "Client Playbook", icon: Shield, badge: "5 Counters" },
           { id: "tokens", label: "Coupons", icon: QrCode, badge: metrics.approvedCoupons },
+          { id: "generator", label: "QR Generator", icon: Wand2 },
           { id: "calculator", label: "Paint Estimator", icon: Calculator },
           { id: "meetings", label: "Dealer Meets", icon: Calendar }
         ].map(tab => {
@@ -518,7 +567,80 @@ export function PainterDashboardClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          TAB 4: PAINT MATERIAL & BUCKET ESTIMATOR
+          TAB 4: SWATCH QR BUCKET COUPON GENERATOR (NEW)
+      ══════════════════════════════════════════════════════════════════════ */}
+      {activeTab === "generator" && (
+        <div className="bg-card border border-border rounded-3xl p-4 space-y-4 shadow-xs">
+          <div className="space-y-1 border-b border-border pb-3">
+            <span className="text-[9px] font-black uppercase text-indigo-500 tracking-wider">Bucket Coupon Test Generator</span>
+            <h2 className="text-xs font-black text-foreground flex items-center gap-1.5">
+              <Wand2 size={15} className="text-indigo-500" /> Generate Swatch Bucket QR Token
+            </h2>
+            <p className="text-[10px] text-muted-foreground">
+              Generate custom test Swatch Paint QR bucket coupons, view token points breakdown, and test instant wallet scanner payouts.
+            </p>
+          </div>
+
+          <div className="space-y-3 text-[10px]">
+            <div>
+              <label className="font-bold text-muted-foreground uppercase block mb-1">Select Bucket Product Series</label>
+              <select
+                value={genProduct}
+                onChange={e => setGenProduct(e.target.value)}
+                className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs font-bold text-foreground outline-none focus:border-primary"
+              >
+                <option value="SWATCH-DAMP">Swatch Damp Kicker 7-Year Waterproofing</option>
+                <option value="SWATCH-ROYALE">Swatch Royal Shine Luxury Emulsion</option>
+                <option value="SWATCH-SHINE">Swatch Premium Interior Shine</option>
+                <option value="SWATCH-PUTTY">Swatch Smooth Acrylic Wall Putty</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-bold text-muted-foreground uppercase block mb-1">Token Points Value: <strong className="text-foreground font-mono">{genPoints} PTS</strong> (₹{(genPoints * 1.5).toLocaleString()} Cash)</label>
+              <input
+                type="range"
+                min={100}
+                max={2000}
+                step={50}
+                value={genPoints}
+                onChange={e => setGenPoints(Number(e.target.value))}
+                className="w-full accent-primary cursor-pointer"
+              />
+            </div>
+
+            <button
+              onClick={handleGenerateCoupon}
+              className="w-full py-2.5 bg-indigo-600 text-white font-black rounded-xl text-[10px] hover:bg-indigo-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              <RefreshCw size={13} /> Generate QR Code Token
+            </button>
+
+            {/* Generated QR Card Preview */}
+            <div className="bg-muted/40 border border-border rounded-2xl p-4 text-center space-y-2">
+              <span className="text-[8px] font-black uppercase text-muted-foreground block">Generated Swatch Bucket Token</span>
+              <div className="bg-white p-3 rounded-2xl w-32 h-32 mx-auto border-2 border-emerald-500/40 flex flex-col items-center justify-center space-y-1 shadow-md">
+                <QrCode size={70} className="text-slate-900" />
+                <span className="text-[8px] font-mono font-black text-slate-900">{generatedCouponCode}</span>
+              </div>
+              <p className="text-[10px] font-bold text-foreground">{genPoints} PTS = <strong className="text-emerald-600 dark:text-emerald-400">₹{(genPoints * 1.5).toLocaleString()} Cash Wallet Credit</strong></p>
+
+              <button
+                onClick={() => {
+                  setShowScanModal(true);
+                  startCameraStream();
+                }}
+                className="mt-2 w-full py-2 bg-emerald-600 text-white font-black rounded-xl text-[10px] hover:bg-emerald-700 transition-colors cursor-pointer flex items-center justify-center gap-1"
+              >
+                <Camera size={13} /> Scan Generated Token Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          TAB 5: PAINT MATERIAL & BUCKET ESTIMATOR
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === "calculator" && (
         <div className="bg-card border border-border rounded-3xl p-4 space-y-4 shadow-xs">
@@ -560,7 +682,7 @@ export function PainterDashboardClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          TAB 5: UPCOMING APPLICATOR MEETS
+          TAB 6: UPCOMING APPLICATOR MEETS
       ══════════════════════════════════════════════════════════════════════ */}
       {activeTab === "meetings" && (
         <div className="bg-card border border-border rounded-3xl p-4 space-y-3 shadow-xs">
@@ -624,7 +746,6 @@ export function PainterDashboardClient({ initialData }: Props) {
                   {/* Viewfinder Target & Laser Line */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-6">
                     <div className="w-40 h-40 border-2 border-emerald-400/80 rounded-2xl relative shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-                      {/* Laser Bar */}
                       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_10px_#10b981] animate-bounce" />
                       <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-wider text-emerald-300 bg-black/60 px-2 py-0.5 rounded-full">
                         Align Bucket QR Inside Box
@@ -632,7 +753,6 @@ export function PainterDashboardClient({ initialData }: Props) {
                     </div>
                   </div>
 
-                  {/* Switch Camera Button */}
                   <button
                     type="button"
                     onClick={toggleCameraFacingMode}
@@ -691,13 +811,13 @@ export function PainterDashboardClient({ initialData }: Props) {
                 />
               </div>
 
-              <div className="flex gap-2">
-                {["SWATCH-DAMP-500", "SWATCH-ROYALE-300", "SWATCH-SHINE-200"].map(preset => (
+              <div className="flex gap-1.5">
+                {["SWATCH-DAMP-500", "SWATCH-ROYALE-1000", "SWATCH-SHINE-300"].map(preset => (
                   <button
                     type="button"
                     key={preset}
                     onClick={() => setCouponCode(preset)}
-                    className="flex-1 py-1 bg-muted hover:bg-muted/80 rounded-lg text-[8px] font-mono font-bold text-foreground cursor-pointer"
+                    className="flex-1 py-1 bg-muted hover:bg-muted/80 rounded-lg text-[8px] font-mono font-bold text-foreground cursor-pointer truncate"
                   >
                     {preset}
                   </button>
@@ -712,6 +832,54 @@ export function PainterDashboardClient({ initialData }: Props) {
                 {isPending ? <Loader2 className="animate-spin" size={14} /> : <CheckCircle2 size={14} />} Confirm Token Payout
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════════════════════
+          TOKEN PAYOUT BREAKDOWN MODAL (NEW DETAILED RESULT)
+      ══════════════════════════════════════════════════════════════════════ */}
+      {scanResult && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-card border border-emerald-500/40 rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl text-center animate-in zoom-in-95">
+            <div className="w-14 h-14 rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center mx-auto text-emerald-500 shadow-lg shadow-emerald-500/20">
+              <CheckCircle2 size={32} />
+            </div>
+
+            <div className="space-y-1">
+              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 block">Swatch Token Cashback Claimed</span>
+              <h3 className="text-base font-black text-foreground">{scanResult.productName}</h3>
+            </div>
+
+            <div className="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-emerald-950/40 border border-emerald-500/30 rounded-2xl p-4 space-y-2 text-xs font-mono">
+              <div className="flex justify-between items-center text-slate-300">
+                <span>Swatch Reward Points:</span>
+                <span className="font-bold text-indigo-400 text-sm">+{scanResult.points} PTS</span>
+              </div>
+
+              <div className="flex justify-between items-center text-slate-300 border-t border-white/10 pt-2">
+                <span>Instant Wallet Cash Credit:</span>
+                <span className="font-black text-emerald-400 text-base">+{fmt(scanResult.cashAmount)}</span>
+              </div>
+            </div>
+
+            <div className="bg-muted/40 border border-border rounded-2xl p-3 space-y-1.5 text-[10px] text-muted-foreground text-left">
+              <div className="flex justify-between">
+                <span>Updated Cash Wallet Total:</span>
+                <strong className="text-emerald-600 dark:text-emerald-400 font-mono">{fmt(scanResult.newTotalCash)}</strong>
+              </div>
+              <div className="flex justify-between">
+                <span>Updated Swatch Reward Points:</span>
+                <strong className="text-indigo-500 font-mono">{scanResult.newTotalPoints} PTS</strong>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setScanResult(null)}
+              className="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl hover:bg-emerald-700 transition-colors shadow-md shadow-emerald-600/20 cursor-pointer"
+            >
+              Done & Continue Scanning
+            </button>
           </div>
         </div>
       )}
