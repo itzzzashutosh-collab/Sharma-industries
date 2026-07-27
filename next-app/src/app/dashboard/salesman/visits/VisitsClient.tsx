@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
@@ -358,9 +358,14 @@ export function VisitsClient({ initialData }: Props) {
                   <p className="text-[10px] text-muted-foreground">{routeZones.length} zones Â· ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel Â· {routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} est. dealers</p>
                 </div>
               </div>
-              <button onClick={() => setShowRouteModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500 text-white text-[10px] font-black hover:opacity-90 cursor-pointer">
-                <Plus size={12} /> Edit Zones
-              </button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setShowRouteModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-[10px] font-black hover:bg-indigo-700 transition-all cursor-pointer shadow-xs">
+                  <Plus size={12} /> Add Visit Zone
+                </button>
+                <button onClick={() => setShowRouteModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border bg-background text-foreground text-[10px] font-black hover:bg-muted transition-all cursor-pointer">
+                  <Edit3 size={12} /> Edit Route
+                </button>
+              </div>
             </div>
 
             {/* Zone sequence */}
@@ -1338,196 +1343,3 @@ function EveningReportModal({ report, onSave, onClose, objectionScripts, rejecti
     </div>
   );
 }
-
-  report: DealerReport;
-  onSave: (r: DealerReport) => void;
-  onClose: () => void;
-  objectionScripts: Record<string, string>;
-  rejectionReasons: string[];
-  competitors: string[];
-}) {
-  const [form, setForm] = useState<DealerReport>({ ...report });
-  const upd = (patch: Partial<DealerReport>) => setForm(f => ({ ...f, ...patch }));
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const now = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-    onSave({ ...form, visitedAt: form.visitedAt || now });
-  };
-
-  const objScript = form.rejectionReason ? objectionScripts[form.rejectionReason] : null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/70 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-card border border-border rounded-3xl w-full max-w-lg shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "94vh" }}>
-
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
-          <div>
-            <h3 className="text-sm font-black text-foreground">ðŸ“‹ Dealer Visit Report</h3>
-            <p className="text-[11px] text-muted-foreground">{form.dealerName} Â· {form.area}</p>
-          </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted cursor-pointer"><X size={16} className="text-muted-foreground" /></button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="overflow-y-auto" style={{ maxHeight: "calc(94vh - 70px)" }}>
-          <div className="p-5 space-y-5">
-
-            {/* â”€â”€ Dealer Contact Info â”€â”€ */}
-            <div className="space-y-2">
-              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Dealer Contact Info</p>
-              <div className="grid grid-cols-1 gap-2.5">
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Dealer Name</label>
-                    <input value={form.dealerName} onChange={e => upd({ dealerName: e.target.value })} placeholder="Full dealer name" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Phone Number</label>
-                    <input type="tel" value={form.phone} onChange={e => upd({ phone: e.target.value })} placeholder="9876543210" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Area / Locality</label>
-                    <input value={form.area} onChange={e => upd({ area: e.target.value })} placeholder="Malviya Nagar" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Visit Time</label>
-                    <input type="time" value={form.visitedAt} onChange={e => upd({ visitedAt: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Full Address</label>
-                  <input value={form.address} onChange={e => upd({ address: e.target.value })} placeholder="Shop no., Street, Area, City" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                </div>
-              </div>
-            </div>
-
-            {/* â”€â”€ Visit Status â”€â”€ */}
-            <div>
-              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Visit Status</p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {(["visited", "planned", "not_available", "skipped"] as const).map(s => (
-                  <button key={s} type="button" onClick={() => upd({ status: s })} className={`py-2 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${form.status === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
-                    {s === "visited" ? "âœ… Visited" : s === "planned" ? "â³ Planned" : s === "not_available" ? "ðŸš« Not Available" : "â­ï¸ Skipped"}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* â”€â”€ Outcome â”€â”€ */}
-            {form.status === "visited" && (
-              <>
-                <div>
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Dealer Outcome</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["agreed", "partial", "not_agreed"] as const).map(o => (
-                      <button key={o} type="button" onClick={() => upd({ outcome: o })} className={`py-2.5 rounded-xl text-[11px] font-black border transition-all cursor-pointer ${form.outcome === o ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
-                        {o === "agreed" ? "âœ… Agreed" : o === "partial" ? "âš¡ Partial" : "âŒ Not Agreed"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Rejection Reason (shown if not agreed or partial) */}
-                {(form.outcome === "not_agreed" || form.outcome === "partial") && (
-                  <div className="space-y-2.5">
-                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Rejection / Concern Reason</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {rejectionReasons.map(r => (
-                        <button key={r} type="button" onClick={() => upd({ rejectionReason: r })} className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all cursor-pointer ${form.rejectionReason === r ? "bg-rose-500 text-white border-rose-500" : "border-border text-muted-foreground hover:text-foreground"}`}>{r}</button>
-                      ))}
-                    </div>
-                    {form.rejectionReason === "Other (specify below)" && (
-                      <input value={form.customRejectionReason} onChange={e => upd({ customRejectionReason: e.target.value })} placeholder="Describe the reason..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
-                    )}
-                    {/* Objection Script */}
-                    {objScript && (
-                      <div className="bg-gradient-to-br from-primary/5 to-violet-500/5 border border-primary/20 rounded-2xl p-3.5">
-                        <p className="text-[10px] font-black text-primary mb-1.5">ðŸ’¡ Counter Script for This Objection</p>
-                        <p className="text-[11px] text-foreground leading-relaxed">{objScript}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* â”€â”€ Financial â”€â”€ */}
-                <div className="space-y-2.5">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Financial Details</p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Collection Amount (â‚¹)</label>
-                      <input type="number" value={form.collectionAmount} onChange={e => upd({ collectionAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Order Amount (â‚¹)</label>
-                      <input type="number" value={form.orderAmount} onChange={e => upd({ orderAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
-                    </div>
-                  </div>
-                  {form.orderAmount && parseFloat(form.orderAmount) > 0 && (
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Products Ordered</label>
-                      <input value={form.orderProducts} onChange={e => upd({ orderProducts: e.target.value })} placeholder="e.g. Royale Glitz 10L x4, Shyne 20L x2" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                  )}
-                </div>
-
-                {/* â”€â”€ Painter KYC â”€â”€ */}
-                <div>
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Painters KYC Registered</label>
-                  <input type="number" value={form.paintersKYC} onChange={e => upd({ paintersKYC: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
-                </div>
-
-                {/* â”€â”€ Competitor Intel â”€â”€ */}
-                <div className="space-y-2.5">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Competitor Intelligence</p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Competitor Brand</label>
-                      <select value={form.competitorBrand} onChange={e => upd({ competitorBrand: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
-                        {competitors.map(c => <option key={c} value={c}>{c}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Price / Notes</label>
-                      <input value={form.competitorNote} onChange={e => upd({ competitorNote: e.target.value })} placeholder="e.g. 7% cheaper" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* â”€â”€ Follow-up â”€â”€ */}
-                <div className="space-y-2.5">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Follow-up Schedule</p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Next Visit Date</label>
-                      <input type="date" value={form.nextVisitDate} onChange={e => upd({ nextVisitDate: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Action Needed</label>
-                      <input value={form.followUpAction} onChange={e => upd({ followUpAction: e.target.value })} placeholder="Bring credit form..." className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* â”€â”€ Notes (always shown) â”€â”€ */}
-            <div>
-              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Visit Notes</label>
-              <textarea rows={3} value={form.notes} onChange={e => upd({ notes: e.target.value })} placeholder="What happened? Key points from discussion, dealer mood, special requests, anything notable..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary resize-none" />
-            </div>
-
-            {/* â”€â”€ Submit â”€â”€ */}
-            <div className="flex gap-3 pb-2">
-              <button type="button" onClick={onClose} className="flex-1 py-3 rounded-2xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/50 cursor-pointer">Cancel</button>
-              <button type="submit" className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">âœ… Save Report</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
-
