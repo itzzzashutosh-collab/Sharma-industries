@@ -120,3 +120,39 @@ export async function saveDealerPOSInvoice(payload: any) {
     return { success: false, error: err.message || "Unexpected server error." };
   }
 }
+
+// ─── POS Form Handler Wrapper ────────────────────────────────────────────────
+export async function createInvoice(formData: FormData) {
+  try {
+    const customerName = (formData.get("customer_name") as string) || "Walk-In Customer";
+    const customerPhone = (formData.get("customer_phone") as string) || "";
+    const itemsRaw = (formData.get("items") as string) || "[]";
+    const items = JSON.parse(itemsRaw);
+    const invoiceNo = await getDealerNextPOSInvoiceNumber();
+
+    const subtotal = items.reduce((sum: number, i: any) => sum + (Number(i.total) || 0), 0);
+    const gst = subtotal * 0.18;
+    const grandTotal = subtotal + gst;
+
+    const payload = {
+      invoiceNo,
+      customerName,
+      customerPhone,
+      items,
+      subtotal,
+      totalTax: gst,
+      grandTotal,
+      balanceDue: 0,
+      paymentMode: "Cash",
+    };
+
+    const res = await saveDealerPOSInvoice(payload);
+    if (res.success) {
+      return { success: true, message: `Invoice ${invoiceNo} generated successfully!` };
+    }
+    return { success: false, error: res.error || "Failed to generate invoice." };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to generate invoice." };
+  }
+}
+
