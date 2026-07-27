@@ -86,8 +86,9 @@ const CEO_NAV: NavGroup[] = [
   {
     group: "Dashboard",
     items: [
-      { name: "Dashboard",      href: "/dashboard/ceo",                  icon: LayoutDashboard },
-      { name: "AI Dashboard",   href: "/dashboard/ceo/ai-dashboard",     icon: Sparkles },
+      { name: "Dashboard",       href: "/dashboard/ceo",                  icon: LayoutDashboard },
+      { name: "AI Dashboard",    href: "/dashboard/ceo/ai-dashboard",     icon: Sparkles },
+      { name: "Strategist Mode", href: "/dashboard/strategist",          icon: LineChart },
     ],
   },
   {

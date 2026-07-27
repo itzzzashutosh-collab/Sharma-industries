@@ -37,6 +37,7 @@ export default async function DashboardLayout({
     "ca-portal":  "CA Auditor Mode",
     ca:           "CA Auditor Mode",
     painter:      "Professional Painter",
+    strategist:   "Executive Strategist Mode",
   };
 
 
