@@ -103,6 +103,36 @@ const OBJECTION_SCRIPTS: Record<string, string> = {
   "Painter Not Recommending": "Painter trust build karne ke liye Swatch Painter App pe register karein — direct wallet rewards milenge.",
 };
 
+// ── Jaipur zone presets ───────────────────────────────────────────────────────
+interface RouteZone {
+  id: string;
+  area: string;
+  estimatedDealers: number;
+  travelMinutes: number;
+  priority: "high" | "medium" | "low";
+  order: number;
+  notes: string;
+}
+
+const JAIPUR_ZONES = [
+  { area: "Malviya Nagar",      dealers: 8, travel: 15, icon: "🏘️" },
+  { area: "Vaishali Nagar",     dealers: 6, travel: 20, icon: "🏙️" },
+  { area: "Mansarovar",         dealers: 7, travel: 25, icon: "🌆" },
+  { area: "Tonk Road",          dealers: 5, travel: 18, icon: "🛣️" },
+  { area: "Sanganer",           dealers: 9, travel: 30, icon: "🏗️" },
+  { area: "Sitapura RIICO",     dealers: 11, travel: 35, icon: "🏭" },
+  { area: "Ajmer Road",         dealers: 6, travel: 22, icon: "🚗" },
+  { area: "Jhotwara",           dealers: 4, travel: 28, icon: "📍" },
+  { area: "Sodala",             dealers: 5, travel: 12, icon: "🗺️" },
+  { area: "Civil Lines",        dealers: 3, travel: 10, icon: "🏛️" },
+  { area: "Raja Park",          dealers: 4, travel: 14, icon: "🌳" },
+  { area: "Shyam Nagar",        dealers: 6, travel: 18, icon: "🏬" },
+  { area: "Kartarpura",         dealers: 8, travel: 20, icon: "🏢" },
+  { area: "Bani Park",          dealers: 3, travel: 10, icon: "🏡" },
+  { area: "Vishwakarma",        dealers: 10, travel: 25, icon: "⚙️" },
+  { area: "C-Scheme",           dealers: 2, travel: 8,  icon: "🏩" },
+];
+
 const STATUS_STYLE: Record<string, { border: string; bg: string; badge: string; dot: string }> = {
   planned:       { border: "border-amber-500/20",   bg: "bg-amber-500/[0.03]",   badge: "text-amber-600 bg-amber-500/10 border-amber-500/20",    dot: "bg-amber-500" },
   visited:       { border: "border-emerald-500/20", bg: "bg-emerald-500/[0.03]", badge: "text-emerald-600 bg-emerald-500/10 border-emerald-500/20", dot: "bg-emerald-500" },
@@ -145,12 +175,21 @@ export function VisitsClient({ initialData }: Props) {
   ]);
 
   // ── Modal/sheet state ───────────────────────────────────────────────────────
-  const [showAddModal, setShowAddModal]     = useState(false);
-  const [reportingOn, setReportingOn]       = useState<DealerReport | null>(null);  // evening report modal
-  const [expandedId, setExpandedId]         = useState<string | null>(null);
+  const [showAddModal, setShowAddModal]       = useState(false);
+  const [reportingOn, setReportingOn]         = useState<DealerReport | null>(null);
+  const [expandedId, setExpandedId]           = useState<string | null>(null);
   const [showDailyReport, setShowDailyReport] = useState(false);
-  const [showObjSheet, setShowObjSheet]     = useState(false);
-  const [objSheetReason, setObjSheetReason] = useState("");
+  const [showObjSheet, setShowObjSheet]       = useState(false);
+  const [objSheetReason, setObjSheetReason]   = useState("");
+  const [showRouteModal, setShowRouteModal]   = useState(false);
+
+  // ── Route zones ──────────────────────────────────────────────────────────────
+  const [routeZones, setRouteZones] = useState<RouteZone[]>([
+    { id: "Z1", area: "Malviya Nagar",  estimatedDealers: 3, travelMinutes: 15, priority: "high",   order: 1, notes: "Target reorder from Ravi Paint" },
+    { id: "Z2", area: "Tonk Road",      estimatedDealers: 2, travelMinutes: 18, priority: "high",   order: 2, notes: "Sharma Colour House — collection pending" },
+    { id: "Z3", area: "Sanganer",       estimatedDealers: 2, travelMinutes: 30, priority: "medium", order: 3, notes: "Vikram collection + new scheme pitch" },
+    { id: "Z4", area: "Sitapura RIICO", estimatedDealers: 1, travelMinutes: 35, priority: "low",    order: 4, notes: "New dealer KYC registration" },
+  ]);
 
   // ── Add form ────────────────────────────────────────────────────────────────
   const [addForm, setAddForm] = useState({ dealerName: "", address: "", phone: "", area: "", purpose: VISIT_PURPOSES[0], scheduledTime: "" });
@@ -306,18 +345,110 @@ export function VisitsClient({ initialData }: Props) {
           TAB: MORNING PLAN
       ══════════════════════════════════════════════════════════════════════ */}
       {mode === "plan" && (
-        <div className="space-y-4">
+        <div className="space-y-5">
+
+          {/* ── ROUTE ZONE PLANNER ─────────────────────────────────────────── */}
+          <div className="bg-card border border-border rounded-3xl overflow-hidden shadow-2xs">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/20">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 bg-indigo-500/20 rounded-lg"><Navigation size={14} className="text-indigo-500" /></div>
+                <div>
+                  <p className="text-xs font-black text-foreground">Today's Route Plan</p>
+                  <p className="text-[10px] text-muted-foreground">{routeZones.length} zones · ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel · {routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} est. dealers</p>
+                </div>
+              </div>
+              <button onClick={() => setShowRouteModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500 text-white text-[10px] font-black hover:opacity-90 cursor-pointer">
+                <Plus size={12} /> Edit Zones
+              </button>
+            </div>
+
+            {/* Zone sequence */}
+            <div className="p-3 space-y-0">
+              {routeZones.sort((a, b) => a.order - b.order).map((zone, idx) => {
+                const priColor = zone.priority === "high" ? "bg-rose-500" : zone.priority === "medium" ? "bg-amber-500" : "bg-emerald-500";
+                const priLabel = zone.priority === "high" ? "High" : zone.priority === "medium" ? "Medium" : "Low";
+                const dealersInZone = reports.filter(r => r.area.toLowerCase().includes(zone.area.toLowerCase()) || zone.area.toLowerCase().includes(r.area.toLowerCase()));
+                const doneInZone = dealersInZone.filter(r => r.status === "visited").length;
+                return (
+                  <div key={zone.id} className="flex items-stretch gap-0">
+                    {/* Rail line */}
+                    <div className="flex flex-col items-center w-8 flex-shrink-0 py-1">
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-[9px] font-black flex-shrink-0 ${
+                        doneInZone > 0 && doneInZone >= dealersInZone.length ? "border-emerald-500 bg-emerald-500/20 text-emerald-600" :
+                        doneInZone > 0 ? "border-blue-500 bg-blue-500/20 text-blue-600" :
+                        "border-indigo-400 bg-indigo-500/10 text-indigo-500"
+                      }`}>
+                        {doneInZone > 0 && doneInZone >= dealersInZone.length ? <CheckCircle2 size={11} /> : zone.order}
+                      </div>
+                      {idx < routeZones.length - 1 && (
+                        <div className={`w-0.5 flex-1 my-1 rounded-full ${
+                          doneInZone >= dealersInZone.length && dealersInZone.length > 0 ? "bg-emerald-500" : "bg-border"
+                        }`} style={{ minHeight: "20px" }} />
+                      )}
+                    </div>
+
+                    {/* Zone card */}
+                    <div className="flex-1 pb-3 pl-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <p className="text-[12px] font-black text-foreground">{zone.area}</p>
+                            <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full text-white ${priColor}`}>{priLabel}</span>
+                            {dealersInZone.length > 0 && (
+                              <span className="text-[9px] font-black text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">{doneInZone}/{dealersInZone.length} done</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+                            <span className="text-[10px] text-muted-foreground">👥 ~{zone.estimatedDealers} dealers</span>
+                            <span className="text-[10px] text-muted-foreground">🚗 ~{zone.travelMinutes} min</span>
+                            {zone.notes && <span className="text-[10px] text-muted-foreground/70 truncate">{zone.notes}</span>}
+                          </div>
+                        </div>
+                        <div className="flex gap-1.5 flex-shrink-0">
+                          <button onClick={() => setAddForm(f => ({ ...f, area: zone.area })) || setShowAddModal(true)} className="text-[10px] font-black px-2 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer">
+                            + Dealer
+                          </button>
+                          <button onClick={() => setRouteZones(prev => prev.filter(z => z.id !== zone.id))} className="text-[10px] font-black px-2 py-1 rounded-lg border border-rose-500/20 text-rose-500 hover:bg-rose-500/10 cursor-pointer">
+                            <X size={10} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {routeZones.length === 0 && (
+                <div className="py-6 text-center">
+                  <p className="text-[11px] text-muted-foreground">No zones planned. Click <strong className="text-foreground">Edit Zones</strong> to set your route.</p>
+                </div>
+              )}
+            </div>
+
+            {/* Total row */}
+            {routeZones.length > 0 && (
+              <div className="flex items-center gap-4 px-4 py-2.5 border-t border-border bg-muted/10">
+                <span className="text-[10px] font-black text-muted-foreground">TOTAL</span>
+                <span className="text-[10px] text-foreground font-bold">📍 {routeZones.length} areas</span>
+                <span className="text-[10px] text-foreground font-bold">👥 ~{routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} dealers</span>
+                <span className="text-[10px] text-foreground font-bold">🚗 ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel</span>
+              </div>
+            )}
+          </div>
+
+          {/* ── DEALER LIST HEADER ─────────────────────────────────────────── */}
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-black text-foreground uppercase tracking-widest">Today's Dealer Route</p>
-              <p className="text-[11px] text-muted-foreground">{reports.length} dealers planned · Tap a card to view details</p>
+              <p className="text-xs font-black text-foreground uppercase tracking-widest">Today's Dealer List</p>
+              <p className="text-[11px] text-muted-foreground">{reports.length} dealers · Tap a card to see details</p>
             </div>
             <button onClick={() => setShowAddModal(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-[11px] font-black hover:opacity-90 cursor-pointer">
-              <Plus size={13} /> Add
+              <Plus size={13} /> Add Dealer
             </button>
           </div>
 
-          {/* Route Rail */}
+          {/* Route Rail (dealer-level) */}
           <div className="flex items-center gap-1 bg-muted/30 border border-border rounded-2xl p-3 overflow-x-auto">
             {reports.map((r, idx) => (
               <div key={r.id} className="flex items-center gap-1 flex-shrink-0">
@@ -830,6 +961,18 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
+      {/* ══════════════════════════════════════════════════════════════════════
+          ROUTE ZONE EDIT MODAL
+      ══════════════════════════════════════════════════════════════════════ */}
+      {showRouteModal && (
+        <RouteZoneModal
+          zones={routeZones}
+          onSave={setRouteZones}
+          onClose={() => setShowRouteModal(false)}
+          jaipurZones={JAIPUR_ZONES}
+        />
+      )}
+
     </div>
   );
 }
@@ -1025,6 +1168,177 @@ function EveningReportModal({ report, onSave, onClose, objectionScripts, rejecti
             </div>
           </div>
         </form>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Route Zone Edit Modal
+// ─────────────────────────────────────────────────────────────────────────────
+function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
+  zones: RouteZone[];
+  onSave: (z: RouteZone[]) => void;
+  onClose: () => void;
+  jaipurZones: { area: string; dealers: number; travel: number; icon: string }[];
+}) {
+  const [local, setLocal] = useState<RouteZone[]>([...zones]);
+  const [customArea, setCustomArea] = useState("");
+  const [customDealers, setCustomDealers] = useState("3");
+  const [customTravel, setCustomTravel] = useState("20");
+  const [customPriority, setCustomPriority] = useState<"high" | "medium" | "low">("medium");
+  const [customNotes, setCustomNotes] = useState("");
+
+  const addPreset = (z: { area: string; dealers: number; travel: number }) => {
+    if (local.find(l => l.area === z.area)) return;
+    setLocal(prev => [...prev, { id: `Z_${Date.now()}`, area: z.area, estimatedDealers: z.dealers, travelMinutes: z.travel, priority: "medium", order: prev.length + 1, notes: "" }]);
+  };
+
+  const addCustom = () => {
+    if (!customArea.trim()) return;
+    setLocal(prev => [...prev, { id: `ZC_${Date.now()}`, area: customArea.trim(), estimatedDealers: parseInt(customDealers) || 3, travelMinutes: parseInt(customTravel) || 20, priority: customPriority, order: prev.length + 1, notes: customNotes }]);
+    setCustomArea(""); setCustomDealers("3"); setCustomTravel("20"); setCustomNotes("");
+  };
+
+  const remove = (id: string) => setLocal(prev => prev.filter(z => z.id !== id).map((z, i) => ({ ...z, order: i + 1 })));
+
+  const moveUp = (id: string) => setLocal(prev => {
+    const idx = prev.findIndex(z => z.id === id);
+    if (idx <= 0) return prev;
+    const arr = [...prev]; [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
+    return arr.map((z, i) => ({ ...z, order: i + 1 }));
+  });
+
+  const moveDown = (id: string) => setLocal(prev => {
+    const idx = prev.findIndex(z => z.id === id);
+    if (idx >= prev.length - 1) return prev;
+    const arr = [...prev]; [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
+    return arr.map((z, i) => ({ ...z, order: i + 1 }));
+  });
+
+  const updateZone = (id: string, patch: Partial<RouteZone>) => setLocal(prev => prev.map(z => z.id === id ? { ...z, ...patch } : z));
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-card border border-border rounded-3xl w-full max-w-xl shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "95vh" }}>
+
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
+          <div>
+            <h3 className="text-sm font-black text-foreground flex items-center gap-2">
+              <Navigation size={16} className="text-indigo-500" /> Edit Today's Route Zones
+            </h3>
+            <p className="text-[11px] text-muted-foreground">{local.length} zones · ~{local.reduce((s, z) => s + z.travelMinutes, 0)} min travel · ~{local.reduce((s, z) => s + z.estimatedDealers, 0)} dealers</p>
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted cursor-pointer"><X size={16} className="text-muted-foreground" /></button>
+        </div>
+
+        <div className="overflow-y-auto" style={{ maxHeight: "calc(95vh - 72px)" }}>
+          <div className="p-5 space-y-5">
+
+            {/* Current zones */}
+            {local.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Your Route ({local.length} zones)</p>
+                {local.map((zone, idx) => {
+                  const priColor = zone.priority === "high" ? "text-rose-600 bg-rose-500/10 border-rose-500/20" : zone.priority === "medium" ? "text-amber-600 bg-amber-500/10 border-amber-500/20" : "text-emerald-600 bg-emerald-500/10 border-emerald-500/20";
+                  return (
+                    <div key={zone.id} className="flex items-start gap-2 bg-muted/30 border border-border rounded-2xl p-3">
+                      {/* Reorder controls */}
+                      <div className="flex flex-col items-center gap-0.5 flex-shrink-0 mt-1">
+                        <button onClick={() => moveUp(zone.id)} disabled={idx === 0} className="p-1 rounded hover:bg-muted disabled:opacity-30 cursor-pointer"><ChevronUp size={11} className="text-muted-foreground" /></button>
+                        <span className="text-[10px] font-black text-muted-foreground w-4 text-center">{idx + 1}</span>
+                        <button onClick={() => moveDown(zone.id)} disabled={idx === local.length - 1} className="p-1 rounded hover:bg-muted disabled:opacity-30 cursor-pointer"><ChevronDown size={11} className="text-muted-foreground" /></button>
+                      </div>
+                      {/* Zone fields */}
+                      <div className="flex-1 min-w-0 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <p className="text-[12px] font-black text-foreground flex-1">{zone.area}</p>
+                          <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${priColor}`}>{zone.priority}</span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          <div>
+                            <label className="text-[9px] text-muted-foreground block mb-0.5">Dealers</label>
+                            <input type="number" value={zone.estimatedDealers} onChange={e => updateZone(zone.id, { estimatedDealers: parseInt(e.target.value) || 0 })} className="w-full bg-background border border-border rounded-lg px-2 py-1.5 text-[11px] text-foreground outline-none focus:border-primary" />
+                          </div>
+                          <div>
+                            <label className="text-[9px] text-muted-foreground block mb-0.5">Travel (min)</label>
+                            <input type="number" value={zone.travelMinutes} onChange={e => updateZone(zone.id, { travelMinutes: parseInt(e.target.value) || 0 })} className="w-full bg-background border border-border rounded-lg px-2 py-1.5 text-[11px] text-foreground outline-none focus:border-primary" />
+                          </div>
+                          <div>
+                            <label className="text-[9px] text-muted-foreground block mb-0.5">Priority</label>
+                            <select value={zone.priority} onChange={e => updateZone(zone.id, { priority: e.target.value as "high"|"medium"|"low" })} className="w-full bg-background border border-border rounded-lg px-2 py-1.5 text-[11px] text-foreground outline-none focus:border-primary">
+                              <option value="high">High</option>
+                              <option value="medium">Medium</option>
+                              <option value="low">Low</option>
+                            </select>
+                          </div>
+                        </div>
+                        <input value={zone.notes} onChange={e => updateZone(zone.id, { notes: e.target.value })} placeholder="Notes for this zone..." className="w-full bg-background border border-border rounded-lg px-2 py-1.5 text-[11px] text-foreground outline-none focus:border-primary" />
+                      </div>
+                      <button onClick={() => remove(zone.id)} className="p-1.5 rounded-lg hover:bg-rose-500/10 text-rose-500 flex-shrink-0 cursor-pointer mt-1"><X size={13} /></button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Quick-add preset zones */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Quick Add — Jaipur Areas</p>
+              <div className="flex flex-wrap gap-2">
+                {jaipurZones.map(z => {
+                  const already = local.some(l => l.area === z.area);
+                  return (
+                    <button key={z.area} onClick={() => addPreset(z)} disabled={already} className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-[11px] font-black border transition-all ${already ? "border-border text-muted-foreground/40 cursor-not-allowed" : "border-indigo-500/30 text-indigo-500 bg-indigo-500/5 hover:bg-indigo-500/15 cursor-pointer"}`}>
+                      {z.icon} {z.area}
+                      {already ? <CheckCircle2 size={10} className="text-emerald-500 ml-0.5" /> : <span className="text-indigo-400 ml-0.5">+</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Custom zone */}
+            <div className="border border-dashed border-border rounded-2xl p-4 space-y-3">
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Add Custom Area</p>
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="col-span-2">
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Area Name</label>
+                  <input value={customArea} onChange={e => setCustomArea(e.target.value)} placeholder="e.g. Pratap Nagar, Murlipura..." className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Est. Dealers</label>
+                  <input type="number" value={customDealers} onChange={e => setCustomDealers(e.target.value)} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Travel Time (min)</label>
+                  <input type="number" value={customTravel} onChange={e => setCustomTravel(e.target.value)} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Priority</label>
+                  <select value={customPriority} onChange={e => setCustomPriority(e.target.value as "high"|"medium"|"low")} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
+                    <option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Notes</label>
+                  <input value={customNotes} onChange={e => setCustomNotes(e.target.value)} placeholder="Target, remarks..." className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+              </div>
+              <button onClick={addCustom} disabled={!customArea.trim()} className="w-full py-2.5 rounded-xl bg-indigo-500 text-white text-[11px] font-black hover:opacity-90 cursor-pointer disabled:opacity-40 flex items-center justify-center gap-1.5">
+                <Plus size={13} /> Add Custom Area
+              </button>
+            </div>
+
+            {/* Save */}
+            <div className="flex gap-3 pb-1">
+              <button onClick={onClose} className="flex-1 py-3 rounded-2xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/50 cursor-pointer">Cancel</button>
+              <button onClick={() => { onSave(local); onClose(); }} className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">✅ Save Route Plan</button>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
   );
