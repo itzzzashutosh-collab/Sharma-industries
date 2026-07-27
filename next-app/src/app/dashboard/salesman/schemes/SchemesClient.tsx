@@ -170,27 +170,41 @@ export function SchemesClient({ initialPrograms }: Props) {
     }
   ];
 
-  // Merge initial programs from server if available
+  // Merge initial programs from server if available with unique IDs
   const mergedPrograms: GrowthProgram[] = useMemo(() => {
+    const map = new Map<string, GrowthProgram>();
+
     if (initialPrograms && initialPrograms.length > 0) {
-      const serverProgs: GrowthProgram[] = initialPrograms.map((p: any, idx: number) => ({
-        id: p.id || `PROG_SRV_${idx}`,
-        name: p.name.includes("Swatch") ? p.name : `Swatch Paints ${p.name}`,
-        category: (p.category || "Volume Booster") as any,
-        details: p.details || "Swatch Paints Growth Program",
-        criteria: p.criteria || "Standard Target Criteria",
-        eligibility: p.eligibility || "Open to all verified Swatch Paints dealers",
-        rewards: p.rewards || "Special Scheme Bonus",
-        status: p.status || "Active",
-        minVolumeLiters: 200,
-        bonusValueAmount: 5000,
-        durationDays: 30,
-        enrolledDealersCount: 3,
-        code: `SWATCH-PROG-${idx}`
-      }));
-      return [...serverProgs, ...defaultSwatchPrograms];
+      initialPrograms.forEach((p: any, idx: number) => {
+        const id = p.id ? String(p.id) : `PROG_SRV_${idx}`;
+        map.set(id, {
+          id,
+          name: p.name && p.name.includes("Swatch") ? p.name : `Swatch Paints ${p.name || "Growth Program"}`,
+          category: (p.category || "Volume Booster") as any,
+          details: p.details || "Swatch Paints Growth Program",
+          criteria: p.criteria || "Standard Target Criteria",
+          eligibility: p.eligibility || "Open to all verified Swatch Paints dealers",
+          rewards: p.rewards || "Special Scheme Bonus",
+          status: p.status || "Active",
+          minVolumeLiters: 200,
+          bonusValueAmount: 5000,
+          durationDays: 30,
+          enrolledDealersCount: 3,
+          code: `SWATCH-PROG-${idx}`
+        });
+      });
     }
-    return defaultSwatchPrograms;
+
+    defaultSwatchPrograms.forEach((p, idx) => {
+      if (!map.has(p.id)) {
+        map.set(p.id, p);
+      } else {
+        const altId = `PROG_DEF_${idx + 1}_${p.id}`;
+        map.set(altId, { ...p, id: altId });
+      }
+    });
+
+    return Array.from(map.values());
   }, [initialPrograms]);
 
   // Dealer Progress Tracking Mock Data
