@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 import { createSalesVisit, updateSalesVisitStatus } from "../actions";
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Types
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface Dealer { id: string; name: string; localities?: string; }
 
 interface DealerReport {
@@ -67,9 +67,9 @@ interface Props {
   };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Constants
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const VISIT_PURPOSES = [
   "Routine Follow-up", "Order Collection", "Outstanding Collection",
   "New Product Introduction", "Painter KYC Drive", "Festival Scheme Pitch",
@@ -94,16 +94,16 @@ const COMPETITORS = ["Asian Paints", "Berger Paints", "Nerolac", "Birla Opus", "
 
 const OBJECTION_SCRIPTS: Record<string, string> = {
   "Price Too High": "Sir, Swatch Shine Emulsion ki coverage 350 sqft/L hai vs local ki 200 sqft/L. Per wall cost actually kam hai.",
-  "Competitor Discount / Better Rate": "Competitor ek baar discount deta hai. Swatch mein painter ke wallet mein seedha cash jata hai — dealer ki bikanat apne aap badhti hai.",
-  "Stock Already Full": "Perfect! Yahi sahi time hai — festival season 6 hafte mein hai. Abhi order karein toh priority allocation milegi.",
-  "No Budget This Month": "Sir, chhota order bhi chalta hai — aur Gold Partner scheme mein 30-day credit milti hai. Koi pressure nahi.",
-  "Needs More Credit Days": "Sir, next 2 orders time pe clear karein — main personally aapko Gold Partner (45-day credit) ke liye recommend karunga.",
-  "Bad Experience with Last Batch": "Main abhi batch number le leta hoon — 100% replacement guarantee hai, 48 hours mein milega.",
-  "Owner Not Available": "Kal subah 10 baje aaunga — kya owner ji tab available honge?",
-  "Painter Not Recommending": "Painter trust build karne ke liye Swatch Painter App pe register karein — direct wallet rewards milenge.",
+  "Competitor Discount / Better Rate": "Competitor ek baar discount deta hai. Swatch mein painter ke wallet mein seedha cash jata hai â€” dealer ki bikanat apne aap badhti hai.",
+  "Stock Already Full": "Perfect! Yahi sahi time hai â€” festival season 6 hafte mein hai. Abhi order karein toh priority allocation milegi.",
+  "No Budget This Month": "Sir, chhota order bhi chalta hai â€” aur Gold Partner scheme mein 30-day credit milti hai. Koi pressure nahi.",
+  "Needs More Credit Days": "Sir, next 2 orders time pe clear karein â€” main personally aapko Gold Partner (45-day credit) ke liye recommend karunga.",
+  "Bad Experience with Last Batch": "Main abhi batch number le leta hoon â€” 100% replacement guarantee hai, 48 hours mein milega.",
+  "Owner Not Available": "Kal subah 10 baje aaunga â€” kya owner ji tab available honge?",
+  "Painter Not Recommending": "Painter trust build karne ke liye Swatch Painter App pe register karein â€” direct wallet rewards milenge.",
 };
 
-// ── Jaipur zone presets ───────────────────────────────────────────────────────
+// â”€â”€ Jaipur zone presets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface RouteZone {
   id: string;
   area: string;
@@ -115,22 +115,22 @@ interface RouteZone {
 }
 
 const JAIPUR_ZONES = [
-  { area: "Malviya Nagar",      dealers: 8, travel: 15, icon: "🏘️" },
-  { area: "Vaishali Nagar",     dealers: 6, travel: 20, icon: "🏙️" },
-  { area: "Mansarovar",         dealers: 7, travel: 25, icon: "🌆" },
-  { area: "Tonk Road",          dealers: 5, travel: 18, icon: "🛣️" },
-  { area: "Sanganer",           dealers: 9, travel: 30, icon: "🏗️" },
-  { area: "Sitapura RIICO",     dealers: 11, travel: 35, icon: "🏭" },
-  { area: "Ajmer Road",         dealers: 6, travel: 22, icon: "🚗" },
-  { area: "Jhotwara",           dealers: 4, travel: 28, icon: "📍" },
-  { area: "Sodala",             dealers: 5, travel: 12, icon: "🗺️" },
-  { area: "Civil Lines",        dealers: 3, travel: 10, icon: "🏛️" },
-  { area: "Raja Park",          dealers: 4, travel: 14, icon: "🌳" },
-  { area: "Shyam Nagar",        dealers: 6, travel: 18, icon: "🏬" },
-  { area: "Kartarpura",         dealers: 8, travel: 20, icon: "🏢" },
-  { area: "Bani Park",          dealers: 3, travel: 10, icon: "🏡" },
-  { area: "Vishwakarma",        dealers: 10, travel: 25, icon: "⚙️" },
-  { area: "C-Scheme",           dealers: 2, travel: 8,  icon: "🏩" },
+  { area: "Malviya Nagar",      dealers: 8, travel: 15, icon: "ðŸ˜ï¸" },
+  { area: "Vaishali Nagar",     dealers: 6, travel: 20, icon: "ðŸ™ï¸" },
+  { area: "Mansarovar",         dealers: 7, travel: 25, icon: "ðŸŒ†" },
+  { area: "Tonk Road",          dealers: 5, travel: 18, icon: "ðŸ›£ï¸" },
+  { area: "Sanganer",           dealers: 9, travel: 30, icon: "ðŸ—ï¸" },
+  { area: "Sitapura RIICO",     dealers: 11, travel: 35, icon: "ðŸ­" },
+  { area: "Ajmer Road",         dealers: 6, travel: 22, icon: "ðŸš—" },
+  { area: "Jhotwara",           dealers: 4, travel: 28, icon: "ðŸ“" },
+  { area: "Sodala",             dealers: 5, travel: 12, icon: "ðŸ—ºï¸" },
+  { area: "Civil Lines",        dealers: 3, travel: 10, icon: "ðŸ›ï¸" },
+  { area: "Raja Park",          dealers: 4, travel: 14, icon: "ðŸŒ³" },
+  { area: "Shyam Nagar",        dealers: 6, travel: 18, icon: "ðŸ¬" },
+  { area: "Kartarpura",         dealers: 8, travel: 20, icon: "ðŸ¢" },
+  { area: "Bani Park",          dealers: 3, travel: 10, icon: "ðŸ¡" },
+  { area: "Vishwakarma",        dealers: 10, travel: 25, icon: "âš™ï¸" },
+  { area: "C-Scheme",           dealers: 2, travel: 8,  icon: "ðŸ©" },
 ];
 
 const STATUS_STYLE: Record<string, { border: string; bg: string; badge: string; dot: string }> = {
@@ -155,18 +155,18 @@ const emptyReport = (): DealerReport => ({
 });
 
 function todayStr() { return new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short", year: "numeric" }); }
-function fmtAmt(s: string) { const n = parseFloat(s); return isNaN(n) ? "—" : `₹${n.toLocaleString("en-IN")}`; }
+function fmtAmt(s: string) { const n = parseFloat(s); return isNaN(n) ? "â€”" : `â‚¹${n.toLocaleString("en-IN")}`; }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Main Component
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export function VisitsClient({ initialData }: Props) {
   const dealers = initialData.dealers?.length ? initialData.dealers : [
     { id: "D1", name: "Ravi Paint & Hardware" }, { id: "D2", name: "Sharma Colour House" },
     { id: "D3", name: "Vikram Building Materials" }, { id: "D4", name: "Rajasthan Paint Depot" },
   ];
 
-  // ── Global state ────────────────────────────────────────────────────────────
+  // â”€â”€ Global state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [mode, setMode] = useState<"plan" | "report" | "analytics" | "history">("plan");
   const [reports, setReports] = useState<DealerReport[]>([
     { ...emptyReport(), id: "R1", dealerName: "Ravi Paint & Hardware", address: "Shop 12, MI Road", phone: "9876543210", area: "Malviya Nagar", purpose: "Order Collection & Scheme Pitch", scheduledTime: "09:30", status: "visited", outcome: "agreed", rejectionReason: "", customRejectionReason: "", collectionAmount: "18500", orderAmount: "42000", orderProducts: "Royale Glitz 10L x4, Shyne Emulsion 20L x2", competitorBrand: "Asian Paints", competitorNote: "Asian Paints rep visited 2 days ago, offered 7% discount", nextVisitDate: "2026-08-10", followUpAction: "Deliver display rack on Thursday", notes: "Owner very happy with coverage comparison demo. Interested in Gold Partner upgrade.", paintersKYC: "2", visitedAt: "09:45 AM" },
@@ -174,7 +174,7 @@ export function VisitsClient({ initialData }: Props) {
     { ...emptyReport(), id: "R3", dealerName: "Vikram Building Materials", address: "RIICO Industrial Area", phone: "9001234567", area: "Sanganer", purpose: "Collection Drive", scheduledTime: "13:00", status: "planned", outcome: "", rejectionReason: "", customRejectionReason: "", collectionAmount: "", orderAmount: "", orderProducts: "", competitorBrand: "None Observed", competitorNote: "", nextVisitDate: "", followUpAction: "", notes: "", paintersKYC: "", visitedAt: "" },
   ]);
 
-  // ── Modal/sheet state ───────────────────────────────────────────────────────
+  // â”€â”€ Modal/sheet state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [showAddModal, setShowAddModal]       = useState(false);
   const [reportingOn, setReportingOn]         = useState<DealerReport | null>(null);
   const [expandedId, setExpandedId]           = useState<string | null>(null);
@@ -183,18 +183,18 @@ export function VisitsClient({ initialData }: Props) {
   const [objSheetReason, setObjSheetReason]   = useState("");
   const [showRouteModal, setShowRouteModal]   = useState(false);
 
-  // ── Route zones ──────────────────────────────────────────────────────────────
+  // â”€â”€ Route zones â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [routeZones, setRouteZones] = useState<RouteZone[]>([
     { id: "Z1", area: "Malviya Nagar",  estimatedDealers: 3, travelMinutes: 15, priority: "high",   order: 1, notes: "Target reorder from Ravi Paint" },
-    { id: "Z2", area: "Tonk Road",      estimatedDealers: 2, travelMinutes: 18, priority: "high",   order: 2, notes: "Sharma Colour House — collection pending" },
+    { id: "Z2", area: "Tonk Road",      estimatedDealers: 2, travelMinutes: 18, priority: "high",   order: 2, notes: "Sharma Colour House â€” collection pending" },
     { id: "Z3", area: "Sanganer",       estimatedDealers: 2, travelMinutes: 30, priority: "medium", order: 3, notes: "Vikram collection + new scheme pitch" },
     { id: "Z4", area: "Sitapura RIICO", estimatedDealers: 1, travelMinutes: 35, priority: "low",    order: 4, notes: "New dealer KYC registration" },
   ]);
 
-  // ── Add form ────────────────────────────────────────────────────────────────
+  // â”€â”€ Add form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [addForm, setAddForm] = useState({ dealerName: "", address: "", phone: "", area: "", purpose: VISIT_PURPOSES[0], scheduledTime: "" });
 
-  // ── Computed totals ─────────────────────────────────────────────────────────
+  // â”€â”€ Computed totals â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const totals = useMemo(() => {
     const visited = reports.filter(r => r.status === "visited");
     const agreed  = reports.filter(r => r.outcome === "agreed" || r.outcome === "partial");
@@ -207,9 +207,9 @@ export function VisitsClient({ initialData }: Props) {
   const completionPct = totals.total > 0 ? Math.round(((totals.visited + totals.skipped + totals.not_available) / totals.total) * 100) : 0;
   const conversionPct = totals.visited > 0 ? Math.round((totals.agreed / totals.visited) * 100) : 0;
 
-  // ─────────────────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Handlers
-  // ─────────────────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleAddDealer = (e: React.FormEvent) => {
     e.preventDefault();
     if (!addForm.dealerName) return;
@@ -234,10 +234,10 @@ export function VisitsClient({ initialData }: Props) {
   const buildOutcomeSummary = (r: DealerReport): string => {
     const parts = [
       r.outcome && `Outcome: ${r.outcome.toUpperCase()}`,
-      r.rejectionReason && `Rejection: ${r.rejectionReason}${r.customRejectionReason ? " — " + r.customRejectionReason : ""}`,
-      r.collectionAmount && `Collected: ₹${r.collectionAmount}`,
-      r.orderAmount && `Order: ₹${r.orderAmount}${r.orderProducts ? " ("+r.orderProducts+")" : ""}`,
-      r.competitorBrand !== "None Observed" && `Competitor: ${r.competitorBrand}${r.competitorNote ? " — "+r.competitorNote : ""}`,
+      r.rejectionReason && `Rejection: ${r.rejectionReason}${r.customRejectionReason ? " â€” " + r.customRejectionReason : ""}`,
+      r.collectionAmount && `Collected: â‚¹${r.collectionAmount}`,
+      r.orderAmount && `Order: â‚¹${r.orderAmount}${r.orderProducts ? " ("+r.orderProducts+")" : ""}`,
+      r.competitorBrand !== "None Observed" && `Competitor: ${r.competitorBrand}${r.competitorNote ? " â€” "+r.competitorNote : ""}`,
       r.paintersKYC && `KYC: ${r.paintersKYC} painters`,
       r.nextVisitDate && `Next visit: ${r.nextVisitDate}`,
       r.followUpAction && `Follow-up: ${r.followUpAction}`,
@@ -246,13 +246,13 @@ export function VisitsClient({ initialData }: Props) {
     return parts;
   };
 
-  // ─────────────────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // RENDER
-  // ─────────────────────────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   return (
     <div className="space-y-5 animate-in fade-in duration-500 pb-28">
 
-      {/* ══ HERO BANNER ═══════════════════════════════════════════════════════ */}
+      {/* â•â• HERO BANNER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <div className="relative overflow-hidden rounded-3xl border border-blue-500/20 bg-gradient-to-r from-blue-950/70 via-indigo-950/60 to-violet-950/60 shadow-2xl">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(59,130,246,0.18),_transparent_65%)]" />
         <div className="absolute -bottom-10 -right-10 w-52 h-52 bg-violet-500/10 rounded-full blur-3xl" />
@@ -265,10 +265,10 @@ export function VisitsClient({ initialData }: Props) {
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[9px] font-black text-blue-400 uppercase tracking-[3px]">Field Visit Command</span>
-                  <span className="text-[9px] font-black text-emerald-400 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">● LIVE</span>
+                  <span className="text-[9px] font-black text-emerald-400 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">â— LIVE</span>
                 </div>
                 <h1 className="text-xl font-black text-white">Daily Route & Reporting</h1>
-                <p className="text-[11px] text-blue-200/60 mt-0.5">{todayStr()} — Jaipur Zone, Rajasthan East</p>
+                <p className="text-[11px] text-blue-200/60 mt-0.5">{todayStr()} â€” Jaipur Zone, Rajasthan East</p>
               </div>
             </div>
             <div className="flex items-center gap-2 self-start lg:self-auto flex-wrap">
@@ -287,7 +287,7 @@ export function VisitsClient({ initialData }: Props) {
           {/* Progress + KPI strip */}
           <div className="mt-5 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-white/70">Route Progress — {totals.visited + totals.skipped + totals.not_available}/{totals.total} done</span>
+              <span className="text-[11px] font-black text-white/70">Route Progress â€” {totals.visited + totals.skipped + totals.not_available}/{totals.total} done</span>
               <span className="text-[11px] font-black text-emerald-400">{completionPct}%</span>
             </div>
             <div className="h-2 bg-white/10 rounded-full overflow-hidden">
@@ -299,8 +299,8 @@ export function VisitsClient({ initialData }: Props) {
                 { label: "Visited", val: totals.visited, color: "text-emerald-400" },
                 { label: "Agreed", val: totals.agreed, color: "text-teal-300" },
                 { label: "Skipped", val: totals.skipped, color: "text-rose-400" },
-                { label: "Collected", val: `₹${(totals.totalCollection/1000).toFixed(0)}K`, color: "text-amber-300" },
-                { label: "Orders", val: `₹${(totals.totalOrders/1000).toFixed(0)}K`, color: "text-blue-300" },
+                { label: "Collected", val: `â‚¹${(totals.totalCollection/1000).toFixed(0)}K`, color: "text-amber-300" },
+                { label: "Orders", val: `â‚¹${(totals.totalOrders/1000).toFixed(0)}K`, color: "text-blue-300" },
               ].map((s, i) => (
                 <div key={i} className="text-center bg-white/5 rounded-xl px-2 py-1.5">
                   <p className={`text-sm font-black ${s.color}`}>{s.val}</p>
@@ -312,19 +312,19 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       </div>
 
-      {/* ══ AI COACH TIP ══════════════════════════════════════════════════════ */}
+      {/* â•â• AI COACH TIP â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <div className="flex gap-3 p-4 bg-violet-500/10 border border-violet-500/20 rounded-2xl">
         <div className="p-2 bg-violet-500/20 rounded-xl flex-shrink-0"><Sparkles size={15} className="text-violet-500" /></div>
         <div>
           <p className="text-[11px] font-black text-foreground mb-1">AI Route Coach</p>
           <p className="text-[11px] text-muted-foreground leading-relaxed">
-            📍 Visit <strong className="text-foreground">Vikram Building Materials</strong> and <strong className="text-foreground">Rajasthan Paint Depot</strong> together — same RIICO cluster, saves 20 min.
-            💡 <strong className="text-amber-500">Conversion tip:</strong> You're at {conversionPct}% conversion today. Push the Festival Pack to all Pending dealers for a quick win.
+            ðŸ“ Visit <strong className="text-foreground">Vikram Building Materials</strong> and <strong className="text-foreground">Rajasthan Paint Depot</strong> together â€” same RIICO cluster, saves 20 min.
+            ðŸ’¡ <strong className="text-amber-500">Conversion tip:</strong> You're at {conversionPct}% conversion today. Push the Festival Pack to all Pending dealers for a quick win.
           </p>
         </div>
       </div>
 
-      {/* ══ TAB NAV ═══════════════════════════════════════════════════════════ */}
+      {/* â•â• TAB NAV â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <div className="flex items-center gap-1 bg-muted/50 p-1 rounded-2xl border border-border overflow-x-auto">
         {([
           { id: "plan",      label: "Morning Plan",     icon: Sun  },
@@ -341,13 +341,13 @@ export function VisitsClient({ initialData }: Props) {
         ))}
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TAB: MORNING PLAN
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {mode === "plan" && (
         <div className="space-y-5">
 
-          {/* ── ROUTE ZONE PLANNER ─────────────────────────────────────────── */}
+          {/* â”€â”€ ROUTE ZONE PLANNER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div className="bg-card border border-border rounded-3xl overflow-hidden shadow-2xs">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/20">
@@ -355,7 +355,7 @@ export function VisitsClient({ initialData }: Props) {
                 <div className="p-1.5 bg-indigo-500/20 rounded-lg"><Navigation size={14} className="text-indigo-500" /></div>
                 <div>
                   <p className="text-xs font-black text-foreground">Today's Route Plan</p>
-                  <p className="text-[10px] text-muted-foreground">{routeZones.length} zones · ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel · {routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} est. dealers</p>
+                  <p className="text-[10px] text-muted-foreground">{routeZones.length} zones Â· ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel Â· {routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} est. dealers</p>
                 </div>
               </div>
               <button onClick={() => setShowRouteModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500 text-white text-[10px] font-black hover:opacity-90 cursor-pointer">
@@ -400,13 +400,13 @@ export function VisitsClient({ initialData }: Props) {
                             )}
                           </div>
                           <div className="flex items-center gap-3 mt-0.5 flex-wrap">
-                            <span className="text-[10px] text-muted-foreground">👥 ~{zone.estimatedDealers} dealers</span>
-                            <span className="text-[10px] text-muted-foreground">🚗 ~{zone.travelMinutes} min</span>
+                            <span className="text-[10px] text-muted-foreground">ðŸ‘¥ ~{zone.estimatedDealers} dealers</span>
+                            <span className="text-[10px] text-muted-foreground">ðŸš— ~{zone.travelMinutes} min</span>
                             {zone.notes && <span className="text-[10px] text-muted-foreground/70 truncate">{zone.notes}</span>}
                           </div>
                         </div>
                         <div className="flex gap-1.5 flex-shrink-0">
-                          <button onClick={() => setAddForm(f => ({ ...f, area: zone.area })) || setShowAddModal(true)} className="text-[10px] font-black px-2 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer">
+                          <button onClick={() => { setAddForm(f => ({ ...f, area: zone.area })); setShowAddModal(true); }} className="text-[10px] font-black px-2 py-1 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted/50 cursor-pointer">
                             + Dealer
                           </button>
                           <button onClick={() => setRouteZones(prev => prev.filter(z => z.id !== zone.id))} className="text-[10px] font-black px-2 py-1 rounded-lg border border-rose-500/20 text-rose-500 hover:bg-rose-500/10 cursor-pointer">
@@ -430,18 +430,18 @@ export function VisitsClient({ initialData }: Props) {
             {routeZones.length > 0 && (
               <div className="flex items-center gap-4 px-4 py-2.5 border-t border-border bg-muted/10">
                 <span className="text-[10px] font-black text-muted-foreground">TOTAL</span>
-                <span className="text-[10px] text-foreground font-bold">📍 {routeZones.length} areas</span>
-                <span className="text-[10px] text-foreground font-bold">👥 ~{routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} dealers</span>
-                <span className="text-[10px] text-foreground font-bold">🚗 ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel</span>
+                <span className="text-[10px] text-foreground font-bold">ðŸ“ {routeZones.length} areas</span>
+                <span className="text-[10px] text-foreground font-bold">ðŸ‘¥ ~{routeZones.reduce((s, z) => s + z.estimatedDealers, 0)} dealers</span>
+                <span className="text-[10px] text-foreground font-bold">ðŸš— ~{routeZones.reduce((s, z) => s + z.travelMinutes, 0)} min travel</span>
               </div>
             )}
           </div>
 
-          {/* ── DEALER LIST HEADER ─────────────────────────────────────────── */}
+          {/* â”€â”€ DEALER LIST HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs font-black text-foreground uppercase tracking-widest">Today's Dealer List</p>
-              <p className="text-[11px] text-muted-foreground">{reports.length} dealers · Tap a card to see details</p>
+              <p className="text-[11px] text-muted-foreground">{reports.length} dealers Â· Tap a card to see details</p>
             </div>
             <button onClick={() => setShowAddModal(true)} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-[11px] font-black hover:opacity-90 cursor-pointer">
               <Plus size={13} /> Add Dealer
@@ -490,16 +490,16 @@ export function VisitsClient({ initialData }: Props) {
                         </span>
                         {r.outcome && (
                           <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border flex-shrink-0 ${OUTCOME_STYLE[r.outcome] ?? ""}`}>
-                            {r.outcome === "agreed" ? "✅ Agreed" : r.outcome === "partial" ? "⚡ Partial" : "❌ Not Agreed"}
+                            {r.outcome === "agreed" ? "âœ… Agreed" : r.outcome === "partial" ? "âš¡ Partial" : "âŒ Not Agreed"}
                           </span>
                         )}
                       </div>
                       <p className="text-[10px] text-muted-foreground flex items-center gap-1 truncate">
-                        <MapPin size={9} className="flex-shrink-0" /> {r.area}{r.address ? ` — ${r.address}` : ""}
+                        <MapPin size={9} className="flex-shrink-0" /> {r.area}{r.address ? ` â€” ${r.address}` : ""}
                       </p>
                       <div className="flex items-center gap-3 mt-0.5">
-                        {r.scheduledTime && <span className="text-[10px] text-muted-foreground">🕐 {r.scheduledTime}</span>}
-                        {r.phone && <span className="text-[10px] text-muted-foreground">📞 {r.phone}</span>}
+                        {r.scheduledTime && <span className="text-[10px] text-muted-foreground">ðŸ• {r.scheduledTime}</span>}
+                        {r.phone && <span className="text-[10px] text-muted-foreground">ðŸ“ž {r.phone}</span>}
                         <span className="text-[10px] text-muted-foreground/70 truncate">{r.purpose}</span>
                       </div>
                     </div>
@@ -520,14 +520,14 @@ export function VisitsClient({ initialData }: Props) {
                           <Building2 size={12} className="text-muted-foreground flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-[9px] text-muted-foreground">Address</p>
-                            <p className="text-[11px] font-bold text-foreground truncate">{r.address || "—"}</p>
+                            <p className="text-[11px] font-bold text-foreground truncate">{r.address || "â€”"}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 p-2.5 bg-muted/30 rounded-xl">
                           <Phone size={12} className="text-muted-foreground flex-shrink-0" />
                           <div>
                             <p className="text-[9px] text-muted-foreground">Phone</p>
-                            <p className="text-[11px] font-bold text-foreground">{r.phone || "—"}</p>
+                            <p className="text-[11px] font-bold text-foreground">{r.phone || "â€”"}</p>
                           </div>
                         </div>
                       </div>
@@ -535,14 +535,14 @@ export function VisitsClient({ initialData }: Props) {
                       {/* Outcome summary if visited */}
                       {r.status === "visited" && (
                         <div className="bg-muted/40 rounded-xl p-3 space-y-1.5">
-                          <p className="text-[10px] font-black text-foreground uppercase tracking-wider mb-1">📋 Visit Report</p>
-                          {r.collectionAmount && <p className="text-[11px] text-foreground">💳 Collected: <strong>{fmtAmt(r.collectionAmount)}</strong></p>}
-                          {r.orderAmount && <p className="text-[11px] text-foreground">📦 Order: <strong>{fmtAmt(r.orderAmount)}</strong>{r.orderProducts ? ` (${r.orderProducts})` : ""}</p>}
-                          {r.rejectionReason && <p className="text-[11px] text-rose-600">❌ {r.rejectionReason}{r.customRejectionReason ? ` — ${r.customRejectionReason}` : ""}</p>}
-                          {r.paintersKYC && <p className="text-[11px] text-foreground">🎨 KYC: {r.paintersKYC} painters registered</p>}
-                          {r.nextVisitDate && <p className="text-[11px] text-foreground">📅 Next: {r.nextVisitDate}{r.followUpAction ? ` — ${r.followUpAction}` : ""}</p>}
-                          {r.notes && <p className="text-[11px] text-muted-foreground">📝 {r.notes}</p>}
-                          {r.competitorBrand !== "None Observed" && <p className="text-[11px] text-amber-600">⚔️ {r.competitorBrand}{r.competitorNote ? ` — ${r.competitorNote}` : ""}</p>}
+                          <p className="text-[10px] font-black text-foreground uppercase tracking-wider mb-1">ðŸ“‹ Visit Report</p>
+                          {r.collectionAmount && <p className="text-[11px] text-foreground">ðŸ’³ Collected: <strong>{fmtAmt(r.collectionAmount)}</strong></p>}
+                          {r.orderAmount && <p className="text-[11px] text-foreground">ðŸ“¦ Order: <strong>{fmtAmt(r.orderAmount)}</strong>{r.orderProducts ? ` (${r.orderProducts})` : ""}</p>}
+                          {r.rejectionReason && <p className="text-[11px] text-rose-600">âŒ {r.rejectionReason}{r.customRejectionReason ? ` â€” ${r.customRejectionReason}` : ""}</p>}
+                          {r.paintersKYC && <p className="text-[11px] text-foreground">ðŸŽ¨ KYC: {r.paintersKYC} painters registered</p>}
+                          {r.nextVisitDate && <p className="text-[11px] text-foreground">ðŸ“… Next: {r.nextVisitDate}{r.followUpAction ? ` â€” ${r.followUpAction}` : ""}</p>}
+                          {r.notes && <p className="text-[11px] text-muted-foreground">ðŸ“ {r.notes}</p>}
+                          {r.competitorBrand !== "None Observed" && <p className="text-[11px] text-amber-600">âš”ï¸ {r.competitorBrand}{r.competitorNote ? ` â€” ${r.competitorNote}` : ""}</p>}
                         </div>
                       )}
 
@@ -574,9 +574,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TAB: EVENING REPORT SUMMARY
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {mode === "report" && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -594,8 +594,8 @@ export function VisitsClient({ initialData }: Props) {
             {[
               { label: "Total Visited", val: totals.visited, icon: MapPin, color: "text-blue-500", bg: "bg-blue-500/10" },
               { label: "Conversions", val: `${totals.agreed}/${totals.visited}`, icon: ThumbsUp, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-              { label: "Total Collected", val: `₹${totals.totalCollection.toLocaleString("en-IN")}`, icon: IndianRupee, color: "text-amber-500", bg: "bg-amber-500/10" },
-              { label: "Orders Value", val: `₹${totals.totalOrders.toLocaleString("en-IN")}`, icon: Package, color: "text-violet-500", bg: "bg-violet-500/10" },
+              { label: "Total Collected", val: `â‚¹${totals.totalCollection.toLocaleString("en-IN")}`, icon: IndianRupee, color: "text-amber-500", bg: "bg-amber-500/10" },
+              { label: "Orders Value", val: `â‚¹${totals.totalOrders.toLocaleString("en-IN")}`, icon: Package, color: "text-violet-500", bg: "bg-violet-500/10" },
             ].map((k, i) => (
               <div key={i} className="bg-card border border-border rounded-2xl p-3 space-y-1.5 shadow-2xs">
                 <div className="flex items-center justify-between">
@@ -620,9 +620,9 @@ export function VisitsClient({ initialData }: Props) {
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className="text-xs font-black text-foreground">{r.dealerName}</p>
                           <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${s.badge}`}>{r.status.replace("_"," ")}</span>
-                          {r.outcome && <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${OUTCOME_STYLE[r.outcome] ?? ""}`}>{r.outcome === "agreed" ? "✅ Agreed" : r.outcome === "partial" ? "⚡ Partial" : "❌ Not Agreed"}</span>}
+                          {r.outcome && <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${OUTCOME_STYLE[r.outcome] ?? ""}`}>{r.outcome === "agreed" ? "âœ… Agreed" : r.outcome === "partial" ? "âš¡ Partial" : "âŒ Not Agreed"}</span>}
                         </div>
-                        <p className="text-[10px] text-muted-foreground">{r.area} {r.phone ? `· 📞 ${r.phone}` : ""}</p>
+                        <p className="text-[10px] text-muted-foreground">{r.area} {r.phone ? `Â· ðŸ“ž ${r.phone}` : ""}</p>
                       </div>
                     </div>
                     <button onClick={() => setReportingOn({ ...r })} className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black border border-border text-foreground hover:bg-muted/50 cursor-pointer flex-shrink-0">
@@ -633,10 +633,10 @@ export function VisitsClient({ initialData }: Props) {
                   {r.status === "visited" && (
                     <div className="border-t border-border/40 px-4 pb-3 pt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {[
-                        { label: "Collected", val: fmtAmt(r.collectionAmount), icon: "💳" },
-                        { label: "Order", val: fmtAmt(r.orderAmount), icon: "📦" },
-                        { label: "KYC", val: r.paintersKYC ? `${r.paintersKYC} painters` : "—", icon: "🎨" },
-                        { label: "Competitor", val: r.competitorBrand !== "None Observed" ? r.competitorBrand : "None", icon: "⚔️" },
+                        { label: "Collected", val: fmtAmt(r.collectionAmount), icon: "ðŸ’³" },
+                        { label: "Order", val: fmtAmt(r.orderAmount), icon: "ðŸ“¦" },
+                        { label: "KYC", val: r.paintersKYC ? `${r.paintersKYC} painters` : "â€”", icon: "ðŸŽ¨" },
+                        { label: "Competitor", val: r.competitorBrand !== "None Observed" ? r.competitorBrand : "None", icon: "âš”ï¸" },
                       ].map((cell, ci) => (
                         <div key={ci} className="bg-muted/30 rounded-xl px-2.5 py-2">
                           <p className="text-[9px] text-muted-foreground">{cell.icon} {cell.label}</p>
@@ -648,7 +648,7 @@ export function VisitsClient({ initialData }: Props) {
 
                   {r.status === "planned" && (
                     <div className="border-t border-border/40 px-4 pb-3 pt-2">
-                      <p className="text-[10px] text-amber-600 font-bold">⏳ Not yet visited today — tap Edit to fill report</p>
+                      <p className="text-[10px] text-amber-600 font-bold">â³ Not yet visited today â€” tap Edit to fill report</p>
                     </div>
                   )}
                 </div>
@@ -658,9 +658,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TAB: ANALYTICS
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {mode === "analytics" && (
         <div className="space-y-4">
           {/* Weekly bar chart */}
@@ -698,7 +698,7 @@ export function VisitsClient({ initialData }: Props) {
 
           {/* Rejection Breakdown */}
           <div className="bg-card border border-border rounded-3xl p-5 space-y-3 shadow-2xs">
-            <h3 className="text-xs font-black text-foreground uppercase tracking-widest flex items-center gap-2"><ThumbsDown size={14} className="text-rose-500" /> Rejection Reasons — MTD</h3>
+            <h3 className="text-xs font-black text-foreground uppercase tracking-widest flex items-center gap-2"><ThumbsDown size={14} className="text-rose-500" /> Rejection Reasons â€” MTD</h3>
             {[
               { reason: "Price Too High", count: 8, color: "bg-rose-500" },
               { reason: "Competitor Discount", count: 6, color: "bg-amber-500" },
@@ -721,7 +721,7 @@ export function VisitsClient({ initialData }: Props) {
           {/* Collection & Order Trend */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-card border border-border rounded-3xl p-5 space-y-3 shadow-2xs">
-              <h3 className="text-xs font-black text-foreground uppercase tracking-widest flex items-center gap-2"><IndianRupee size={14} className="text-amber-500" /> Collections — This Week</h3>
+              <h3 className="text-xs font-black text-foreground uppercase tracking-widest flex items-center gap-2"><IndianRupee size={14} className="text-amber-500" /> Collections â€” This Week</h3>
               {[{ day: "Mon", amt: 45000 }, { day: "Tue", amt: 22000 }, { day: "Wed", amt: 78000 }, { day: "Thu", amt: 18500 }, { day: "Fri", amt: 55000 }, { day: "Sat", amt: totals.totalCollection }].map((w, i) => {
                 const max = 80000;
                 return (
@@ -730,13 +730,13 @@ export function VisitsClient({ initialData }: Props) {
                     <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                       <div className="h-full bg-amber-500 rounded-full" style={{ width: `${Math.min(100, (w.amt / max) * 100)}%` }} />
                     </div>
-                    <span className="text-[10px] font-black text-foreground font-mono w-16 text-right">₹{(w.amt/1000).toFixed(0)}K</span>
+                    <span className="text-[10px] font-black text-foreground font-mono w-16 text-right">â‚¹{(w.amt/1000).toFixed(0)}K</span>
                   </div>
                 );
               })}
             </div>
             <div className="bg-card border border-border rounded-3xl p-5 space-y-3 shadow-2xs">
-              <h3 className="text-xs font-black text-foreground uppercase tracking-widest flex items-center gap-2"><Package size={14} className="text-blue-500" /> Orders — This Week</h3>
+              <h3 className="text-xs font-black text-foreground uppercase tracking-widest flex items-center gap-2"><Package size={14} className="text-blue-500" /> Orders â€” This Week</h3>
               {[{ day: "Mon", amt: 82000 }, { day: "Tue", amt: 65000 }, { day: "Wed", amt: 118000 }, { day: "Thu", amt: 45000 }, { day: "Fri", amt: 97000 }, { day: "Sat", amt: totals.totalOrders }].map((w, i) => {
                 const max = 120000;
                 return (
@@ -745,7 +745,7 @@ export function VisitsClient({ initialData }: Props) {
                     <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                       <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.min(100, (w.amt / max) * 100)}%` }} />
                     </div>
-                    <span className="text-[10px] font-black text-foreground font-mono w-16 text-right">₹{(w.amt/1000).toFixed(0)}K</span>
+                    <span className="text-[10px] font-black text-foreground font-mono w-16 text-right">â‚¹{(w.amt/1000).toFixed(0)}K</span>
                   </div>
                 );
               })}
@@ -754,9 +754,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TAB: HISTORY
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {mode === "history" && (
         <div className="space-y-3">
           <p className="text-xs font-black text-foreground uppercase tracking-widest">All Visit Records</p>
@@ -770,7 +770,7 @@ export function VisitsClient({ initialData }: Props) {
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <p className="text-xs font-black text-foreground">{r.dealerName}</p>
                       <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${s.badge}`}>{r.status.replace("_"," ")}</span>
-                      {r.outcome && <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${OUTCOME_STYLE[r.outcome] ?? ""}`}>{r.outcome === "agreed" ? "✅ Agreed" : r.outcome === "partial" ? "⚡ Partial" : "❌ Not Agreed"}</span>}
+                      {r.outcome && <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${OUTCOME_STYLE[r.outcome] ?? ""}`}>{r.outcome === "agreed" ? "âœ… Agreed" : r.outcome === "partial" ? "âš¡ Partial" : "âŒ Not Agreed"}</span>}
                     </div>
                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-muted-foreground">
                       {r.area && <span><MapPin size={9} className="inline mr-0.5" />{r.area}</span>}
@@ -780,11 +780,11 @@ export function VisitsClient({ initialData }: Props) {
                     <p className="text-[10px] text-muted-foreground/70 mt-0.5">{r.purpose}</p>
                     {r.status === "visited" && (
                       <div className="mt-2 bg-muted/30 rounded-xl p-2.5 space-y-1">
-                        {r.collectionAmount && <p className="text-[11px] text-foreground">💳 Collected: <strong>{fmtAmt(r.collectionAmount)}</strong></p>}
-                        {r.orderAmount && <p className="text-[11px] text-foreground">📦 Order: <strong>{fmtAmt(r.orderAmount)}</strong>{r.orderProducts ? ` — ${r.orderProducts}` : ""}</p>}
-                        {r.rejectionReason && <p className="text-[11px] text-rose-600">❌ {r.rejectionReason}{r.customRejectionReason ? ` — ${r.customRejectionReason}` : ""}</p>}
-                        {r.notes && <p className="text-[11px] text-muted-foreground">📝 {r.notes}</p>}
-                        {r.nextVisitDate && <p className="text-[11px] text-blue-600">📅 Next: {r.nextVisitDate} {r.followUpAction && `— ${r.followUpAction}`}</p>}
+                        {r.collectionAmount && <p className="text-[11px] text-foreground">ðŸ’³ Collected: <strong>{fmtAmt(r.collectionAmount)}</strong></p>}
+                        {r.orderAmount && <p className="text-[11px] text-foreground">ðŸ“¦ Order: <strong>{fmtAmt(r.orderAmount)}</strong>{r.orderProducts ? ` â€” ${r.orderProducts}` : ""}</p>}
+                        {r.rejectionReason && <p className="text-[11px] text-rose-600">âŒ {r.rejectionReason}{r.customRejectionReason ? ` â€” ${r.customRejectionReason}` : ""}</p>}
+                        {r.notes && <p className="text-[11px] text-muted-foreground">ðŸ“ {r.notes}</p>}
+                        {r.nextVisitDate && <p className="text-[11px] text-blue-600">ðŸ“… Next: {r.nextVisitDate} {r.followUpAction && `â€” ${r.followUpAction}`}</p>}
                       </div>
                     )}
                   </div>
@@ -795,9 +795,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           ADD DEALER MODAL
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowAddModal(false)}>
           <div className="bg-card border border-border rounded-3xl p-6 w-full max-w-md space-y-5 shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
@@ -845,9 +845,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           EVENING REPORT MODAL (Full Dealer Report)
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {reportingOn && (
         <EveningReportModal
           report={reportingOn}
@@ -859,16 +859,16 @@ export function VisitsClient({ initialData }: Props) {
         />
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           DAILY SUMMARY REPORT
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {showDailyReport && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowDailyReport(false)}>
           <div className="bg-card border border-border rounded-3xl w-full max-w-2xl shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "90vh" }}>
             <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
               <div>
-                <h3 className="text-sm font-black text-foreground">📋 Daily Field Report</h3>
-                <p className="text-[11px] text-muted-foreground">{todayStr()} — Rajesh Kumar, Jaipur Zone</p>
+                <h3 className="text-sm font-black text-foreground">ðŸ“‹ Daily Field Report</h3>
+                <p className="text-[11px] text-muted-foreground">{todayStr()} â€” Rajesh Kumar, Jaipur Zone</p>
               </div>
               <div className="flex items-center gap-2">
                 <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-[10px] font-black text-muted-foreground hover:bg-muted/50 cursor-pointer"><Download size={11} /> Export</button>
@@ -883,8 +883,8 @@ export function VisitsClient({ initialData }: Props) {
                   { label: "Visited", val: totals.visited },
                   { label: "Agreed/Partial", val: totals.agreed },
                   { label: "Conversion Rate", val: `${conversionPct}%` },
-                  { label: "Total Collection", val: `₹${totals.totalCollection.toLocaleString("en-IN")}` },
-                  { label: "Total Orders", val: `₹${totals.totalOrders.toLocaleString("en-IN")}` },
+                  { label: "Total Collection", val: `â‚¹${totals.totalCollection.toLocaleString("en-IN")}` },
+                  { label: "Total Orders", val: `â‚¹${totals.totalOrders.toLocaleString("en-IN")}` },
                   { label: "Painters KYC", val: totals.totalKYC },
                   { label: "Skipped", val: totals.skipped },
                 ].map((s, i) => (
@@ -903,7 +903,7 @@ export function VisitsClient({ initialData }: Props) {
                     <div className="flex items-start justify-between p-3 bg-muted/20">
                       <div>
                         <p className="text-xs font-black text-foreground">{idx + 1}. {r.dealerName}</p>
-                        <p className="text-[10px] text-muted-foreground">{r.area} · {r.phone || "No phone"} · {r.address || "No address"}</p>
+                        <p className="text-[10px] text-muted-foreground">{r.area} Â· {r.phone || "No phone"} Â· {r.address || "No address"}</p>
                       </div>
                       <div className="flex gap-1.5 flex-shrink-0">
                         <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full border ${STATUS_STYLE[r.status]?.badge}`}>{r.status.replace("_"," ")}</span>
@@ -912,17 +912,17 @@ export function VisitsClient({ initialData }: Props) {
                     </div>
                     {r.status === "visited" && (
                       <div className="px-3 pb-3 pt-1.5 space-y-1">
-                        {r.collectionAmount && <p className="text-[11px] text-foreground">💳 Collection: <strong>{fmtAmt(r.collectionAmount)}</strong></p>}
-                        {r.orderAmount && <p className="text-[11px] text-foreground">📦 Order: <strong>{fmtAmt(r.orderAmount)}</strong>{r.orderProducts ? ` — ${r.orderProducts}` : ""}</p>}
-                        {r.paintersKYC && <p className="text-[11px] text-foreground">🎨 KYC: {r.paintersKYC} painters</p>}
-                        {r.rejectionReason && <p className="text-[11px] text-rose-600">❌ Rejected: {r.rejectionReason}{r.customRejectionReason ? ` — ${r.customRejectionReason}` : ""}</p>}
-                        {r.competitorBrand !== "None Observed" && <p className="text-[11px] text-amber-600">⚔️ Competitor: {r.competitorBrand}{r.competitorNote ? ` — ${r.competitorNote}` : ""}</p>}
-                        {r.nextVisitDate && <p className="text-[11px] text-blue-600">📅 Follow-up: {r.nextVisitDate}{r.followUpAction ? ` — ${r.followUpAction}` : ""}</p>}
-                        {r.notes && <p className="text-[11px] text-muted-foreground">📝 {r.notes}</p>}
+                        {r.collectionAmount && <p className="text-[11px] text-foreground">ðŸ’³ Collection: <strong>{fmtAmt(r.collectionAmount)}</strong></p>}
+                        {r.orderAmount && <p className="text-[11px] text-foreground">ðŸ“¦ Order: <strong>{fmtAmt(r.orderAmount)}</strong>{r.orderProducts ? ` â€” ${r.orderProducts}` : ""}</p>}
+                        {r.paintersKYC && <p className="text-[11px] text-foreground">ðŸŽ¨ KYC: {r.paintersKYC} painters</p>}
+                        {r.rejectionReason && <p className="text-[11px] text-rose-600">âŒ Rejected: {r.rejectionReason}{r.customRejectionReason ? ` â€” ${r.customRejectionReason}` : ""}</p>}
+                        {r.competitorBrand !== "None Observed" && <p className="text-[11px] text-amber-600">âš”ï¸ Competitor: {r.competitorBrand}{r.competitorNote ? ` â€” ${r.competitorNote}` : ""}</p>}
+                        {r.nextVisitDate && <p className="text-[11px] text-blue-600">ðŸ“… Follow-up: {r.nextVisitDate}{r.followUpAction ? ` â€” ${r.followUpAction}` : ""}</p>}
+                        {r.notes && <p className="text-[11px] text-muted-foreground">ðŸ“ {r.notes}</p>}
                       </div>
                     )}
                     {r.status !== "visited" && r.notes && (
-                      <div className="px-3 pb-2 pt-1"><p className="text-[11px] text-muted-foreground">📝 {r.notes}</p></div>
+                      <div className="px-3 pb-2 pt-1"><p className="text-[11px] text-muted-foreground">ðŸ“ {r.notes}</p></div>
                     )}
                   </div>
                 ))}
@@ -937,9 +937,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           OBJECTION QUICK KIT
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {showObjSheet && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowObjSheet(false)}>
           <div className="bg-card border-t border-border rounded-t-3xl w-full max-w-lg shadow-2xl animate-in slide-in-from-bottom-4 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "80vh" }}>
@@ -961,9 +961,9 @@ export function VisitsClient({ initialData }: Props) {
         </div>
       )}
 
-      {/* ══════════════════════════════════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           ROUTE ZONE EDIT MODAL
-      ══════════════════════════════════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       {showRouteModal && (
         <RouteZoneModal
           zones={routeZones}
@@ -977,205 +977,9 @@ export function VisitsClient({ initialData }: Props) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Evening Report Modal — Separate Component
-// ─────────────────────────────────────────────────────────────────────────────
-function EveningReportModal({ report, onSave, onClose, objectionScripts, rejectionReasons, competitors }: {
-  report: DealerReport;
-  onSave: (r: DealerReport) => void;
-  onClose: () => void;
-  objectionScripts: Record<string, string>;
-  rejectionReasons: string[];
-  competitors: string[];
-}) {
-  const [form, setForm] = useState<DealerReport>({ ...report });
-  const upd = (patch: Partial<DealerReport>) => setForm(f => ({ ...f, ...patch }));
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const now = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-    onSave({ ...form, visitedAt: form.visitedAt || now });
-  };
-
-  const objScript = form.rejectionReason ? objectionScripts[form.rejectionReason] : null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/70 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-card border border-border rounded-3xl w-full max-w-lg shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "94vh" }}>
-
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
-          <div>
-            <h3 className="text-sm font-black text-foreground">📋 Dealer Visit Report</h3>
-            <p className="text-[11px] text-muted-foreground">{form.dealerName} · {form.area}</p>
-          </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted cursor-pointer"><X size={16} className="text-muted-foreground" /></button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="overflow-y-auto" style={{ maxHeight: "calc(94vh - 70px)" }}>
-          <div className="p-5 space-y-5">
-
-            {/* ── Dealer Contact Info ── */}
-            <div className="space-y-2">
-              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Dealer Contact Info</p>
-              <div className="grid grid-cols-1 gap-2.5">
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Dealer Name</label>
-                    <input value={form.dealerName} onChange={e => upd({ dealerName: e.target.value })} placeholder="Full dealer name" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Phone Number</label>
-                    <input type="tel" value={form.phone} onChange={e => upd({ phone: e.target.value })} placeholder="9876543210" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Area / Locality</label>
-                    <input value={form.area} onChange={e => upd({ area: e.target.value })} placeholder="Malviya Nagar" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Visit Time</label>
-                    <input type="time" value={form.visitedAt} onChange={e => upd({ visitedAt: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Full Address</label>
-                  <input value={form.address} onChange={e => upd({ address: e.target.value })} placeholder="Shop no., Street, Area, City" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                </div>
-              </div>
-            </div>
-
-            {/* ── Visit Status ── */}
-            <div>
-              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Visit Status</p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {(["visited", "planned", "not_available", "skipped"] as const).map(s => (
-                  <button key={s} type="button" onClick={() => upd({ status: s })} className={`py-2 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${form.status === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
-                    {s === "visited" ? "✅ Visited" : s === "planned" ? "⏳ Planned" : s === "not_available" ? "🚫 Not Available" : "⏭️ Skipped"}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* ── Outcome ── */}
-            {form.status === "visited" && (
-              <>
-                <div>
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Dealer Outcome</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["agreed", "partial", "not_agreed"] as const).map(o => (
-                      <button key={o} type="button" onClick={() => upd({ outcome: o })} className={`py-2.5 rounded-xl text-[11px] font-black border transition-all cursor-pointer ${form.outcome === o ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
-                        {o === "agreed" ? "✅ Agreed" : o === "partial" ? "⚡ Partial" : "❌ Not Agreed"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Rejection Reason (shown if not agreed or partial) */}
-                {(form.outcome === "not_agreed" || form.outcome === "partial") && (
-                  <div className="space-y-2.5">
-                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Rejection / Concern Reason</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {rejectionReasons.map(r => (
-                        <button key={r} type="button" onClick={() => upd({ rejectionReason: r })} className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all cursor-pointer ${form.rejectionReason === r ? "bg-rose-500 text-white border-rose-500" : "border-border text-muted-foreground hover:text-foreground"}`}>{r}</button>
-                      ))}
-                    </div>
-                    {form.rejectionReason === "Other (specify below)" && (
-                      <input value={form.customRejectionReason} onChange={e => upd({ customRejectionReason: e.target.value })} placeholder="Describe the reason..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
-                    )}
-                    {/* Objection Script */}
-                    {objScript && (
-                      <div className="bg-gradient-to-br from-primary/5 to-violet-500/5 border border-primary/20 rounded-2xl p-3.5">
-                        <p className="text-[10px] font-black text-primary mb-1.5">💡 Counter Script for This Objection</p>
-                        <p className="text-[11px] text-foreground leading-relaxed">{objScript}</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* ── Financial ── */}
-                <div className="space-y-2.5">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Financial Details</p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Collection Amount (₹)</label>
-                      <input type="number" value={form.collectionAmount} onChange={e => upd({ collectionAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Order Amount (₹)</label>
-                      <input type="number" value={form.orderAmount} onChange={e => upd({ orderAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
-                    </div>
-                  </div>
-                  {form.orderAmount && parseFloat(form.orderAmount) > 0 && (
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Products Ordered</label>
-                      <input value={form.orderProducts} onChange={e => upd({ orderProducts: e.target.value })} placeholder="e.g. Royale Glitz 10L x4, Shyne 20L x2" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                  )}
-                </div>
-
-                {/* ── Painter KYC ── */}
-                <div>
-                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Painters KYC Registered</label>
-                  <input type="number" value={form.paintersKYC} onChange={e => upd({ paintersKYC: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
-                </div>
-
-                {/* ── Competitor Intel ── */}
-                <div className="space-y-2.5">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Competitor Intelligence</p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Competitor Brand</label>
-                      <select value={form.competitorBrand} onChange={e => upd({ competitorBrand: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
-                        {competitors.map(c => <option key={c} value={c}>{c}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Price / Notes</label>
-                      <input value={form.competitorNote} onChange={e => upd({ competitorNote: e.target.value })} placeholder="e.g. 7% cheaper" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* ── Follow-up ── */}
-                <div className="space-y-2.5">
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Follow-up Schedule</p>
-                  <div className="grid grid-cols-2 gap-2.5">
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Next Visit Date</label>
-                      <input type="date" value={form.nextVisitDate} onChange={e => upd({ nextVisitDate: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                    <div>
-                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Action Needed</label>
-                      <input value={form.followUpAction} onChange={e => upd({ followUpAction: e.target.value })} placeholder="Bring credit form..." className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* ── Notes (always shown) ── */}
-            <div>
-              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Visit Notes</label>
-              <textarea rows={3} value={form.notes} onChange={e => upd({ notes: e.target.value })} placeholder="What happened? Key points from discussion, dealer mood, special requests, anything notable..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary resize-none" />
-            </div>
-
-            {/* ── Submit ── */}
-            <div className="flex gap-3 pb-2">
-              <button type="button" onClick={onClose} className="flex-1 py-3 rounded-2xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/50 cursor-pointer">Cancel</button>
-              <button type="submit" className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">✅ Save Report</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Route Zone Edit Modal
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
   zones: RouteZone[];
   onSave: (z: RouteZone[]) => void;
@@ -1221,14 +1025,13 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/70 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-card border border-border rounded-3xl w-full max-w-xl shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "95vh" }}>
-
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
           <div>
             <h3 className="text-sm font-black text-foreground flex items-center gap-2">
               <Navigation size={16} className="text-indigo-500" /> Edit Today's Route Zones
             </h3>
-            <p className="text-[11px] text-muted-foreground">{local.length} zones · ~{local.reduce((s, z) => s + z.travelMinutes, 0)} min travel · ~{local.reduce((s, z) => s + z.estimatedDealers, 0)} dealers</p>
+            <p className="text-[11px] text-muted-foreground">{local.length} zones Â· ~{local.reduce((s, z) => s + z.travelMinutes, 0)} min travel Â· ~{local.reduce((s, z) => s + z.estimatedDealers, 0)} dealers</p>
           </div>
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted cursor-pointer"><X size={16} className="text-muted-foreground" /></button>
         </div>
@@ -1244,13 +1047,11 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
                   const priColor = zone.priority === "high" ? "text-rose-600 bg-rose-500/10 border-rose-500/20" : zone.priority === "medium" ? "text-amber-600 bg-amber-500/10 border-amber-500/20" : "text-emerald-600 bg-emerald-500/10 border-emerald-500/20";
                   return (
                     <div key={zone.id} className="flex items-start gap-2 bg-muted/30 border border-border rounded-2xl p-3">
-                      {/* Reorder controls */}
                       <div className="flex flex-col items-center gap-0.5 flex-shrink-0 mt-1">
                         <button onClick={() => moveUp(zone.id)} disabled={idx === 0} className="p-1 rounded hover:bg-muted disabled:opacity-30 cursor-pointer"><ChevronUp size={11} className="text-muted-foreground" /></button>
                         <span className="text-[10px] font-black text-muted-foreground w-4 text-center">{idx + 1}</span>
                         <button onClick={() => moveDown(zone.id)} disabled={idx === local.length - 1} className="p-1 rounded hover:bg-muted disabled:opacity-30 cursor-pointer"><ChevronDown size={11} className="text-muted-foreground" /></button>
                       </div>
-                      {/* Zone fields */}
                       <div className="flex-1 min-w-0 space-y-2">
                         <div className="flex items-center gap-2">
                           <p className="text-[12px] font-black text-foreground flex-1">{zone.area}</p>
@@ -1267,7 +1068,7 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
                           </div>
                           <div>
                             <label className="text-[9px] text-muted-foreground block mb-0.5">Priority</label>
-                            <select value={zone.priority} onChange={e => updateZone(zone.id, { priority: e.target.value as "high"|"medium"|"low" })} className="w-full bg-background border border-border rounded-lg px-2 py-1.5 text-[11px] text-foreground outline-none focus:border-primary">
+                            <select value={zone.priority} onChange={e => updateZone(zone.id, { priority: e.target.value as "high" | "medium" | "low" })} className="w-full bg-background border border-border rounded-lg px-2 py-1.5 text-[11px] text-foreground outline-none focus:border-primary">
                               <option value="high">High</option>
                               <option value="medium">Medium</option>
                               <option value="low">Low</option>
@@ -1285,7 +1086,7 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
 
             {/* Quick-add preset zones */}
             <div className="space-y-2">
-              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Quick Add — Jaipur Areas</p>
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Quick Add â€” Jaipur Areas</p>
               <div className="flex flex-wrap gap-2">
                 {jaipurZones.map(z => {
                   const already = local.some(l => l.area === z.area);
@@ -1317,7 +1118,7 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
                 </div>
                 <div>
                   <label className="text-[10px] font-bold text-muted-foreground block mb-1">Priority</label>
-                  <select value={customPriority} onChange={e => setCustomPriority(e.target.value as "high"|"medium"|"low")} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
+                  <select value={customPriority} onChange={e => setCustomPriority(e.target.value as "high" | "medium" | "low")} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
                     <option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option>
                   </select>
                 </div>
@@ -1334,7 +1135,7 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
             {/* Save */}
             <div className="flex gap-3 pb-1">
               <button onClick={onClose} className="flex-1 py-3 rounded-2xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/50 cursor-pointer">Cancel</button>
-              <button onClick={() => { onSave(local); onClose(); }} className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">✅ Save Route Plan</button>
+              <button onClick={() => { onSave(local); onClose(); }} className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">âœ… Save Route Plan</button>
             </div>
 
           </div>
@@ -1343,3 +1144,390 @@ function RouteZoneModal({ zones, onSave, onClose, jaipurZones }: {
     </div>
   );
 }
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// Evening Report Modal â€” Separate Component
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function EveningReportModal({ report, onSave, onClose, objectionScripts, rejectionReasons, competitors }: {
+  report: DealerReport;
+  onSave: (r: DealerReport) => void;
+  onClose: () => void;
+  objectionScripts: Record<string, string>;
+  rejectionReasons: string[];
+  competitors: string[];
+}) {
+  const [form, setForm] = useState<DealerReport>({ ...report });
+  const upd = (patch: Partial<DealerReport>) => setForm(f => ({ ...f, ...patch }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const now = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+    onSave({ ...form, visitedAt: form.visitedAt || now });
+  };
+
+  const objScript = form.rejectionReason ? objectionScripts[form.rejectionReason] : null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-card border border-border rounded-3xl w-full max-w-lg shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "94vh" }}>
+
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
+          <div>
+            <h3 className="text-sm font-black text-foreground">ðŸ“‹ Dealer Visit Report</h3>
+            <p className="text-[11px] text-muted-foreground">{form.dealerName} Â· {form.area}</p>
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted cursor-pointer"><X size={16} className="text-muted-foreground" /></button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="overflow-y-auto" style={{ maxHeight: "calc(94vh - 70px)" }}>
+          <div className="p-5 space-y-5">
+
+            {/* â”€â”€ Dealer Contact Info â”€â”€ */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Dealer Contact Info</p>
+              <div className="grid grid-cols-1 gap-2.5">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Dealer Name</label>
+                    <input value={form.dealerName} onChange={e => upd({ dealerName: e.target.value })} placeholder="Full dealer name" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Phone Number</label>
+                    <input type="tel" value={form.phone} onChange={e => upd({ phone: e.target.value })} placeholder="9876543210" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Area / Locality</label>
+                    <input value={form.area} onChange={e => upd({ area: e.target.value })} placeholder="Malviya Nagar" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Visit Time</label>
+                    <input type="time" value={form.visitedAt} onChange={e => upd({ visitedAt: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Full Address</label>
+                  <input value={form.address} onChange={e => upd({ address: e.target.value })} placeholder="Shop no., Street, Area, City" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+              </div>
+            </div>
+
+            {/* â”€â”€ Visit Status â”€â”€ */}
+            <div>
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Visit Status</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {(["visited", "planned", "not_available", "skipped"] as const).map(s => (
+                  <button key={s} type="button" onClick={() => upd({ status: s })} className={`py-2 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${form.status === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
+                    {s === "visited" ? "âœ… Visited" : s === "planned" ? "â³ Planned" : s === "not_available" ? "ðŸš« Not Available" : "â­ï¸ Skipped"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* â”€â”€ Outcome (only when visited) â”€â”€ */}
+            {form.status === "visited" && (
+              <>
+                <div>
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Dealer Outcome</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(["agreed", "partial", "not_agreed"] as const).map(o => (
+                      <button key={o} type="button" onClick={() => upd({ outcome: o })} className={`py-2.5 rounded-xl text-[11px] font-black border transition-all cursor-pointer ${form.outcome === o ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
+                        {o === "agreed" ? "âœ… Agreed" : o === "partial" ? "âš¡ Partial" : "âŒ Not Agreed"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {(form.outcome === "not_agreed" || form.outcome === "partial") && (
+                  <div className="space-y-2.5">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Rejection / Concern Reason</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {rejectionReasons.map(r => (
+                        <button key={r} type="button" onClick={() => upd({ rejectionReason: r })} className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all cursor-pointer ${form.rejectionReason === r ? "bg-rose-500 text-white border-rose-500" : "border-border text-muted-foreground hover:text-foreground"}`}>{r}</button>
+                      ))}
+                    </div>
+                    {form.rejectionReason === "Other (specify below)" && (
+                      <input value={form.customRejectionReason} onChange={e => upd({ customRejectionReason: e.target.value })} placeholder="Describe the reason..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
+                    )}
+                    {objScript && (
+                      <div className="bg-gradient-to-br from-primary/5 to-violet-500/5 border border-primary/20 rounded-2xl p-3.5">
+                        <p className="text-[10px] font-black text-primary mb-1.5">ðŸ’¡ Counter Script for This Objection</p>
+                        <p className="text-[11px] text-foreground leading-relaxed">{objScript}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Financial */}
+                <div className="space-y-2.5">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Financial Details</p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Collection Amount (â‚¹)</label>
+                      <input type="number" value={form.collectionAmount} onChange={e => upd({ collectionAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Order Amount (â‚¹)</label>
+                      <input type="number" value={form.orderAmount} onChange={e => upd({ orderAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
+                    </div>
+                  </div>
+                  {form.orderAmount && parseFloat(form.orderAmount) > 0 && (
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Products Ordered</label>
+                      <input value={form.orderProducts} onChange={e => upd({ orderProducts: e.target.value })} placeholder="e.g. Royale Glitz 10L x4, Shyne 20L x2" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Painter KYC */}
+                <div>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Painters KYC Registered</label>
+                  <input type="number" value={form.paintersKYC} onChange={e => upd({ paintersKYC: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+
+                {/* Competitor Intel */}
+                <div className="space-y-2.5">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Competitor Intelligence</p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Competitor Brand</label>
+                      <select value={form.competitorBrand} onChange={e => upd({ competitorBrand: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
+                        {competitors.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Price / Notes</label>
+                      <input value={form.competitorNote} onChange={e => upd({ competitorNote: e.target.value })} placeholder="e.g. 7% cheaper" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Follow-up */}
+                <div className="space-y-2.5">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Follow-up Schedule</p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Next Visit Date</label>
+                      <input type="date" value={form.nextVisitDate} onChange={e => upd({ nextVisitDate: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Action Needed</label>
+                      <input value={form.followUpAction} onChange={e => upd({ followUpAction: e.target.value })} placeholder="Bring credit form..." className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Notes */}
+            <div>
+              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Visit Notes</label>
+              <textarea rows={3} value={form.notes} onChange={e => upd({ notes: e.target.value })} placeholder="What happened? Key points from discussion, dealer mood, special requests, anything notable..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary resize-none" />
+            </div>
+
+            {/* Submit */}
+            <div className="flex gap-3 pb-2">
+              <button type="button" onClick={onClose} className="flex-1 py-3 rounded-2xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/50 cursor-pointer">Cancel</button>
+              <button type="submit" className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">âœ… Save Report</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+  report: DealerReport;
+  onSave: (r: DealerReport) => void;
+  onClose: () => void;
+  objectionScripts: Record<string, string>;
+  rejectionReasons: string[];
+  competitors: string[];
+}) {
+  const [form, setForm] = useState<DealerReport>({ ...report });
+  const upd = (patch: Partial<DealerReport>) => setForm(f => ({ ...f, ...patch }));
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const now = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+    onSave({ ...form, visitedAt: form.visitedAt || now });
+  };
+
+  const objScript = form.rejectionReason ? objectionScripts[form.rejectionReason] : null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+      <div className="bg-card border border-border rounded-3xl w-full max-w-lg shadow-2xl animate-in slide-in-from-bottom-4 sm:zoom-in-95 duration-200 overflow-hidden" onClick={e => e.stopPropagation()} style={{ maxHeight: "94vh" }}>
+
+        {/* Header */}
+        <div className="flex items-center justify-between p-5 border-b border-border bg-muted/20">
+          <div>
+            <h3 className="text-sm font-black text-foreground">ðŸ“‹ Dealer Visit Report</h3>
+            <p className="text-[11px] text-muted-foreground">{form.dealerName} Â· {form.area}</p>
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted cursor-pointer"><X size={16} className="text-muted-foreground" /></button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="overflow-y-auto" style={{ maxHeight: "calc(94vh - 70px)" }}>
+          <div className="p-5 space-y-5">
+
+            {/* â”€â”€ Dealer Contact Info â”€â”€ */}
+            <div className="space-y-2">
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Dealer Contact Info</p>
+              <div className="grid grid-cols-1 gap-2.5">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Dealer Name</label>
+                    <input value={form.dealerName} onChange={e => upd({ dealerName: e.target.value })} placeholder="Full dealer name" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Phone Number</label>
+                    <input type="tel" value={form.phone} onChange={e => upd({ phone: e.target.value })} placeholder="9876543210" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Area / Locality</label>
+                    <input value={form.area} onChange={e => upd({ area: e.target.value })} placeholder="Malviya Nagar" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-muted-foreground block mb-1">Visit Time</label>
+                    <input type="time" value={form.visitedAt} onChange={e => upd({ visitedAt: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold text-muted-foreground block mb-1">Full Address</label>
+                  <input value={form.address} onChange={e => upd({ address: e.target.value })} placeholder="Shop no., Street, Area, City" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+              </div>
+            </div>
+
+            {/* â”€â”€ Visit Status â”€â”€ */}
+            <div>
+              <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Visit Status</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {(["visited", "planned", "not_available", "skipped"] as const).map(s => (
+                  <button key={s} type="button" onClick={() => upd({ status: s })} className={`py-2 rounded-xl text-[10px] font-black border transition-all cursor-pointer ${form.status === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
+                    {s === "visited" ? "âœ… Visited" : s === "planned" ? "â³ Planned" : s === "not_available" ? "ðŸš« Not Available" : "â­ï¸ Skipped"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* â”€â”€ Outcome â”€â”€ */}
+            {form.status === "visited" && (
+              <>
+                <div>
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider mb-2">Dealer Outcome</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {(["agreed", "partial", "not_agreed"] as const).map(o => (
+                      <button key={o} type="button" onClick={() => upd({ outcome: o })} className={`py-2.5 rounded-xl text-[11px] font-black border transition-all cursor-pointer ${form.outcome === o ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground hover:bg-muted/50"}`}>
+                        {o === "agreed" ? "âœ… Agreed" : o === "partial" ? "âš¡ Partial" : "âŒ Not Agreed"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Rejection Reason (shown if not agreed or partial) */}
+                {(form.outcome === "not_agreed" || form.outcome === "partial") && (
+                  <div className="space-y-2.5">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Rejection / Concern Reason</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {rejectionReasons.map(r => (
+                        <button key={r} type="button" onClick={() => upd({ rejectionReason: r })} className={`px-2.5 py-1 rounded-lg text-[10px] font-black border transition-all cursor-pointer ${form.rejectionReason === r ? "bg-rose-500 text-white border-rose-500" : "border-border text-muted-foreground hover:text-foreground"}`}>{r}</button>
+                      ))}
+                    </div>
+                    {form.rejectionReason === "Other (specify below)" && (
+                      <input value={form.customRejectionReason} onChange={e => upd({ customRejectionReason: e.target.value })} placeholder="Describe the reason..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
+                    )}
+                    {/* Objection Script */}
+                    {objScript && (
+                      <div className="bg-gradient-to-br from-primary/5 to-violet-500/5 border border-primary/20 rounded-2xl p-3.5">
+                        <p className="text-[10px] font-black text-primary mb-1.5">ðŸ’¡ Counter Script for This Objection</p>
+                        <p className="text-[11px] text-foreground leading-relaxed">{objScript}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* â”€â”€ Financial â”€â”€ */}
+                <div className="space-y-2.5">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Financial Details</p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Collection Amount (â‚¹)</label>
+                      <input type="number" value={form.collectionAmount} onChange={e => upd({ collectionAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Order Amount (â‚¹)</label>
+                      <input type="number" value={form.orderAmount} onChange={e => upd({ orderAmount: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary font-mono" />
+                    </div>
+                  </div>
+                  {form.orderAmount && parseFloat(form.orderAmount) > 0 && (
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Products Ordered</label>
+                      <input value={form.orderProducts} onChange={e => upd({ orderProducts: e.target.value })} placeholder="e.g. Royale Glitz 10L x4, Shyne 20L x2" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                  )}
+                </div>
+
+                {/* â”€â”€ Painter KYC â”€â”€ */}
+                <div>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Painters KYC Registered</label>
+                  <input type="number" value={form.paintersKYC} onChange={e => upd({ paintersKYC: e.target.value })} placeholder="0" className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary" />
+                </div>
+
+                {/* â”€â”€ Competitor Intel â”€â”€ */}
+                <div className="space-y-2.5">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Competitor Intelligence</p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Competitor Brand</label>
+                      <select value={form.competitorBrand} onChange={e => upd({ competitorBrand: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary">
+                        {competitors.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Price / Notes</label>
+                      <input value={form.competitorNote} onChange={e => upd({ competitorNote: e.target.value })} placeholder="e.g. 7% cheaper" className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* â”€â”€ Follow-up â”€â”€ */}
+                <div className="space-y-2.5">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Follow-up Schedule</p>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Next Visit Date</label>
+                      <input type="date" value={form.nextVisitDate} onChange={e => upd({ nextVisitDate: e.target.value })} className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                    <div>
+                      <label className="text-[10px] font-bold text-muted-foreground block mb-1">Action Needed</label>
+                      <input value={form.followUpAction} onChange={e => upd({ followUpAction: e.target.value })} placeholder="Bring credit form..." className="w-full bg-background border border-border rounded-xl px-3 py-2 text-xs text-foreground outline-none focus:border-primary" />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* â”€â”€ Notes (always shown) â”€â”€ */}
+            <div>
+              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-wider block mb-1.5">Visit Notes</label>
+              <textarea rows={3} value={form.notes} onChange={e => upd({ notes: e.target.value })} placeholder="What happened? Key points from discussion, dealer mood, special requests, anything notable..." className="w-full bg-background border border-border rounded-xl px-3 py-2.5 text-xs text-foreground outline-none focus:border-primary resize-none" />
+            </div>
+
+            {/* â”€â”€ Submit â”€â”€ */}
+            <div className="flex gap-3 pb-2">
+              <button type="button" onClick={onClose} className="flex-1 py-3 rounded-2xl border border-border text-xs font-bold text-muted-foreground hover:bg-muted/50 cursor-pointer">Cancel</button>
+              <button type="submit" className="flex-1 py-3 rounded-2xl bg-primary text-primary-foreground text-xs font-black hover:opacity-90 cursor-pointer">âœ… Save Report</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
