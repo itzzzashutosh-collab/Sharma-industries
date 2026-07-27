@@ -4,7 +4,7 @@ import React, { useState, useMemo, useTransition } from "react";
 import {
   Store, Users, PlusCircle, Search, Sparkles, Phone, MessageSquare, ClipboardList, Target, AlertCircle,
   ShieldCheck, Shield, Copy, Check, Share2, Upload, TrendingUp, Building2, Flame, Zap, HelpCircle,
-  Award, Wallet, Gift, QrCode, CreditCard, ArrowRight, DollarSign, CheckCircle2, Calendar, UserPlus, Clock, RefreshCw
+  Award, Wallet, Gift, QrCode, CreditCard, ArrowRight, DollarSign, CheckCircle2, Calendar, UserPlus, Clock, RefreshCw, X
 } from "lucide-react";
 import { createSalesVisit } from "../actions";
 
