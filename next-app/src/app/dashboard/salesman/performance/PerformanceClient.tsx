@@ -5,7 +5,7 @@ import {
   TrendingUp, Target, CreditCard, Sparkles, CheckCircle2, Trophy,
   Clock, Wallet, Award, Percent, DollarSign, ArrowUpRight, ArrowRight,
   Shield, AlertTriangle, FileText, ChevronRight, Download, Printer,
-  Building2, Users, Flame, Zap, HelpCircle, Check, Copy, Calculator, Info
+  Building2, Users, Flame, Zap, HelpCircle, Check, Copy, Calculator, Info, X
 } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
