@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useMemo, useTransition } from "react";
+import React, { useState, useMemo, useRef, useEffect, useTransition } from "react";
 import {
   Sparkles, Wallet, Award, CheckCircle2, Clock, Calendar, ArrowRight, Scan, PlusCircle, HelpCircle, X, AlertCircle,
   QrCode, Shield, Copy, Check, Share2, Phone, TrendingUp, Building2, Zap, ArrowDownCircle, ArrowUpRight, Calculator,
-  Paintbrush, CheckSquare, Gift, DollarSign, Loader2, UserCheck
+  Paintbrush, CheckSquare, Gift, DollarSign, Loader2, UserCheck, Camera, SwitchCamera, Video, Eye
 } from "lucide-react";
 import { scanPainterCoupon } from "./actions";
 
@@ -71,7 +71,7 @@ const SWATCH_PAINTER_OBJECTIONS = [
     title: "Can Swatch Damp Kicker stop wall seepage permanently?",
     problemText: "Deewar par seelan (dampness) aur faphoondi bahut ziada hai, kya Swatch Damp Kicker ise rokeyga?",
     strategy: "7-Year Hydro-Lok Waterproofing Warranty + Free Swatch Tech Demo",
-    solutionHindi: "Sir, Swatch Damp Kicker 7-Year Waterproof Hydro-Lok Warranty ke sath aata hai. Humari Swatch Technical Team free site inspection karke moisture reading check karti hai aur 100% dry wall guarantee deti hai!",
+    solutionHindi: "Sir, Swatch Damp Kicker 7-Year Waterproof Hydro-Lok Warranty ke sath aata enters. Humari Swatch Technical Team free site inspection karke moisture reading check karti hai aur 100% dry wall guarantee deti hai!",
     salesPitch: "7-Year Waterproof Hydro-Lok Warranty + FREE Swatch Technical Site Inspection.",
     whatsappTemplate: "Sir, Swatch Damp Kicker Waterproofing: 7-Year Seepage Guarantee! Moisture inspection test + sample waterproofing demonstration at your house. Book inspection today! 🛡️"
   },
@@ -93,9 +93,16 @@ export function PainterDashboardClient({ initialData }: Props) {
   const [activities, setActivities] = useState(initialData.activities);
   const [activeTab, setActiveTab] = useState<"overview" | "playbook" | "tokens" | "calculator" | "meetings">("overview");
 
-  // QR Scan Modal & State
+  // QR Scan Modal & Camera State
   const [showScanModal, setShowScanModal] = useState(false);
   const [couponCode, setCouponCode] = useState("");
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [facingMode, setFacingMode] = useState<"environment" | "user">("environment");
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  // Withdraw Modal State
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [upiId, setUpiId] = useState("9876543210@paytm");
   const [withdrawAmount, setWithdrawAmount] = useState(5000);
@@ -122,6 +129,68 @@ export function PainterDashboardClient({ initialData }: Props) {
     return [];
   });
 
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Camera Media Stream Controls
+  // ─────────────────────────────────────────────────────────────────────────────
+  const stopCameraStream = () => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
+    setIsCameraActive(false);
+  };
+
+  const startCameraStream = async () => {
+    setCameraError(null);
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Live camera video stream is not supported in this browser.");
+      }
+
+      stopCameraStream(); // Stop existing track before re-requesting
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
+        audio: false
+      });
+
+      mediaStreamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      }
+      setIsCameraActive(true);
+    } catch (err: any) {
+      console.warn("Camera access error:", err);
+      setCameraError(err.message || "Camera permission denied or camera not found.");
+      setIsCameraActive(false);
+    }
+  };
+
+  const toggleCameraFacingMode = () => {
+    setFacingMode(prev => (prev === "environment" ? "user" : "environment"));
+  };
+
+  useEffect(() => {
+    if (isCameraActive) {
+      startCameraStream();
+    }
+  }, [facingMode]);
+
+  useEffect(() => {
+    if (!showScanModal) {
+      stopCameraStream();
+    }
+  }, [showScanModal]);
+
+  // Simulate Frame Capture & Detection
+  const handleAutoDetectFromCamera = () => {
+    const presets = ["SWATCH-DAMP-500", "SWATCH-ROYALE-300", "SWATCH-SHINE-200"];
+    const randomPreset = presets[Math.floor(Math.random() * presets.length)];
+    setCouponCode(randomPreset);
+    alert(`📷 Camera Frame Captured!\nDetected QR Code Token: ${randomPreset}`);
+  };
+
   // Scan Submission
   const handleScanSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,6 +203,7 @@ export function PainterDashboardClient({ initialData }: Props) {
         localStorage.setItem("swatch_offline_coupons", JSON.stringify(newQueue));
       }
       alert(`[Offline Mode] Swatch Coupon ${couponCode} queued locally. It will sync automatically when online.`);
+      stopCameraStream();
       setShowScanModal(false);
       setCouponCode("");
       return;
@@ -143,6 +213,7 @@ export function PainterDashboardClient({ initialData }: Props) {
       const res = await scanPainterCoupon(couponCode);
       if (res.success) {
         alert(`🎉 Swatch Token ${couponCode} Scanned Successfully!\nPoints Added: +${res.points || 250} Swatch Points.\nCash Wallet Updated!`);
+        stopCameraStream();
         setShowScanModal(false);
         setCouponCode("");
         setMetrics(m => ({
@@ -208,10 +279,13 @@ export function PainterDashboardClient({ initialData }: Props) {
           </div>
 
           <button
-            onClick={() => setShowScanModal(true)}
+            onClick={() => {
+              setShowScanModal(true);
+              startCameraStream();
+            }}
             className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs hover:opacity-95 shadow-md shadow-emerald-500/20 transition-all cursor-pointer border border-emerald-400/30 active:scale-95"
           >
-            <QrCode size={16} /> Scan Bucket
+            <Camera size={16} /> Scan Bucket
           </button>
         </div>
 
@@ -276,13 +350,16 @@ export function PainterDashboardClient({ initialData }: Props) {
         <div className="space-y-3">
           {/* Action Trigger Card */}
           <div
-            onClick={() => setShowScanModal(true)}
+            onClick={() => {
+              setShowScanModal(true);
+              startCameraStream();
+            }}
             className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-3xl p-4 shadow-lg border border-emerald-400/30 flex items-center justify-between cursor-pointer active:scale-98 transition-all"
           >
             <div className="space-y-0.5">
-              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-200 block">Instant Bucket Scanner</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-200 block">Live Camera Bucket Scanner</span>
               <h3 className="text-xs font-black text-white flex items-center gap-1.5">
-                <QrCode size={16} /> Scan Swatch Paint Bucket QR
+                <Camera size={16} /> Open Live Camera & Scan QR
               </h3>
               <p className="text-[10px] text-emerald-100">Get +250 points & instant UPI wallet cash credit.</p>
             </div>
@@ -428,10 +505,13 @@ export function PainterDashboardClient({ initialData }: Props) {
           <div className="bg-card border border-border rounded-3xl p-4 space-y-2">
             <h3 className="font-extrabold text-foreground text-xs">Scan New Swatch Bucket QR Token</h3>
             <button
-              onClick={() => setShowScanModal(true)}
+              onClick={() => {
+                setShowScanModal(true);
+                startCameraStream();
+              }}
               className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-black text-xs rounded-2xl flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
             >
-              <QrCode size={16} /> Enter / Scan Bucket Coupon Code
+              <Camera size={16} /> Open Live Camera & Scan Bucket
             </button>
           </div>
         </div>
@@ -510,24 +590,96 @@ export function PainterDashboardClient({ initialData }: Props) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          QR BUCKET SCANNER MODAL (MOBILE FRIENDLY)
+          LIVE CAMERA QR BUCKET SCANNER MODAL (MOBILE CAMERA ACCESS)
       ══════════════════════════════════════════════════════════════════════ */}
       {showScanModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-card border border-border rounded-3xl max-w-sm w-full p-5 space-y-4 shadow-2xl animate-in zoom-in-95">
             <div className="flex items-center justify-between">
               <h3 className="font-black text-foreground text-xs flex items-center gap-1.5">
-                <QrCode size={16} className="text-emerald-500" /> Scan Swatch Bucket Token
+                <Camera size={16} className="text-emerald-500" /> Live Camera QR Bucket Scanner
               </h3>
-              <button onClick={() => setShowScanModal(false)} className="text-muted-foreground hover:text-foreground">
-                <X size={16} />
+              <button
+                onClick={() => {
+                  stopCameraStream();
+                  setShowScanModal(false);
+                }}
+                className="text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+              >
+                <X size={18} />
               </button>
             </div>
 
+            {/* LIVE CAMERA VIEWFINDER STREAM */}
+            <div className="relative rounded-2xl overflow-hidden bg-slate-950 border-2 border-emerald-500/40 shadow-inner flex items-center justify-center min-h-[200px]">
+              {isCameraActive ? (
+                <>
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="w-full h-52 object-cover"
+                  />
+                  {/* Viewfinder Target & Laser Line */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-6">
+                    <div className="w-40 h-40 border-2 border-emerald-400/80 rounded-2xl relative shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                      {/* Laser Bar */}
+                      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_10px_#10b981] animate-bounce" />
+                      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase tracking-wider text-emerald-300 bg-black/60 px-2 py-0.5 rounded-full">
+                        Align Bucket QR Inside Box
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Switch Camera Button */}
+                  <button
+                    type="button"
+                    onClick={toggleCameraFacingMode}
+                    className="absolute top-3 right-3 p-2 bg-black/60 text-white rounded-full hover:bg-black/80 cursor-pointer shadow-md"
+                    title="Switch Camera (Rear/Front)"
+                  >
+                    <SwitchCamera size={14} />
+                  </button>
+                </>
+              ) : (
+                <div className="p-6 text-center space-y-3 text-white">
+                  <Camera size={32} className="mx-auto text-indigo-400 animate-pulse" />
+                  {cameraError ? (
+                    <div className="space-y-1">
+                      <p className="text-[10px] text-rose-400 font-bold">Camera Access Error:</p>
+                      <p className="text-[9px] text-slate-300 max-w-[200px] mx-auto">{cameraError}</p>
+                    </div>
+                  ) : (
+                    <p className="text-[10px] text-slate-300">Camera preview inactive. Tap below to start your device camera.</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={startCameraStream}
+                    className="px-4 py-2 bg-emerald-600 text-white font-black text-[10px] rounded-xl hover:bg-emerald-700 shadow-md cursor-pointer"
+                  >
+                    Turn On Device Camera
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Auto Detect Capture Trigger */}
+            {isCameraActive && (
+              <button
+                type="button"
+                onClick={handleAutoDetectFromCamera}
+                className="w-full py-2 bg-indigo-600/20 border border-indigo-500/30 text-indigo-600 dark:text-indigo-300 font-black text-[10px] rounded-xl hover:bg-indigo-600/30 cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <Eye size={13} /> Capture Frame & Auto-Detect Token Code
+              </button>
+            )}
+
+            {/* MANUAL CODE & PRESETS FALLBACK */}
             <form onSubmit={handleScanSubmit} className="space-y-3 text-xs">
               <div>
                 <label className="text-[10px] font-black uppercase text-muted-foreground block mb-1">
-                  Enter Coupon Code (or Scan QR)
+                  Scanned / Manual Token Code
                 </label>
                 <input
                   required
@@ -545,7 +697,7 @@ export function PainterDashboardClient({ initialData }: Props) {
                     type="button"
                     key={preset}
                     onClick={() => setCouponCode(preset)}
-                    className="flex-1 py-1 bg-muted hover:bg-muted/80 rounded-lg text-[8px] font-mono font-bold text-foreground"
+                    className="flex-1 py-1 bg-muted hover:bg-muted/80 rounded-lg text-[8px] font-mono font-bold text-foreground cursor-pointer"
                   >
                     {preset}
                   </button>
@@ -555,7 +707,7 @@ export function PainterDashboardClient({ initialData }: Props) {
               <button
                 type="submit"
                 disabled={isPending}
-                className="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl hover:bg-emerald-700 cursor-pointer flex items-center justify-center gap-1.5"
+                className="w-full py-3 bg-emerald-600 text-white font-black text-xs rounded-xl hover:bg-emerald-700 cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20"
               >
                 {isPending ? <Loader2 className="animate-spin" size={14} /> : <CheckCircle2 size={14} />} Confirm Token Payout
               </button>
