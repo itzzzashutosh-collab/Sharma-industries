@@ -74,8 +74,8 @@ export default function LoginPage() {
                 <p className="text-xs font-bold tracking-wider text-slate-400 mt-1 uppercase">
                   Powered by Sharma Industries
                 </p>
-                <div className="inline-block mt-3 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-black tracking-widest uppercase text-primary">
-                  ERP Software Suite
+                <div className="inline-block mt-3 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-black tracking-widest uppercase text-emerald-600">
+                  Dealers, Painters & Salesmen Portal
                 </div>
               </div>
 
@@ -144,7 +144,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-600 to-primary text-white font-bold text-sm shadow-lg shadow-violet-500/10 hover:shadow-violet-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] cursor-pointer"
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white font-bold text-sm shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] cursor-pointer"
             >
               {isPending ? (
                 <span className="inline-flex items-center gap-2">
@@ -164,42 +164,49 @@ export default function LoginPage() {
           {/* Quick-Logins Drawer */}
           <div className="mt-8 pt-6 border-t border-slate-100">
             <p className="text-[10px] text-slate-400 mb-4 text-center uppercase tracking-widest font-black">
-              Developer Credentials Sandbox
+              1-Click Role Sandbox Login
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <form action={formAction}>
                 <input type="hidden" name="phone" value="9999999999" />
                 <input type="hidden" name="password" value="admin123" />
-                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200/80 transition-all cursor-pointer">
-                  CEO Office
-                </button>
-              </form>
-              <form action={formAction}>
-                <input type="hidden" name="phone" value="6666666666" />
-                <input type="hidden" name="password" value="admin123" />
-                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200/80 transition-all cursor-pointer">
-                  Auditor (CA)
+                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-violet-50 hover:bg-violet-100 text-violet-700 text-[11px] font-bold rounded-xl border border-violet-200 transition-all cursor-pointer shadow-xs">
+                  👑 CEO / Admin
                 </button>
               </form>
               <form action={formAction}>
                 <input type="hidden" name="phone" value="8888888888" />
                 <input type="hidden" name="password" value="admin123" />
-                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200/80 transition-all cursor-pointer">
-                  Dealer Portal
+                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-xl border border-emerald-200 transition-all cursor-pointer shadow-xs">
+                  🏪 Dealer
                 </button>
               </form>
               <form action={formAction}>
                 <input type="hidden" name="phone" value="7777777777" />
                 <input type="hidden" name="password" value="admin123" />
-                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200/80 transition-all cursor-pointer">
-                  Salesman
+                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 text-[11px] font-bold rounded-xl border border-sky-200 transition-all cursor-pointer shadow-xs">
+                  💼 Salesman
                 </button>
               </form>
               <form action={formAction}>
                 <input type="hidden" name="phone" value="9000000001" />
                 <input type="hidden" name="password" value="admin123" />
-                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl border border-slate-200/80 transition-all cursor-pointer">
-                  Painter Portal
+                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-amber-50 hover:bg-amber-100 text-amber-700 text-[11px] font-bold rounded-xl border border-amber-200 transition-all cursor-pointer shadow-xs">
+                  🎨 Painter
+                </button>
+              </form>
+              <form action={formAction}>
+                <input type="hidden" name="phone" value="6666666666" />
+                <input type="hidden" name="password" value="admin123" />
+                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold rounded-xl border border-slate-300 transition-all cursor-pointer shadow-xs">
+                  🏭 Factory
+                </button>
+              </form>
+              <form action={formAction}>
+                <input type="hidden" name="phone" value="9999999998" />
+                <input type="hidden" name="password" value="admin123" />
+                <button type="submit" disabled={isPending} className="w-full py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-bold rounded-xl border border-indigo-200 transition-all cursor-pointer shadow-xs">
+                  🤝 Co-Founder
                 </button>
               </form>
             </div>

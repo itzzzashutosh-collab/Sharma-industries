@@ -619,7 +619,7 @@ export function InvoicesClient({ initialData }: Props) {
                 </p>
               </div>
               <Link
-                href="/dashboard/ceo/invoices/new"
+                href="/dashboard/dealer/sales/invoices/new"
                 className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-all shadow-sm"
               >
                 <Plus size={13} /> {t("New Invoice")}
@@ -641,7 +641,7 @@ export function InvoicesClient({ initialData }: Props) {
                   )}
                 </p>
                 <Link
-                  href="/dashboard/ceo/invoices/new"
+                  href="/dashboard/dealer/sales/invoices/new"
                   className="inline-flex items-center gap-1.5 mt-5 px-5 py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary/90 transition-all shadow-sm"
                 >
                   <Plus size={13} /> {t("Start an Invoice")}
@@ -686,7 +686,7 @@ export function InvoicesClient({ initialData }: Props) {
                         : "—"}
                     </p>
                     <Link
-                      href={`/dashboard/ceo/invoices/new?draft=${draft.id}`}
+                      href={`/dashboard/dealer/sales/invoices/new?draft=${draft.id}`}
                       className="mt-4 flex items-center justify-center gap-1.5 py-2 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 rounded-xl text-xs font-bold transition-colors"
                     >
                       {t("Continue Editing")}

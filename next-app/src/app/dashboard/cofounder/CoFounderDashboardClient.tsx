@@ -182,8 +182,8 @@ export function CoFounderDashboardClient({
             { label: "Factory Management",  href: "/dashboard/factory/production",  icon: "🏭" },
             { label: "Inventory",           href: "/dashboard/factory/inventory",   icon: "📦" },
             { label: "Factory Expenses",    href: "/dashboard/factory/expenses",    icon: "💰" },
-            { label: "Products",            href: "/dashboard/ceo/products",        icon: "🎨" },
-            { label: "Dealer Network",      href: "/dashboard/ceo/dealers",         icon: "🤝" },
+            { label: "Products",            href: "/dashboard/dealer/products/list",        icon: "🎨" },
+            { label: "Dealer Network",      href: "/dashboard/dealer",               icon: "🤝" },
             { label: "Employees & HR",      href: "/dashboard/employees",           icon: "👥" },
           ].map((action, i) => (
             <motion.div

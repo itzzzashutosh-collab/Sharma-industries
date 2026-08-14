@@ -133,7 +133,7 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
             </div>
 
             <Link
-              href="/dashboard/dealer/invoices/new"
+              href="/dashboard/dealer/sales/pos"
               className="px-5 py-2.5 bg-primary text-white text-xs font-black rounded-2xl shadow-md hover:bg-primary/90 transition-all flex items-center gap-2 cursor-pointer"
             >
               <Plus size={15} /> + {t("New POS Bill")}
@@ -200,8 +200,8 @@ export function DealerDashboardClient({ session, metrics, activities }: Props) {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
           {[
-            { label: t("New POS Bill"), icon: FileText, href: "/dashboard/dealer/invoices/new", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
-            { label: t("Bills History"), icon: Receipt, href: "/dashboard/dealer/invoices", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
+            { label: t("New POS Bill"), icon: FileText, href: "/dashboard/dealer/sales/pos", color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20" },
+            { label: t("Bills History"), icon: Receipt, href: "/dashboard/dealer/sales/invoices", color: "text-blue-500 bg-blue-500/10 border-blue-500/20" },
             { label: t("Khata Ledger"), icon: Calculator, href: "/dashboard/dealer/finance/ledger", color: "text-rose-500 bg-rose-500/10 border-rose-500/20" },
             { label: t("Painters List"), icon: Users, href: "/dashboard/dealer/painters/list", color: "text-amber-500 bg-amber-500/10 border-amber-500/20" },
             { label: t("Painter KYC"), icon: ShieldCheck, href: "/dashboard/dealer/painters/register", color: "text-purple-500 bg-purple-500/10 border-purple-500/20" },

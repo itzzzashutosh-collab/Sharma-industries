@@ -86,25 +86,25 @@ const CEO_NAV: NavGroup[] = [
   {
     group: "Dashboard",
     items: [
-      { name: "Dashboard",       href: "/dashboard/ceo",                  icon: LayoutDashboard },
-      { name: "AI Dashboard",    href: "/dashboard/ceo/ai-dashboard",     icon: Sparkles },
+      { name: "Dashboard",       href: "/dashboard/admin",                icon: LayoutDashboard },
+      { name: "AI Dashboard",    href: "/dashboard/intelligence",          icon: Sparkles },
       { name: "Strategist Mode", href: "/dashboard/strategist",          icon: LineChart },
     ],
   },
   {
     group: "Business",
     items: [
-      { name: "Invoices",       href: "/dashboard/ceo/invoices",          icon: FileText },
-      { name: "Quotations",     href: "/dashboard/ceo/quotations",        icon: Receipt },
+      { name: "Invoices",       href: "/dashboard/dealer/sales/invoices",   icon: FileText },
+      { name: "Quotations",     href: "/dashboard/dealer/sales/quotations", icon: Receipt },
       { name: "Purchase Bills", href: "/dashboard/purchase",              icon: ShoppingCart },
-      { name: "Customers",      href: "/dashboard/ceo/customer-intelligence", icon: Users },
+      { name: "Customers",      href: "/dashboard/dealer/customers",       icon: Users },
       { name: "Orders",         href: "/dashboard/admin/orders",          icon: ClipboardList },
     ],
   },
   {
     group: "Products",
     items: [
-      { name: "Products",                  href: "/dashboard/ceo/products",          icon: Package },
+      { name: "Products",                  href: "/dashboard/dealer/products/list",    icon: Package },
       { name: "Raw materials & inventory", href: "/dashboard/factory/inventory",     icon: Warehouse },
       { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
       { name: "Production",                href: "/dashboard/factory/production",    icon: Factory },
@@ -113,27 +113,27 @@ const CEO_NAV: NavGroup[] = [
   {
     group: "Sales",
     items: [
-      { name: "Dealers",        href: "/dashboard/ceo/dealers",           icon: Store },
+      { name: "Dealers",        href: "/dashboard/dealer",                icon: Store },
       { name: "Painters",       href: "/dashboard/admin/painters",        icon: Paintbrush },
       { name: "Sales Team",     href: "/dashboard/admin/sales-team",      icon: UserCog },
-      { name: "Distribution",   href: "/dashboard/ceo/market-intelligence", icon: Truck },
+      { name: "Distribution",   href: "/dashboard/salesman/territory",    icon: Truck },
     ],
   },
   {
     group: "Finance",
     items: [
-      { name: "Revenue",        href: "/dashboard/ceo/financial-intelligence", icon: TrendingUp },
+      { name: "Revenue",        href: "/dashboard/dealer/finance/revenue",  icon: TrendingUp },
       { name: "Expenses",       href: "/dashboard/factory/expenses",      icon: CreditCard },
-      { name: "Ledger",         href: "/dashboard/ca-portal/sales",       icon: BookOpen },
-      { name: "Cash Flow",      href: "/dashboard/ceo/cash-flow",         icon: Banknote },
-      { name: "Profit & Loss",  href: "/dashboard/dealer/pnl",            icon: PieChart },
+      { name: "Ledger",         href: "/dashboard/dealer/finance/ledger",   icon: BookOpen },
+      { name: "Cash Flow",      href: "/dashboard/dealer/finance/cash-flow", icon: Banknote },
+      { name: "Profit & Loss",  href: "/dashboard/dealer/finance/pnl",      icon: PieChart },
     ],
   },
   {
     group: "Intelligence",
     items: [
-      { name: "Competitors",     href: "/dashboard/ceo/competitors",        icon: BarChart2 },
-      { name: "AI Spend",        href: "/dashboard/ceo/ai-spend",          icon: Wallet },
+      { name: "Competitors",     href: "/dashboard/intelligence",          icon: BarChart2 },
+      { name: "AI Spend",        href: "/dashboard/intelligence",          icon: Wallet },
     ],
   },
   {
@@ -141,9 +141,9 @@ const CEO_NAV: NavGroup[] = [
     items: [
       { name: "Factory",        href: "/dashboard/factory",               icon: Building2 },
       { name: "Employees",      href: "/dashboard/employees",             icon: UserCheck },
-      { name: "Approvals",      href: "/dashboard/ceo/approvals",         icon: CheckSquare },
-      { name: "Reports",        href: "/dashboard/ceo/reports",           icon: BarChart2 },
-      { name: "Settings",       href: "/dashboard/ceo/organization",      icon: Settings },
+      { name: "Approvals",      href: "/dashboard/admin/approvals",       icon: CheckSquare },
+      { name: "Reports",        href: "/dashboard/dealer/reports/sales",   icon: BarChart2 },
+      { name: "Settings",       href: "/dashboard/dealer/settings/business", icon: Settings },
     ],
   },
 ];
@@ -153,7 +153,7 @@ const COFOUNDER_NAV: NavGroup[] = [
     group: "Dashboard",
     items: [
       { name: "Dashboard",      href: "/dashboard/cofounder",             icon: LayoutDashboard },
-      { name: "AI Dashboard",   href: "/dashboard/ceo/ai-dashboard",     icon: Sparkles },
+      { name: "AI Dashboard",   href: "/dashboard/intelligence",          icon: Sparkles },
     ],
   },
   {
@@ -164,15 +164,15 @@ const COFOUNDER_NAV: NavGroup[] = [
       { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
       { name: "Expenses",                  href: "/dashboard/factory/expenses",      icon: CreditCard },
       { name: "Purchase Bills",            href: "/dashboard/purchase",              icon: ShoppingCart },
-      { name: "Suppliers",                 href: "/dashboard/ceo/suppliers",         icon: Truck },
+      { name: "Suppliers",                 href: "/dashboard/dealer/purchase/suppliers", icon: Truck },
     ],
   },
   {
     group: "Business",
     items: [
-      { name: "Products",       href: "/dashboard/ceo/products",          icon: Package },
-      { name: "Invoices",       href: "/dashboard/ceo/invoices",          icon: FileText },
-      { name: "Dealers",        href: "/dashboard/ceo/dealers",           icon: Users },
+      { name: "Products",       href: "/dashboard/dealer/products/list",  icon: Package },
+      { name: "Invoices",       href: "/dashboard/dealer/sales/invoices", icon: FileText },
+      { name: "Dealers",        href: "/dashboard/dealer",                icon: Users },
       { name: "Sales Team",     href: "/dashboard/admin/sales-team",      icon: UserCog },
       { name: "Approvals",      href: "/dashboard/admin/approvals",       icon: CheckSquare },
     ],
