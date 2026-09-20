@@ -1,0 +1,46 @@
+{
+  "partner_id": "DIST001",
+  "name": "Sonu Kumar",
+  "phone": "+91 9057501926",
+  "classification": "Independent B2B Wholesale Distributor",
+  "status": "Active Trade Partner",
+  "onboarding_date": "2026-09-01",
+  "governing_entity": "Sharma Industries / Swatch Paints",
+  "commercial_terms": {
+    "wholesale_transfer_rate_per_bag": 430.00,
+    "product_focus": "Swatch Rustic Texture (25kg Bag)",
+    "monthly_volume_commitment_bags": 200,
+    "nature": "Independent wholesale distributor (100% excluded from employee payroll & company ledger)",
+    "kit_policy": "NO company attack kit, NO free sample boards, NO free merchandise, NO travel or TA/DA allowance provided.",
+    "support_provided": "Sales guidance, negotiation frameworks, and Alex Hormozi / Brian Tracy B2B selling techniques only."
+  },
+  "territory_and_market_boundaries": {
+    "center_hub": "Bundi City, Rajasthan",
+    "geographic_radius": "Approximately 150 km radius from Bundi City",
+    "territory_rule": "Strictly limited to the specific CITY MARKETS (commercial retail trade corridors) listed below. Strictly EXCLUDES villages, rural tehsils, or areas outside these city markets.",
+    "approved_city_markets": [
+      { "id": 1, "city": "Talera", "specification": "Near Bundi — city retail market only" },
+      { "id": 2, "city": "Kota", "specification": "Kota City commercial market only (Excludes rural Kota)" },
+      { "id": 3, "city": "Dabi", "specification": "Dabi City commercial market only" },
+      { "id": 4, "city": "Bijoliya", "specification": "Bijoliya City retail trade market only" },
+      { "id": 5, "city": "Baran", "specification": "Baran City commercial market only" },
+      { "id": 6, "city": "Rawatbhata", "specification": "Rawatbhata City commercial market only" },
+      { "id": 7, "city": "Uniyara", "specification": "Uniyara City market only" },
+      { "id": 8, "city": "Nainwa", "specification": "Nainwa City market only" },
+      { "id": 9, "city": "Dei", "specification": "Dei City market only" },
+      { "id": 10, "city": "Khatkad", "specification": "Khatkad City commercial market only" },
+      { "id": 11, "city": "Deoli", "specification": "Deoli City commercial market only" }
+    ]
+  },
+  "dealer_assignment_governance": {
+    "policy": "Sonu Kumar can identify and recommend dealers in his approved 11 city markets.",
+    "access_rule": "STRICT CEO ADMIN APPROVAL REQUIRED. No dealer access, pricing terms, or stock allocation will be granted until CEO Ashutosh Sharma (+91 9079609627) personally reviews and approves the dealer assignment.",
+    "assigned_dealers": []
+  },
+  "performance_tracking": {
+    "target_monthly_bags": 200,
+    "last_month_bags_lifted": 210,
+    "last_month_billing_amount": 90300.00,
+    "compliance_status": "Compliant"
+  }
+}

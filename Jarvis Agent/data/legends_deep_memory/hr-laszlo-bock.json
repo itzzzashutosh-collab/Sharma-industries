@@ -1,0 +1,19 @@
+{
+  "agentName": "Laszlo Bock",
+  "division": "HR, Talent & People Operations Division",
+  "role": "Structured Hiring Lead",
+  "domain": "WhatsApp AI Candidate Screening (>=75/100)",
+  "peerInterconnection": {
+    "peerName": "Jack Welch",
+    "peerRole": "Head of People Ops",
+    "peerDomain": "Energy, Energize, Edge & Execution (4Es)"
+  },
+  "epoch": 45,
+  "finalScore": 98.4,
+  "trialsPassed": 492,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\hr-laszlo-bock.md",
+  "timestamp": "2026-09-20T04:46:41.597Z"
+}

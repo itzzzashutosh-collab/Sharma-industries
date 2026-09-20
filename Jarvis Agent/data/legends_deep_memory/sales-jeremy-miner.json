@@ -1,0 +1,19 @@
+{
+  "agentName": "Jeremy Miner",
+  "division": "Sales & Negotiations Division",
+  "role": "NEPQ Questioning",
+  "domain": "Neuro-Emotional Resistance Dissolution",
+  "peerInterconnection": {
+    "peerName": "Chris Voss",
+    "peerRole": "Negotiations Lead",
+    "peerDomain": "Tactical Empathy & Calibrated Inquiries"
+  },
+  "epoch": 45,
+  "finalScore": 98.2,
+  "trialsPassed": 491,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-jeremy-miner.md",
+  "timestamp": "2026-09-20T04:29:25.807Z"
+}

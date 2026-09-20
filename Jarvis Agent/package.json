@@ -1,0 +1,24 @@
+{
+  "name": "jarvis-agent",
+  "version": "1.0.0",
+  "description": "Sharma Industries — Hermes AI Orchestration Layer",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.18",
+    "csv-parse": "^5.6.0",
+    "dotenv": "^17.4.2",
+    "hermes-paperclip-adapter": "file:../hermes-paperclip-adapter",
+    "pdfkit": "^0.20.2",
+    "pino": "^9.7.0",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

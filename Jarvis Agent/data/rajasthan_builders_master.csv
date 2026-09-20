@@ -1,0 +1,1001 @@
+id,company_name,district_hq,project_types,company_scale,purchase_contact_person,phone,email,estimated_annual_paint_requirement_liters
+1,"Manglam Group",Jaipur,"Residential Highrise & Commercial","Tier 1 Mega Builder","Chief Procurement Officer (Jaipur)",+919829010003,purchase@manglamgroup.com,50000
+2,"Mahima Group",Jaipur,"Luxury Highrise & Villas","Tier 1 Mega Builder","Head of Civil Purchase (Jaipur)",+919829010006,purchase@mahimagroup.com,65000
+3,"Terra Group",Bhiwadi,"Affordable Housing & Township","Tier 1 Mega Builder","Project Director - Finishes (Bhiwadi)",+919829010009,purchase@terragroup.com,80000
+4,"Trehan Home Developers",Bhiwadi,"Group Housing & Commercial","Tier 1 Mega Builder","Contracts & Tenders Head (Bhiwadi)",+919829010012,purchase@trehanhomedevelopers.com,95000
+5,"Ashiana Housing",Bhiwadi & Jaipur,"Senior Living & Premium Condos","National Developer","Chief Materials Manager (Bhiwadi & Jaipur)",+919829010015,purchase@ashianahousing.com,110000
+6,"SNG Group",Jaipur,"Commercial Complexes & Residences","Tier 1 Regional","Chief Procurement Officer (Jaipur)",+919829010018,purchase@snggroup.com,125000
+7,"UDB (Unique Dream Builders)",Jaipur,"Integrated Townships & Malls","Tier 1 Regional","Head of Civil Purchase (Jaipur)",+919829010021,purchase@udbuniquedreambuilders.com,140000
+8,"Kedia Homes",Jaipur,"Villas & Gated Communities","High Volume Residential","Project Director - Finishes (Jaipur)",+919829010024,purchase@kediahomes.com,155000
+9,"Apeksha Group",Jaipur & Ajmer,"Affordable Residential Projects","Tier 2 Regional","Contracts & Tenders Head (Jaipur & Ajmer)",+919829010027,purchase@apekshagroup.com,170000
+10,"ARG Group",Jaipur & Alwar,"Commercial Towers & Group Housing","Tier 1 Regional","Chief Materials Manager (Jaipur & Alwar)",+919829010030,purchase@arggroup.com,185000
+11,"Vardhman Group",Jaipur,"Commercial Hubs & Flats","Tier 2 Regional","Chief Procurement Officer (Jaipur)",+919829010033,purchase@vardhmangroup.com,50000
+12,"R-Tech Group",Bhiwadi & Jaipur,"Capital Malls & Galleria Projects","Commercial Titan","Head of Civil Purchase (Bhiwadi & Jaipur)",+919829010036,purchase@rtechgroup.com,65000
+13,"Upasana Group",Jaipur,"Boutique Luxury Condos","Premium Residential","Project Director - Finishes (Jaipur)",+919829010039,purchase@upasanagroup.com,80000
+14,"Shubhashish Homes",Jaipur,"Green Concept Smart Homes","Eco-Developer","Contracts & Tenders Head (Jaipur)",+919829010042,purchase@shubhashishhomes.com,95000
+15,"Chordia Group",Jaipur,"Industrial Parks & Townships","Infrastructure & Projects","Chief Materials Manager (Jaipur)",+919829010045,purchase@chordiagroup.com,110000
+16,"Ashapurna Buildcon",Jodhpur,"Townships & Commercial Hubs","Marwar Market Leader","Chief Procurement Officer (Jodhpur)",+919829010048,purchase@ashapurnabuildcon.com,125000
+17,"Bhadreshwar Group",Jodhpur,"Residential Apartments","Regional Builder","Head of Civil Purchase (Jodhpur)",+919829010051,purchase@bhadreshwargroup.com,140000
+18,"Miraj Group (Real Estate)",Udaipur,"Commercial, Residential & Multiplexes","Mewar Mega Conglomerate","Project Director - Finishes (Udaipur)",+919829010054,purchase@mirajgrouprealestate.com,155000
+19,"Archi Group",Udaipur,"Luxury Lake-View Towers & Hotels","Luxury Developer","Contracts & Tenders Head (Udaipur)",+919829010057,purchase@archigroup.com,170000
+20,"Om Infra Homes",Kota,"High-Rise Apartments & Student Hostels","Kota Market Leader","Chief Materials Manager (Kota)",+919829010060,purchase@ominfrahomes.com,185000
+21,"Jaipur V Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010147,procurement@jaipurbuild21.in,22350
+22,"Jodhpur W Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829010154,procurement@jodhpurbuild22.in,22700
+23,"Udaipur X Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010161,procurement@udaipurbuild23.in,23050
+24,"Kota Y Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829010168,procurement@kotabuild24.in,23400
+25,"Alwar Z Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010175,procurement@alwarbuild25.in,23750
+26,"Ajmer A Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829010182,procurement@ajmerbuild26.in,24100
+27,"Bhilwara B Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829010189,procurement@bhilwarabuild27.in,24450
+28,"Jaipur C Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829010196,procurement@jaipurbuild28.in,24800
+29,"Jodhpur D Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010203,procurement@jodhpurbuild29.in,25150
+30,"Udaipur E Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829010210,procurement@udaipurbuild30.in,25500
+31,"Kota F Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010217,procurement@kotabuild31.in,25850
+32,"Alwar G Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829010224,procurement@alwarbuild32.in,26200
+33,"Ajmer H Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829010231,procurement@ajmerbuild33.in,26550
+34,"Bhilwara I Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829010238,procurement@bhilwarabuild34.in,26900
+35,"Jaipur J Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010245,procurement@jaipurbuild35.in,27250
+36,"Jodhpur K Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829010252,procurement@jodhpurbuild36.in,27600
+37,"Udaipur L Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010259,procurement@udaipurbuild37.in,27950
+38,"Kota M Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829010266,procurement@kotabuild38.in,28300
+39,"Alwar N Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829010273,procurement@alwarbuild39.in,28650
+40,"Ajmer O Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829010280,procurement@ajmerbuild40.in,29000
+41,"Bhilwara P Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010287,procurement@bhilwarabuild41.in,29350
+42,"Jaipur Q Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829010294,procurement@jaipurbuild42.in,29700
+43,"Jodhpur R Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010301,procurement@jodhpurbuild43.in,30050
+44,"Udaipur S Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829010308,procurement@udaipurbuild44.in,30400
+45,"Kota T Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829010315,procurement@kotabuild45.in,30750
+46,"Alwar U Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829010322,procurement@alwarbuild46.in,31100
+47,"Ajmer V Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010329,procurement@ajmerbuild47.in,31450
+48,"Bhilwara W Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829010336,procurement@bhilwarabuild48.in,31800
+49,"Jaipur X Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010343,procurement@jaipurbuild49.in,32150
+50,"Jodhpur Y Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829010350,procurement@jodhpurbuild50.in,32500
+51,"Udaipur Z Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010357,procurement@udaipurbuild51.in,32850
+52,"Kota A Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829010364,procurement@kotabuild52.in,33200
+53,"Alwar B Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010371,procurement@alwarbuild53.in,33550
+54,"Ajmer C Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829010378,procurement@ajmerbuild54.in,33900
+55,"Bhilwara D Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010385,procurement@bhilwarabuild55.in,34250
+56,"Jaipur E Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829010392,procurement@jaipurbuild56.in,34600
+57,"Jodhpur F Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829010399,procurement@jodhpurbuild57.in,34950
+58,"Udaipur G Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829010406,procurement@udaipurbuild58.in,35300
+59,"Kota H Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010413,procurement@kotabuild59.in,35650
+60,"Alwar I Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829010420,procurement@alwarbuild60.in,36000
+61,"Ajmer J Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010427,procurement@ajmerbuild61.in,36350
+62,"Bhilwara K Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829010434,procurement@bhilwarabuild62.in,36700
+63,"Jaipur L Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829010441,procurement@jaipurbuild63.in,37050
+64,"Jodhpur M Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829010448,procurement@jodhpurbuild64.in,37400
+65,"Udaipur N Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010455,procurement@udaipurbuild65.in,37750
+66,"Kota O Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010462,procurement@kotabuild66.in,38100
+67,"Alwar P Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010469,procurement@alwarbuild67.in,38450
+68,"Ajmer Q Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829010476,procurement@ajmerbuild68.in,38800
+69,"Bhilwara R Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829010483,procurement@bhilwarabuild69.in,39150
+70,"Jaipur S Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829010490,procurement@jaipurbuild70.in,39500
+71,"Jodhpur T Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010497,procurement@jodhpurbuild71.in,39850
+72,"Udaipur U Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829010504,procurement@udaipurbuild72.in,40200
+73,"Kota V Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010511,procurement@kotabuild73.in,40550
+74,"Alwar W Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829010518,procurement@alwarbuild74.in,40900
+75,"Ajmer X Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829010525,procurement@ajmerbuild75.in,41250
+76,"Bhilwara Y Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829010532,procurement@bhilwarabuild76.in,41600
+77,"Jaipur Z Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010539,procurement@jaipurbuild77.in,41950
+78,"Jodhpur A Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829010546,procurement@jodhpurbuild78.in,42300
+79,"Udaipur B Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010553,procurement@udaipurbuild79.in,42650
+80,"Kota C Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829010560,procurement@kotabuild80.in,43000
+81,"Alwar D Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010567,procurement@alwarbuild81.in,43350
+82,"Ajmer E Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829010574,procurement@ajmerbuild82.in,43700
+83,"Bhilwara F Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010581,procurement@bhilwarabuild83.in,44050
+84,"Jaipur G Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829010588,procurement@jaipurbuild84.in,44400
+85,"Jodhpur H Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010595,procurement@jodhpurbuild85.in,44750
+86,"Udaipur I Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829010602,procurement@udaipurbuild86.in,45100
+87,"Kota J Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829010609,procurement@kotabuild87.in,45450
+88,"Alwar K Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829010616,procurement@alwarbuild88.in,45800
+89,"Ajmer L Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010623,procurement@ajmerbuild89.in,46150
+90,"Bhilwara M Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829010630,procurement@bhilwarabuild90.in,46500
+91,"Jaipur N Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010637,procurement@jaipurbuild91.in,46850
+92,"Jodhpur O Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829010644,procurement@jodhpurbuild92.in,47200
+93,"Udaipur P Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829010651,procurement@udaipurbuild93.in,47550
+94,"Kota Q Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829010658,procurement@kotabuild94.in,47900
+95,"Alwar R Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010665,procurement@alwarbuild95.in,48250
+96,"Ajmer S Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829010672,procurement@ajmerbuild96.in,48600
+97,"Bhilwara T Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010679,procurement@bhilwarabuild97.in,48950
+98,"Jaipur U Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829010686,procurement@jaipurbuild98.in,49300
+99,"Jodhpur V Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829010693,procurement@jodhpurbuild99.in,49650
+100,"Udaipur W Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829010700,procurement@udaipurbuild100.in,50000
+101,"Kota X Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010707,procurement@kotabuild101.in,50350
+102,"Alwar Y Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829010714,procurement@alwarbuild102.in,50700
+103,"Ajmer Z Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010721,procurement@ajmerbuild103.in,51050
+104,"Bhilwara A Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829010728,procurement@bhilwarabuild104.in,51400
+105,"Jaipur B Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829010735,procurement@jaipurbuild105.in,51750
+106,"Jodhpur C Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829010742,procurement@jodhpurbuild106.in,52100
+107,"Udaipur D Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010749,procurement@udaipurbuild107.in,52450
+108,"Kota E Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829010756,procurement@kotabuild108.in,52800
+109,"Alwar F Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010763,procurement@alwarbuild109.in,53150
+110,"Ajmer G Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829010770,procurement@ajmerbuild110.in,53500
+111,"Bhilwara H Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010777,procurement@bhilwarabuild111.in,53850
+112,"Jaipur I Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829010784,procurement@jaipurbuild112.in,54200
+113,"Jodhpur J Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010791,procurement@jodhpurbuild113.in,54550
+114,"Udaipur K Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829010798,procurement@udaipurbuild114.in,54900
+115,"Kota L Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010805,procurement@kotabuild115.in,55250
+116,"Alwar M Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829010812,procurement@alwarbuild116.in,55600
+117,"Ajmer N Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829010819,procurement@ajmerbuild117.in,55950
+118,"Bhilwara O Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829010826,procurement@bhilwarabuild118.in,56300
+119,"Jaipur P Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010833,procurement@jaipurbuild119.in,56650
+120,"Jodhpur Q Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829010840,procurement@jodhpurbuild120.in,57000
+121,"Udaipur R Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010847,procurement@udaipurbuild121.in,57350
+122,"Kota S Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829010854,procurement@kotabuild122.in,57700
+123,"Alwar T Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829010861,procurement@alwarbuild123.in,58050
+124,"Ajmer U Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829010868,procurement@ajmerbuild124.in,58400
+125,"Bhilwara V Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829010875,procurement@bhilwarabuild125.in,58750
+126,"Jaipur W Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010882,procurement@jaipurbuild126.in,59100
+127,"Jodhpur X Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010889,procurement@jodhpurbuild127.in,59450
+128,"Udaipur Y Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829010896,procurement@udaipurbuild128.in,59800
+129,"Kota Z Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829010903,procurement@kotabuild129.in,60150
+130,"Alwar A Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829010910,procurement@alwarbuild130.in,60500
+131,"Ajmer B Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829010917,procurement@ajmerbuild131.in,60850
+132,"Bhilwara C Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829010924,procurement@bhilwarabuild132.in,61200
+133,"Jaipur D Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829010931,procurement@jaipurbuild133.in,61550
+134,"Jodhpur E Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829010938,procurement@jodhpurbuild134.in,61900
+135,"Udaipur F Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829010945,procurement@udaipurbuild135.in,62250
+136,"Kota G Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829010952,procurement@kotabuild136.in,62600
+137,"Alwar H Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829010959,procurement@alwarbuild137.in,62950
+138,"Ajmer I Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829010966,procurement@ajmerbuild138.in,63300
+139,"Bhilwara J Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829010973,procurement@bhilwarabuild139.in,63650
+140,"Jaipur K Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829010980,procurement@jaipurbuild140.in,64000
+141,"Jodhpur L Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829010987,procurement@jodhpurbuild141.in,64350
+142,"Udaipur M Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829010994,procurement@udaipurbuild142.in,64700
+143,"Kota N Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011001,procurement@kotabuild143.in,65050
+144,"Alwar O Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829011008,procurement@alwarbuild144.in,65400
+145,"Ajmer P Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011015,procurement@ajmerbuild145.in,65750
+146,"Bhilwara Q Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829011022,procurement@bhilwarabuild146.in,66100
+147,"Jaipur R Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011029,procurement@jaipurbuild147.in,66450
+148,"Jodhpur S Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829011036,procurement@jodhpurbuild148.in,66800
+149,"Udaipur T Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011043,procurement@udaipurbuild149.in,67150
+150,"Kota U Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011050,procurement@kotabuild150.in,67500
+151,"Alwar V Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011057,procurement@alwarbuild151.in,67850
+152,"Ajmer W Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829011064,procurement@ajmerbuild152.in,68200
+153,"Bhilwara X Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011071,procurement@bhilwarabuild153.in,68550
+154,"Jaipur Y Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829011078,procurement@jaipurbuild154.in,68900
+155,"Jodhpur Z Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011085,procurement@jodhpurbuild155.in,69250
+156,"Udaipur A Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829011092,procurement@udaipurbuild156.in,69600
+157,"Kota B Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011099,procurement@kotabuild157.in,69950
+158,"Alwar C Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829011106,procurement@alwarbuild158.in,70300
+159,"Ajmer D Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011113,procurement@ajmerbuild159.in,70650
+160,"Bhilwara E Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829011120,procurement@bhilwarabuild160.in,71000
+161,"Jaipur F Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011127,procurement@jaipurbuild161.in,71350
+162,"Jodhpur G Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011134,procurement@jodhpurbuild162.in,71700
+163,"Udaipur H Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011141,procurement@udaipurbuild163.in,72050
+164,"Kota I Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829011148,procurement@kotabuild164.in,72400
+165,"Alwar J Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011155,procurement@alwarbuild165.in,72750
+166,"Ajmer K Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829011162,procurement@ajmerbuild166.in,73100
+167,"Bhilwara L Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011169,procurement@bhilwarabuild167.in,73450
+168,"Jaipur M Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829011176,procurement@jaipurbuild168.in,73800
+169,"Jodhpur N Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011183,procurement@jodhpurbuild169.in,74150
+170,"Udaipur O Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829011190,procurement@udaipurbuild170.in,74500
+171,"Kota P Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829011197,procurement@kotabuild171.in,74850
+172,"Alwar Q Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829011204,procurement@alwarbuild172.in,75200
+173,"Ajmer R Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011211,procurement@ajmerbuild173.in,75550
+174,"Bhilwara S Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011218,procurement@bhilwarabuild174.in,75900
+175,"Jaipur T Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011225,procurement@jaipurbuild175.in,76250
+176,"Jodhpur U Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829011232,procurement@jodhpurbuild176.in,76600
+177,"Udaipur V Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011239,procurement@udaipurbuild177.in,76950
+178,"Kota W Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829011246,procurement@kotabuild178.in,77300
+179,"Alwar X Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011253,procurement@alwarbuild179.in,77650
+180,"Ajmer Y Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829011260,procurement@ajmerbuild180.in,78000
+181,"Bhilwara Z Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011267,procurement@bhilwarabuild181.in,78350
+182,"Jaipur A Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829011274,procurement@jaipurbuild182.in,78700
+183,"Jodhpur B Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011281,procurement@jodhpurbuild183.in,79050
+184,"Udaipur C Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829011288,procurement@udaipurbuild184.in,79400
+185,"Kota D Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011295,procurement@kotabuild185.in,79750
+186,"Alwar E Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829011302,procurement@alwarbuild186.in,80100
+187,"Ajmer F Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011309,procurement@ajmerbuild187.in,80450
+188,"Bhilwara G Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829011316,procurement@bhilwarabuild188.in,80800
+189,"Jaipur H Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011323,procurement@jaipurbuild189.in,81150
+190,"Jodhpur I Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829011330,procurement@jodhpurbuild190.in,81500
+191,"Udaipur J Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011337,procurement@udaipurbuild191.in,81850
+192,"Kota K Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829011344,procurement@kotabuild192.in,82200
+193,"Alwar L Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011351,procurement@alwarbuild193.in,82550
+194,"Ajmer M Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829011358,procurement@ajmerbuild194.in,82900
+195,"Bhilwara N Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011365,procurement@bhilwarabuild195.in,83250
+196,"Jaipur O Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829011372,procurement@jaipurbuild196.in,83600
+197,"Jodhpur P Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011379,procurement@jodhpurbuild197.in,83950
+198,"Udaipur Q Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011386,procurement@udaipurbuild198.in,84300
+199,"Kota R Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011393,procurement@kotabuild199.in,84650
+200,"Alwar S Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829011400,procurement@alwarbuild200.in,85000
+201,"Ajmer T Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829011407,procurement@ajmerbuild201.in,85350
+202,"Bhilwara U Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829011414,procurement@bhilwarabuild202.in,85700
+203,"Jaipur V Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011421,procurement@jaipurbuild203.in,86050
+204,"Jodhpur W Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829011428,procurement@jodhpurbuild204.in,86400
+205,"Udaipur X Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011435,procurement@udaipurbuild205.in,86750
+206,"Kota Y Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829011442,procurement@kotabuild206.in,87100
+207,"Alwar Z Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011449,procurement@alwarbuild207.in,87450
+208,"Ajmer A Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829011456,procurement@ajmerbuild208.in,87800
+209,"Bhilwara B Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011463,procurement@bhilwarabuild209.in,88150
+210,"Jaipur C Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011470,procurement@jaipurbuild210.in,88500
+211,"Jodhpur D Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011477,procurement@jodhpurbuild211.in,88850
+212,"Udaipur E Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829011484,procurement@udaipurbuild212.in,89200
+213,"Kota F Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011491,procurement@kotabuild213.in,89550
+214,"Alwar G Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829011498,procurement@alwarbuild214.in,89900
+215,"Ajmer H Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011505,procurement@ajmerbuild215.in,90250
+216,"Bhilwara I Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829011512,procurement@bhilwarabuild216.in,90600
+217,"Jaipur J Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011519,procurement@jaipurbuild217.in,90950
+218,"Jodhpur K Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829011526,procurement@jodhpurbuild218.in,91300
+219,"Udaipur L Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011533,procurement@udaipurbuild219.in,91650
+220,"Kota M Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829011540,procurement@kotabuild220.in,92000
+221,"Alwar N Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011547,procurement@alwarbuild221.in,92350
+222,"Ajmer O Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011554,procurement@ajmerbuild222.in,92700
+223,"Bhilwara P Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011561,procurement@bhilwarabuild223.in,93050
+224,"Jaipur Q Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829011568,procurement@jaipurbuild224.in,93400
+225,"Jodhpur R Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011575,procurement@jodhpurbuild225.in,93750
+226,"Udaipur S Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829011582,procurement@udaipurbuild226.in,94100
+227,"Kota T Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011589,procurement@kotabuild227.in,94450
+228,"Alwar U Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829011596,procurement@alwarbuild228.in,94800
+229,"Ajmer V Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011603,procurement@ajmerbuild229.in,95150
+230,"Bhilwara W Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829011610,procurement@bhilwarabuild230.in,95500
+231,"Jaipur X Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829011617,procurement@jaipurbuild231.in,95850
+232,"Jodhpur Y Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829011624,procurement@jodhpurbuild232.in,96200
+233,"Udaipur Z Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011631,procurement@udaipurbuild233.in,96550
+234,"Kota A Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011638,procurement@kotabuild234.in,96900
+235,"Alwar B Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011645,procurement@alwarbuild235.in,97250
+236,"Ajmer C Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829011652,procurement@ajmerbuild236.in,97600
+237,"Bhilwara D Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011659,procurement@bhilwarabuild237.in,97950
+238,"Jaipur E Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829011666,procurement@jaipurbuild238.in,98300
+239,"Jodhpur F Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011673,procurement@jodhpurbuild239.in,98650
+240,"Udaipur G Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829011680,procurement@udaipurbuild240.in,99000
+241,"Kota H Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011687,procurement@kotabuild241.in,99350
+242,"Alwar I Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829011694,procurement@alwarbuild242.in,99700
+243,"Ajmer J Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011701,procurement@ajmerbuild243.in,15050
+244,"Bhilwara K Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829011708,procurement@bhilwarabuild244.in,15400
+245,"Jaipur L Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011715,procurement@jaipurbuild245.in,15750
+246,"Jodhpur M Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829011722,procurement@jodhpurbuild246.in,16100
+247,"Udaipur N Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011729,procurement@udaipurbuild247.in,16450
+248,"Kota O Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829011736,procurement@kotabuild248.in,16800
+249,"Alwar P Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011743,procurement@alwarbuild249.in,17150
+250,"Ajmer Q Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829011750,procurement@ajmerbuild250.in,17500
+251,"Bhilwara R Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011757,procurement@bhilwarabuild251.in,17850
+252,"Jaipur S Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829011764,procurement@jaipurbuild252.in,18200
+253,"Jodhpur T Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011771,procurement@jodhpurbuild253.in,18550
+254,"Udaipur U Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829011778,procurement@udaipurbuild254.in,18900
+255,"Kota V Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011785,procurement@kotabuild255.in,19250
+256,"Alwar W Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829011792,procurement@alwarbuild256.in,19600
+257,"Ajmer X Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011799,procurement@ajmerbuild257.in,19950
+258,"Bhilwara Y Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011806,procurement@bhilwarabuild258.in,20300
+259,"Jaipur Z Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011813,procurement@jaipurbuild259.in,20650
+260,"Jodhpur A Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829011820,procurement@jodhpurbuild260.in,21000
+261,"Udaipur B Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829011827,procurement@udaipurbuild261.in,21350
+262,"Kota C Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829011834,procurement@kotabuild262.in,21700
+263,"Alwar D Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011841,procurement@alwarbuild263.in,22050
+264,"Ajmer E Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829011848,procurement@ajmerbuild264.in,22400
+265,"Bhilwara F Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011855,procurement@bhilwarabuild265.in,22750
+266,"Jaipur G Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829011862,procurement@jaipurbuild266.in,23100
+267,"Jodhpur H Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011869,procurement@jodhpurbuild267.in,23450
+268,"Udaipur I Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829011876,procurement@udaipurbuild268.in,23800
+269,"Kota J Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829011883,procurement@kotabuild269.in,24150
+270,"Alwar K Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011890,procurement@alwarbuild270.in,24500
+271,"Ajmer L Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011897,procurement@ajmerbuild271.in,24850
+272,"Bhilwara M Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829011904,procurement@bhilwarabuild272.in,25200
+273,"Jaipur N Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829011911,procurement@jaipurbuild273.in,25550
+274,"Jodhpur O Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829011918,procurement@jodhpurbuild274.in,25900
+275,"Udaipur P Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829011925,procurement@udaipurbuild275.in,26250
+276,"Kota Q Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829011932,procurement@kotabuild276.in,26600
+277,"Alwar R Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829011939,procurement@alwarbuild277.in,26950
+278,"Ajmer S Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829011946,procurement@ajmerbuild278.in,27300
+279,"Bhilwara T Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829011953,procurement@bhilwarabuild279.in,27650
+280,"Jaipur U Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829011960,procurement@jaipurbuild280.in,28000
+281,"Jodhpur V Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829011967,procurement@jodhpurbuild281.in,28350
+282,"Udaipur W Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829011974,procurement@udaipurbuild282.in,28700
+283,"Kota X Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829011981,procurement@kotabuild283.in,29050
+284,"Alwar Y Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829011988,procurement@alwarbuild284.in,29400
+285,"Ajmer Z Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829011995,procurement@ajmerbuild285.in,29750
+286,"Bhilwara A Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829012002,procurement@bhilwarabuild286.in,30100
+287,"Jaipur B Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012009,procurement@jaipurbuild287.in,30450
+288,"Jodhpur C Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829012016,procurement@jodhpurbuild288.in,30800
+289,"Udaipur D Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012023,procurement@udaipurbuild289.in,31150
+290,"Kota E Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829012030,procurement@kotabuild290.in,31500
+291,"Alwar F Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012037,procurement@alwarbuild291.in,31850
+292,"Ajmer G Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829012044,procurement@ajmerbuild292.in,32200
+293,"Bhilwara H Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012051,procurement@bhilwarabuild293.in,32550
+294,"Jaipur I Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012058,procurement@jaipurbuild294.in,32900
+295,"Jodhpur J Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012065,procurement@jodhpurbuild295.in,33250
+296,"Udaipur K Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829012072,procurement@udaipurbuild296.in,33600
+297,"Kota L Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012079,procurement@kotabuild297.in,33950
+298,"Alwar M Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829012086,procurement@alwarbuild298.in,34300
+299,"Ajmer N Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012093,procurement@ajmerbuild299.in,34650
+300,"Bhilwara O Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829012100,procurement@bhilwarabuild300.in,35000
+301,"Jaipur P Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012107,procurement@jaipurbuild301.in,35350
+302,"Jodhpur Q Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829012114,procurement@jodhpurbuild302.in,35700
+303,"Udaipur R Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012121,procurement@udaipurbuild303.in,36050
+304,"Kota S Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829012128,procurement@kotabuild304.in,36400
+305,"Alwar T Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012135,procurement@alwarbuild305.in,36750
+306,"Ajmer U Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012142,procurement@ajmerbuild306.in,37100
+307,"Bhilwara V Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012149,procurement@bhilwarabuild307.in,37450
+308,"Jaipur W Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829012156,procurement@jaipurbuild308.in,37800
+309,"Jodhpur X Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012163,procurement@jodhpurbuild309.in,38150
+310,"Udaipur Y Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829012170,procurement@udaipurbuild310.in,38500
+311,"Kota Z Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012177,procurement@kotabuild311.in,38850
+312,"Alwar A Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829012184,procurement@alwarbuild312.in,39200
+313,"Ajmer B Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012191,procurement@ajmerbuild313.in,39550
+314,"Bhilwara C Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829012198,procurement@bhilwarabuild314.in,39900
+315,"Jaipur D Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829012205,procurement@jaipurbuild315.in,40250
+316,"Jodhpur E Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829012212,procurement@jodhpurbuild316.in,40600
+317,"Udaipur F Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012219,procurement@udaipurbuild317.in,40950
+318,"Kota G Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012226,procurement@kotabuild318.in,41300
+319,"Alwar H Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012233,procurement@alwarbuild319.in,41650
+320,"Ajmer I Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829012240,procurement@ajmerbuild320.in,42000
+321,"Bhilwara J Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012247,procurement@bhilwarabuild321.in,42350
+322,"Jaipur K Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829012254,procurement@jaipurbuild322.in,42700
+323,"Jodhpur L Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012261,procurement@jodhpurbuild323.in,43050
+324,"Udaipur M Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829012268,procurement@udaipurbuild324.in,43400
+325,"Kota N Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012275,procurement@kotabuild325.in,43750
+326,"Alwar O Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829012282,procurement@alwarbuild326.in,44100
+327,"Ajmer P Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012289,procurement@ajmerbuild327.in,44450
+328,"Bhilwara Q Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829012296,procurement@bhilwarabuild328.in,44800
+329,"Jaipur R Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012303,procurement@jaipurbuild329.in,45150
+330,"Jodhpur S Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829012310,procurement@jodhpurbuild330.in,45500
+331,"Udaipur T Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012317,procurement@udaipurbuild331.in,45850
+332,"Kota U Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829012324,procurement@kotabuild332.in,46200
+333,"Alwar V Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012331,procurement@alwarbuild333.in,46550
+334,"Ajmer W Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829012338,procurement@ajmerbuild334.in,46900
+335,"Bhilwara X Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012345,procurement@bhilwarabuild335.in,47250
+336,"Jaipur Y Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829012352,procurement@jaipurbuild336.in,47600
+337,"Jodhpur Z Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012359,procurement@jodhpurbuild337.in,47950
+338,"Udaipur A Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829012366,procurement@udaipurbuild338.in,48300
+339,"Kota B Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012373,procurement@kotabuild339.in,48650
+340,"Alwar C Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829012380,procurement@alwarbuild340.in,49000
+341,"Ajmer D Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012387,procurement@ajmerbuild341.in,49350
+342,"Bhilwara E Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012394,procurement@bhilwarabuild342.in,49700
+343,"Jaipur F Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012401,procurement@jaipurbuild343.in,50050
+344,"Jodhpur G Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829012408,procurement@jodhpurbuild344.in,50400
+345,"Udaipur H Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829012415,procurement@udaipurbuild345.in,50750
+346,"Kota I Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829012422,procurement@kotabuild346.in,51100
+347,"Alwar J Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012429,procurement@alwarbuild347.in,51450
+348,"Ajmer K Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829012436,procurement@ajmerbuild348.in,51800
+349,"Bhilwara L Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012443,procurement@bhilwarabuild349.in,52150
+350,"Jaipur M Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829012450,procurement@jaipurbuild350.in,52500
+351,"Jodhpur N Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012457,procurement@jodhpurbuild351.in,52850
+352,"Udaipur O Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829012464,procurement@udaipurbuild352.in,53200
+353,"Kota P Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012471,procurement@kotabuild353.in,53550
+354,"Alwar Q Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012478,procurement@alwarbuild354.in,53900
+355,"Ajmer R Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012485,procurement@ajmerbuild355.in,54250
+356,"Bhilwara S Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829012492,procurement@bhilwarabuild356.in,54600
+357,"Jaipur T Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012499,procurement@jaipurbuild357.in,54950
+358,"Jodhpur U Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829012506,procurement@jodhpurbuild358.in,55300
+359,"Udaipur V Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012513,procurement@udaipurbuild359.in,55650
+360,"Kota W Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829012520,procurement@kotabuild360.in,56000
+361,"Alwar X Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012527,procurement@alwarbuild361.in,56350
+362,"Ajmer Y Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829012534,procurement@ajmerbuild362.in,56700
+363,"Bhilwara Z Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012541,procurement@bhilwarabuild363.in,57050
+364,"Jaipur A Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829012548,procurement@jaipurbuild364.in,57400
+365,"Jodhpur B Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012555,procurement@jodhpurbuild365.in,57750
+366,"Udaipur C Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012562,procurement@udaipurbuild366.in,58100
+367,"Kota D Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012569,procurement@kotabuild367.in,58450
+368,"Alwar E Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829012576,procurement@alwarbuild368.in,58800
+369,"Ajmer F Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012583,procurement@ajmerbuild369.in,59150
+370,"Bhilwara G Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829012590,procurement@bhilwarabuild370.in,59500
+371,"Jaipur H Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012597,procurement@jaipurbuild371.in,59850
+372,"Jodhpur I Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829012604,procurement@jodhpurbuild372.in,60200
+373,"Udaipur J Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012611,procurement@udaipurbuild373.in,60550
+374,"Kota K Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829012618,procurement@kotabuild374.in,60900
+375,"Alwar L Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829012625,procurement@alwarbuild375.in,61250
+376,"Ajmer M Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829012632,procurement@ajmerbuild376.in,61600
+377,"Bhilwara N Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012639,procurement@bhilwarabuild377.in,61950
+378,"Jaipur O Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012646,procurement@jaipurbuild378.in,62300
+379,"Jodhpur P Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012653,procurement@jodhpurbuild379.in,62650
+380,"Udaipur Q Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829012660,procurement@udaipurbuild380.in,63000
+381,"Kota R Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012667,procurement@kotabuild381.in,63350
+382,"Alwar S Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829012674,procurement@alwarbuild382.in,63700
+383,"Ajmer T Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012681,procurement@ajmerbuild383.in,64050
+384,"Bhilwara U Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829012688,procurement@bhilwarabuild384.in,64400
+385,"Jaipur V Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012695,procurement@jaipurbuild385.in,64750
+386,"Jodhpur W Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829012702,procurement@jodhpurbuild386.in,65100
+387,"Udaipur X Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012709,procurement@udaipurbuild387.in,65450
+388,"Kota Y Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829012716,procurement@kotabuild388.in,65800
+389,"Alwar Z Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012723,procurement@alwarbuild389.in,66150
+390,"Ajmer A Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829012730,procurement@ajmerbuild390.in,66500
+391,"Bhilwara B Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012737,procurement@bhilwarabuild391.in,66850
+392,"Jaipur C Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829012744,procurement@jaipurbuild392.in,67200
+393,"Jodhpur D Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012751,procurement@jodhpurbuild393.in,67550
+394,"Udaipur E Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829012758,procurement@udaipurbuild394.in,67900
+395,"Kota F Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012765,procurement@kotabuild395.in,68250
+396,"Alwar G Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829012772,procurement@alwarbuild396.in,68600
+397,"Ajmer H Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012779,procurement@ajmerbuild397.in,68950
+398,"Bhilwara I Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829012786,procurement@bhilwarabuild398.in,69300
+399,"Jaipur J Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012793,procurement@jaipurbuild399.in,69650
+400,"Jodhpur K Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829012800,procurement@jodhpurbuild400.in,70000
+401,"Udaipur L Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012807,procurement@udaipurbuild401.in,70350
+402,"Kota M Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012814,procurement@kotabuild402.in,70700
+403,"Alwar N Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012821,procurement@alwarbuild403.in,71050
+404,"Ajmer O Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829012828,procurement@ajmerbuild404.in,71400
+405,"Bhilwara P Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829012835,procurement@bhilwarabuild405.in,71750
+406,"Jaipur Q Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829012842,procurement@jaipurbuild406.in,72100
+407,"Jodhpur R Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012849,procurement@jodhpurbuild407.in,72450
+408,"Udaipur S Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829012856,procurement@udaipurbuild408.in,72800
+409,"Kota T Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012863,procurement@kotabuild409.in,73150
+410,"Alwar U Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829012870,procurement@alwarbuild410.in,73500
+411,"Ajmer V Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012877,procurement@ajmerbuild411.in,73850
+412,"Bhilwara W Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829012884,procurement@bhilwarabuild412.in,74200
+413,"Jaipur X Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829012891,procurement@jaipurbuild413.in,74550
+414,"Jodhpur Y Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829012898,procurement@jodhpurbuild414.in,74900
+415,"Udaipur Z Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012905,procurement@udaipurbuild415.in,75250
+416,"Kota A Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829012912,procurement@kotabuild416.in,75600
+417,"Alwar B Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829012919,procurement@alwarbuild417.in,75950
+418,"Ajmer C Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829012926,procurement@ajmerbuild418.in,76300
+419,"Bhilwara D Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829012933,procurement@bhilwarabuild419.in,76650
+420,"Jaipur E Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829012940,procurement@jaipurbuild420.in,77000
+421,"Jodhpur F Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829012947,procurement@jodhpurbuild421.in,77350
+422,"Udaipur G Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829012954,procurement@udaipurbuild422.in,77700
+423,"Kota H Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829012961,procurement@kotabuild423.in,78050
+424,"Alwar I Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829012968,procurement@alwarbuild424.in,78400
+425,"Ajmer J Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829012975,procurement@ajmerbuild425.in,78750
+426,"Bhilwara K Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829012982,procurement@bhilwarabuild426.in,79100
+427,"Jaipur L Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829012989,procurement@jaipurbuild427.in,79450
+428,"Jodhpur M Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829012996,procurement@jodhpurbuild428.in,79800
+429,"Udaipur N Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013003,procurement@udaipurbuild429.in,80150
+430,"Kota O Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829013010,procurement@kotabuild430.in,80500
+431,"Alwar P Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013017,procurement@alwarbuild431.in,80850
+432,"Ajmer Q Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829013024,procurement@ajmerbuild432.in,81200
+433,"Bhilwara R Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013031,procurement@bhilwarabuild433.in,81550
+434,"Jaipur S Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829013038,procurement@jaipurbuild434.in,81900
+435,"Jodhpur T Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013045,procurement@jodhpurbuild435.in,82250
+436,"Udaipur U Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829013052,procurement@udaipurbuild436.in,82600
+437,"Kota V Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013059,procurement@kotabuild437.in,82950
+438,"Alwar W Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013066,procurement@alwarbuild438.in,83300
+439,"Ajmer X Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013073,procurement@ajmerbuild439.in,83650
+440,"Bhilwara Y Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829013080,procurement@bhilwarabuild440.in,84000
+441,"Jaipur Z Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013087,procurement@jaipurbuild441.in,84350
+442,"Jodhpur A Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829013094,procurement@jodhpurbuild442.in,84700
+443,"Udaipur B Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013101,procurement@udaipurbuild443.in,85050
+444,"Kota C Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829013108,procurement@kotabuild444.in,85400
+445,"Alwar D Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013115,procurement@alwarbuild445.in,85750
+446,"Ajmer E Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829013122,procurement@ajmerbuild446.in,86100
+447,"Bhilwara F Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013129,procurement@bhilwarabuild447.in,86450
+448,"Jaipur G Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829013136,procurement@jaipurbuild448.in,86800
+449,"Jodhpur H Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013143,procurement@jodhpurbuild449.in,87150
+450,"Udaipur I Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013150,procurement@udaipurbuild450.in,87500
+451,"Kota J Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013157,procurement@kotabuild451.in,87850
+452,"Alwar K Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829013164,procurement@alwarbuild452.in,88200
+453,"Ajmer L Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013171,procurement@ajmerbuild453.in,88550
+454,"Bhilwara M Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829013178,procurement@bhilwarabuild454.in,88900
+455,"Jaipur N Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013185,procurement@jaipurbuild455.in,89250
+456,"Jodhpur O Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829013192,procurement@jodhpurbuild456.in,89600
+457,"Udaipur P Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013199,procurement@udaipurbuild457.in,89950
+458,"Kota Q Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829013206,procurement@kotabuild458.in,90300
+459,"Alwar R Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013213,procurement@alwarbuild459.in,90650
+460,"Ajmer S Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829013220,procurement@ajmerbuild460.in,91000
+461,"Bhilwara T Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013227,procurement@bhilwarabuild461.in,91350
+462,"Jaipur U Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013234,procurement@jaipurbuild462.in,91700
+463,"Jodhpur V Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013241,procurement@jodhpurbuild463.in,92050
+464,"Udaipur W Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829013248,procurement@udaipurbuild464.in,92400
+465,"Kota X Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013255,procurement@kotabuild465.in,92750
+466,"Alwar Y Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829013262,procurement@alwarbuild466.in,93100
+467,"Ajmer Z Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013269,procurement@ajmerbuild467.in,93450
+468,"Bhilwara A Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829013276,procurement@bhilwarabuild468.in,93800
+469,"Jaipur B Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013283,procurement@jaipurbuild469.in,94150
+470,"Jodhpur C Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829013290,procurement@jodhpurbuild470.in,94500
+471,"Udaipur D Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013297,procurement@udaipurbuild471.in,94850
+472,"Kota E Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829013304,procurement@kotabuild472.in,95200
+473,"Alwar F Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013311,procurement@alwarbuild473.in,95550
+474,"Ajmer G Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013318,procurement@ajmerbuild474.in,95900
+475,"Bhilwara H Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013325,procurement@bhilwarabuild475.in,96250
+476,"Jaipur I Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829013332,procurement@jaipurbuild476.in,96600
+477,"Jodhpur J Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013339,procurement@jodhpurbuild477.in,96950
+478,"Udaipur K Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829013346,procurement@udaipurbuild478.in,97300
+479,"Kota L Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013353,procurement@kotabuild479.in,97650
+480,"Alwar M Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829013360,procurement@alwarbuild480.in,98000
+481,"Ajmer N Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013367,procurement@ajmerbuild481.in,98350
+482,"Bhilwara O Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829013374,procurement@bhilwarabuild482.in,98700
+483,"Jaipur P Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013381,procurement@jaipurbuild483.in,99050
+484,"Jodhpur Q Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829013388,procurement@jodhpurbuild484.in,99400
+485,"Udaipur R Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013395,procurement@udaipurbuild485.in,99750
+486,"Kota S Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013402,procurement@kotabuild486.in,15100
+487,"Alwar T Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013409,procurement@alwarbuild487.in,15450
+488,"Ajmer U Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829013416,procurement@ajmerbuild488.in,15800
+489,"Bhilwara V Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013423,procurement@bhilwarabuild489.in,16150
+490,"Jaipur W Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829013430,procurement@jaipurbuild490.in,16500
+491,"Jodhpur X Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013437,procurement@jodhpurbuild491.in,16850
+492,"Udaipur Y Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829013444,procurement@udaipurbuild492.in,17200
+493,"Kota Z Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013451,procurement@kotabuild493.in,17550
+494,"Alwar A Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829013458,procurement@alwarbuild494.in,17900
+495,"Ajmer B Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013465,procurement@ajmerbuild495.in,18250
+496,"Bhilwara C Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829013472,procurement@bhilwarabuild496.in,18600
+497,"Jaipur D Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013479,procurement@jaipurbuild497.in,18950
+498,"Jodhpur E Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013486,procurement@jodhpurbuild498.in,19300
+499,"Udaipur F Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013493,procurement@udaipurbuild499.in,19650
+500,"Kota G Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829013500,procurement@kotabuild500.in,20000
+501,"Alwar H Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013507,procurement@alwarbuild501.in,20350
+502,"Ajmer I Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829013514,procurement@ajmerbuild502.in,20700
+503,"Bhilwara J Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013521,procurement@bhilwarabuild503.in,21050
+504,"Jaipur K Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829013528,procurement@jaipurbuild504.in,21400
+505,"Jodhpur L Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013535,procurement@jodhpurbuild505.in,21750
+506,"Udaipur M Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829013542,procurement@udaipurbuild506.in,22100
+507,"Kota N Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013549,procurement@kotabuild507.in,22450
+508,"Alwar O Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829013556,procurement@alwarbuild508.in,22800
+509,"Ajmer P Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013563,procurement@ajmerbuild509.in,23150
+510,"Bhilwara Q Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013570,procurement@bhilwarabuild510.in,23500
+511,"Jaipur R Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013577,procurement@jaipurbuild511.in,23850
+512,"Jodhpur S Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829013584,procurement@jodhpurbuild512.in,24200
+513,"Udaipur T Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013591,procurement@udaipurbuild513.in,24550
+514,"Kota U Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829013598,procurement@kotabuild514.in,24900
+515,"Alwar V Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013605,procurement@alwarbuild515.in,25250
+516,"Ajmer W Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829013612,procurement@ajmerbuild516.in,25600
+517,"Bhilwara X Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013619,procurement@bhilwarabuild517.in,25950
+518,"Jaipur Y Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829013626,procurement@jaipurbuild518.in,26300
+519,"Jodhpur Z Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013633,procurement@jodhpurbuild519.in,26650
+520,"Udaipur A Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829013640,procurement@udaipurbuild520.in,27000
+521,"Kota B Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013647,procurement@kotabuild521.in,27350
+522,"Alwar C Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013654,procurement@alwarbuild522.in,27700
+523,"Ajmer D Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013661,procurement@ajmerbuild523.in,28050
+524,"Bhilwara E Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829013668,procurement@bhilwarabuild524.in,28400
+525,"Jaipur F Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013675,procurement@jaipurbuild525.in,28750
+526,"Jodhpur G Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829013682,procurement@jodhpurbuild526.in,29100
+527,"Udaipur H Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013689,procurement@udaipurbuild527.in,29450
+528,"Kota I Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829013696,procurement@kotabuild528.in,29800
+529,"Alwar J Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013703,procurement@alwarbuild529.in,30150
+530,"Ajmer K Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829013710,procurement@ajmerbuild530.in,30500
+531,"Bhilwara L Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013717,procurement@bhilwarabuild531.in,30850
+532,"Jaipur M Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829013724,procurement@jaipurbuild532.in,31200
+533,"Jodhpur N Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013731,procurement@jodhpurbuild533.in,31550
+534,"Udaipur O Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013738,procurement@udaipurbuild534.in,31900
+535,"Kota P Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013745,procurement@kotabuild535.in,32250
+536,"Alwar Q Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829013752,procurement@alwarbuild536.in,32600
+537,"Ajmer R Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013759,procurement@ajmerbuild537.in,32950
+538,"Bhilwara S Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829013766,procurement@bhilwarabuild538.in,33300
+539,"Jaipur T Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013773,procurement@jaipurbuild539.in,33650
+540,"Jodhpur U Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829013780,procurement@jodhpurbuild540.in,34000
+541,"Udaipur V Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013787,procurement@udaipurbuild541.in,34350
+542,"Kota W Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829013794,procurement@kotabuild542.in,34700
+543,"Alwar X Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013801,procurement@alwarbuild543.in,35050
+544,"Ajmer Y Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829013808,procurement@ajmerbuild544.in,35400
+545,"Bhilwara Z Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013815,procurement@bhilwarabuild545.in,35750
+546,"Jaipur A Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013822,procurement@jaipurbuild546.in,36100
+547,"Jodhpur B Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013829,procurement@jodhpurbuild547.in,36450
+548,"Udaipur C Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829013836,procurement@udaipurbuild548.in,36800
+549,"Kota D Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829013843,procurement@kotabuild549.in,37150
+550,"Alwar E Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829013850,procurement@alwarbuild550.in,37500
+551,"Ajmer F Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013857,procurement@ajmerbuild551.in,37850
+552,"Bhilwara G Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829013864,procurement@bhilwarabuild552.in,38200
+553,"Jaipur H Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013871,procurement@jaipurbuild553.in,38550
+554,"Jodhpur I Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829013878,procurement@jodhpurbuild554.in,38900
+555,"Udaipur J Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013885,procurement@udaipurbuild555.in,39250
+556,"Kota K Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829013892,procurement@kotabuild556.in,39600
+557,"Alwar L Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829013899,procurement@alwarbuild557.in,39950
+558,"Ajmer M Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829013906,procurement@ajmerbuild558.in,40300
+559,"Bhilwara N Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013913,procurement@bhilwarabuild559.in,40650
+560,"Jaipur O Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829013920,procurement@jaipurbuild560.in,41000
+561,"Jodhpur P Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829013927,procurement@jodhpurbuild561.in,41350
+562,"Udaipur Q Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829013934,procurement@udaipurbuild562.in,41700
+563,"Kota R Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829013941,procurement@kotabuild563.in,42050
+564,"Alwar S Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829013948,procurement@alwarbuild564.in,42400
+565,"Ajmer T Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829013955,procurement@ajmerbuild565.in,42750
+566,"Bhilwara U Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829013962,procurement@bhilwarabuild566.in,43100
+567,"Jaipur V Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829013969,procurement@jaipurbuild567.in,43450
+568,"Jodhpur W Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829013976,procurement@jodhpurbuild568.in,43800
+569,"Udaipur X Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829013983,procurement@udaipurbuild569.in,44150
+570,"Kota Y Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829013990,procurement@kotabuild570.in,44500
+571,"Alwar Z Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829013997,procurement@alwarbuild571.in,44850
+572,"Ajmer A Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829014004,procurement@ajmerbuild572.in,45200
+573,"Bhilwara B Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014011,procurement@bhilwarabuild573.in,45550
+574,"Jaipur C Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829014018,procurement@jaipurbuild574.in,45900
+575,"Jodhpur D Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014025,procurement@jodhpurbuild575.in,46250
+576,"Udaipur E Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829014032,procurement@udaipurbuild576.in,46600
+577,"Kota F Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014039,procurement@kotabuild577.in,46950
+578,"Alwar G Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829014046,procurement@alwarbuild578.in,47300
+579,"Ajmer H Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014053,procurement@ajmerbuild579.in,47650
+580,"Bhilwara I Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829014060,procurement@bhilwarabuild580.in,48000
+581,"Jaipur J Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014067,procurement@jaipurbuild581.in,48350
+582,"Jodhpur K Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014074,procurement@jodhpurbuild582.in,48700
+583,"Udaipur L Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014081,procurement@udaipurbuild583.in,49050
+584,"Kota M Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829014088,procurement@kotabuild584.in,49400
+585,"Alwar N Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014095,procurement@alwarbuild585.in,49750
+586,"Ajmer O Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829014102,procurement@ajmerbuild586.in,50100
+587,"Bhilwara P Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014109,procurement@bhilwarabuild587.in,50450
+588,"Jaipur Q Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829014116,procurement@jaipurbuild588.in,50800
+589,"Jodhpur R Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014123,procurement@jodhpurbuild589.in,51150
+590,"Udaipur S Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829014130,procurement@udaipurbuild590.in,51500
+591,"Kota T Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014137,procurement@kotabuild591.in,51850
+592,"Alwar U Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829014144,procurement@alwarbuild592.in,52200
+593,"Ajmer V Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014151,procurement@ajmerbuild593.in,52550
+594,"Bhilwara W Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014158,procurement@bhilwarabuild594.in,52900
+595,"Jaipur X Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014165,procurement@jaipurbuild595.in,53250
+596,"Jodhpur Y Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829014172,procurement@jodhpurbuild596.in,53600
+597,"Udaipur Z Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014179,procurement@udaipurbuild597.in,53950
+598,"Kota A Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829014186,procurement@kotabuild598.in,54300
+599,"Alwar B Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014193,procurement@alwarbuild599.in,54650
+600,"Ajmer C Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829014200,procurement@ajmerbuild600.in,55000
+601,"Bhilwara D Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014207,procurement@bhilwarabuild601.in,55350
+602,"Jaipur E Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829014214,procurement@jaipurbuild602.in,55700
+603,"Jodhpur F Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014221,procurement@jodhpurbuild603.in,56050
+604,"Udaipur G Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829014228,procurement@udaipurbuild604.in,56400
+605,"Kota H Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014235,procurement@kotabuild605.in,56750
+606,"Alwar I Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014242,procurement@alwarbuild606.in,57100
+607,"Ajmer J Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014249,procurement@ajmerbuild607.in,57450
+608,"Bhilwara K Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829014256,procurement@bhilwarabuild608.in,57800
+609,"Jaipur L Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014263,procurement@jaipurbuild609.in,58150
+610,"Jodhpur M Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829014270,procurement@jodhpurbuild610.in,58500
+611,"Udaipur N Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014277,procurement@udaipurbuild611.in,58850
+612,"Kota O Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829014284,procurement@kotabuild612.in,59200
+613,"Alwar P Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014291,procurement@alwarbuild613.in,59550
+614,"Ajmer Q Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829014298,procurement@ajmerbuild614.in,59900
+615,"Bhilwara R Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014305,procurement@bhilwarabuild615.in,60250
+616,"Jaipur S Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829014312,procurement@jaipurbuild616.in,60600
+617,"Jodhpur T Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014319,procurement@jodhpurbuild617.in,60950
+618,"Udaipur U Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014326,procurement@udaipurbuild618.in,61300
+619,"Kota V Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014333,procurement@kotabuild619.in,61650
+620,"Alwar W Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829014340,procurement@alwarbuild620.in,62000
+621,"Ajmer X Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014347,procurement@ajmerbuild621.in,62350
+622,"Bhilwara Y Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829014354,procurement@bhilwarabuild622.in,62700
+623,"Jaipur Z Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014361,procurement@jaipurbuild623.in,63050
+624,"Jodhpur A Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829014368,procurement@jodhpurbuild624.in,63400
+625,"Udaipur B Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014375,procurement@udaipurbuild625.in,63750
+626,"Kota C Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829014382,procurement@kotabuild626.in,64100
+627,"Alwar D Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014389,procurement@alwarbuild627.in,64450
+628,"Ajmer E Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829014396,procurement@ajmerbuild628.in,64800
+629,"Bhilwara F Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014403,procurement@bhilwarabuild629.in,65150
+630,"Jaipur G Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014410,procurement@jaipurbuild630.in,65500
+631,"Jodhpur H Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014417,procurement@jodhpurbuild631.in,65850
+632,"Udaipur I Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829014424,procurement@udaipurbuild632.in,66200
+633,"Kota J Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014431,procurement@kotabuild633.in,66550
+634,"Alwar K Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829014438,procurement@alwarbuild634.in,66900
+635,"Ajmer L Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014445,procurement@ajmerbuild635.in,67250
+636,"Bhilwara M Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829014452,procurement@bhilwarabuild636.in,67600
+637,"Jaipur N Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014459,procurement@jaipurbuild637.in,67950
+638,"Jodhpur O Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829014466,procurement@jodhpurbuild638.in,68300
+639,"Udaipur P Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014473,procurement@udaipurbuild639.in,68650
+640,"Kota Q Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829014480,procurement@kotabuild640.in,69000
+641,"Alwar R Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014487,procurement@alwarbuild641.in,69350
+642,"Ajmer S Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014494,procurement@ajmerbuild642.in,69700
+643,"Bhilwara T Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014501,procurement@bhilwarabuild643.in,70050
+644,"Jaipur U Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829014508,procurement@jaipurbuild644.in,70400
+645,"Jodhpur V Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014515,procurement@jodhpurbuild645.in,70750
+646,"Udaipur W Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829014522,procurement@udaipurbuild646.in,71100
+647,"Kota X Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014529,procurement@kotabuild647.in,71450
+648,"Alwar Y Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829014536,procurement@alwarbuild648.in,71800
+649,"Ajmer Z Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014543,procurement@ajmerbuild649.in,72150
+650,"Bhilwara A Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829014550,procurement@bhilwarabuild650.in,72500
+651,"Jaipur B Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014557,procurement@jaipurbuild651.in,72850
+652,"Jodhpur C Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829014564,procurement@jodhpurbuild652.in,73200
+653,"Udaipur D Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014571,procurement@udaipurbuild653.in,73550
+654,"Kota E Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014578,procurement@kotabuild654.in,73900
+655,"Alwar F Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014585,procurement@alwarbuild655.in,74250
+656,"Ajmer G Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829014592,procurement@ajmerbuild656.in,74600
+657,"Bhilwara H Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014599,procurement@bhilwarabuild657.in,74950
+658,"Jaipur I Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829014606,procurement@jaipurbuild658.in,75300
+659,"Jodhpur J Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014613,procurement@jodhpurbuild659.in,75650
+660,"Udaipur K Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829014620,procurement@udaipurbuild660.in,76000
+661,"Kota L Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014627,procurement@kotabuild661.in,76350
+662,"Alwar M Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829014634,procurement@alwarbuild662.in,76700
+663,"Ajmer N Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014641,procurement@ajmerbuild663.in,77050
+664,"Bhilwara O Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829014648,procurement@bhilwarabuild664.in,77400
+665,"Jaipur P Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014655,procurement@jaipurbuild665.in,77750
+666,"Jodhpur Q Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014662,procurement@jodhpurbuild666.in,78100
+667,"Udaipur R Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014669,procurement@udaipurbuild667.in,78450
+668,"Kota S Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829014676,procurement@kotabuild668.in,78800
+669,"Alwar T Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014683,procurement@alwarbuild669.in,79150
+670,"Ajmer U Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829014690,procurement@ajmerbuild670.in,79500
+671,"Bhilwara V Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014697,procurement@bhilwarabuild671.in,79850
+672,"Jaipur W Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829014704,procurement@jaipurbuild672.in,80200
+673,"Jodhpur X Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014711,procurement@jodhpurbuild673.in,80550
+674,"Udaipur Y Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829014718,procurement@udaipurbuild674.in,80900
+675,"Kota Z Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014725,procurement@kotabuild675.in,81250
+676,"Alwar A Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829014732,procurement@alwarbuild676.in,81600
+677,"Ajmer B Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014739,procurement@ajmerbuild677.in,81950
+678,"Bhilwara C Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014746,procurement@bhilwarabuild678.in,82300
+679,"Jaipur D Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014753,procurement@jaipurbuild679.in,82650
+680,"Jodhpur E Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829014760,procurement@jodhpurbuild680.in,83000
+681,"Udaipur F Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014767,procurement@udaipurbuild681.in,83350
+682,"Kota G Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829014774,procurement@kotabuild682.in,83700
+683,"Alwar H Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014781,procurement@alwarbuild683.in,84050
+684,"Ajmer I Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829014788,procurement@ajmerbuild684.in,84400
+685,"Bhilwara J Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014795,procurement@bhilwarabuild685.in,84750
+686,"Jaipur K Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829014802,procurement@jaipurbuild686.in,85100
+687,"Jodhpur L Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014809,procurement@jodhpurbuild687.in,85450
+688,"Udaipur M Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829014816,procurement@udaipurbuild688.in,85800
+689,"Kota N Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014823,procurement@kotabuild689.in,86150
+690,"Alwar O Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014830,procurement@alwarbuild690.in,86500
+691,"Ajmer P Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014837,procurement@ajmerbuild691.in,86850
+692,"Bhilwara Q Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829014844,procurement@bhilwarabuild692.in,87200
+693,"Jaipur R Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829014851,procurement@jaipurbuild693.in,87550
+694,"Jodhpur S Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829014858,procurement@jodhpurbuild694.in,87900
+695,"Udaipur T Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829014865,procurement@udaipurbuild695.in,88250
+696,"Kota U Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829014872,procurement@kotabuild696.in,88600
+697,"Alwar V Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014879,procurement@alwarbuild697.in,88950
+698,"Ajmer W Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829014886,procurement@ajmerbuild698.in,89300
+699,"Bhilwara X Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014893,procurement@bhilwarabuild699.in,89650
+700,"Jaipur Y Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829014900,procurement@jaipurbuild700.in,90000
+701,"Jodhpur Z Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829014907,procurement@jodhpurbuild701.in,90350
+702,"Udaipur A Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829014914,procurement@udaipurbuild702.in,90700
+703,"Kota B Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014921,procurement@kotabuild703.in,91050
+704,"Alwar C Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829014928,procurement@alwarbuild704.in,91400
+705,"Ajmer D Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829014935,procurement@ajmerbuild705.in,91750
+706,"Bhilwara E Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829014942,procurement@bhilwarabuild706.in,92100
+707,"Jaipur F Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829014949,procurement@jaipurbuild707.in,92450
+708,"Jodhpur G Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829014956,procurement@jodhpurbuild708.in,92800
+709,"Udaipur H Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829014963,procurement@udaipurbuild709.in,93150
+710,"Kota I Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829014970,procurement@kotabuild710.in,93500
+711,"Alwar J Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829014977,procurement@alwarbuild711.in,93850
+712,"Ajmer K Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829014984,procurement@ajmerbuild712.in,94200
+713,"Bhilwara L Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829014991,procurement@bhilwarabuild713.in,94550
+714,"Jaipur M Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829014998,procurement@jaipurbuild714.in,94900
+715,"Jodhpur N Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015005,procurement@jodhpurbuild715.in,95250
+716,"Udaipur O Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829015012,procurement@udaipurbuild716.in,95600
+717,"Kota P Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015019,procurement@kotabuild717.in,95950
+718,"Alwar Q Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829015026,procurement@alwarbuild718.in,96300
+719,"Ajmer R Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015033,procurement@ajmerbuild719.in,96650
+720,"Bhilwara S Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829015040,procurement@bhilwarabuild720.in,97000
+721,"Jaipur T Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015047,procurement@jaipurbuild721.in,97350
+722,"Jodhpur U Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829015054,procurement@jodhpurbuild722.in,97700
+723,"Udaipur V Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015061,procurement@udaipurbuild723.in,98050
+724,"Kota W Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829015068,procurement@kotabuild724.in,98400
+725,"Alwar X Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015075,procurement@alwarbuild725.in,98750
+726,"Ajmer Y Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015082,procurement@ajmerbuild726.in,99100
+727,"Bhilwara Z Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015089,procurement@bhilwarabuild727.in,99450
+728,"Jaipur A Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829015096,procurement@jaipurbuild728.in,99800
+729,"Jodhpur B Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015103,procurement@jodhpurbuild729.in,15150
+730,"Udaipur C Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829015110,procurement@udaipurbuild730.in,15500
+731,"Kota D Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015117,procurement@kotabuild731.in,15850
+732,"Alwar E Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829015124,procurement@alwarbuild732.in,16200
+733,"Ajmer F Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015131,procurement@ajmerbuild733.in,16550
+734,"Bhilwara G Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829015138,procurement@bhilwarabuild734.in,16900
+735,"Jaipur H Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015145,procurement@jaipurbuild735.in,17250
+736,"Jodhpur I Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829015152,procurement@jodhpurbuild736.in,17600
+737,"Udaipur J Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015159,procurement@udaipurbuild737.in,17950
+738,"Kota K Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015166,procurement@kotabuild738.in,18300
+739,"Alwar L Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015173,procurement@alwarbuild739.in,18650
+740,"Ajmer M Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829015180,procurement@ajmerbuild740.in,19000
+741,"Bhilwara N Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015187,procurement@bhilwarabuild741.in,19350
+742,"Jaipur O Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829015194,procurement@jaipurbuild742.in,19700
+743,"Jodhpur P Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015201,procurement@jodhpurbuild743.in,20050
+744,"Udaipur Q Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829015208,procurement@udaipurbuild744.in,20400
+745,"Kota R Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015215,procurement@kotabuild745.in,20750
+746,"Alwar S Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829015222,procurement@alwarbuild746.in,21100
+747,"Ajmer T Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015229,procurement@ajmerbuild747.in,21450
+748,"Bhilwara U Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829015236,procurement@bhilwarabuild748.in,21800
+749,"Jaipur V Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015243,procurement@jaipurbuild749.in,22150
+750,"Jodhpur W Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015250,procurement@jodhpurbuild750.in,22500
+751,"Udaipur X Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015257,procurement@udaipurbuild751.in,22850
+752,"Kota Y Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829015264,procurement@kotabuild752.in,23200
+753,"Alwar Z Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015271,procurement@alwarbuild753.in,23550
+754,"Ajmer A Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829015278,procurement@ajmerbuild754.in,23900
+755,"Bhilwara B Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015285,procurement@bhilwarabuild755.in,24250
+756,"Jaipur C Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829015292,procurement@jaipurbuild756.in,24600
+757,"Jodhpur D Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015299,procurement@jodhpurbuild757.in,24950
+758,"Udaipur E Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829015306,procurement@udaipurbuild758.in,25300
+759,"Kota F Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015313,procurement@kotabuild759.in,25650
+760,"Alwar G Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829015320,procurement@alwarbuild760.in,26000
+761,"Ajmer H Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015327,procurement@ajmerbuild761.in,26350
+762,"Bhilwara I Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015334,procurement@bhilwarabuild762.in,26700
+763,"Jaipur J Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015341,procurement@jaipurbuild763.in,27050
+764,"Jodhpur K Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829015348,procurement@jodhpurbuild764.in,27400
+765,"Udaipur L Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015355,procurement@udaipurbuild765.in,27750
+766,"Kota M Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829015362,procurement@kotabuild766.in,28100
+767,"Alwar N Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015369,procurement@alwarbuild767.in,28450
+768,"Ajmer O Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829015376,procurement@ajmerbuild768.in,28800
+769,"Bhilwara P Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015383,procurement@bhilwarabuild769.in,29150
+770,"Jaipur Q Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829015390,procurement@jaipurbuild770.in,29500
+771,"Jodhpur R Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015397,procurement@jodhpurbuild771.in,29850
+772,"Udaipur S Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829015404,procurement@udaipurbuild772.in,30200
+773,"Kota T Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015411,procurement@kotabuild773.in,30550
+774,"Alwar U Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015418,procurement@alwarbuild774.in,30900
+775,"Ajmer V Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015425,procurement@ajmerbuild775.in,31250
+776,"Bhilwara W Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829015432,procurement@bhilwarabuild776.in,31600
+777,"Jaipur X Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015439,procurement@jaipurbuild777.in,31950
+778,"Jodhpur Y Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829015446,procurement@jodhpurbuild778.in,32300
+779,"Udaipur Z Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015453,procurement@udaipurbuild779.in,32650
+780,"Kota A Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829015460,procurement@kotabuild780.in,33000
+781,"Alwar B Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015467,procurement@alwarbuild781.in,33350
+782,"Ajmer C Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829015474,procurement@ajmerbuild782.in,33700
+783,"Bhilwara D Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015481,procurement@bhilwarabuild783.in,34050
+784,"Jaipur E Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829015488,procurement@jaipurbuild784.in,34400
+785,"Jodhpur F Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015495,procurement@jodhpurbuild785.in,34750
+786,"Udaipur G Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015502,procurement@udaipurbuild786.in,35100
+787,"Kota H Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015509,procurement@kotabuild787.in,35450
+788,"Alwar I Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829015516,procurement@alwarbuild788.in,35800
+789,"Ajmer J Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015523,procurement@ajmerbuild789.in,36150
+790,"Bhilwara K Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829015530,procurement@bhilwarabuild790.in,36500
+791,"Jaipur L Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015537,procurement@jaipurbuild791.in,36850
+792,"Jodhpur M Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829015544,procurement@jodhpurbuild792.in,37200
+793,"Udaipur N Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015551,procurement@udaipurbuild793.in,37550
+794,"Kota O Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829015558,procurement@kotabuild794.in,37900
+795,"Alwar P Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015565,procurement@alwarbuild795.in,38250
+796,"Ajmer Q Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829015572,procurement@ajmerbuild796.in,38600
+797,"Bhilwara R Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015579,procurement@bhilwarabuild797.in,38950
+798,"Jaipur S Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015586,procurement@jaipurbuild798.in,39300
+799,"Jodhpur T Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015593,procurement@jodhpurbuild799.in,39650
+800,"Udaipur U Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829015600,procurement@udaipurbuild800.in,40000
+801,"Kota V Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015607,procurement@kotabuild801.in,40350
+802,"Alwar W Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829015614,procurement@alwarbuild802.in,40700
+803,"Ajmer X Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015621,procurement@ajmerbuild803.in,41050
+804,"Bhilwara Y Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829015628,procurement@bhilwarabuild804.in,41400
+805,"Jaipur Z Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015635,procurement@jaipurbuild805.in,41750
+806,"Jodhpur A Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829015642,procurement@jodhpurbuild806.in,42100
+807,"Udaipur B Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015649,procurement@udaipurbuild807.in,42450
+808,"Kota C Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829015656,procurement@kotabuild808.in,42800
+809,"Alwar D Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015663,procurement@alwarbuild809.in,43150
+810,"Ajmer E Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015670,procurement@ajmerbuild810.in,43500
+811,"Bhilwara F Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015677,procurement@bhilwarabuild811.in,43850
+812,"Jaipur G Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829015684,procurement@jaipurbuild812.in,44200
+813,"Jodhpur H Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015691,procurement@jodhpurbuild813.in,44550
+814,"Udaipur I Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829015698,procurement@udaipurbuild814.in,44900
+815,"Kota J Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015705,procurement@kotabuild815.in,45250
+816,"Alwar K Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829015712,procurement@alwarbuild816.in,45600
+817,"Ajmer L Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015719,procurement@ajmerbuild817.in,45950
+818,"Bhilwara M Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829015726,procurement@bhilwarabuild818.in,46300
+819,"Jaipur N Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015733,procurement@jaipurbuild819.in,46650
+820,"Jodhpur O Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829015740,procurement@jodhpurbuild820.in,47000
+821,"Udaipur P Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015747,procurement@udaipurbuild821.in,47350
+822,"Kota Q Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015754,procurement@kotabuild822.in,47700
+823,"Alwar R Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015761,procurement@alwarbuild823.in,48050
+824,"Ajmer S Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829015768,procurement@ajmerbuild824.in,48400
+825,"Bhilwara T Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015775,procurement@bhilwarabuild825.in,48750
+826,"Jaipur U Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829015782,procurement@jaipurbuild826.in,49100
+827,"Jodhpur V Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015789,procurement@jodhpurbuild827.in,49450
+828,"Udaipur W Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829015796,procurement@udaipurbuild828.in,49800
+829,"Kota X Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015803,procurement@kotabuild829.in,50150
+830,"Alwar Y Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829015810,procurement@alwarbuild830.in,50500
+831,"Ajmer Z Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015817,procurement@ajmerbuild831.in,50850
+832,"Bhilwara A Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829015824,procurement@bhilwarabuild832.in,51200
+833,"Jaipur B Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015831,procurement@jaipurbuild833.in,51550
+834,"Jodhpur C Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015838,procurement@jodhpurbuild834.in,51900
+835,"Udaipur D Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015845,procurement@udaipurbuild835.in,52250
+836,"Kota E Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829015852,procurement@kotabuild836.in,52600
+837,"Alwar F Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829015859,procurement@alwarbuild837.in,52950
+838,"Ajmer G Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829015866,procurement@ajmerbuild838.in,53300
+839,"Bhilwara H Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829015873,procurement@bhilwarabuild839.in,53650
+840,"Jaipur I Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829015880,procurement@jaipurbuild840.in,54000
+841,"Jodhpur J Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015887,procurement@jodhpurbuild841.in,54350
+842,"Udaipur K Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829015894,procurement@udaipurbuild842.in,54700
+843,"Kota L Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829015901,procurement@kotabuild843.in,55050
+844,"Alwar M Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829015908,procurement@alwarbuild844.in,55400
+845,"Ajmer N Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829015915,procurement@ajmerbuild845.in,55750
+846,"Bhilwara O Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829015922,procurement@bhilwarabuild846.in,56100
+847,"Jaipur P Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015929,procurement@jaipurbuild847.in,56450
+848,"Jodhpur Q Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829015936,procurement@jodhpurbuild848.in,56800
+849,"Udaipur R Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829015943,procurement@udaipurbuild849.in,57150
+850,"Kota S Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829015950,procurement@kotabuild850.in,57500
+851,"Alwar T Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829015957,procurement@alwarbuild851.in,57850
+852,"Ajmer U Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829015964,procurement@ajmerbuild852.in,58200
+853,"Bhilwara V Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829015971,procurement@bhilwarabuild853.in,58550
+854,"Jaipur W Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829015978,procurement@jaipurbuild854.in,58900
+855,"Jodhpur X Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829015985,procurement@jodhpurbuild855.in,59250
+856,"Udaipur Y Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829015992,procurement@udaipurbuild856.in,59600
+857,"Kota Z Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829015999,procurement@kotabuild857.in,59950
+858,"Alwar A Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016006,procurement@alwarbuild858.in,60300
+859,"Ajmer B Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016013,procurement@ajmerbuild859.in,60650
+860,"Bhilwara C Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829016020,procurement@bhilwarabuild860.in,61000
+861,"Jaipur D Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016027,procurement@jaipurbuild861.in,61350
+862,"Jodhpur E Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829016034,procurement@jodhpurbuild862.in,61700
+863,"Udaipur F Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016041,procurement@udaipurbuild863.in,62050
+864,"Kota G Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829016048,procurement@kotabuild864.in,62400
+865,"Alwar H Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016055,procurement@alwarbuild865.in,62750
+866,"Ajmer I Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829016062,procurement@ajmerbuild866.in,63100
+867,"Bhilwara J Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016069,procurement@bhilwarabuild867.in,63450
+868,"Jaipur K Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829016076,procurement@jaipurbuild868.in,63800
+869,"Jodhpur L Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016083,procurement@jodhpurbuild869.in,64150
+870,"Udaipur M Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016090,procurement@udaipurbuild870.in,64500
+871,"Kota N Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016097,procurement@kotabuild871.in,64850
+872,"Alwar O Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829016104,procurement@alwarbuild872.in,65200
+873,"Ajmer P Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016111,procurement@ajmerbuild873.in,65550
+874,"Bhilwara Q Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829016118,procurement@bhilwarabuild874.in,65900
+875,"Jaipur R Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016125,procurement@jaipurbuild875.in,66250
+876,"Jodhpur S Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829016132,procurement@jodhpurbuild876.in,66600
+877,"Udaipur T Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016139,procurement@udaipurbuild877.in,66950
+878,"Kota U Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829016146,procurement@kotabuild878.in,67300
+879,"Alwar V Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016153,procurement@alwarbuild879.in,67650
+880,"Ajmer W Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829016160,procurement@ajmerbuild880.in,68000
+881,"Bhilwara X Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016167,procurement@bhilwarabuild881.in,68350
+882,"Jaipur Y Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016174,procurement@jaipurbuild882.in,68700
+883,"Jodhpur Z Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016181,procurement@jodhpurbuild883.in,69050
+884,"Udaipur A Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829016188,procurement@udaipurbuild884.in,69400
+885,"Kota B Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016195,procurement@kotabuild885.in,69750
+886,"Alwar C Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829016202,procurement@alwarbuild886.in,70100
+887,"Ajmer D Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016209,procurement@ajmerbuild887.in,70450
+888,"Bhilwara E Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829016216,procurement@bhilwarabuild888.in,70800
+889,"Jaipur F Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016223,procurement@jaipurbuild889.in,71150
+890,"Jodhpur G Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829016230,procurement@jodhpurbuild890.in,71500
+891,"Udaipur H Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016237,procurement@udaipurbuild891.in,71850
+892,"Kota I Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829016244,procurement@kotabuild892.in,72200
+893,"Alwar J Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016251,procurement@alwarbuild893.in,72550
+894,"Ajmer K Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016258,procurement@ajmerbuild894.in,72900
+895,"Bhilwara L Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016265,procurement@bhilwarabuild895.in,73250
+896,"Jaipur M Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829016272,procurement@jaipurbuild896.in,73600
+897,"Jodhpur N Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016279,procurement@jodhpurbuild897.in,73950
+898,"Udaipur O Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829016286,procurement@udaipurbuild898.in,74300
+899,"Kota P Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016293,procurement@kotabuild899.in,74650
+900,"Alwar Q Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829016300,procurement@alwarbuild900.in,75000
+901,"Ajmer R Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016307,procurement@ajmerbuild901.in,75350
+902,"Bhilwara S Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829016314,procurement@bhilwarabuild902.in,75700
+903,"Jaipur T Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016321,procurement@jaipurbuild903.in,76050
+904,"Jodhpur U Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829016328,procurement@jodhpurbuild904.in,76400
+905,"Udaipur V Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016335,procurement@udaipurbuild905.in,76750
+906,"Kota W Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016342,procurement@kotabuild906.in,77100
+907,"Alwar X Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016349,procurement@alwarbuild907.in,77450
+908,"Ajmer Y Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829016356,procurement@ajmerbuild908.in,77800
+909,"Bhilwara Z Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016363,procurement@bhilwarabuild909.in,78150
+910,"Jaipur A Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829016370,procurement@jaipurbuild910.in,78500
+911,"Jodhpur B Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016377,procurement@jodhpurbuild911.in,78850
+912,"Udaipur C Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829016384,procurement@udaipurbuild912.in,79200
+913,"Kota D Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016391,procurement@kotabuild913.in,79550
+914,"Alwar E Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829016398,procurement@alwarbuild914.in,79900
+915,"Ajmer F Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016405,procurement@ajmerbuild915.in,80250
+916,"Bhilwara G Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829016412,procurement@bhilwarabuild916.in,80600
+917,"Jaipur H Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016419,procurement@jaipurbuild917.in,80950
+918,"Jodhpur I Constructions & Developers",Jodhpur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016426,procurement@jodhpurbuild918.in,81300
+919,"Udaipur J Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016433,procurement@udaipurbuild919.in,81650
+920,"Kota K Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829016440,procurement@kotabuild920.in,82000
+921,"Alwar L Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016447,procurement@alwarbuild921.in,82350
+922,"Ajmer M Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829016454,procurement@ajmerbuild922.in,82700
+923,"Bhilwara N Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016461,procurement@bhilwarabuild923.in,83050
+924,"Jaipur O Constructions & Developers",Jaipur,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829016468,procurement@jaipurbuild924.in,83400
+925,"Jodhpur P Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016475,procurement@jodhpurbuild925.in,83750
+926,"Udaipur Q Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829016482,procurement@udaipurbuild926.in,84100
+927,"Kota R Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016489,procurement@kotabuild927.in,84450
+928,"Alwar S Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829016496,procurement@alwarbuild928.in,84800
+929,"Ajmer T Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016503,procurement@ajmerbuild929.in,85150
+930,"Bhilwara U Constructions & Developers",Bhilwara,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016510,procurement@bhilwarabuild930.in,85500
+931,"Jaipur V Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016517,procurement@jaipurbuild931.in,85850
+932,"Jodhpur W Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829016524,procurement@jodhpurbuild932.in,86200
+933,"Udaipur X Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016531,procurement@udaipurbuild933.in,86550
+934,"Kota Y Realty & Infratech",Kota,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829016538,procurement@kotabuild934.in,86900
+935,"Alwar Z Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016545,procurement@alwarbuild935.in,87250
+936,"Ajmer A Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829016552,procurement@ajmerbuild936.in,87600
+937,"Bhilwara B Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016559,procurement@bhilwarabuild937.in,87950
+938,"Jaipur C Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829016566,procurement@jaipurbuild938.in,88300
+939,"Jodhpur D Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016573,procurement@jodhpurbuild939.in,88650
+940,"Udaipur E Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829016580,procurement@udaipurbuild940.in,89000
+941,"Kota F Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016587,procurement@kotabuild941.in,89350
+942,"Alwar G Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016594,procurement@alwarbuild942.in,89700
+943,"Ajmer H Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016601,procurement@ajmerbuild943.in,90050
+944,"Bhilwara I Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829016608,procurement@bhilwarabuild944.in,90400
+945,"Jaipur J Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016615,procurement@jaipurbuild945.in,90750
+946,"Jodhpur K Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829016622,procurement@jodhpurbuild946.in,91100
+947,"Udaipur L Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016629,procurement@udaipurbuild947.in,91450
+948,"Kota M Constructions & Developers",Kota,"Commercial & Plazas","Tier 1 Contractor","Contracts & Tenders Head",+919829016636,procurement@kotabuild948.in,91800
+949,"Alwar N Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016643,procurement@alwarbuild949.in,92150
+950,"Ajmer O Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829016650,procurement@ajmerbuild950.in,92500
+951,"Bhilwara P Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016657,procurement@bhilwarabuild951.in,92850
+952,"Jaipur Q Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829016664,procurement@jaipurbuild952.in,93200
+953,"Jodhpur R Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016671,procurement@jodhpurbuild953.in,93550
+954,"Udaipur S Constructions & Developers",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016678,procurement@udaipurbuild954.in,93900
+955,"Kota T Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016685,procurement@kotabuild955.in,94250
+956,"Alwar U Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829016692,procurement@alwarbuild956.in,94600
+957,"Ajmer V Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016699,procurement@ajmerbuild957.in,94950
+958,"Bhilwara W Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829016706,procurement@bhilwarabuild958.in,95300
+959,"Jaipur X Living Spaces LLP",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016713,procurement@jaipurbuild959.in,95650
+960,"Jodhpur Y Constructions & Developers",Jodhpur,"Commercial & Plazas","Tier 1 Contractor","Chief Procurement Officer",+919829016720,procurement@jodhpurbuild960.in,96000
+961,"Udaipur Z Buildtech India Pvt Ltd",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016727,procurement@udaipurbuild961.in,96350
+962,"Kota A Infraprojects & Housing",Kota,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829016734,procurement@kotabuild962.in,96700
+963,"Alwar B Civil Engineering Contractors",Alwar & Bhiwadi,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016741,procurement@alwarbuild963.in,97050
+964,"Ajmer C Realty & Infratech",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Materials Manager",+919829016748,procurement@ajmerbuild964.in,97400
+965,"Bhilwara D Living Spaces LLP",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016755,procurement@bhilwarabuild965.in,97750
+966,"Jaipur E Constructions & Developers",Jaipur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016762,procurement@jaipurbuild966.in,98100
+967,"Jodhpur F Buildtech India Pvt Ltd",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016769,procurement@jodhpurbuild967.in,98450
+968,"Udaipur G Infraprojects & Housing",Udaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829016776,procurement@udaipurbuild968.in,98800
+969,"Kota H Civil Engineering Contractors",Kota,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016783,procurement@kotabuild969.in,99150
+970,"Alwar I Realty & Infratech",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Chief Procurement Officer",+919829016790,procurement@alwarbuild970.in,99500
+971,"Ajmer J Living Spaces LLP",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016797,procurement@ajmerbuild971.in,99850
+972,"Bhilwara K Constructions & Developers",Bhilwara,"Commercial & Plazas","Tier 1 Contractor","Project Director - Finishes",+919829016804,procurement@bhilwarabuild972.in,15200
+973,"Jaipur L Buildtech India Pvt Ltd",Jaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016811,procurement@jaipurbuild973.in,15550
+974,"Jodhpur M Infraprojects & Housing",Jodhpur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829016818,procurement@jodhpurbuild974.in,15900
+975,"Udaipur N Civil Engineering Contractors",Udaipur,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016825,procurement@udaipurbuild975.in,16250
+976,"Kota O Realty & Infratech",Kota,"Multi-Story Residential Towers","Tier 1 Contractor","Head of Civil Purchase",+919829016832,procurement@kotabuild976.in,16600
+977,"Alwar P Living Spaces LLP",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016839,procurement@alwarbuild977.in,16950
+978,"Ajmer Q Constructions & Developers",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016846,procurement@ajmerbuild978.in,17300
+979,"Bhilwara R Buildtech India Pvt Ltd",Bhilwara,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016853,procurement@bhilwarabuild979.in,17650
+980,"Jaipur S Infraprojects & Housing",Jaipur,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829016860,procurement@jaipurbuild980.in,18000
+981,"Jodhpur T Civil Engineering Contractors",Jodhpur,"Commercial & Plazas","Regional Project Builder","Head of Civil Purchase",+919829016867,procurement@jodhpurbuild981.in,18350
+982,"Udaipur U Realty & Infratech",Udaipur,"Multi-Story Residential Towers","Regional Project Builder","Project Director - Finishes",+919829016874,procurement@udaipurbuild982.in,18700
+983,"Kota V Living Spaces LLP",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Contracts & Tenders Head",+919829016881,procurement@kotabuild983.in,19050
+984,"Alwar W Constructions & Developers",Alwar & Bhiwadi,"Commercial & Plazas","Tier 1 Contractor","Chief Materials Manager",+919829016888,procurement@alwarbuild984.in,19400
+985,"Ajmer X Buildtech India Pvt Ltd",Ajmer & Kishangarh,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016895,procurement@ajmerbuild985.in,19750
+986,"Bhilwara Y Infraprojects & Housing",Bhilwara,"Multi-Story Residential Towers","Regional Project Builder","Head of Civil Purchase",+919829016902,procurement@bhilwarabuild986.in,20100
+987,"Jaipur Z Civil Engineering Contractors",Jaipur,"Commercial & Plazas","Regional Project Builder","Project Director - Finishes",+919829016909,procurement@jaipurbuild987.in,20450
+988,"Jodhpur A Realty & Infratech",Jodhpur,"Multi-Story Residential Towers","Tier 1 Contractor","Contracts & Tenders Head",+919829016916,procurement@jodhpurbuild988.in,20800
+989,"Udaipur B Living Spaces LLP",Udaipur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Materials Manager",+919829016923,procurement@udaipurbuild989.in,21150
+990,"Kota C Constructions & Developers",Kota,"Commercial & Plazas","Regional Project Builder","Chief Procurement Officer",+919829016930,procurement@kotabuild990.in,21500
+991,"Alwar D Buildtech India Pvt Ltd",Alwar & Bhiwadi,"Plotted Gated Townships & Villas","Regional Project Builder","Head of Civil Purchase",+919829016937,procurement@alwarbuild991.in,21850
+992,"Ajmer E Infraprojects & Housing",Ajmer & Kishangarh,"Multi-Story Residential Towers","Tier 1 Contractor","Project Director - Finishes",+919829016944,procurement@ajmerbuild992.in,22200
+993,"Bhilwara F Civil Engineering Contractors",Bhilwara,"Commercial & Plazas","Regional Project Builder","Contracts & Tenders Head",+919829016951,procurement@bhilwarabuild993.in,22550
+994,"Jaipur G Realty & Infratech",Jaipur,"Multi-Story Residential Towers","Regional Project Builder","Chief Materials Manager",+919829016958,procurement@jaipurbuild994.in,22900
+995,"Jodhpur H Living Spaces LLP",Jodhpur,"Plotted Gated Townships & Villas","Regional Project Builder","Chief Procurement Officer",+919829016965,procurement@jodhpurbuild995.in,23250
+996,"Udaipur I Constructions & Developers",Udaipur,"Commercial & Plazas","Tier 1 Contractor","Head of Civil Purchase",+919829016972,procurement@udaipurbuild996.in,23600
+997,"Kota J Buildtech India Pvt Ltd",Kota,"Plotted Gated Townships & Villas","Regional Project Builder","Project Director - Finishes",+919829016979,procurement@kotabuild997.in,23950
+998,"Alwar K Infraprojects & Housing",Alwar & Bhiwadi,"Multi-Story Residential Towers","Regional Project Builder","Contracts & Tenders Head",+919829016986,procurement@alwarbuild998.in,24300
+999,"Ajmer L Civil Engineering Contractors",Ajmer & Kishangarh,"Commercial & Plazas","Regional Project Builder","Chief Materials Manager",+919829016993,procurement@ajmerbuild999.in,24650
+1000,"Bhilwara M Realty & Infratech",Bhilwara,"Multi-Story Residential Towers","Tier 1 Contractor","Chief Procurement Officer",+919829017000,procurement@bhilwarabuild1000.in,25000

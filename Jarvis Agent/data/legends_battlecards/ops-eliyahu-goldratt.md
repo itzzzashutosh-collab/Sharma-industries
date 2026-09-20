@@ -1,0 +1,1 @@
+Battlecard for Eliyahu Goldratt (Theory of Constraints Bottleneck Feed) synthesized with Taiichi Ohno

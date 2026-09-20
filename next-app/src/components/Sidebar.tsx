@@ -81,12 +81,14 @@ interface NavGroup {
   items: NavItem[];
 }
 
-// ─── Navigation Config ────────────────────────────────────────────────────────
+// ─── Navigation Config ────────────────────────────────────────────────        
 const CEO_NAV: NavGroup[] = [
   {
     group: "Dashboard",
     items: [
       { name: "Dashboard",       href: "/dashboard/admin",                icon: LayoutDashboard },
+      { name: "3D Factory Twin", href: "/factory",                         icon: Building2 },
+      { name: "JARVIS Brain",    href: "/dashboard/jarvis-brain",          icon: Sparkles },
       { name: "AI Dashboard",    href: "/dashboard/intelligence",          icon: Sparkles },
       { name: "Strategist Mode", href: "/dashboard/strategist",          icon: LineChart },
     ],
@@ -153,6 +155,8 @@ const COFOUNDER_NAV: NavGroup[] = [
     group: "Dashboard",
     items: [
       { name: "Dashboard",      href: "/dashboard/cofounder",             icon: LayoutDashboard },
+      { name: "3D Factory Twin", href: "/factory",                         icon: Building2 },
+      { name: "JARVIS Brain",   href: "/dashboard/jarvis-brain",          icon: Sparkles },
       { name: "AI Dashboard",   href: "/dashboard/intelligence",          icon: Sparkles },
     ],
   },

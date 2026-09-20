@@ -1,0 +1,44 @@
+{
+  "id": "HORMOZI-MU6K4D5Z",
+  "timestamp": "2026-09-18T06:07:53.255Z",
+  "userQuery": "Hormozi dealer price 750 kar do",
+  "graphTrace": [
+    {
+      "state": "S1_SCOPE_VALIDATION",
+      "status": "PASS",
+      "details": "Focused strictly on Swatch Rustic pricing/offers."
+    },
+    {
+      "state": "S2_PARAMETER_INGESTION",
+      "status": "PASS",
+      "mrp": 1150,
+      "cost": 450,
+      "dealerPrice": 750
+    },
+    {
+      "state": "S3_DEALER_MARGIN_GATE",
+      "status": "BLOCKED_LOW_DEALER_MARGIN",
+      "dealerMarginPct": "34.78",
+      "blockReason": "Dealer Margin (34.78%) is below mandatory minimum 40% (₹460 on ₹1150 MRP). Dealer price ₹750.00 is too high."
+    },
+    {
+      "state": "S4_OPERATIONAL_BURDEN_AUDIT",
+      "grossCompanyMargin": "300.00",
+      "painterToken": 200,
+      "cashDiscountRs": "22.50",
+      "netCompanyMargin": "77.50"
+    },
+    {
+      "state": "S5_HURDLE_RATE_VERIFICATION",
+      "status": "BREACH_HURDLE_FLOOR",
+      "netCompanyMargin": "77.50",
+      "hurdle": 100
+    },
+    {
+      "state": "S6_DECISION_ROUTING",
+      "verdict": "BLOCKED"
+    }
+  ],
+  "recommendation": "💼 *Alex Hormozi Offer & Pricing Engine — Indian Paint Market*\n📦 *Product Focus*: Swatch Rustic (20L Pail) | MRP ₹1150 | Cost ₹450\n\n📊 *Graph Engineering State Audit*:\n• Dealer Price: ₹750.00 (Dealer Margin: 34.78% | ₹400.00/pail)\n• Company Gross Margin: ₹300.00 per pail (26.09% on MRP)\n• Painter Incentive Token: −₹200.00\n• Cash Discount (3.0%): −₹22.50\n• **Net Company Contribution**: *₹77.50 per pail*\n\n🚫 *STATE GATE VERDICT: BLOCKED*\n⚠️ *Reason*: Dealer Margin (34.78%) is below mandatory minimum 40% (₹460 on ₹1150 MRP). Dealer price ₹750.00 is too high.\n\n💡 *Hormozi Rule*: Dealer margin 40% se neeche nahi hona chahiye (retail trade network promote nahi karega), aur dealer price ₹632.50 se neeche company ko thin karta hai.\n👑 *Admin Override*: Sir Ashutosh Sharma (+91 9079609627) verbal/written confirmation se override kar sakte hain.\n\n🎯 *Available Ready-Made Playbooks (Swatch Rustic)*:\n1. Dealer Volume Scheme (Entry to Elite slabs: ₹690 ➔ ₹632.50)\n2. Painter Samman Program (₹100–₹600 token tiers + tool kits)\n3. Homeowner Diwali Festival Bundle (2.91:1 value stack)\n4. Contractor Project Package (100L to 5,000L+)\n5. Swatch Rustic Elite Club (Exclusive 45% margin + display asset)\n\n_Margins can be updated anytime by CEO Ashutosh Sharma using command: 'Set margin to X%' or 'Set cost to ₹X'._",
+  "status": "BLOCKED"
+}

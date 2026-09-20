@@ -1,0 +1,19 @@
+{
+  "agentName": "April Dunford",
+  "division": "Sales & Negotiations Division",
+  "role": "Sales Positioning",
+  "domain": "Category Narrative vs MNC Duopolies",
+  "peerInterconnection": {
+    "peerName": "Marty Neumeier",
+    "peerRole": "Zag Differentiator",
+    "peerDomain": "Radical Differentiation from Tinting Machines"
+  },
+  "epoch": 45,
+  "finalScore": 98.6,
+  "trialsPassed": 493,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-april-dunford.md",
+  "timestamp": "2026-09-20T04:30:00.986Z"
+}

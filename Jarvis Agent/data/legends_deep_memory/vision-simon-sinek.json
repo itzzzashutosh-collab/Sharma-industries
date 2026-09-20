@@ -1,0 +1,19 @@
+{
+  "agentName": "Simon Sinek",
+  "division": "Vision & Future Strategy Division",
+  "role": "Purpose & Mission Lead",
+  "domain": "Golden Circle: The \"Why\" of Sharma Industries",
+  "peerInterconnection": {
+    "peerName": "Piyush Pandey",
+    "peerRole": "Vernacular Culture Lead",
+    "peerDomain": "\"Har Deewar Ka Pukka Vishwas\""
+  },
+  "epoch": 45,
+  "finalScore": 98.4,
+  "trialsPassed": 492,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\vision-simon-sinek.md",
+  "timestamp": "2026-09-20T04:41:09.333Z"
+}

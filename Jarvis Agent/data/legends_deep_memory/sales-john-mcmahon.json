@@ -1,0 +1,19 @@
+{
+  "agentName": "John McMahon",
+  "division": "Sales & Negotiations Division",
+  "role": "Enterprise Qualifier",
+  "domain": "MEDDPICC Counter Qualification",
+  "peerInterconnection": {
+    "peerName": "Chet Holmes",
+    "peerRole": "Dream 100 Director",
+    "peerDomain": "Top 100 Commercial Counter Targeting"
+  },
+  "epoch": 45,
+  "finalScore": 99.2,
+  "trialsPassed": 496,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-john-mcmahon.md",
+  "timestamp": "2026-09-20T04:28:37.326Z"
+}

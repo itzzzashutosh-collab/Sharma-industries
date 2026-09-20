@@ -1,0 +1,19 @@
+{
+  "agentName": "Paul O'Neill",
+  "division": "Operations & Plant Throughput Division",
+  "role": "Safety Culture Lead",
+  "domain": "Zero Injury Mandate & Dust Control",
+  "peerInterconnection": {
+    "peerName": "Frederick Taylor",
+    "peerRole": "Scientific Management Lead",
+    "peerDomain": "Ergonomic Workplace Design"
+  },
+  "epoch": 45,
+  "finalScore": 98,
+  "trialsPassed": 490,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\ops-paul-o-neill.md",
+  "timestamp": "2026-09-20T04:33:23.748Z"
+}

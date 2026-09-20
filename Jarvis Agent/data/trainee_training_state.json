@@ -1,0 +1,30 @@
+{
+  "trainees": {
+    "+919057501926": {
+      "name": "Sonu Kumar",
+      "role": "Salesman",
+      "drillsCompleted": 12,
+      "drillsPassed": 10,
+      "consecutiveFails": 0,
+      "gates": {
+        "GATE-1": {
+          "passed": true,
+          "score": 8.5,
+          "date": "2026-09-15"
+        },
+        "GATE-2": {
+          "passed": true,
+          "score": 9,
+          "date": "2026-09-16"
+        },
+        "GATE-3": {
+          "passed": false,
+          "score": 7.2,
+          "attempts": 2
+        }
+      },
+      "readiness": "Field Shadowing (Gate 3 Pending)"
+    }
+  },
+  "dailyLogs": []
+}

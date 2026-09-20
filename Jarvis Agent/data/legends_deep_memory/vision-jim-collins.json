@@ -1,0 +1,19 @@
+{
+  "agentName": "Jim Collins",
+  "division": "Vision & Future Strategy Division",
+  "role": "Flywheel Architect",
+  "domain": "Quality-to-Cash Compounding Flywheel",
+  "peerInterconnection": {
+    "peerName": "Alex Hormozi",
+    "peerRole": "Offer Architect",
+    "peerDomain": "Self-Perpetuating Painter & Dealer Loops"
+  },
+  "epoch": 45,
+  "finalScore": 99.4,
+  "trialsPassed": 497,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\vision-jim-collins.md",
+  "timestamp": "2026-09-20T04:40:17.206Z"
+}

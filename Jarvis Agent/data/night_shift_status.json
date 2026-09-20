@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-09-18T10:14:53.988Z",
+  "panIndiaMining": {
+    "totalDealersScraped": 127350,
+    "totalBuildersScraped": 50940,
+    "statesCovered": 28,
+    "unionTerritoriesCovered": 8,
+    "mode": "Continuous Infinite Streaming (Zero Cap)",
+    "outboundMessagesToLeads": "STRICTLY BLOCKED (0 sent)"
+  }
+}

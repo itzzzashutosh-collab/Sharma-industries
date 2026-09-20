@@ -1,0 +1,1397 @@
+{
+  "queueVersion": "1.0",
+  "lastUpdated": "2026-09-20T08:14:06.124Z",
+  "queueStatus": "IDLE_AWAITING_CEO_TRIGGER",
+  "totalQueued": 37,
+  "jobs": [
+    {
+      "jobId": "JOB-MIROFISH-HORMOZI-SCHEMES-OFFERS-V1",
+      "title": "Alex Hormozi 7-Layer No-Brainer Offer Engine & Execution Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Alex Hormozi",
+      "role": "Offer Architect (No-Brainer Deals + Growth Systems Designer)",
+      "peer": "Warren Buffett (CFO) & Jordan Belfort (Straight Line Closer)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 1,
+      "enqueuedAt": "2026-09-20T10:40:00+05:30",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Value Equation = (Dream Outcome x Likelihood) / (Time Delay x Effort & Risk)",
+        "layers": [
+          "Layer 1: Dealer Base (₹400 margin, 20->1 Free, 50->3 Free, 7-Day Exchange, Zero Machine)",
+          "Layer 2: Dealership Growth Program (20-bag entry -> 300 bags/mo VIP with area protection & extra ₹30)",
+          "Layer 3: Painter Partner Program (₹50 token, Milestones: 100->₹2.5k, 250->₹7k, 500->₹15k, 1000->₹35k)",
+          "Layer 4: Customer Offer (5-7 Yr Warranty, 5% next purchase coupon, free demo patch & board)",
+          "Layer 5: Retention Bonanzas (Diwali 50+5 free, Holi double token ₹100)",
+          "Layer 6: Urgency & Scarcity (Dan Kennedy: First 10 dealers only, Sunday 6 PM deadline)",
+          "Layer 7: Warranty Buffet (7-Yr Durability, 100% replacement on defect, zero color fade)"
+        ],
+        "hurdleRate": ">= ₹100 net profit per bag preserved"
+      },
+      "sourceFiles": [
+        "data/alex_hormozi_master_offer_engine_sop.md",
+        "data/alex_hormozi_offers_and_programs_ledger.csv",
+        ".hermes/skills/alex-hormozi-india/SKILL.md",
+        ".hermes/skills/alex-hormozi-india/OFFER_ENGINE_SOP.md",
+        "data/swatch_example_based_programs_and_offers.md",
+        "data/hormozi_product_offers_ledger.csv"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Kota Dealer 20-Bag Shubh Aarambh Trial (1 Bag Free + ₹400 Margin + 7-Day Exchange)",
+        "Scenario 2: Exclusive VIP Dealership Growth Program (300 bags/month commitment with territory lock)",
+        "Scenario 3: Painter Partner Milestones (Contractor applying 1000 bags receives ₹35,000 cash bonus)",
+        "Scenario 4: Customer Warranty Buffet (7-Yr Weatherproof Guarantee + Free living room quartz demo board)",
+        "Scenario 5: Dan Kennedy Scarcity Closing (Only 4 remaining protected slots in Kota town, Sunday deadline)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo market trials on the 7-Layer No-Brainer Offer stack, test dealer objection dissolution against legacy Asian Paints margins, validate company net profit >= ₹100/bag with Warren Buffett synthesis, and generate execution battlecard."
+    },
+    {
+      "jobId": "JOB-MIROFISH-BRIAN-TRACY-SALES-DISCIPLINE-V1",
+      "title": "Brian Tracy Field Sales Discipline & 4-Step Closing Cadence Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Brian Tracy",
+      "role": "Chief Sales Officer (CSO)",
+      "peer": "Jordan Belfort (Straight Line Closer)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 2,
+      "enqueuedAt": "2026-09-20T10:54:00+05:30",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "dailyVisitTarget": "40–45 shop visits per day",
+        "meaningfulConversations": "10 conversations per day",
+        "qualifiedProspects": "5 prospects per day",
+        "trialCloses": "2 trial close attempts per day",
+        "closingCadence": "Connect -> Diagnose -> Present -> Close",
+        "pipelineStages": "New Contact -> Interested -> Trial Discussion -> Order Pending -> Closed",
+        "followupCadence": "Day 1 (Visit) -> Day 3 (Call) -> Day 5 (Visit) -> Day 10 (Final Push)",
+        "zeroPricingAuthority": true,
+        "collaboration": "Jordan Belfort (Scripts) | Jeremy Miner (NEPQ) | Alex Hormozi (Offers)"
+      },
+      "sourceFiles": [
+        "data/brian_tracy_field_sales_sop.md",
+        ".hermes/skills/brian-tracy/SKILL.md",
+        ".hermes/skills/brian-tracy/FIELD_SALES_SOP.md",
+        "data/brian_tracy_sales_pipeline_ledger.csv"
+      ],
+      "marketScenarios": [
+        "Case 1: Low Margin Dealer Frustration (Asian 3% vs Swatch ₹460/bag clean profit)",
+        "Case 2: Slow-Moving Stock Fear (₹50 cash tokens inside bag + 7-Day Exchange Guarantee)",
+        "Case 3: Brand Trust & Wall Flaking Objections (1ft x 1ft Real Quartz Demo Board + 5-Yr Warranty)",
+        "Case 4: Price Per Bag Objections (White Putty ₹350 vs Rustic ₹690/₹1150 MRP margin dynamics)",
+        "Case 5: Competitor Monopoly Loyalty (Secondary complementary product framing without replacing Asian)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo market trials on the 4-step closing cadence across 45-counter daily beats, validate against >=98.0% accuracy with Jordan Belfort straight-line certainty synthesis, and save perfected battlecard."
+    },
+    {
+      "jobId": "JOB-MIROFISH-JORDAN-BELFORT-SCRIPTS-V1",
+      "title": "Jordan Belfort Straight Line Persuasion & 10-Step Scripts Engine Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Jordan Belfort",
+      "role": "Straight Line Closer (Scripts, Communication & Conversion Control)",
+      "peer": "Brian Tracy (CSO) & Jeremy Miner (NEPQ)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 3,
+      "enqueuedAt": "2026-09-20T11:05:00+05:30",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "flowStages": "Rapport -> Transition -> Situation -> Problem -> Impact -> Solution -> Offer -> Objection -> Close -> Followup",
+        "threeTensCertainty": "Product 10/10 | Company 10/10 | Salesperson 10/10",
+        "objectionHandling": "Price High (Profit reframe) | New Brand (7-Day risk reversal) | Asian Only (Complementary secret weapon) | Think About It (Doubt isolation)",
+        "toneOfVoice": "Absolute certainty, calm expert advisor, zero beggar posture",
+        "closingMechanism": "20-bag low-risk action close",
+        "collaboration": "Brian Tracy (Structure) | Jeremy Miner (NEPQ) | Alex Hormozi (Offers) | Chris Voss (Tone)"
+      },
+      "sourceFiles": [
+        "data/jordan_belfort_master_scripts_playbook.md",
+        "data/jordan_belfort_closing_sop.md",
+        "data/jordan_belfort_scripts_ledger.csv",
+        "data/jordan_belfort_sops_ledger.csv",
+        ".hermes/skills/jordan-belfort/SKILL.md",
+        ".hermes/skills/jordan-belfort/MASTER_SCRIPTS_PLAYBOOK.md",
+        ".hermes/skills/jordan-belfort/STRAIGHT_LINE_SOP.md"
+      ],
+      "marketScenarios": [
+        "Objection 1: 'Price high hai' -> 'Sir price nahi profit dekho: ₹50 mehenga but ₹300 zyada deta hai toh kya mehenga hai?'",
+        "Objection 2: 'New brand hai' -> 'Isi liye trial bol rahe hain — 20 bags se start karo, risk zero rakho.'",
+        "Objection 3: 'Asian hi chalta hai' -> 'Replace nahi — extra high-margin earning channel add karo.'",
+        "Objection 4: 'Soch ke batayenge' -> 'Sir ek doubt clear kar do — hesitation product quality par hai ya counter rotation par?'",
+        "Closing Push: 20-Bag Shubh Aarambh starter trial commitment"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo conversation simulations testing 10-step Straight Line scripts against tough multi-brand dealers, validate against >=98.0% conversion certainty threshold, and synthesize into hardened field battlecards."
+    },
+    {
+      "jobId": "JOB-MIROFISH-JEREMY-MINER-NEPQ-V1",
+      "title": "Jeremy Miner NEPQ Questioning & Realization Architecture Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Jeremy Miner",
+      "role": "NEPQ Specialist (Script Refiner & Question Architect)",
+      "peer": "Jordan Belfort (Straight Line Closer) & Brian Tracy (CSO)",
+      "priority": 4,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "methodology": "Neuro-Emotional Persuasion Questioning (NEPQ)",
+        "talkingRatio": "Customer 60-70% / Salesperson 30-40%",
+        "transformationPrinciple": "Tell = Resistance | Ask = Control | Statements -> Emotion + Logic Questions",
+        "hybridCadence": "Rapport (Belfort) -> Questions (NEPQ) -> Pain (SPIN) -> Emotion (NEPQ) -> Solution (Belfort) -> Comfort Close (NEPQ)",
+        "closingMechanism": "Comfort Close: Sir agar trial small rakhein aur full support mile, toh start karna comfortable hoga?",
+        "collaboration": "Jordan Belfort (Base Scripts) | Brian Tracy (Flow) | Chris Voss (Tone) | Alex Hormozi (Offer Value)"
+      },
+      "sourceFiles": [
+        "data/jeremy_miner_nepq_questioning_sop.md",
+        "data/jeremy_miner_nepq_ledger.csv",
+        ".hermes/skills/jeremy-miner/SKILL.md",
+        ".hermes/skills/jeremy-miner/QUESTIONING_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Margin Inquiry (Sir abhi kitna margin milta hai? Agar 300-400 badh jaye toh difference padega?)",
+        "Scenario 2: Price Objection (Sir decision price pe lete ho ya profit pe? Agar ₹50 mehenga ho lekin ₹300 extra de, toh kya choose karoge?)",
+        "Scenario 3: New Brand Reluctance (Sir new product try karte time sabse bada concern kya hota hai? Agar wo risk dissolve ho jaye toh trial lena comfortable hoga?)",
+        "Scenario 4: No Interest Pattern Interrupt (Agar sab perfect mil raha hai toh change karne ki zarurat hi nahi hai... lekin agar extra ₹300 per bag mile toh dekhna worth hoga?)",
+        "Scenario 5: Comfort Closing (Sir agar trial small rakhein aur support mile, toh start karna comfortable hoga?)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo conversation simulations testing NEPQ questions vs Belfort straight line closing on tough Rajasthan counters, validating customer talking ratio >=60% and close conversion certainty >=98.0%.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T05:53:35.962Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-NEIL-RACKHAM-SPIN-V1",
+      "title": "Neil Rackham SPIN Deep Diagnosis & Pain Monetization Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Neil Rackham",
+      "role": "SPIN Specialist (Deep Diagnosis & Pain Monetization Expert)",
+      "peer": "Jordan Belfort (Straight Line Closer) & Jeremy Miner (NEPQ)",
+      "priority": 5,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "SPIN (Situation -> Problem -> Implication -> Need Payoff)",
+        "corePrinciple": "No pain = No sale | No quantified pain = Weak sale",
+        "calculationFormula": "Monthly Loss = (Swatch Profit @ ₹400) - (Legacy Profit @ ₹50)",
+        "repHabitTargets": "10 Diagnoses/day | 5 Implication conversations/day | 2 Closes/day",
+        "collaboration": "Belfort (Script structure) | NEPQ (Question tone) | SPIN (Depth & ₹ loss) | Hormozi (Offer value)"
+      },
+      "sourceFiles": [
+        "data/neil_rackham_spin_diagnosis_sop.md",
+        "data/neil_rackham_spin_diagnosis_ledger.csv",
+        ".hermes/skills/neil-rackham/SKILL.md",
+        ".hermes/skills/neil-rackham/SPIN_DIAGNOSIS_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Kota Multi-Brand Retailer (80 bags @ ₹45 -> ₹28,400/mo bleed = ₹3.41L/yr loss)",
+        "Scenario 2: Bundi Hardware Counter (50 bags @ ₹50 -> ₹17,500/mo bleed = ₹2.10L/yr loss)",
+        "Scenario 3: Baran Commercial Site (25 buckets @ ₹200 vs ₹1,845 -> ₹41,125/mo bleed)",
+        "Scenario 4: Talera Town Retailer (40 bags @ ₹35 -> ₹14,600/mo bleed = ₹1.75L/yr loss)",
+        "Scenario 5: Bijoliya Luxury Stone Counter (60 bags @ ₹60 -> ₹24,000/mo bleed = ₹2.88L/yr loss)",
+        "Scenario 6: Dabi Industrial Township Counter (100 bags @ ₹25 -> ₹37,500/mo bleed = ₹4.50L/yr loss)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo conversation simulations testing SPIN 4-stage diagnosis on tough multi-brand dealers, validating dealer self-realization of financial loss and closing certainty >=98.0%.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T05:58:41.898Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-CHRIS-VOSS-NEGOTIATION-V1",
+      "title": "Chris Voss Dynamic Tactical Empathy & Margin Defense Negotiation Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Chris Voss",
+      "role": "Negotiation Specialist (Dynamic Objection Handling & Deal Protection)",
+      "peer": "Jordan Belfort (Straight Line Closer) & Brian Tracy (CSO)",
+      "priority": 6,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Tactical Empathy (Objection -> Label -> Mirror -> Calibrated Question -> Solve -> Close)",
+        "coreTools": "Labeling | Mirroring | Calibrated Questions (How/What) | Tactical Empathy | Accusation Audit",
+        "connection": "Directly linked to physical sales agents on-ground and Independent Distributor Sonu Kumar",
+        "marginGuardrail": "Strictly zero discounting; preserve company hurdle rate >= ₹100/bag",
+        "listeningRatio": "Listen 70% | Speak 30%",
+        "repDailyTargets": "10 Objections/day | 5 Successful Negotiations | 2 Saved Deals"
+      },
+      "sourceFiles": [
+        "data/chris_voss_tactical_empathy_sop.md",
+        "data/chris_voss_negotiation_ledger.csv",
+        ".hermes/skills/chris-voss/SKILL.md",
+        ".hermes/skills/chris-voss/TACTICAL_EMPATHY_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Dealer demands ₹50 discount -> Rep uses Label & Calibrated Question on profit vs landing price",
+        "Scenario 2: Dealer refuses without 30-day credit -> Rep labels credit headache & contrasts 7-day cash flow",
+        "Scenario 3: Skepticism of unknown brand -> Rep uses Accusation Audit & 7-day exchange guarantee",
+        "Scenario 4: Dealer gives polite brush-off (soch ke batayenge) -> Rep isolates missing info and schedules demo board session",
+        "Scenario 5: Competitor monopoly loyalty (Asian only) -> Rep labels footfall pull and adds Swatch as secondary profit pillar"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo negotiation trials simulating tough Rajasthan paint counter negotiations, validate dynamic objection resolution without discounting, and enforce >=98.0% margin defense threshold.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:07:16.458Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-DAN-KENNEDY-URGENCY-V1",
+      "title": "Dan Kennedy Direct Response Urgency & Delay Destruction Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Dan Kennedy",
+      "role": "Dealer Activation Specialist (Decision Trigger Engine)",
+      "peer": "Jordan Belfort (Straight Line Closer) & Alex Hormozi (Offer Architect)",
+      "priority": 7,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Direct Response Urgency (Limited Access | Real Deadlines | First Mover Advantage | Loss of Opportunity)",
+        "corePhilosophy": "If there is no urgency, there is no sale. No urgency to No decision to No sale.",
+        "territoryQuotaLock": "Max 8-10 dealers per territory; 6 booked, remaining slots scarce",
+        "hardDeadline": "Sunday 6:00 PM Launch Allocation Expiration",
+        "lossAversionMetric": "Delaying costs ₹17,500/month (₹580/day) in uncaptured profit",
+        "dailyQuota": "10 Urgency Applications | 5 Scarcity Locks | 3 Hard Deadlines"
+      },
+      "sourceFiles": [
+        "data/dan_kennedy_urgency_direct_response_sop.md",
+        "data/dan_kennedy_urgency_ledger.csv",
+        ".hermes/skills/dan-kennedy/SKILL.md",
+        ".hermes/skills/dan-kennedy/URGENCY_DIRECT_RESPONSE_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Dealer says Soch ke bataunga -> Kennedy slot limitation script triggers 20-bag commitment",
+        "Scenario 2: Dealer says Thoda time do -> Rep frames launch batch expiration deadline (Sunday 6 PM)",
+        "Scenario 3: Dealer says Market dekh ke batayenge -> Rep uses first-mover territory advantage vs competitor lock",
+        "Scenario 4: Dealer says Agle mahine shuru karenge -> Rep calculates active cost of inaction (₹17,500 monthly bleed)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo direct response trials testing ethical urgency triggers against dealer procrastination, validate immediate decision conversion >=98.0%, and generate optimized decision-trigger battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:13:09.441Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-ZIG-ZIGLAR-TRUST-V1",
+      "title": "Zig Ziglar Trust Engine & Long-Term Repeat Business Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Zig Ziglar",
+      "role": "Trust Builder (Long-Term Relationship & Repeat Order Engine)",
+      "peer": "Jordan Belfort (Straight Line Closer) & Brian Tracy (CSO)",
+      "priority": 8,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Trust Engine (Honesty Over Hype | Radical Transparency | Extreme Ownership | Long-Term Intent | Problem Solver)",
+        "corePhilosophy": "People do not buy products... they buy TRUST in the person selling it.",
+        "positionInStack": "Relationship Glue connecting Belfort certainty, NEPQ questioning, SPIN pain, Hormozi offers, and Voss negotiation",
+        "fieldHabitTarget": "1 Honest Line | 1 Risk Removed | 1 Long-term Intent Stated on every single visit",
+        "repeatReorderTarget": ">= 70% monthly re-order retention after 20-bag starter trial"
+      },
+      "sourceFiles": [
+        "data/zig_ziglar_trust_relationship_sop.md",
+        "data/zig_ziglar_trust_ledger.csv",
+        ".hermes/skills/zig-ziglar/SKILL.md",
+        ".hermes/skills/zig-ziglar/TRUST_RELATIONSHIP_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Dealer says naya brand hai chalega ya nahi -> Rep admits no 80-yr TV ad budget, passes ₹400 margin directly",
+        "Scenario 2: Thekedar fears difficult application -> Rep offers personal site demo patch and free replacement",
+        "Scenario 3: Dealer burned by past fly-by-night brand -> Rep anchors Bundi HQ factory roots and 7-day exchange guarantee",
+        "Scenario 4: Transparency on zero tinting machines -> Rep shows how counter saves ₹3-4L in locked capital"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo relationship trials testing radical honesty against dealer cynicism, validate repeat reorder rate >=70% and trust retention >=98.0%, and generate perfected integrity battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:15:41.504Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-JOE-GIRARD-RETENTION-V1",
+      "title": "Joe Girard Relationship Manager & Retention Payment Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Joe Girard",
+      "role": "Relationship Manager (Repeat Orders + Payment Discipline + Dealer Loyalty System)",
+      "peer": "Zig Ziglar (Trust Builder) & Alex Hormozi (Offer Architect)",
+      "priority": 9,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Law of 250 & 5-Step Relationship Retention System",
+        "corePhilosophy": "People do not buy once... They buy from people they LIKE, TRUST, and REMEMBER.",
+        "lawOf250Ratio": "1 Delighted Dealer = +250 Network Advocates | 1 Offended Dealer = -250 Poisoned Wells",
+        "postSaleCadence": "Day 2 Safe Transit Check -> Day 4 Soft Reminder -> Day 5 Value & CD -> Day 7 Firm Close -> Day 10 Profit Reorder",
+        "reorderPitchMetric": "Remind realized cash profit (₹12,000 net profit on 30 bags) instead of begging for orders",
+        "paymentCadenceMetric": "Strict 7-day credit cycle enforcement with calm, smiling institutional ERP protocol"
+      },
+      "sourceFiles": [
+        "data/joe_girard_relationship_retention_sop.md",
+        "data/joe_girard_retention_payment_ledger.csv",
+        ".hermes/skills/joe-girard/SKILL.md",
+        ".hermes/skills/joe-girard/RELATIONSHIP_RETENTION_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Post-delivery follow-up on Day 2 verifying 100% bag integrity and chemist dispatch",
+        "Scenario 2: Repeat order push on Day 10 reminding dealer of ₹12,000 net cash profit pocketed",
+        "Scenario 3: Day 4 soft payment reminder framing ₹690 cash saving via 2% Cash Discount window",
+        "Scenario 4: Day 7 firm payment close attributing cycle requirement to institutional ERP audit policy",
+        "Scenario 5: Disengaging dealer visited in person with extreme ownership and senior chemist support",
+        "Scenario 6: Law of 250 painter word-of-mouth expansion after initial dealer counter success"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo relationship retention trials testing Law of 250 and 7-day payment protocol, validate repeat reorder retention >=70% and payment settlement compliance >=98.0%, and generate optimized Relationship Manager retention battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:19:32.566Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-JOHN-MCMAHON-QUALIFICATION-V1",
+      "title": "John McMahon MEDDPICC Target Dealer Qualification Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "John McMahon",
+      "role": "Target Selection Engine (High-Value Dealer & Customer Identifier)",
+      "peer": "Jeb Blount (Prospecting Engine) & Neil Rackham (SPIN Diagnosis)",
+      "priority": 10,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Simplified MEDDPICC for Regional Paint Retail",
+        "corePhilosophy": "Not every customer is worth your time. Right customer -> Easy sale. Wrong customer -> Constant struggle.",
+        "scorecardBreakdown": "Money: 2 | Economic Buyer: 2 | Demand: 2 | Pain: 1 | Intent: 2 | Payment: 1 (Total: 10)",
+        "decisionThresholds": "8-10 = High Priority Target | 5-7 = Dream 100 Nurture | <5 = Disqualify & Avoid",
+        "dailyQuotaTarget": "20 Identified -> 10 Qualified -> 5 Shortlisted -> 2 On-Site Trial Closes",
+        "targetIcp": "Mixed Hardware + Paint (₹2-5L/mo), active painter base, owner on counter, unhappy with MNC 3% margin"
+      },
+      "sourceFiles": [
+        "data/john_mcmahon_dealer_qualification_sop.md",
+        "data/john_mcmahon_qualification_scorecard_ledger.csv",
+        ".hermes/skills/john-mcmahon/SKILL.md",
+        ".hermes/skills/john-mcmahon/QUALIFICATION_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: High-Volume Mixed Building Materials Counter (Billing ₹3.5L, 50 bags pull, 10/10 score -> Immediate on-site closing pitch)",
+        "Scenario 2: Small Rural Hardware Shop (Billing ₹40k, demands 60-day credit, 3/10 score -> Ruthlessly disqualify)",
+        "Scenario 3: Exclusive MNC Paint Showroom (Billing ₹12L, locked into corporate trips, 6/10 score -> Dream 100 nurture)",
+        "Scenario 4: Aggressive Commercial Coating Stockist (Billing ₹4.5L, project supply, 10/10 score -> Direct factory dispatch offer)",
+        "Scenario 5: Struggling Sanitary & Tile Outlet (Billing ₹60k, helper on billing, 2/10 score -> Immediate disqualification)",
+        "Scenario 6: Active Town-Edge Thekedar Supply Counter (Billing ₹2.2L, 9/10 score -> Deploy ₹50 Painters Growth Tokens offer)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo qualification trials testing simplified MEDDPICC filtering against low-margin credit seekers, validate bad-debt prevention >=98.0% and high-conversion target accuracy >=98.0%, and generate optimized target dealer qualification battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:23:00.182Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-KEENAN-GAP-SELLING-V1",
+      "title": "Keenan Gap Selling & Financial Loss Calculation Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Keenan",
+      "role": "Financial Reality Builder (Loss Calculator + Decision Accelerator)",
+      "peer": "Neil Rackham (SPIN Diagnosis) & Jordan Belfort (Straight Line Closer)",
+      "priority": 11,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "5-Stage Gap Model (Current -> Problem -> Impact -> Future -> GAP)",
+        "corePhilosophy": "People do not buy because of benefits... They buy to fix a costly problem. No Pain -> No Sale. No Loss -> No Urgency.",
+        "coreFormula": "GAP = Swatch Potential Profit - MNC Current Profit | Yearly = Monthly GAP x 12",
+        "perBagDelta": "₹370 / bag cash difference (₹400 Swatch vs ₹30 MNC)",
+        "dailyBleedFormula": "Monthly Loss / 30 = ₹1,230/day lost during procrastination",
+        "scriptRefinementRule": "Strip all vague marketing fluff (best, zyada) and replace with exact rupee metrics"
+      },
+      "sourceFiles": [
+        "data/keenan_gap_selling_loss_calculator_sop.md",
+        "data/keenan_gap_selling_ledger.csv",
+        ".hermes/skills/keenan-gap-selling/SKILL.md",
+        ".hermes/skills/keenan-gap-selling/GAP_SELLING_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: 100-Bag High Volume Margin Bleed (MNC ₹3,000 vs Swatch ₹40,000 -> ₹37,000/mo loss, ₹4.44L/yr)",
+        "Scenario 2: Tinting Machine Capital Trap (₹3.5L locked @ 2.5% return vs 6x ready-bag inventory turns)",
+        "Scenario 3: Slow-Moving MNC Stock Hemorrhage (₹80k locked working capital for 90 days yielding ₹0)",
+        "Scenario 4: Thekedar Contractor Leakage Gap (15 contractors lost due to zero cash pass-through)",
+        "Scenario 5: Procrastination Daily Bleed (₹1,230/day lost by delaying trial decision to next month)",
+        "Scenario 6: Annual Territory Profit Vacuum (Overall counter income quadrupling from ₹10.5k to ₹42k)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo financial reality trials testing Gap Selling loss quantification against dealer complacency, validate decision acceleration >=98.0% and loss-avoidance conversion >=98.0%, and generate perfected Gap Selling loss-arithmetic battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:26:26.724Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-JEB-BLOUNT-PROSPECTING-V1",
+      "title": "Jeb Blount Bulk Network Prospecting & Multi-Touch Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Jeb Blount",
+      "role": "High-Value Lead Generator (Architects, Contractors, Builders, Distributors)",
+      "peer": "John McMahon (Target Qualification) & Neil Rackham (SPIN Diagnosis)",
+      "priority": 12,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Fanatical Prospecting & Indirect Demand Pull Strategy",
+        "corePhilosophy": "The sale does not start at closing... it starts with the RIGHT prospect. No pipeline -> No sales. No network -> No growth.",
+        "targetSegments": "Architects, Interior Designers, Thekedars, Real Estate Builders, Bulk Distributors",
+        "cadenceModel": "5 to 7 touches to conversion (Office Drop -> WhatsApp Case Study -> Call -> Live Demo -> Sqft Statement -> Starter Trial -> BOQ Lock)",
+        "pullStrategy": "Architect specifies -> Contractor demands -> Dealer stocks",
+        "dailyQuotaTarget": "10 Sites | 5 Architects/Designers | 5 Contractors | 3 Distributors | 10 New Contacts"
+      },
+      "sourceFiles": [
+        "data/jeb_blount_prospecting_bulk_network_sop.md",
+        "data/jeb_blount_prospecting_ledger.csv",
+        ".hermes/skills/jeb-blount-prospecting/SKILL.md",
+        ".hermes/skills/jeb-blount-prospecting/PROSPECTING_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Architect studio elevation specification (1ft x 1ft sample board drop -> BOQ lock)",
+        "Scenario 2: Interior designer studio library palette drop (natural quartz feature walls)",
+        "Scenario 3: Active construction site contractor engagement (trowel glide + ₹50 cash token)",
+        "Scenario 4: Builder boardroom presentation (landed sqft cost saving 30% on multi-unit project)",
+        "Scenario 5: Bulk wholesale distributor town network lock (₹430/bag wholesale model)",
+        "Scenario 6: Site-to-site referral flywheel (securing 2 qualified contacts per interaction)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo prospecting trials testing multi-touch cadence across architects, builders, and contractors, validate pipeline conversion >=98.0% and indirect pull creation >=98.0%, and generate perfected Fanatical Prospecting bulk network battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:30:37.522Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-CHET-HOLMES-DREAM100-V1",
+      "title": "Chet Holmes Dream 100 Market Domination & Growth Strategy Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Chet Holmes",
+      "role": "Market Domination Strategist (Top Dealer Capture + Sales Growth Planner)",
+      "peer": "John McMahon (Target Qualification) & Alex Hormozi (Offer Architect)",
+      "priority": 13,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Dream 100 System & Pigheaded Discipline (Ultimate Sales Machine)",
+        "corePhilosophy": "Focus on the best... ignore the rest. Top 100 control -> Market control. Pigheaded discipline beats raw talent.",
+        "targetCohorts": "Top 20 Dealers, Top 20 Contractors, Top 20 Builders, Top 20 Architects, Top 20 Distributors = 100 Targets",
+        "goldMetrics": "Revenue/Whale >= ₹1.5L/mo | Repeat >= 75% | AOS >= 50 Bags | Net Hurdle >= ₹100/bag",
+        "cadenceModel": "7 to 12 value touchpoints to conversion (Sample Kit -> WhatsApp Case -> Call -> Chemist Demo -> Profit Sheet -> Exclusivity Lock)",
+        "dailyQuotaTarget": "5 Dream 100 Contacts | 2 High-Value Meetings | 1 Deep Follow-Up | 100% CRM Logging"
+      },
+      "sourceFiles": [
+        "data/chet_holmes_dream100_market_domination_sop.md",
+        "data/chet_holmes_dream100_target_ledger.csv",
+        ".hermes/skills/chet-holmes-dream100/SKILL.md",
+        ".hermes/skills/chet-holmes-dream100/DREAM100_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Top high-street retail dealer capture (territory exclusivity + 40% margin vs MNC 3%)",
+        "Scenario 2: Big commercial painting contractor lock (trowel demo + ₹50 Painter Growth Token pass-through)",
+        "Scenario 3: Real estate builder multi-unit procurement (30% landed sqft saving with 5-year weather assurance)",
+        "Scenario 4: Facade architect specification lock (1ft x 1ft cured quartz sample box into blueprint BOQ)",
+        "Scenario 5: Wholesale distributor regional network scale (₹430/bag wholesale model, 200 bags/mo committed volume)",
+        "Scenario 6: Pigheaded discipline multi-touch perseverance (converting skeptical counter on Touch 8 after 45 days)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo market domination trials testing Dream 100 capture velocity and pigheaded discipline against entrenched MNC brand dominance, validate account conversion >=98.0% and gold metrics attainment >=98.0%, and generate perfected Dream 100 Market Domination battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:35:26.314Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-GRANT-CARDONE-10X-V1",
+      "title": "Grant Cardone 10X Expansion & Production Buffer Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Grant Cardone",
+      "role": "Growth Multiplier (Speed + Volume + Market Capture)",
+      "peer": "Chet Holmes (Dream 100 Strategist) & Taiichi Ohno (Operations & TPS Sync)",
+      "priority": 14,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "10X Action Framework & Production Inventory Synchronization",
+        "corePhilosophy": "Average actions bring average results. Massive action creates domination. Never reduce a target; multiply action.",
+        "targetMultiplier": "Normal 100 Bags/Day -> 10X Target: 1,000 Bags/Day (₹6.9L Daily Billing)",
+        "activityMultiplier": "50 Team Touches Daily across retail, sites, architects, thekedars",
+        "followUpRule": "Minimum 7 to 10 touches; single follow-up is an admission of failure",
+        "visibilityDomination": "70% Visual saturation in commercial hubs (boards, cured panels, sample jars)",
+        "productionSyncRule": "Demand Forecast + 20% Production Buffer = Zero Stockouts (200 Bags ready warehouse buffer)",
+        "dailyQuotaTarget": "50 Touches | 20 New Leads | 15 Follow-ups | 5 Closing Attempts | 100% CRM Logging"
+      },
+      "sourceFiles": [
+        "data/grant_cardone_10x_expansion_sop.md",
+        "data/grant_cardone_10x_expansion_ledger.csv",
+        ".hermes/skills/grant-cardone-10x/SKILL.md",
+        ".hermes/skills/grant-cardone-10x/EXPANSION_10X_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: 10X Dealer onboarding surge (10 new counters/month vs 1 industry standard)",
+        "Scenario 2: Aggressive construction site penetration (20 active sites/week with on-site trowel demos)",
+        "Scenario 3: 70% Commercial hub visual saturation (10 shop boards + 50 counter display boards)",
+        "Scenario 4: Relentless follow-up strike (converting skeptical whale after 8 value touchpoints)",
+        "Scenario 5: Factory production buffer synchronization (+20% buffer preventing stockout during 500-bag surge)",
+        "Scenario 6: Geographic cascade domination (Bundi 100% lock -> Kota commercial hub -> 11 Hadoti city markets)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo 10X expansion trials testing massive action velocity, relentless follow-up conversion, and factory buffer synchronization against demand volatility, validate market capture >=98.0% and zero-stockout compliance >=98.0%, and generate perfected 10X Expansion & Production Sync battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:38:08.882Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-APRIL-DUNFORD-POSITIONING-V1",
+      "title": "April Dunford Positioning & Category Creation Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "April Dunford",
+      "role": "Category Architect (Market Perception Controller)",
+      "peer": "Jordan Belfort (Straight Line Closer) & Alex Hormozi (Offer Architect)",
+      "priority": 15,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Obviously Awesome 5-Component Positioning & Category Creation",
+        "corePhilosophy": "If you are compared, you are commoditized. If you are different, you are chosen. Context sets the value.",
+        "categoryDefinition": "Factory-Fresh, High-Margin, Zero-Tint Texture Coating System",
+        "cardinalRule": "Never introduce Swatch using the word paint",
+        "comparisonReframe": "Asian Paints = Heavy Machine Squeeze (3% margin) vs Swatch = Zero-Tint Direct Profit (40% margin)",
+        "valueMultipliers": "Zero ₹3.5L Machine Lockup | 10X Net Profit Velocity (₹40k vs ₹3k) | 6x Faster Stock Turns",
+        "dailyQuotaTarget": "10 Positioning Pitches | 5 Category Education Discussions | 3 Comparison Breaks | 100% CRM Logging"
+      },
+      "sourceFiles": [
+        "data/april_dunford_positioning_differentiation_sop.md",
+        "data/april_dunford_positioning_ledger.csv",
+        ".hermes/skills/april-dunford-positioning/SKILL.md",
+        ".hermes/skills/april-dunford-positioning/POSITIONING_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Asian Paints brand comparison reframe (converting skeptic into complementary 40% margin partner)",
+        "Scenario 2: Dealer confusion turnaround (reframing from emulsion/putty to natural quartz stone exterior system)",
+        "Scenario 3: Price resistance objection handling (defending ₹690 rate against cheap ₹350 local powder)",
+        "Scenario 4: Tinting machine lockup defense (repositioning machine as slow-moving overhead for texture bases)",
+        "Scenario 5: New dealer onboarding without tinting dispenser (empowering hardware store to capture texture market)",
+        "Scenario 6: Architect and contractor specification framing (specifying pre-graded washed quartz over synthetic paint)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo positioning trials testing category differentiation and comparison-breaking scripts against entrenched multinational brand dominance, validate perception shift >=98.0% and margin protection >=98.0%, and generate perfected April Dunford Positioning & Differentiation battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:41:10.062Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-OREN-KLAFF-FRAME-CONTROL-V1",
+      "title": "Oren Klaff Frame Control & Status Elevation Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Oren Klaff",
+      "role": "Conversation Controller (Authority Builder + Status Elevation System)",
+      "peer": "Chris Voss (Tactical Empathy) & Jordan Belfort (Straight Line Closer)",
+      "priority": 16,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Pitch Anything 5-Core Frame Control Architecture",
+        "corePhilosophy": "The person who controls the frame controls the deal. Low status -> No respect -> No deal. Never be needy.",
+        "coreFrames": "Power Frame (Parity) | Time Frame (10-Min Constraint) | Prize Frame (Dealers Qualify) | Intrigue Frame (Quartz Innovation) | Analyst Frame (Audit Leakage)",
+        "walkAwayPosture": "Willingness to walk away from bad deals; zero discounting below ₹100 hurdle rate",
+        "collisionDefense": "Distracted dealer silence, aggressive discount refusal, big brand alpha reframe",
+        "dailyQuotaTarget": "10 Power Frames | 5 Time Frames | 3 Prize Qualifications | 100% CRM Logging"
+      },
+      "sourceFiles": [
+        "data/oren_klaff_frame_control_sop.md",
+        "data/oren_klaff_frame_control_ledger.csv",
+        ".hermes/skills/oren-klaff-frame-control/SKILL.md",
+        ".hermes/skills/oren-klaff-frame-control/FRAME_CONTROL_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Wealthy dealer arrogance & mobile phone distraction (executing total silence and time constraint reframe)",
+        "Scenario 2: Aggressive price discount demand (holding price integrity with walk-away posture)",
+        "Scenario 3: Big brand alpha posturing (reframing Asian Paints as brand display vs Swatch as net cash engine)",
+        "Scenario 4: Time frame meeting compression (10-minute scarcity constraint creating urgent attention)",
+        "Scenario 5: Prize frame dealer qualification (making the dealer prove 200 bags/month capability to win exclusivity)",
+        "Scenario 6: Analyst frame margin audit (proving ₹4.44L annual margin leakage from low-margin MNC products)"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 500 Monte Carlo frame control trials testing status elevation, price defense, and alpha frame collision turnarounds against skeptical and entrenched retail dealers, validate authority retention >=98.0% and zero-discount compliance >=98.0%, and generate perfected Oren Klaff Frame Control & Status Elevation battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:44:09.031Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-VICTOR-ANTONIO-ROI-SELLING-V1",
+      "title": "Victor Antonio Financial Selling & ROI-Based Closing Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Victor Antonio",
+      "role": "Financial Closer (ROI, Profit & Numbers-Based Selling System)",
+      "peer": "Keenan (Gap Selling) & Jordan Belfort (Straight Line Closer)",
+      "priority": 17,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 500,
+      "accuracyThreshold": 98,
+      "parameters": {
+        "framework": "Victor Antonio Financial Selling & Visual ROI Closing Framework",
+        "corePhilosophy": "People buy on emotion, but they justify decisions with cold logic. Nothing is stronger than undeniable numbers.",
+        "coreSystem": "5-Step ROI Framework: Current Baseline -> Swatch Model -> Gap Calculation -> 30-Day Cycle ROI -> Cost of Inaction (COI)",
+        "visualPadRule": "Never quote numbers purely verbally; draw the 2-column comparative profit sheet directly on pad in front of dealer",
+        "unitEconomicsBaseline": "Swatch Rustic @ Rs 690 dealer cost yields Rs 400 net profit (vs Asian Paints Rs 35 net profit) = +Rs 18,250/mo cash disparity on 50 bags",
+        "capitalEfficiency": "Rs 34,500 working capital yields Rs 20,000 net profit per 30 days = 57.97% inventory cycle ROI",
+        "costOfInactionAnnual": "Rs 2,19,000 annual net cash lost by delaying Swatch display adoption"
+      },
+      "sourceFiles": [
+        "data/victor_antonio_roi_selling_sop.md",
+        "data/victor_antonio_roi_ledger.csv",
+        ".hermes/skills/victor-antonio-roi-selling/SKILL.md",
+        ".hermes/skills/victor-antonio-roi-selling/ROI_SELLING_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Dealer hesitation on 50 bags order (executing 2-column visual pad comparison showing +Rs 18,250/month profit disparity)",
+        "Scenario 2: Discount & price push objection (reframing Rs 35 MNC margin vs Rs 400 Swatch margin to prove business profit over discounts)",
+        "Scenario 3: Working capital risk concern (demonstrating 57.97% 30-day ROI, zero tinting machine investment, and 100% buyback liquidity)",
+        "Scenario 4: High-volume bulk tier counter (closing 100 bags @ Rs 650 yielding Rs 44,000 monthly profit and +Rs 4.86L annual cash advantage)",
+        "Scenario 5: Multi-product storefront display combo (proving Rs 31,000 net profit on Rs 48,500 investment with 63.92% cycle ROI)",
+        "Scenario 6: Painters Growth Token pull-through (demonstrating Rs 5,000 direct cash pull to painters creating organic repeat orders)"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 500 Monte Carlo financial closing trials across hesitant, discount-seeking, and brand-entrenched retail counters, validate financial math accuracy >=99.0% and closing conversion >=98.0%, and generate perfected Victor Antonio Visual ROI Closing battlecard.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:48:52.473Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-BRIAN-TRACY-MASTER-PLAYBOOK-V1",
+      "title": "Brian Tracy Master Sales Playbook & Multi-Legend Dispatch Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Brian Tracy",
+      "role": "Chief Sales Officer (CSO) & Master Sales Playbook Commander",
+      "peer": "All 18 Sales Division Legends (Hormozi, Belfort, Miner, Rackham, Voss, Kennedy, Ziglar, Girard, McMahon, Keenan, Blount, Holmes, Cardone, Dunford, Klaff, Antonio)",
+      "priority": 18,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1000,
+      "accuracyThreshold": 99,
+      "parameters": {
+        "framework": "Swatch Paints Full Sales Playbook & 18-Legend Master Command Engine",
+        "corePhilosophy": "No activity -> No pipeline. No pipeline -> No sales. No tracking -> No improvement.",
+        "dailyQuotas": "45 dealer visits | 20 new prospects | 15 follow-ups | 5 serious discussions | 2 closes",
+        "threeTierCadence": "08:30 IST Morning Brief -> 13:30 IST Mid-Day Check -> 19:00 IST Evening Accountability Report",
+        "multiLegendDecisionEngine": "Dynamic diagnostic dispatch across all 18 specialist legends",
+        "goldenRules": "Activity > Talent | Follow-up = Money | No Random Selling | Data > Feeling | System > Individual"
+      },
+      "sourceFiles": [
+        "data/swatch_master_sales_playbook.md",
+        ".hermes/skills/brian-tracy/MASTER_SALES_PLAYBOOK.md",
+        ".hermes/skills/brian-tracy/SKILL.md",
+        "brian-tracy-controller.js"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Daily 45-visit beat simulation under Rajasthan summer field conditions testing rep stamina and conversion consistency",
+        "Scenario 2: Dynamic Decision Engine dispatching SPIN/NEPQ on uninterested dealer, Victor Antonio on price push, and April Dunford on brand confusion",
+        "Scenario 3: 4-Touch follow-up adherence (Day 1, 3, 5, 10) tracking pipeline velocity and eliminating lead abandonment",
+        "Scenario 4: High-stakes Dream 100 top dealer conversion using multi-legend coordination (Holmes + Hormozi + Belfort)",
+        "Scenario 5: Performance accountability management: PIP intervention for reps under 35 visits vs 2.5% incentive for top performers"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,000 Monte Carlo team orchestration trials testing the 45-visit daily rhythm, 18-legend diagnostic routing accuracy >=99.0%, and full playbook adherence >=98.0%, and generate the perfected Swatch Paints Team Training Certification Report.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T06:54:47.819Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-CORE-MARKETING-DIVISION-12-LEGENDS-V1",
+      "title": "Core Marketing Strategy & Trade Growth Division 12-Legend Orchestration Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Philip Kotler & Gunjit Jain",
+      "role": "Core Marketing Strategy & Trade Growth Division Leadership",
+      "peer": "12 Marketing Legends (Gunjit Jain, Kotler, Sutherland, Handley, Schwartz, Cialdini, Patel, Sharp, Levinson, Zyman, Ariely, Ritson)",
+      "priority": 19,
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1000,
+      "accuracyThreshold": 98.5,
+      "parameters": {
+        "framework": "Integrated Indian FMCG & Trade Marketing Architecture",
+        "corePhilosophy": "Win the counter, win the dealer wallet, win the market. Physical & Mental Availability backed by undeniable unit economics.",
+        "pillars": "4Ps Governance | Behavioral Alchemy | Humanized Content | 5 Awareness Stages | 6 Principles of Influence | Hyperlocal SEO | Guerrilla Warfare | Decoy Pricing | Strategic GTM",
+        "territorialFocus": "Bundi HQ, Kota Expansion Hub, Talera, Dabi, Baran, Rawatbhata & Hadoti Trade Corridors"
+      },
+      "sourceFiles": [
+        "marketing-team/MASTER_MARKETING_DIVISION_CHARTER.md",
+        "marketing-team/gunjit-jain/agent.yaml",
+        "marketing-team/philip-kotler/agent.yaml",
+        "marketing-team/rory-sutherland/agent.yaml",
+        "marketing-team/ann-handley/agent.yaml",
+        "marketing-team/eugene-schwartz/agent.yaml",
+        "marketing-team/robert-cialdini/agent.yaml",
+        "marketing-team/neil-patel/agent.yaml",
+        "marketing-team/byron-sharp/agent.yaml",
+        "marketing-team/jay-conrad-levinson/agent.yaml",
+        "marketing-team/sergio-zyman/agent.yaml",
+        "marketing-team/dan-ariely/agent.yaml",
+        "marketing-team/mark-ritson/agent.yaml"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Retail counter shelf-space capture against Asian Paints & Birla Opus in Kota commercial hubs",
+        "Scenario 2: Monsoon exterior waterproofing demand surge channeled into Swatch Rustic & Weatherguard",
+        "Scenario 3: Hyperlocal Google Maps SEO driving contractors to authorized Bundi hardware stockists",
+        "Scenario 4: Decoy pricing and loss-aversion cash discounts accelerating 7-day payment settlement",
+        "Scenario 5: Low-cost guerrilla wall-stencils and live trowel scratch challenges driving viral contractor word-of-mouth"
+      ],
+      "executionDirective": "When MiroFish simulation is started by CEO Ashutosh Sharma, execute 1,000 Monte Carlo cross-legend marketing trials testing trade counter penetration >=75.0%, margin hurdle rate compliance >=99.0%, and zero-discount brand preservation >=98.5%.",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "enqueuedAt": "2026-09-20T07:12:12.070Z"
+    },
+    {
+      "jobId": "JOB-MIROFISH-PHILIP-KOTLER-COMMANDER-MARKETING-V1",
+      "title": "Philip Kotler Master Marketing Command & 10-Stage Pipeline Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Philip Kotler",
+      "role": "Chief Marketing Strategist (CMO) & Marketing Division Commander",
+      "peer": "All 11 Marketing Legends (Gunjit Jain, Rory Sutherland, Ann Handley, Eugene Schwartz, Robert Cialdini, Neil Patel, Byron Sharp, Jay Conrad Levinson, Sergio Zyman, Dan Ariely, Mark Ritson)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 20,
+      "enqueuedAt": "2026-09-20T07:32:00.176Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Swatch Paints Master Marketing Playbook & 12-Legend Command Architecture",
+        "coreLaws": "No Demand -> No Sales | No Brand -> No Trust | No Distribution -> No Scale",
+        "dailyQuotas": "10 dealer branding audits | 5 new shop branding installs | 2 painter meets | 1 live wall demo / scratch contest | 2 social posts | 5 WhatsApp broadcasts | 1 Google update",
+        "pipeline10Stages": "Mark Ritson (Understanding) -> Cialdini/Ariely (Psychology) -> Sutherland (Positioning) -> Schwartz (Awareness) -> Handley (Content) -> Jain (Visibility) -> Levinson (Guerrilla) -> Patel (Digital) -> Sharp (Availability) -> Zyman (Conversion)",
+        "decisionEngine": "Dynamic diagnostic dispatch across 11 specialist marketing engines",
+        "goldenRules": "Rule 1: Visibility = Sales | Rule 2: Repetition | Rule 3: Simple Message | Rule 4: Local Domination (Bundi -> Kota -> Rajasthan)"
+      },
+      "sourceFiles": [
+        "data/swatch_master_marketing_playbook.md",
+        "marketing-team/philip-kotler/MASTER_MARKETING_PLAYBOOK.md",
+        "marketing-team/philip-kotler/MARKETING_EXECUTION_SOP.md",
+        "marketing-team/philip-kotler/SKILL.md",
+        "marketing-team/philip-kotler/agent.yaml",
+        "marketing-team/marketing-hub.js"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Regional counter saturation across Bundi, Kota & Hadoti testing visibility rules against Asian Paints & Berger",
+        "Scenario 2: Dynamic Decision Engine diagnostic routing across low demand, weak perception, low dealer interest, weak digital, and low conversion",
+        "Scenario 3: 4Ps pricing governance defending 40% dealer gross margin and preserving company hurdle rate >= Rs 100/bag on Swatch Rustic across 1.5M transactions",
+        "Scenario 4: High-impact offline daily beat execution (10 audits, 5 installs, 2 meets, 1 live demo) driving organic contractor pull",
+        "Scenario 5: Multi-legend cross-activation resolving dealer skepticism and replacing multinational slow-moving inventory with high-velocity Swatch quartz coatings"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo market and commercial trials testing 10-stage pipeline velocity, 4P pricing consistency, diagnostic dispatch accuracy >=99.5%, and full Master Marketing Playbook compliance >=99.5%, and generate the finalized Swatch Paints Master Marketing Certification Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-GUNJIT-JAIN-TRADE-DOMINATION-V1",
+      "title": "Gunjit Jain Trade Marketing & Counter Visibility Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Gunjit Jain",
+      "role": "On-Ground Market Controller (Dealer Visibility + Counter Dominance System)",
+      "peer": "Philip Kotler (CMO) & Byron Sharp (Physical Availability Engine)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 21,
+      "enqueuedAt": "2026-09-20T07:33:43.754Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5-Pillar Dealer Domination & Counter Visibility Architecture",
+        "corePhilosophy": "Jo counter pe dikhta hai… wahi bikta hai. Out of sight -> Out of sales. In sight -> In demand.",
+        "dailyQuotas": "10 shop visits | 5 branding checks | 3 new branding installs | 2 sample demos",
+        "weeklyQuotas": "20 shop audits | Visibility scorecard check | Weak counter rectification",
+        "monthlyQuotas": "Area dominance review | Top dealers scale | Low performers replace",
+        "visibilityScorecard": "1. Exterior branding (Y/N) | 2. Front product stack (Y/N) | 3. Dealer push (High/Low) | 4. Painter demand (Y/N)",
+        "secondarySalesScript": "Bhaiya, agar best finish aur long-lasting protection chahiye, toh pehle Swatch Rustic lagao. Factory-graded natural quartz stone hai, 5 saal tak wall flake nahi hogi aur margin/rate bhi sabse behtareen hai."
+      },
+      "sourceFiles": [
+        "marketing-team/gunjit-jain/SKILL.md",
+        "marketing-team/gunjit-jain/TRADE_MARKETING_SOP.md",
+        "marketing-team/gunjit-jain/agent.yaml",
+        "marketing-team/gunjit-jain/GUARDRAILS.md",
+        "marketing-team/gunjit-jain/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: New dealer onboarding with complete POS kit and 10-bag front pyramid display",
+        "Scenario 2: Weak / stagnant counter turnaround using shelf repositioning and clerk incentives",
+        "Scenario 3: Competitor-dominated counter flank (introducing zero-tint texture as complementary high-margin profit pillar)",
+        "Scenario 4: Local 5km radius saturation achieving 70% corridor visual presence",
+        "Scenario 5: Counter clerk recommendation testing during peak contractor morning rush"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo trade marketing trials testing counter visibility saturation >=70%, secondary sales velocity >=30 bags/week, clerk recommendation adherence >=85%, and margin hurdle rate compliance >=99.5%, and generate the perfected Swatch Paints Retail Counter Domination Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-RORY-SUTHERLAND-PERCEPTION-VALUE-V1",
+      "title": "Rory Sutherland Perception Architecture & Value Amplification Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Rory Sutherland",
+      "role": "Perception Architect (Value Creation without Cost Increase)",
+      "peer": "Philip Kotler (CMO) & Robert Cialdini (Influence & Psychology)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 22,
+      "enqueuedAt": "2026-09-20T07:35:31.384Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5-Pillar Behavioral Perception & Perceptual Alchemy Model",
+        "corePhilosophy": "Value is not what something costs… value is what people believe it is worth. Same product + different perception = different price.",
+        "dailyQuotas": "10 pitches with upgraded language | 5 dealers reframed | 3 sensory tactile demos",
+        "weeklyQuotas": "Test localized framing analogies | Audit rep vocabulary | Refresh photo portfolios",
+        "monthlyQuotas": "Homeowner perceived value survey | Display board audit | Sentiment report to CEO",
+        "languageUpgrade": "Paint -> Coating System | Bag -> Heavy-Duty Pack | Texture -> Natural Quartz Stone Finish | Customer -> Property Owner | Cheap -> Factory-Direct Efficiency",
+        "sensoryDemoProtocol": "Step 1: Tactile Texture Hand-Off | Step 2: Steel Scratch Challenge | Step 3: Water Droplet Test"
+      },
+      "sourceFiles": [
+        "marketing-team/rory-sutherland/SKILL.md",
+        "marketing-team/rory-sutherland/PERCEPTION_VALUE_SOP.md",
+        "marketing-team/rory-sutherland/agent.yaml",
+        "marketing-team/rory-sutherland/GUARDRAILS.md",
+        "marketing-team/rory-sutherland/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Retail dealer price pushback resolved via stone cladding framing",
+        "Scenario 2: Homeowner hesitation converted into pride of ownership facade upgrade",
+        "Scenario 3: Painting thekedar elevated into luxury surface craftsman commanding higher wages",
+        "Scenario 4: Tactile trowel scratch test dissolving skepticism at high-traffic Kota counters",
+        "Scenario 5: Packaging and presentation audit eliminating cheap local commodity associations"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo perception trials testing value enhancement >=80%, zero-discount price objection resolution >=85%, sensory demo conversion velocity >=65%, and margin hurdle rate compliance >=99.5%, and generate the perfected Swatch Paints Perception & Value Amplification Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-ROBERT-CIALDINI-INFLUENCE-PSYCHOLOGY-V1",
+      "title": "Robert Cialdini Buying Decision Acceleration & 6-Principle Influence Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Robert Cialdini",
+      "role": "Psychological Trigger Controller (Buying Decision Accelerator)",
+      "peer": "Philip Kotler (CMO) & Rory Sutherland (Perception Architect)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 23,
+      "enqueuedAt": "2026-09-20T07:37:16.611Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "6 Principles of Influence & Subconscious Trigger Stacking Architecture",
+        "corePhilosophy": "Log logic se justify karte hain… par decision emotion aur influence se lete hain. Right trigger + Right moment = Instant decision.",
+        "dailyQuotas": "Minimum 2 triggers per pitch | 5 prospects shown social proof | 3 accounts presented with ethical scarcity",
+        "weeklyQuotas": "Identify highest-converting trigger stacks | Refine objection scripts | Update local social proof portfolio",
+        "monthlyQuotas": "Audit closing velocity across territories | Refresh territory exclusivity caps | Submit psychological trends to CEO",
+        "sixPrinciples": "1. Reciprocity (Free demo board & chai) | 2. Social Proof (100+ active Hadoti thekedars) | 3. Authority (Sharma Industries Bundi factory & lab) | 4. Scarcity (Max 2 dealers per zone) | 5. Consistency (10-bag starter trial) | 6. Liking (Respectful Hadoti etiquette)",
+        "triggerStack": "Authority + Social Proof + Scarcity + Consistency = Zero Decision Friction"
+      },
+      "sourceFiles": [
+        "marketing-team/robert-cialdini/SKILL.md",
+        "marketing-team/robert-cialdini/INFLUENCE_PSYCHOLOGY_SOP.md",
+        "marketing-team/robert-cialdini/agent.yaml",
+        "marketing-team/robert-cialdini/GUARDRAILS.md",
+        "marketing-team/robert-cialdini/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Skeptical multi-brand dealer onboarding via Social Proof + Authority + Consistency",
+        "Scenario 2: Cautious painting contractor converted via Reciprocity + Social Proof + Scarcity",
+        "Scenario 3: Homeowner hesitating against Asian Paints Apex converted via Liking + Authority + Social Proof",
+        "Scenario 4: Triple-trigger stack overcoming high-friction dealer objections in Kota commercial corridors",
+        "Scenario 5: Ethical scarcity quota preventing territory dilution and dealer margin erosion"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo influence trials testing decision cycle reduction >=40%, trigger stack conversion >=65%, zero-discount margin preservation >=99.5%, and ethical compliance >=99.9%, and generate the perfected Swatch Paints Influence & Buying Acceleration Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-EUGENE-SCHWARTZ-CUSTOMER-AWARENESS-V1",
+      "title": "Eugene Schwartz Customer Awareness & Laser-Targeted Messaging Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Eugene Schwartz",
+      "role": "Message Targeting Specialist (Right Message -> Right Person -> Right Time)",
+      "peer": "Philip Kotler (CMO) & Robert Cialdini (Influence & Psychology)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 24,
+      "enqueuedAt": "2026-09-20T07:41:02.789Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5 Stages of Customer Awareness & Direct-Response Messaging Architecture",
+        "corePhilosophy": "Customer ko educate mat karo… uske current dimaag ke level par baat karo. Right message + Right stage = Guaranteed conversion.",
+        "dailyQuotas": "Diagnose stage within 60 seconds | Switch script dynamically | Zero premature selling",
+        "weeklyQuotas": "Map aggregate territory awareness | Refine vernacular hooks | Train field sales team",
+        "monthlyQuotas": "Analyze conversion rates by stage | Update WhatsApp broadcasts | Submit messaging report to CEO",
+        "fiveStages": "1. Unaware (Introduce pain) | 2. Problem Aware (Introduce quartz category) | 3. Solution Aware (Introduce Swatch 40% margin) | 4. Product Aware (Build proof: 100+ thekedars) | 5. Most Aware (Close 20-bag trial deal)",
+        "diagnosticProtocol": "Two-question 60-second diagnostic determining exact mental state before pitch delivery"
+      },
+      "sourceFiles": [
+        "marketing-team/eugene-schwartz/SKILL.md",
+        "marketing-team/eugene-schwartz/CUSTOMER_AWARENESS_SOP.md",
+        "marketing-team/eugene-schwartz/agent.yaml",
+        "marketing-team/eugene-schwartz/GUARDRAILS.md",
+        "marketing-team/eugene-schwartz/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Unaware multi-brand retailer diagnosed and scaffolded from margin bleed to category realization",
+        "Scenario 2: Solution-aware painting contractor converted via natural quartz stone contrast vs local cracking powder",
+        "Scenario 3: Product-aware Kota builder closed via 100+ site proof portfolio and 5-year factory assurance",
+        "Scenario 4: Most-aware dealer closed instantly on 20-bag Shubh Aarambh starter trial deal without over-explanation",
+        "Scenario 5: WhatsApp direct-response broadcast tiering driving targeted counter walk-ins across Hadoti towns"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo awareness targeting trials testing diagnostic accuracy >=95%, conversion velocity increase >=35%, zero-discount margin preservation >=99.5%, and premature pitch elimination >=99%, and generate the perfected Swatch Paints Customer Awareness & Messaging Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-ANN-HANDLEY-CONTENT-STORYTELLING-V1",
+      "title": "Ann Handley Brand Humanization & Content Storytelling Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Ann Handley",
+      "role": "Human Brand Builder (Content + Story + Trust Creation Engine)",
+      "peer": "Philip Kotler (CMO) & Rory Sutherland (Perception Architect)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 25,
+      "enqueuedAt": "2026-09-20T07:43:02.178Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5-Pillar Human Storytelling & Content Repurposing Architecture",
+        "corePhilosophy": "People don’t connect with products… they connect with stories. No story = No trust = No sale.",
+        "dailyQuotas": "2 authentic content assets published | 1 real field photo captured | 1 contractor review recorded",
+        "weeklyQuotas": "Curate 5 best field transformation stories | Package into sales battlecards | Audit brand tone",
+        "monthlyQuotas": "Analyze narrative performance metrics | Film in-depth artisan profile | Submit report to CEO",
+        "storyStructure": "Problem -> Struggle -> Swatch Solution -> Verified Transformation Result",
+        "humanVoiceRule": "Simple, warm, conversational Hinglish/Hindi grounded in local reality — zero corporate academic jargon"
+      },
+      "sourceFiles": [
+        "marketing-team/ann-handley/SKILL.md",
+        "marketing-team/ann-handley/CONTENT_STORYTELLING_SOP.md",
+        "marketing-team/ann-handley/agent.yaml",
+        "marketing-team/ann-handley/GUARDRAILS.md",
+        "marketing-team/ann-handley/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Local Bundi residential facade rescue story driving organic store walk-ins",
+        "Scenario 2: Active Kota construction thekedar video spotlight going viral in local trade WhatsApp groups",
+        "Scenario 3: Dealer margin transformation story converting skeptical multi-brand hardware stockists",
+        "Scenario 4: Value-first educational series positioning Swatch as the trusted exterior coatings authority",
+        "Scenario 5: Content repurposing flywheel multiplying the reach of a single site transformation 10-fold"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo content and brand trust trials testing emotional resonance >=90%, organic inbound pull >=30%, zero-discount margin preservation >=99.5%, and authentic non-stock imagery compliance >=99.9%, and generate the perfected Swatch Paints Brand Storytelling & Content Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-NEIL-PATEL-LOCAL-SEO-LEADS-V1",
+      "title": "Neil Patel Local SEO Domination & Automated Lead Routing Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Neil Patel",
+      "role": "Lead Generation Machine (Online Demand -> Offline Sales Conversion)",
+      "peer": "Philip Kotler (CMO) & Gunjit Jain (Trade Marketing)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 26,
+      "enqueuedAt": "2026-09-20T07:44:35.107Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5-Pillar Local SEO Domination & Automated Lead Routing Architecture",
+        "corePhilosophy": "Jab customer search kare… tab Swatch sabse pehle dikhe. Search -> Visibility -> Lead -> Offline Counter Sale.",
+        "dailyQuotas": "1 Google Business post | 2 Instagram reels/shorts | 5 review follow-ups | 5 WhatsApp broadcasts",
+        "weeklyQuotas": "Audit Google Local 3-Pack rankings | Check NAP directory consistency | Verify 15-minute lead SLA",
+        "monthlyQuotas": "Analyze search impressions and call volume | Calculate digital CAC | Submit report to CEO",
+        "local3PackKeywords": "Paint shop near me | Texture paint Kota | Wall coating Bundi | Best exterior paint Rajasthan",
+        "leadRoutingSLA": "100% of digital customer inquiries routed to nearest authorized dealer within 15 minutes"
+      },
+      "sourceFiles": [
+        "marketing-team/neil-patel/SKILL.md",
+        "marketing-team/neil-patel/LOCAL_SEO_LEAD_ENGINE_SOP.md",
+        "marketing-team/neil-patel/agent.yaml",
+        "marketing-team/neil-patel/GUARDRAILS.md",
+        "marketing-team/neil-patel/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Homeowner searches paint shop near me in Bundi and is routed to Sharma Hardware",
+        "Scenario 2: Viral Instagram Before/After reel generates 14 inbound contractor leads in Kota",
+        "Scenario 3: 50+ Google 5-star reviews break dealer skepticism and secure 20-bag display order",
+        "Scenario 4: Automated 15-minute lead dispatch alerting dealer and homeowner simultaneously",
+        "Scenario 5: Hyperlocal geo-modifier targeting capturing high-margin residential elevation projects"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo digital lead trials testing Google Local 3-Pack prominence >=85%, lead routing completion >=95% within 15 minutes, organic counter conversion >=40%, and zero-discount margin preservation >=99.5%, and generate the perfected Swatch Paints Local SEO & Digital Lead Engine Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-BYRON-SHARP-AVAILABILITY-V1",
+      "title": "Byron Sharp Mass Market Availability & Scale Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Byron Sharp",
+      "role": "Market Expansion Engine (Universal Market Presence + Mental Availability System)",
+      "peer": "Philip Kotler (CMO) & Gunjit Jain (Trade Marketing)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 27,
+      "enqueuedAt": "2026-09-20T07:46:21.383Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Two Pillars of Empirical Brand Growth (Mental + Physical Availability)",
+        "corePhilosophy": "Brands grow by being easy to buy… and easy to remember. Out of stock = Lost sale.",
+        "dailyQuotas": "10 shop availability audits | 5 buffer stock replenishment orders | 5 DBA cue checks",
+        "weeklyQuotas": "Map 3 km territorial coverage | Onboard 2 new building material counters | Zero stockouts",
+        "monthlyQuotas": "Calculate category market penetration | Compare mental vs physical availability | Submit report to CEO",
+        "distinctiveBrandAssets": "Regal Purple & Cream palette | Diamond texture emblem | 5-Year Weather Assurance | ₹50 Token badge",
+        "neverEmptyShelfRule": "Minimum 10 bags of Swatch Rustic permanently stocked on active sales floor"
+      },
+      "sourceFiles": [
+        "marketing-team/byron-sharp/SKILL.md",
+        "marketing-team/byron-sharp/MASS_MARKET_GROWTH_SOP.md",
+        "marketing-team/byron-sharp/agent.yaml",
+        "marketing-team/byron-sharp/GUARDRAILS.md",
+        "marketing-team/byron-sharp/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Preventing customer defection during high-demand monsoon reorder surge",
+        "Scenario 2: Skeptical dealer converted using availability-first counter stacking script",
+        "Scenario 3: Capturing long-tail light buyers across roadside hardware shops in Talera and Dabi",
+        "Scenario 4: Fast factory replenishment buffer preventing stockout across 50 regional retail counters",
+        "Scenario 5: Distinctive Brand Asset consistency driving instant recognition against competitor clutter"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo mass market trials testing physical availability coverage >=75%, out-of-stock defection rate <=2%, DBA recall salience >=85%, and zero-discount margin preservation >=99.5%, and generate the perfected Swatch Paints Mass Market Availability & Growth Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-JAY-CONRAD-LEVINSON-GUERRILLA-V1",
+      "title": "Jay Conrad Levinson Guerrilla Marketing & Street Domination Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Jay Conrad Levinson",
+      "role": "Attention Hacker (Zero Budget -> Maximum Visibility & Talk Value)",
+      "peer": "Philip Kotler (CMO) & Gunjit Jain (Trade Marketing)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 28,
+      "enqueuedAt": "2026-09-20T07:48:27.973Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5-Pillar Guerrilla Street Warfare & Talk Value Playbook",
+        "corePhilosophy": "Big budget nahi... big idea jeetta hai. Attention -> Discussion -> Demand -> Sales.",
+        "dailyQuotas": "1 creative street stunt | 5 direct customer / contractor engagements | 1 live counter/wall demo",
+        "weeklyQuotas": "3 synchronized guerrilla operations | Identify #1 winning stunt format | Measure organic word-of-mouth lift",
+        "monthlyQuotas": "1 major community activation stunt | Coordinate painter finish showcase | Area domination report to CEO",
+        "lowCostArsenal": "Half-painted live demo walls | Chalk boundary stencils | Wet-on-wet trowel demos | Contractor challenge tokens",
+        "zeroSpendRule": "Strictly zero paid media or billboard spend; 100% grassroots energy, human curiosity, and viral word-of-mouth"
+      },
+      "sourceFiles": [
+        "marketing-team/jay-conrad-levinson/SKILL.md",
+        "marketing-team/jay-conrad-levinson/GUERRILLA_MARKETING_SOP.md",
+        "marketing-team/jay-conrad-levinson/agent.yaml",
+        "marketing-team/jay-conrad-levinson/GUARDRAILS.md",
+        "marketing-team/jay-conrad-levinson/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: High-traffic commercial road half-painted wall demo stopping pedestrian and vehicular traffic in Bundi",
+        "Scenario 2: Hardware store counter wet-on-wet trowel demo converting 8 walk-in homeowners into rustic texture buyers",
+        "Scenario 3: Chalk stencil teaser campaign across 20 contractor hubs igniting market curiosity prior to retail launch",
+        "Scenario 4: Live weather-resistance water-jet comparison stunt on Swatch Weatherguard vs untreated plaster wall",
+        "Scenario 5: Grassroots Swatch Champion Painter competition igniting organic WhatsApp status sharing across Rajasthan"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo guerrilla warfare trials testing attention capture rate >=85%, word-of-mouth talk value multiplier >=3.5x, zero-discount margin preservation >=99.5%, and street stunt ROI >=500%, and generate the perfected Swatch Paints Guerrilla Marketing Engine Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-SERGIO-ZYMAN-REVENUE-GROWTH-V1",
+      "title": "Sergio Zyman Marketing-to-Revenue Conversion & Sales Alignment Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Sergio Zyman",
+      "role": "Commercial Demand & Volume Velocity Chief (Marketing-to-Sales Conversion Controller)",
+      "peer": "Philip Kotler (CMO) & Brian Tracy (CSO)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 29,
+      "enqueuedAt": "2026-09-20T07:51:56.075Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Closed-Loop Marketing-to-Revenue Conversion & Sales Execution Audit System",
+        "corePhilosophy": "Marketing ka kaam simple hai: Zyada logon ko, zyada baar, zyada quantity me, zyada munafey par bechna. No sales = No marketing success.",
+        "dailyQuotas": "Audit 100% inbound lead routing | Verify sales rep 45-visit progress | Reconcile daily closed PO volume",
+        "weeklyQuotas": "Compare marketing spend vs wholesale revenue billing | Flag stagnant dealer counters (Day 10 trigger) | Review rep follow-up velocity with Brian Tracy",
+        "monthlyQuotas": "Calculate Marketing ROI Multiplier (>=Rs 8 billing per Rs 1 spend) | Rationalize underperforming retail displays | Submit revenue brief to CEO",
+        "leadRoutingSLA": "100% of digital customer inquiries contacted within 15 minutes by sales rep",
+        "secondaryOffTakeRule": "18-day turnover cycle for standard 20-bag lot; Day 10 stagnation triggers on-site contractor demo",
+        "hurdleRateProtection": "Rustic >= Rs 100/bag net profit; Roller Coat >= Rs 132/bag net profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "marketing-team/sergio-zyman/SKILL.md",
+        "marketing-team/sergio-zyman/REVENUE_GROWTH_SOP.md",
+        "marketing-team/sergio-zyman/agent.yaml",
+        "marketing-team/sergio-zyman/GUARDRAILS.md",
+        "marketing-team/sergio-zyman/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Instagram inbound inquiry routed in 11 minutes converting into 35-bag Swatch Rustic order in Kota",
+        "Scenario 2: Talera dealer counter stagnation rescued at Day 10 via on-site thekedar wet-on-wet trowel demo",
+        "Scenario 3: Baran campaign root-cause diagnosis isolating sales follow-up delay from marketing demand pull",
+        "Scenario 4: Backlit storefront signage tied to 50-bag opening order and 150-bag rolling quarterly volume commitment",
+        "Scenario 5: Automated 21-day SMS contractor purchase-cycle trigger compressing re-order interval from 56 to 24 days"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo revenue conversion trials testing marketing ROI multiplier >=Rs 8, lead routing completion >=95% within 15 minutes, dealer inventory turnover <=18 days, zero-discount hurdle rate defense >=99.5%, and sales rep CRM visit audit accuracy >=99.9%, and generate the perfected Swatch Paints Revenue & Sales Growth Engine Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-DAN-ARIELY-PRICING-PSYCHOLOGY-V1",
+      "title": "Dan Ariely Pricing Psychology & Behavioral Choice Architecture Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Dan Ariely",
+      "role": "Pricing Scientist & Behavioral Economics Architect (Price Optimization & Justification Engine)",
+      "peer": "Philip Kotler (CMO) & Alex Hormozi (Offer Architect — Sales Division)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 30,
+      "enqueuedAt": "2026-09-20T07:54:07.954Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "5 Behavioral Pricing Weapons & 3-Tier Asymmetric Decoy Choice Architecture",
+        "corePhilosophy": "Log logical nahi... predictably irrational hote hain. Right price nahi, right perception aur right comparison jeetata hai.",
+        "dailyQuotas": "Collect daily dealer price objections | Provide micro-yield contrast scripts | Audit rep closing tier compliance",
+        "weeklyQuotas": "Audit 3-tier decoy selection (target >=75% Tier B Shubh Aarambh) | Track 2% CD prompt payment capture | Calibrate bonus collateral with Hormozi",
+        "monthlyQuotas": "Map competitor pricing parity across Rajasthan | Enforce 100% hurdle rate preservation | Submit pricing elasticity report to CEO",
+        "decoyStructure": "Tier A 10 bags bare decoy (Rs 720 landed) vs Tier B 20 bags target (+1 free + demo board = Rs 657 landed) vs Tier C 50 bags volume",
+        "lossAversionScript": "Frame lost contractor profit (Rs 25,000/month) going to rival counters rather than potential gain",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "marketing-team/dan-ariely/SKILL.md",
+        "marketing-team/dan-ariely/PRICING_PSYCHOLOGY_SOP.md",
+        "marketing-team/dan-ariely/agent.yaml",
+        "marketing-team/dan-ariely/GUARDRAILS.md",
+        "marketing-team/dan-ariely/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Kota dealer price objection reframed from Rs 190 extra cost into Rs 410 net cash profit yield",
+        "Scenario 2: Talera dealer decision paralysis resolved via 3-tier decoy choice architecture nudging 78% into Tier B",
+        "Scenario 3: Bundi contractor cheap competitor objection neutralized by framing cheap substitutes as high reputation risk",
+        "Scenario 4: Invoice loss-aversion penalty framing surging prompt-settlement 2% CD compliance from 28% to 84%",
+        "Scenario 5: Power of Zero physical Rs 50 cash tokens creating permanent painter habituation over complex MNC app points"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo pricing psychology trials testing target Tier B decoy adoption >=75%, loss aversion price resistance conversion >=85%, prompt payment discount capture >=90%, zero-discount margin preservation >=99.5%, and company net hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Pricing Psychology & Behavioral Economics Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-MARK-RITSON-GTM-STRATEGY-V1",
+      "title": "Mark Ritson Quarterly Battlefield Planning & GTM Strategy Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Mark Ritson",
+      "role": "Chief Strategy Controller & GTM Architect (War Room Battlefield Planning Chief)",
+      "peer": "Philip Kotler (CMO) & Brian Tracy (CSO)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 31,
+      "enqueuedAt": "2026-09-20T07:56:28.617Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Ritson 3-Stage Universal Strategic Governance Model (Diagnosis -> Strategy -> Tactics)",
+        "corePhilosophy": "Marketing creativity nahi... discipline aur strategy ka game hai. Strategy is deciding what NOT to do.",
+        "dailyQuotas": "Review consolidated sales dispatches and marketing leads | Resolve field distribution roadblocks in under 2 hours",
+        "weeklyQuotas": "Convene Marketing & Sales Joint War Room | Track quarterly milestone pacing | Reallocate tactical budgets",
+        "monthlyQuotas": "Audit regional category market share | Benchmark competitor retail prices and trade schemes | Executive status brief to CEO",
+        "quarterlyPacing": "Q1 50 Dealers & 200 bags/day -> Q2 150 Dealers & 500 bags/day -> Q3 300+ Verified Stockists",
+        "positioningDefense": "The Zero-Machine, High-Margin Exterior Specialist (40-45% dealer margin vs MNC 3-5%)",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "marketing-team/mark-ritson/SKILL.md",
+        "marketing-team/mark-ritson/GTM_STRATEGY_SOP.md",
+        "marketing-team/mark-ritson/agent.yaml",
+        "marketing-team/mark-ritson/GUARDRAILS.md",
+        "marketing-team/mark-ritson/EXAMPLES.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Forensic competitor diagnosis against Birla Opus and Asian Paints in Kota City positioning Swatch as the Zero-Machine Specialist",
+        "Scenario 2: Formulating the Q1 battlefield blueprint concentrating 100% of firepower on Bundi, Talera, and Kota corridor",
+        "Scenario 3: Uncovering the Dead Stock Anxiety barrier via field diagnosis and pivoting to 100% written replacement guarantee",
+        "Scenario 4: Enforcing the 60/40 rule between long-term brand equity (storefront signs/demo boards) and short-term sales activation (tokens/slabs)",
+        "Scenario 5: Tactical post-mortem reallocating 100% of print flyer budget into premium cured quartz demo boards with steel scratch tools"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo GTM trials testing market diagnosis accuracy >=95%, quarterly milestone pacing delivery >=95%, tactical execution adherence >=90%, zero-discount margin preservation >=99.5%, and company net hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Quarterly Battlefield Planning & GTM Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-PHILIP-KOTLER-MASTER-EXECUTION-WAR-PLAN-V1",
+      "title": "Philip Kotler Master Execution War Plan & Ground Action Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Philip Kotler",
+      "role": "Supreme Commander & Chief Marketing Strategist (CMO)",
+      "coCommander": "Brian Tracy (CSO)",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 32,
+      "enqueuedAt": "2026-09-20T08:00:05.551Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Swatch Master Execution War Plan (Daily Ground Action System)",
+        "corePhilosophy": "Har activity ka clear marketing + sales purpose hona chahiye; random kaam = banned. Marketing + Sales = Ek Hi System Hai.",
+        "morningWarRoom": "08:30 - 10:00 IST: Reconcile previous day dispatches, route unassigned leads (15-min SLA), lock 45-visit beats",
+        "fieldExecution": "10:00 - 18:00 IST: 45/20/15/5/2 Metric Rule (Sales) + Parallel Street Shock & SEO (Marketing)",
+        "eveningWarRoom": "18:00 - 20:00 IST: Compile outputs, analyze conversion bottlenecks, dispatch 19:00 IST briefing to CEO on WhatsApp",
+        "decisionEngine": "Dynamic symptom dispatch: Sales low -> Belfort/NEPQ/SPIN | Demand low -> Neil/Ann/Levinson | Stock stagnant -> Zyman/Keenan/Girard | Price issue -> Ariely/Hormozi/Antonio",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "marketing-team/philip-kotler/MASTER_EXECUTION_WAR_PLAN.md",
+        "data/swatch_master_execution_war_plan.md",
+        "philip-kotler-controller.js",
+        "marketing-team/philip-kotler/SKILL.md",
+        "marketing-team/philip-kotler/MARKETING_EXECUTION_SOP.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Morning War Room at 08:30 IST locking Talera-Kota highway beat and routing 14 inbound weekend leads within 11 minutes",
+        "Scenario 2: Field sales rep executes 45 shop visits using Jordan Belfort Straight Line scripts while Jay Conrad Levinson runs live trowel demos nearby",
+        "Scenario 3: Evening War Room at 18:00 IST detects dealer secondary off-take stall in Bundi and immediately triggers Day 10 thekedar demo protocol",
+        "Scenario 4: Weekly war review on Monday morning ranking Hadoti corridors and reallocating collateral from print flyers to cured quartz demo boards",
+        "Scenario 5: Dynamic decision engine handling fierce competitor discount push by deploying Dan Ariely micro-yield contrast without margin concession"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo war plan trials testing daily beat completion rate >=95%, morning lead routing SLA >=95% within 15 minutes, evening reconciliation accuracy >=99.9%, zero-discount margin preservation >=99.5%, and company net hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Master Execution War Plan Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-BRIAN-TRACY-SALESMAN-FIELD-BIBLE-V1",
+      "title": "Brian Tracy Salesman Training Manual & 10-Step Field Bible Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Brian Tracy",
+      "role": "Chief Sales Officer (CSO) & Master Sales Playbook Commander",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 33,
+      "enqueuedAt": "2026-09-20T08:02:47.562Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Swatch Salesman 10-Step Straight Line Field Bible System",
+        "corePhilosophy": "Sirf baat karna kaam nahi hai — Result lana kaam hai. Darna nahi, jhoot nahi bolna, follow-up nahi chhodna, har din kaam karna.",
+        "tenStepProcess": "Entry (Klaff/Ziglar) -> Rapport (Carnegie/Ziglar) -> Probing (SPIN/NEPQ) -> Gap Create (Keenan/Antonio) -> Solution (Belfort) -> Trust (Cialdini) -> Offer (Hormozi/Ariely) -> Close (Belfort) -> Objections (Voss/NEPQ) -> Follow-Up (Girard/Blount)",
+        "dailyRepMandate": "40-50 shop visits | 10 serious conversations | 3 strong follow-ups | 1-2 orders closed minimum",
+        "dailyReportCutoff": "18:30 IST digitized submit into users.csv; reconciliation by 19:00 IST",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "data/swatch_salesman_field_bible.md",
+        ".hermes/skills/brian-tracy/SALESMAN_FIELD_BIBLE.md",
+        "brian-tracy-controller.js",
+        "data/swatch_master_sales_playbook.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Fresh sales rep enters skeptical Kota paint counter, executes Steps 1-4, shocking dealer with the Rs 35 vs Rs 400 profit gap",
+        "Scenario 2: Rep encounters Demand nahi hai objection in Talera, executes Step 9 Voss empathy pivot, closing the 20-bag Shubh Aarambh starter lot",
+        "Scenario 3: 4-touch follow-up cadence in Bundi converting undecided building material retailer on Day 7 site demo with local contractor",
+        "Scenario 4: Sales rep presents 57.97% visual ROI yellow pad to eliminate dealer discount demands while protecting company hurdle rates",
+        "Scenario 5: 10-step straight line execution closing 40 bags of Swatch Rustic in 35 minutes across 2 adjacent hardware stores in Baran"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo field sales trials testing 10-step adherence rate >=95%, dealer conversion rate >=30% on serious conversations, 15-minute lead follow-up compliance >=95%, zero-discount margin preservation >=99.5%, and company net hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Salesman Training Manual (Field Bible) Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-BRIAN-TRACY-DEALER-ACQUISITION-KILLER-SCRIPT-V1",
+      "title": "Brian Tracy Dealer Acquisition Killer Script & Multi-Legend Closing System Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Brian Tracy",
+      "role": "Chief Sales Officer (CSO) & Master Sales Playbook Commander",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 34,
+      "enqueuedAt": "2026-09-20T08:06:38.885Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Swatch Dealer Acquisition Killer Script (Multi-Legend Closing System)",
+        "corePhilosophy": "Product mat becho — Profit becho. Dealer tab buy karta hai jab usse lagta hai: Ye mujhe paisa kama ke dega. Shop me jao, deal lekar hi niklo.",
+        "closingStack": "Frame Control (Klaff) -> Rapid Rapport (Carnegie/Ziglar) -> Pain Probe (SPIN/NEPQ) -> Reality Shock Gap (Keenan/Antonio) -> Reframe (Dunford) -> Value Stack (Hormozi) -> Social Proof (Cialdini) -> Micro Trial Close (Belfort) -> Objection Annihilation (Voss/Miner) -> Assumptive Close (Tracy)",
+        "objectionDefense": "Demand nahi hai (Company pull responsibility) | Price high hai (Rs 50 extra polymer = Rs 300 extra dealer profit) | Soch ke bataunga (Zero risk 20-bag trial dispatch tomorrow morning)",
+        "followUpCadence": "Day 1 Visit -> Day 2 Video Demonstration Call -> Day 3 Special Urgency Scheme Close",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "data/swatch_dealer_acquisition_killer_script.md",
+        ".hermes/skills/brian-tracy/DEALER_ACQUISITION_KILLER_SCRIPT.md",
+        "brian-tracy-controller.js",
+        "orchestrator.js",
+        "data/swatch_salesman_field_bible.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Rep executes Oren Klaff frame control in Kota retail counter, shutting down salesman dismissal in under 5 seconds",
+        "Scenario 2: Rep deploys Keenan reality shock gap, proving Rs 3-4 Lakh machine capex yields 3-4% margin vs zero-machine Swatch yielding Rs 300-400/bag",
+        "Scenario 3: Rep counters Demand nahi hai in Bundi by establishing direct company marketing pull and locking 20-bag trial order",
+        "Scenario 4: Rep utilizes Alex Hormozi value stack (No machine + Rs 50 painter tokens + sample boards) to secure same-day cash PO",
+        "Scenario 5: Rep executes Jordan Belfort straight-line micro-close with Brian Tracy assumptive close, writing 20-bag PO without asking permission"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo sales closing trials testing frame control retention >=95%, gap shock realization >=92%, objection conversion rate >=80%, trial close lock rate >=35% on first visit, and company hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Dealer Acquisition Killer Script Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-CHRIS-VOSS-ADVANCED-OBJECTION-DOMINATION-V1",
+      "title": "Chris Voss Advanced Objection Domination System & Tactical Negotiation Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Chris Voss",
+      "role": "Negotiation Specialist & Dynamic Objection Domination Commander",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 35,
+      "enqueuedAt": "2026-09-20T08:08:49.126Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Chris Voss Advanced Objection Domination System (5 Pillars & Dynamic Control)",
+        "corePhilosophy": "Negotiation = Control through understanding. Jitna samjhoge, utna jeetoge. Objection = NO nahi hota, Objection = Samjho mujhe!",
+        "fivePillars": "Tactical Empathy -> Labeling (Emotion ko naam do) -> Mirroring (Last words repeat) -> Calibrated Questions (How/What) -> No-Oriented Questions",
+        "scenariosCovered": "Demand nahi hai (Painter token & quality pull) | Price high hai (Rs 50 raw material vs Rs 300 dealer net profit) | Soch ke bataunga (Isolate hesitation + next day truck dispatch) | Already purana brand (Secondary high-yield pillar without replacing existing brand)",
+        "controlTechniques": "Silence Power (Dynamic 4-sec pause) | Late-Night FM DJ Voice | That is Right moment trigger",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "data/swatch_chris_voss_objection_domination_system.md",
+        ".hermes/skills/chris-voss/OBJECTION_DOMINATION_SYSTEM.md",
+        ".hermes/skills/chris-voss/SKILL.md",
+        "chris-voss-controller.js",
+        "orchestrator.js"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Rep executes Labeling + 4-second Silence in Kota hardware counter faced with Demand nahi hai, getting dealer to admit cash flow anxiety",
+        "Scenario 2: Rep deploys Calibrated How Question against Price high hai in Bundi, reframing Rs 50 quality investment into Rs 300 clean dealer net profit",
+        "Scenario 3: Rep counters Soch ke bataunga with No-Oriented closing frame, securing 20-bag trial delivery for next-morning truck dispatch in Talera",
+        "Scenario 4: Rep utilizes Late-Night FM DJ voice to neutralize entrenched Asian Paints counter loyalty in Baran, establishing Swatch as a 40% margin companion",
+        "Scenario 5: 100% discount rejection compliance across 25 tough dealer interactions while securing trial orders and protecting company Rs 100 net hurdle"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo negotiation trials testing objection conversion rate >=85%, zero-discount adherence rate 100%, silence power execution compliance >=95%, dealer That is Right trigger rate >=75%, and company hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Chris Voss Objection Domination Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-PHILIP-KOTLER-MARKETING-MIND-CONTROL-V1",
+      "title": "Philip Kotler Marketing Mind Control System 1.5M Monte Carlo Simulation",
+      "division": "Core Marketing Strategy & Trade Growth Division",
+      "legend": "Philip Kotler",
+      "role": "Chief Marketing Strategist (CMO) & Master Execution War Plan Commander",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 36,
+      "enqueuedAt": "2026-09-20T08:12:12.099Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Swatch Paints Marketing Mind Control System (5-Stage Cognitive Warfare)",
+        "corePrinciple": "Sale hone se pehle decision hota hai. Random marketing banned, passive branding banned, direct demand pull only.",
+        "fiveStages": "Stage 1 Awareness Blast (Sharp/Levinson/Patel) -> Stage 2 Perception Build (Sutherland/Dunford) -> Stage 3 Trust Engine (Cialdini/Handley) -> Stage 4 Demand Creation (Zyman/Patel) -> Stage 5 Price Perception (Ariely)",
+        "endGoal": "Dealer looks up and says: Customer aur painter dono Swatch maang rahe hain! Market bole: Swatch chal raha hai!",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "data/swatch_marketing_mind_control_system.md",
+        "marketing-team/philip-kotler/MARKETING_MIND_CONTROL_SYSTEM.md",
+        ".hermes/skills/philip-kotler/MARKETING_MIND_CONTROL_SYSTEM.md",
+        "philip-kotler-controller.js",
+        "orchestrator.js"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Rep visits Bundi dealer who has already witnessed 2 roadside demo walls and received 3 contractor inquiries, resulting in immediate 20-bag trial order",
+        "Scenario 2: Kota homeowners searching Texture paint near me encounter Google 3-Pack rank #1 Swatch listing and call local stockist within 15 minutes",
+        "Scenario 3: Hadoti thekedars actively collect Rs 50 cash tokens inside Swatch Rustic bags, routing repeat bulk projects to authorized retail counters",
+        "Scenario 4: Dan Ariely decoy pricing steers 80% of counter orders into Tier B (20+1 Shubh Aarambh starter lot) without salesman discount negotiations",
+        "Scenario 5: Complete 5-stage mind control synchronization achieving 42% faster dealer onboarding across 15 target counters in Talera, Dabi, and Baran"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo demand pull trials testing dealer pre-awareness rate >=90%, inbound pull conversion rate >=35%, painter token velocity >=85%, decoy adoption rate >=75%, and company hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Marketing Mind Control Report."
+    },
+    {
+      "jobId": "JOB-MIROFISH-BRIAN-TRACY-SALES-MIND-CONTROL-V1",
+      "title": "Brian Tracy Sales Mind Control System 1.5M Monte Carlo Simulation",
+      "division": "Sales & Negotiations Division",
+      "legend": "Brian Tracy",
+      "role": "Chief Sales Officer (CSO) & Master Sales Playbook Commander",
+      "status": "QUEUED_PENDING_CEO_TRIGGER",
+      "priority": 37,
+      "enqueuedAt": "2026-09-20T08:14:06.123Z",
+      "enqueuedBy": "CEO Ashutosh Sharma (+91 9079609627)",
+      "targetTrials": 1500000,
+      "accuracyThreshold": 99.5,
+      "parameters": {
+        "framework": "Swatch Paints Sales Mind Control System (7-Stage On-Counter Psychological Conversion)",
+        "corePrinciple": "Profit dikhao = Decision lo. Product mat becho, profit becho. Har visit = conversion ya strong follow-up.",
+        "sevenStages": "Stage 1 Control Entry (Klaff/Ziglar) -> Stage 2 Rapport + Problem (SPIN/NEPQ) -> Stage 3 Gap Attack (Keenan/Antonio) -> Stage 4 Value Stack (Hormozi/Belfort) -> Stage 5 Objection Domination (Voss/Miner) -> Stage 6 Close (Belfort/Tracy) -> Stage 7 Retention & Discipline (Girard/Blount)",
+        "endGoal": "Dealer says: Trial de do... 20 bag note kar lo! Seamless conversion into 18-day reorder cycle.",
+        "hurdleRateDefense": "Rustic >= Rs 100/bag net company profit; Roller Coat >= Rs 132/bag net company profit; zero unapproved discounts"
+      },
+      "sourceFiles": [
+        "data/swatch_sales_mind_control_system.md",
+        ".hermes/skills/brian-tracy/SALES_MIND_CONTROL_SYSTEM.md",
+        "brian-tracy-controller.js",
+        "orchestrator.js",
+        "data/swatch_dealer_acquisition_killer_script.md"
+      ],
+      "marketScenarios": [
+        "Scenario 1: Sales rep executes Stage 1 Frame Control and Stage 3 Gap Attack in Kota, converting skeptical hardware dealer with Rs 300-400/bag margin proof",
+        "Scenario 2: Rep deploys Stage 5 Voss Tactical Empathy to neutralize Price high pushback in Bundi, locking 20-bag trial order at full standard dealer rate",
+        "Scenario 3: Assumptive close and golden silent pause executed in Talera, securing same-visit cash billing without asking permission",
+        "Scenario 4: Joe Girard 7-day credit collection discipline executed in Dabi, recovering 100% receivables within 5 days using the 2% prompt payment buffer",
+        "Scenario 5: Multi-touch retention cadence securing 18-day reorder cycle across 20 onboarded counters in Baran without stock stagnation"
+      ],
+      "executionDirective": "When MiroFish simulation is triggered by CEO Ashutosh Sharma, execute 1,500,000 (1.5 Million) Monte Carlo sales conversion trials testing 7-stage adherence rate >=95%, first-visit trial close rate >=35%, objection neutralization rate >=85%, 7-day collection compliance 100%, and company hurdle rate defense >=99.9%, and generate the perfected Swatch Paints Sales Mind Control Report."
+    }
+  ],
+  "totalJobs": 37
+}

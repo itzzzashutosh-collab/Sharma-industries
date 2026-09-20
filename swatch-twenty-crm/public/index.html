@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sharma Industries — Swatch Twenty CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="twenty-theme-dark">
+
+  <div class="twenty-app-container">
+
+    <!-- 1. LEFT NAVIGATION SIDEBAR -->
+    <aside class="twenty-sidebar">
+      <!-- Workspace Brand Card -->
+      <div class="workspace-card">
+        <div class="workspace-logo-box">
+          <img src="/swatch_logo.png" alt="Swatch Paints" class="brand-logo-img">
+        </div>
+        <div class="workspace-meta">
+          <div class="workspace-name">Sharma Industries</div>
+          <div class="workspace-role">Swatch Paints Official</div>
+        </div>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="sidebar-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="globalSearchInput" placeholder="Search (Ctrl + K)" oninput="handleGlobalSearch(this.value)">
+      </div>
+
+      <!-- Main Objects Navigation -->
+      <div class="nav-section-title">OBJECTS</div>
+      <nav class="nav-menu">
+        <a class="nav-item active" onclick="switchMainView('opportunities', this)">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-label">Opportunities</span>
+          <span class="nav-badge" id="badge-opps">3,700</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('people', this)">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">People & Contacts</span>
+          <span class="nav-badge" id="badge-people">3,707</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('companies', this)">
+          <span class="nav-icon">🏢</span>
+          <span class="nav-label">Companies</span>
+          <span class="nav-badge" id="badge-companies">3,100</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('leaders', this)">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-label">AI Division Leaders</span>
+          <span class="nav-badge gold">86</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('pan-india', this)">
+          <span class="nav-icon">🌐</span>
+          <span class="nav-label">PAN-India Directory</span>
+          <span class="nav-badge purple">1.14M</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('approvals', this)">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-label">CEO File Approvals</span>
+          <span class="nav-badge red" id="badge-approvals">!</span>
+        </a>
+      </nav>
+
+      <!-- Quick Category Filters -->
+      <div class="nav-section-title">CATEGORIES</div>
+      <nav class="nav-menu secondary">
+        <a class="nav-item sub" onclick="filterByEntityCategory('dealer')">
+          <span class="bullet blue"></span>
+          <span class="nav-label">Paint Dealers</span>
+          <span class="count">2,101</span>
+        </a>
+        <a class="nav-item sub" onclick="filterByEntityCategory('builder')">
+          <span class="bullet amber"></span>
+          <span class="nav-label">Builders & Projects</span>
+          <span class="count">1,000</span>
+        </a>
+        <a class="nav-item sub" onclick="filterByEntityCategory('architect')">
+          <span class="bullet purple"></span>
+          <span class="nav-label">Architects</span>
+          <span class="count">300</span>
+        </a>
+        <a class="nav-item sub" onclick="filterByEntityCategory('interior_designer')">
+          <span class="bullet pink"></span>
+          <span class="nav-label">Interior Designers</span>
+          <span class="count">300</span>
+        </a>
+        <a class="nav-item sub" onclick="filterByEntityCategory('employee')">
+          <span class="bullet green"></span>
+          <span class="nav-label">Leadership & Team</span>
+          <span class="count">7</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="user-pill">
+          <div class="user-avatar">AS</div>
+          <div class="user-info">
+            <div class="user-name">Ashutosh Sharma</div>
+            <div class="user-status">● Supabase Active</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 2. MAIN WORKSPACE CONTENT -->
+    <main class="twenty-main-content">
+
+      <!-- Top Header Navigation -->
+      <header class="twenty-topbar">
+        <div class="topbar-left">
+          <div class="topbar-brand-mark">
+            <img src="/swatch_logo.png" alt="Swatch Paints" class="topbar-logo-img">
+            <div class="topbar-brand-text">
+              <span class="brand-headline">SWATCH PAINTS</span>
+              <span class="brand-tagline">Sharma Industries</span>
+            </div>
+          </div>
+          <div class="topbar-divider"></div>
+          <div class="view-title" id="currentViewTitle">Opportunities Pipeline</div>
+          <div class="view-tabs" id="viewModeSwitcher">
+            <button class="view-tab-btn active" id="btn-kanban" onclick="setViewMode('kanban')">
+              <span>📊</span> Kanban
+            </button>
+            <button class="view-tab-btn" id="btn-table" onclick="setViewMode('table')">
+              <span>📋</span> Table
+            </button>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="metric-pill">
+            <span class="label">Total Pipeline:</span>
+            <strong class="value" id="topbar-pipeline-value">₹12.4 Cr</strong>
+          </div>
+          <button class="btn btn-secondary" onclick="syncMasterCrm()">
+            <span>🔄</span> Sync Data
+          </button>
+          <button class="btn btn-primary" onclick="openNewLeadModal()">
+            <span>+</span> New Record
+          </button>
+        </div>
+      </header>
+
+      <!-- Sub Header Controls & Filters -->
+      <div class="toolbar-bar">
+        <div class="search-input-wrapper">
+          <input type="text" id="viewSearchInput" placeholder="Filter current view by name, phone, city..." oninput="handleViewFilter(this.value)">
+        </div>
+        <div class="filter-pills" id="activeFilterPills">
+          <span class="filter-pill active" onclick="setQuickPillFilter('all', this)">All (3,707)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('dealer', this)">Dealers (2,101)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('builder', this)">Builders (1,000)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('architect', this)">Architects (300)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('interior_designer', this)">Interior Designers (300)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('employee', this)">Employees (7)</span>
+        </div>
+      </div>
+
+      <!-- VIEW CONTAINER (Dynamic Swapping) -->
+      <div class="view-canvas" id="viewCanvas">
+        
+        <!-- A. KANBAN BOARD VIEW -->
+        <div class="kanban-board-container" id="kanbanContainer">
+          <!-- Columns dynamically injected via app.js -->
+          <div class="loading-state">Loading Twenty CRM Opportunities Board...</div>
+        </div>
+
+        <!-- B. TABLE VIEW -->
+        <div class="table-view-container" id="tableContainer" style="display: none;">
+          <table class="twenty-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;"><input type="checkbox"></th>
+                <th>Name / Contact Person</th>
+                <th>Company / Store</th>
+                <th>Category</th>
+                <th>Phone Number</th>
+                <th>City / Territory</th>
+                <th>Pipeline Stage</th>
+                <th>Deal Value (INR)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+          <div class="table-pagination">
+            <span id="tablePageText">Showing 1 to 50</span>
+            <div class="pagination-buttons">
+              <button class="btn btn-small" id="btnPrevPage" onclick="changeTablePage(-1)">Previous</button>
+              <button class="btn btn-small" id="btnNextPage" onclick="changeTablePage(1)">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- C. AI LEADERS HUB VIEW -->
+        <div class="leaders-hub-container" id="leadersContainer" style="display: none;">
+          <!-- Injected dynamically -->
+        </div>
+
+        <!-- D. PAN-INDIA DIRECTORY VIEW -->
+        <div class="pan-india-container" id="panIndiaContainer" style="display: none;">
+          <!-- Injected dynamically -->
+        </div>
+
+        <!-- E. CEO APPROVALS VIEW -->
+        <div class="approvals-container" id="approvalsContainer" style="display: none;">
+          <!-- Injected dynamically -->
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- 3. SLIDE-OVER DETAIL & AGENT ACTION DRAWER -->
+    <div class="twenty-drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    <aside class="twenty-drawer" id="sideDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title-group">
+          <span class="drawer-badge" id="drawerBadge">DEALER</span>
+          <h2 id="drawerName">Account Name</h2>
+          <p id="drawerCompany">Store Name</p>
+        </div>
+        <button class="drawer-close-btn" onclick="closeDrawer()">✕</button>
+      </div>
+
+      <div class="drawer-tabs">
+        <button class="drawer-tab active" onclick="switchDrawerTab('details', this)">Details</button>
+        <button class="drawer-tab" onclick="switchDrawerTab('tracy', this)">🛒 Brian Tracy Quote</button>
+        <button class="drawer-tab" onclick="switchDrawerTab('cadence', this)">📱 WhatsApp Cadence</button>
+        <button class="drawer-tab" onclick="switchDrawerTab('kotler', this)">📢 Philip Kotler</button>
+        <button class="drawer-tab" onclick="switchDrawerTab('stock', this)">🏭 Factory Stock</button>
+      </div>
+
+      <div class="drawer-content" id="drawerBody">
+        <!-- Injected dynamically based on active drawer tab -->
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

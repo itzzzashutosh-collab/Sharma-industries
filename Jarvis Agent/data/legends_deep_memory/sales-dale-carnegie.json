@@ -1,0 +1,19 @@
+{
+  "agentName": "Dale Carnegie",
+  "division": "Sales & Negotiations Division",
+  "role": "Human Relations Lead",
+  "domain": "Frontline Human Relations & Shopkeeper Empathy",
+  "peerInterconnection": {
+    "peerName": "Zig Ziglar",
+    "peerRole": "Relationship Closer",
+    "peerDomain": "Dealer Trust & Long-Term Loyalty"
+  },
+  "epoch": 45,
+  "finalScore": 99.6,
+  "trialsPassed": 498,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-dale-carnegie.md",
+  "timestamp": "2026-09-20T04:29:06.408Z"
+}

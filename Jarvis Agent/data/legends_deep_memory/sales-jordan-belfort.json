@@ -1,0 +1,19 @@
+{
+  "agentName": "Jordan Belfort",
+  "division": "Sales & Negotiations Division",
+  "role": "Straight Line Closer",
+  "domain": "Straight Line Scripting & Certainty Stacking vs MNCs",
+  "peerInterconnection": {
+    "peerName": "Brian Tracy",
+    "peerRole": "Chief Sales Officer",
+    "peerDomain": "Systematic 4-Step Closing Cadence"
+  },
+  "epoch": 45,
+  "finalScore": 99.2,
+  "trialsPassed": 496,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-jordan-belfort.md",
+  "timestamp": "2026-09-20T04:28:02.086Z"
+}

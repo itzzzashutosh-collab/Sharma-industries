@@ -1,0 +1,19 @@
+{
+  "agentName": "Dan Kennedy",
+  "division": "Sales & Negotiations Division",
+  "role": "Direct Response Specialist",
+  "domain": "Urgency Schemes & Trade Proof Packages",
+  "peerInterconnection": {
+    "peerName": "David Ogilvy",
+    "peerRole": "Chief Marketing Officer",
+    "peerDomain": "The Big Idea & Factual Prestige Positioning"
+  },
+  "epoch": 45,
+  "finalScore": 98.6,
+  "trialsPassed": 493,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-dan-kennedy.md",
+  "timestamp": "2026-09-20T04:27:45.612Z"
+}

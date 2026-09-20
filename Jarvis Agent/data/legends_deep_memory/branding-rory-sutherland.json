@@ -1,0 +1,19 @@
+{
+  "agentName": "Rory Sutherland",
+  "division": "Branding & Market Positioning Division",
+  "role": "Behavioral Value Lead",
+  "domain": "Perceptual Value & Heavy Packaging",
+  "peerInterconnection": {
+    "peerName": "Steve Jobs",
+    "peerRole": "Product Obsession Lead",
+    "peerDomain": "Tactile Luxury & Packaging Simplicity"
+  },
+  "epoch": 45,
+  "finalScore": 99.4,
+  "trialsPassed": 497,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\branding-rory-sutherland.md",
+  "timestamp": "2026-09-20T04:42:52.128Z"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "sharma-industries",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itzzzashutosh-collab/Sharma-industries.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/itzzzashutosh-collab/Sharma-industries/issues"
+  },
+  "homepage": "https://github.com/itzzzashutosh-collab/Sharma-industries#readme",
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.20.3",
+    "body-parser": "^2.3.0",
+    "express": "^5.2.1"
+  }
+}

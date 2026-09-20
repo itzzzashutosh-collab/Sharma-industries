@@ -1,0 +1,19 @@
+{
+  "agentName": "Mark Roberge",
+  "division": "HR, Talent & People Operations Division",
+  "role": "Sales Quota Scientist",
+  "domain": "Quota Engineering & Incentive Alignment",
+  "peerInterconnection": {
+    "peerName": "Jack Welch",
+    "peerRole": "Head of People Ops",
+    "peerDomain": "Performance Differentiation & Target Stretch"
+  },
+  "epoch": 45,
+  "finalScore": 98.6,
+  "trialsPassed": 493,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\hr-mark-roberge.md",
+  "timestamp": "2026-09-20T04:47:29.457Z"
+}

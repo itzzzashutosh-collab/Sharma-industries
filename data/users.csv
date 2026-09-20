@@ -1,0 +1,33 @@
+lid,name,role,language,active,created_at
+1234567890abcdef,Rajesh Kumar,OWNER,hinglish,true,2026-01-15T10:00:00Z
+fedcba0987654321,Amit Traders,DEALER,hinglish,true,2026-01-16T09:00:00Z
+abcdef1234567890,Sunita Devi,MANAGER,english,true,2026-01-17T08:00:00Z
+def1234567890abc,Mehul Shah,ACCOUNTANT,english,true,2026-01-18T11:00:00Z
+111222333444555,Suresh Kumar,SUPERVISOR,hindi,true,2026-01-19T14:00:00Z
+999888777666555,Ravi Patel,OPERATOR,hindi,true,2026-01-20T09:30:00Z
+555666777888999,Anil Verma,DEALER,english,true,2026-01-21T16:00:00Z
+777888999000111,Geeta Sharma,VENDOR,hindi,true,2026-01-22T10:15:00Z
+333444555666777,Kamal Jain,CUSTOMER,english,true,2026-01-23T13:45:00Z
+888999000111222,Neha Gupta,UNKNOWN,english,true,2026-01-24T07:00:00Z
+1789642585310,1234567890abcdef,OWNER,Test message from owner,ownerHandler,processed,2026-09-17T10:56:25.309Z
+1789642585312,fedcba0987654321,DEALER,Test message from dealer,dealerHandler,processed,2026-09-17T10:56:25.311Z
+1789642585314,9999999999999999,UNKNOWN,Test message from unknown,unknownHandler,processed,2026-09-17T10:56:25.314Z
+1789643187336,1234567890abcdef,OWNER,Test message from owner,ownerHandler,processed,2026-09-17T11:06:27.335Z
+1789643187339,fedcba0987654321,DEALER,Test message from dealer,dealerHandler,processed,2026-09-17T11:06:27.338Z
+1789643187342,9999999999999999,UNKNOWN,Test message from unknown,unknownHandler,processed,2026-09-17T11:06:27.341Z
+1789643915785,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:18:35.784Z
+1789643962218,1234567890abcdef,OWNER,Test message from owner,ownerHandler,processed,2026-09-17T11:19:22.217Z
+1789643962220,fedcba0987654321,DEALER,Test message from dealer,dealerHandler,processed,2026-09-17T11:19:22.219Z
+1789643962223,9999999999999999,UNKNOWN,Test message from unknown,unknownHandler,processed,2026-09-17T11:19:22.222Z
+1789644328091,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:25:28.090Z
+1789644345051,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:25:45.050Z
+1789644407488,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:26:47.486Z
+1789644464546,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:27:44.545Z
+1789644498096,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:28:18.094Z
+1789644535537,1234567890abcdef,OWNER,test,ownerHandler,processed,2026-09-17T11:28:55.535Z
+1789645423235,1234567890abcdef,OWNER,Test message from owner,ownerHandler,processed,2026-09-17T11:43:43.234Z
+1789645423238,fedcba0987654321,DEALER,Test message from dealer,dealerHandler,processed,2026-09-17T11:43:43.237Z
+1789645423241,9999999999999999,UNKNOWN,Test message from unknown,unknownHandler,processed,2026-09-17T11:43:43.240Z
+1789645619791,1234567890abcdef,OWNER,Test message from owner,ownerHandler,processed,2026-09-17T11:46:59.789Z
+1789645619794,fedcba0987654321,DEALER,Test message from dealer,dealerHandler,processed,2026-09-17T11:46:59.793Z
+1789645619797,9999999999999999,UNKNOWN,Test message from unknown,unknownHandler,processed,2026-09-17T11:46:59.796Z

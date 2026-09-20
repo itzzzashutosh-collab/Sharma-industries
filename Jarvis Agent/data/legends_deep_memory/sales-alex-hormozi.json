@@ -1,0 +1,19 @@
+{
+  "agentName": "Alex Hormozi",
+  "division": "Sales & Negotiations Division",
+  "role": "Offer Architect & Dealership Programs",
+  "domain": "Pricing Architecture, Schemes, Volume Slabs & Painter Programs (CEO Approval Required)",
+  "peerInterconnection": {
+    "peerName": "Warren Buffett",
+    "peerRole": "Chief Financial Officer",
+    "peerDomain": "Working Capital Float, ROIC & Zero Capital Destruction"
+  },
+  "epoch": 45,
+  "finalScore": 98.8,
+  "trialsPassed": 494,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-alex-hormozi.md",
+  "timestamp": "2026-09-20T04:27:37.155Z"
+}

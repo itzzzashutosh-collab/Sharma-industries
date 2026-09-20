@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARVIS Brain — Neural Skill Constellation | Sharma Industries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-space: #050508;
+      --bg-panel: rgba(12, 16, 28, 0.86);
+      --border-glow: rgba(245, 158, 11, 0.3);
+      --accent-amber: #f59e0b;
+      --accent-gold: #fbbf24;
+      --accent-orange: #ea580c;
+      --accent-cyan: #06b6d4;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-cyber: 'Orbitron', sans-serif;
+      --font-tech: 'Rajdhani', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Ambient Sci-Fi Nebula Background */
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12) 0%, rgba(234, 88, 12, 0.05) 35%, transparent 70%),
+        radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Main Canvas Layer */
+    #brainCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: grab;
+    }
+    #brainCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Top Futuristic HUD Header */
+    .hud-header {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      right: 18px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      z-index: 10;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), inset 0 0 16px rgba(245, 158, 11, 0.15);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .brand-orb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-amber);
+      box-shadow: 0 0 20px var(--accent-gold), 0 0 35px var(--accent-orange);
+      animation: pulseOrb 2.2s infinite ease-in-out;
+    }
+    @keyframes pulseOrb {
+      0%, 100% { transform: scale(1); opacity: 0.85; filter: drop-shadow(0 0 8px #f59e0b); }
+      50% { transform: scale(1.35); opacity: 1; filter: drop-shadow(0 0 18px #ea580c); }
+    }
+    .brand-title {
+      font-family: var(--font-cyber);
+      font-size: 16px;
+      letter-spacing: 2.5px;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #fbbf24, #f97316, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-sub {
+      font-family: var(--font-tech);
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-hud {
+      background: rgba(18, 24, 40, 0.85);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #f1f5f9;
+      font-family: var(--font-tech);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-hud:hover {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-hud.active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(234, 88, 12, 0.35));
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+    }
+
+    /* Left Sidebar: Divisions & C-Suite Heads */
+    .sidebar-left {
+      position: absolute;
+      top: 84px;
+      bottom: 24px;
+      left: 18px;
+      width: 320px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8);
+    }
+    .sidebar-left.hidden {
+      transform: translateX(-350px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Right Sidebar: Pipelines & Deep Inspector */
+    .sidebar-right {
+      position: absolute;
+      top: 84px;
+      bottom: 24px;
+      right: 18px;
+      width: 360px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8);
+    }
+    .sidebar-right.hidden {
+      transform: translateX(390px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-title {
+      font-family: var(--font-cyber);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-body {
+      padding: 14px 16px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .panel-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .panel-body::-webkit-scrollbar-thumb {
+      background: rgba(245, 158, 11, 0.3);
+      border-radius: 4px;
+    }
+
+    /* Division Cards */
+    .division-card {
+      background: rgba(18, 24, 38, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .division-card:hover {
+      background: rgba(30, 41, 59, 0.85);
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.25);
+    }
+    .division-card.selected {
+      border-color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.14);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+    }
+    .div-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .div-name {
+      font-family: var(--font-tech);
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .div-count {
+      font-family: var(--font-cyber);
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+    .div-leader-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #fbbf24;
+      font-family: var(--font-tech);
+      font-weight: 600;
+    }
+    .leader-crown {
+      color: #f59e0b;
+      font-size: 12px;
+    }
+
+    /* 12-Pillar Sales Pipeline Steps */
+    .pipeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      background: rgba(18, 24, 38, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      font-size: 11.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .pipeline-step:hover {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: var(--accent-amber);
+    }
+    .pipeline-step.active {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.35), rgba(245, 158, 11, 0.08));
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.5);
+    }
+    .step-num {
+      font-family: var(--font-cyber);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      width: 18px;
+      text-align: center;
+    }
+    .step-role {
+      font-weight: 600;
+      color: #f8fafc;
+      flex: 1;
+    }
+    .step-legend {
+      font-family: var(--font-tech);
+      color: #94a3b8;
+      font-size: 11px;
+    }
+
+    /* Node Inspector Panel */
+    .inspector-card {
+      background: rgba(18, 24, 38, 0.85);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .insp-name {
+      font-family: var(--font-cyber);
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+    .insp-role {
+      font-family: var(--font-tech);
+      font-size: 13px;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .insp-section-title {
+      font-family: var(--font-cyber);
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      letter-spacing: 0.8px;
+    }
+    .insp-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 2px solid var(--accent-gold);
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #cbd5e1;
+    }
+    .insp-anti {
+      border-left-color: var(--accent-rose);
+      color: #fda4af;
+    }
+
+    /* Floating Panel Toggles */
+    .toggle-tab-left {
+      position: absolute;
+      top: 84px;
+      left: 18px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      color: var(--accent-gold);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: var(--font-tech);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      z-index: 9;
+      display: none;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+    }
+    .toggle-tab-right {
+      position: absolute;
+      top: 84px;
+      right: 18px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      color: var(--accent-gold);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-family: var(--font-tech);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      z-index: 9;
+      display: none;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+    }
+    .sidebar-left.hidden + .toggle-tab-left {
+      display: block;
+    }
+    .sidebar-right.hidden + .toggle-tab-right {
+      display: block;
+    }
+
+    /* Bottom Navigation Quick Filter */
+    .bottom-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glow);
+      padding: 6px 14px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    }
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-family: var(--font-tech);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 13px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .pill-btn:hover {
+      background: rgba(245, 158, 11, 0.25);
+      border-color: var(--accent-gold);
+      color: #fff;
+    }
+    .pill-btn.active {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+      border-color: var(--accent-gold);
+      color: #050508;
+      font-weight: 700;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Search overlay */
+    .search-box {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 12px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-box:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+    }
+
+    /* Holographic Interactive Floating Tooltip */
+    #jarvisTooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 100;
+      background: rgba(10, 14, 26, 0.92);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--accent-gold);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 20px rgba(245, 158, 11, 0.35);
+      border-radius: 10px;
+      padding: 12px 14px;
+      width: 280px;
+      opacity: 0;
+      transform: translate(15px, 15px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #jarvisTooltip.visible {
+      opacity: 1;
+      transform: translate(18px, 18px);
+    }
+    .tt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+      padding-bottom: 5px;
+    }
+    .tt-name {
+      font-family: var(--font-cyber);
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.8px;
+    }
+    .tt-badge {
+      font-family: var(--font-tech);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      font-weight: 700;
+    }
+    .tt-role {
+      font-family: var(--font-tech);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #38bdf8;
+    }
+    .tt-desc {
+      font-size: 11px;
+      line-height: 1.4;
+      color: #cbd5e1;
+    }
+    .tt-mandate {
+      font-size: 10.5px;
+      line-height: 1.35;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.08);
+      padding: 4px 7px;
+      border-left: 2px solid var(--accent-gold);
+      border-radius: 3px;
+      margin-top: 2px;
+    }
+
+    /* --- CEO Direct Command Console Modal --- */
+    .ceo-chat-modal {
+      position: absolute;
+      inset: 60px 100px;
+      background: rgba(8, 12, 22, 0.94);
+      backdrop-filter: blur(28px);
+      border: 2px solid var(--accent-gold);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(245, 158, 11, 0.35);
+      border-radius: 16px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .ceo-chat-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+    .chat-header {
+      padding: 16px 24px;
+      background: rgba(18, 24, 40, 0.85);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-crown {
+      font-size: 20px;
+      color: var(--accent-gold);
+    }
+    .chat-header-h1 {
+      font-family: var(--font-cyber);
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1.5px;
+    }
+    .chat-header-sub {
+      font-family: var(--font-tech);
+      font-size: 12px;
+      color: var(--accent-gold);
+    }
+    .chat-body {
+      flex: 1;
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .chat-msg {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 80%;
+    }
+    .chat-msg.ceo {
+      align-self: flex-end;
+    }
+    .chat-msg.hermes {
+      align-self: flex-start;
+    }
+    .chat-msg.tracy {
+      align-self: flex-start;
+      margin-left: 28px;
+    }
+    .msg-sender {
+      font-family: var(--font-tech);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+    .chat-msg.ceo .msg-sender { color: var(--accent-gold); text-align: right; }
+    .chat-msg.hermes .msg-sender { color: #38bdf8; }
+    .chat-msg.tracy .msg-sender { color: #f59e0b; }
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .chat-msg.ceo .msg-bubble {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(234, 88, 12, 0.25));
+      border: 1px solid var(--accent-gold);
+      color: #fff;
+    }
+    .chat-msg.hermes .msg-bubble {
+      background: rgba(18, 24, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #f1f5f9;
+    }
+    .chat-msg.tracy .msg-bubble {
+      background: rgba(24, 20, 14, 0.85);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fde68a;
+    }
+    .chat-presets {
+      padding: 10px 24px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      background: rgba(10, 14, 24, 0.6);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .preset-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #e2e8f0;
+      font-family: var(--font-tech);
+      font-size: 11.5px;
+      padding: 5px 12px;
+      border-radius: 16px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .preset-btn:hover {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--accent-gold);
+      color: #fff;
+    }
+    .chat-input-bar {
+      padding: 14px 24px;
+      background: rgba(18, 24, 40, 0.95);
+      border-top: 1px solid rgba(245, 158, 11, 0.25);
+      display: flex;
+      gap: 12px;
+    }
+    .chat-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 8px;
+      padding: 10px 16px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+    }
+    .chat-input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+    }
+    .btn-send {
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+      border: none;
+      color: #050508;
+      font-family: var(--font-cyber);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 0 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+    }
+    .btn-send:hover {
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
+      transform: translateY(-1px);
+    }
+
+    /* --- Mandi Playbooks Grid & Card Styles --- */
+    .playbooks-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .playbook-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      background: rgba(14, 20, 36, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+    .playbook-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      transform: translateX(2px);
+    }
+    .playbook-badge {
+      font-family: var(--font-cyber);
+      font-size: 9px;
+      font-weight: 700;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      white-space: nowrap;
+    }
+    .playbook-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #f1f5f9;
+      flex: 1;
+    }
+    .playbook-author {
+      font-family: var(--font-tech);
+      font-size: 11px;
+      color: var(--accent-gold);
+      white-space: nowrap;
+    }
+
+    /* --- Fullscreen / Floating Playbook Reader Modal --- */
+    .playbook-modal {
+      position: absolute;
+      inset: 40px 100px;
+      background: rgba(8, 12, 22, 0.96);
+      backdrop-filter: blur(30px);
+      border: 2px solid #38bdf8;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.35);
+      border-radius: 16px;
+      z-index: 220;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .playbook-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+    .playbook-modal-header {
+      padding: 16px 24px;
+      background: rgba(18, 26, 44, 0.9);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .playbook-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px;
+      color: #e2e8f0;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+    .playbook-modal-body h1 {
+      font-family: var(--font-cyber);
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .playbook-modal-body h2 {
+      font-family: var(--font-cyber);
+      font-size: 13.5px;
+      color: var(--accent-gold);
+      margin-top: 20px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+      padding-bottom: 4px;
+    }
+    .playbook-modal-body h3 {
+      font-family: var(--font-tech);
+      font-size: 14px;
+      color: #38bdf8;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+    .playbook-quote {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 3px solid var(--accent-gold);
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin: 12px 0;
+      color: #fef08a;
+      font-size: 13px;
+    }
+    .playbook-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12.5px;
+    }
+    .playbook-table th {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      padding: 8px 10px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      text-align: left;
+    }
+    .playbook-table td {
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Main Canvas -->
+  <canvas id="brainCanvas"></canvas>
+
+  <!-- Interactive Hover Tooltip -->
+  <div id="jarvisTooltip">
+    <div class="tt-header">
+      <div class="tt-name" id="ttName">LEGEND NAME</div>
+      <div class="tt-badge" id="ttBadge">SPECIALIST</div>
+    </div>
+    <div class="tt-role" id="ttRole">Specialist Title</div>
+    <div class="tt-desc" id="ttDesc">What this legend executes for the business.</div>
+    <div class="tt-mandate" id="ttMandate">Mandate: Core Swatch rule.</div>
+  </div>
+
+  <!-- Top HUD Header -->
+  <header class="hud-header">
+    <div class="brand-group">
+      <div class="brand-orb"></div>
+      <div>
+        <div class="brand-title">JARVIS NEURAL CORE</div>
+        <div class="brand-sub">SHARMA INDUSTRIES • 48+ COMMANDING LEGENDS • 1,520+ ACTIVE SKILLS IN VAULT</div>
+      </div>
+    </div>
+    <div class="hud-controls">
+      <button class="btn-hud" id="btnOpenCeoChat" style="border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.15);">
+        <span>👑</span> CEO COMMAND CHAT
+      </button>
+      <button class="btn-hud" id="btnAudioToggle" title="Toggle Synthesized Sci-Fi Audio">
+        <span>🔊</span> AUDIO: ON
+      </button>
+      <button class="btn-hud" id="btnResetView">
+        <span>⟲</span> RECENTER
+      </button>
+      <button class="btn-hud" id="btnRunSalesFlow">
+        <span>▶</span> RUN 12-PILLAR FLOW
+      </button>
+      <button class="btn-hud" id="btnToggleSidebars">
+        <span>⛶</span> FULLSCREEN MESH
+      </button>
+    </div>
+  </header>
+
+  <!-- Left Sidebar: Divisions & C-Suite Heads -->
+  <aside class="sidebar-left" id="sidebarLeft">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span>🏛️</span> DIVISIONS & LEADERS
+      </div>
+      <button class="btn-hud" id="btnCloseLeft" style="padding:2px 8px; font-size:10px;">✕ HIDE</button>
+    </div>
+    <div class="panel-body">
+      <input type="text" id="legendSearch" class="search-box" placeholder="Search 48+ Legends (Tracy, Voss, Hormozi...)...">
+      
+      <div id="divisionsList">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </aside>
+  <button class="toggle-tab-left" id="btnOpenLeft">▶ DIVISIONS</button>
+
+  <!-- Right Sidebar: Pipelines & Deep Inspector -->
+  <aside class="sidebar-right" id="sidebarRight">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span>⚡</span> INTELLIGENCE COCKPIT
+      </div>
+      <button class="btn-hud" id="btnCloseRight" style="padding:2px 8px; font-size:10px;">✕ HIDE</button>
+    </div>
+    <div class="panel-body">
+      <!-- Active Selected Legend Details -->
+      <div id="inspectorContainer">
+        <!-- Populated on node click -->
+      </div>
+
+      <!-- Pure 12-Pillar Sales Flow under Brian Tracy -->
+      <div style="margin-top: 14px;">
+        <div class="panel-title" style="color: var(--accent-gold); margin-bottom: 6px;">
+          <span>🎯</span> BRIAN TRACY'S 12-PILLAR PIPELINE
+        </div>
+        <div class="pipeline-container" id="pipelineList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Market Sales Training Playbooks (Prime Agent Intelligence) -->
+      <div style="margin-top: 16px; border-top: 1px solid rgba(245, 158, 11, 0.2); padding-top: 12px;">
+        <div class="panel-title" style="color: #38bdf8; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+          <span>📘 MARKET SALES TRAINING</span>
+          <span style="font-size: 10px; color: var(--accent-gold); font-family: var(--font-tech);">6 PLAYBOOKS</span>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px; line-height: 1.35;">
+          Trained on ground reality Market data (margins, credit traps, thekedaar tokens, Asian Paints counter monopoly). Click to read:
+        </div>
+        <div class="playbooks-grid" id="playbooksList">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+  </aside>
+  <button class="toggle-tab-right" id="btnOpenRight">◀ COCKPIT</button>
+
+  <!-- Bottom Navigation Quick Filter -->
+  <div class="bottom-bar">
+    <button class="pill-btn active" data-filter="all">ALL NODES</button>
+    <button class="pill-btn" data-filter="sales">SALES (18)</button>
+    <button class="pill-btn" data-filter="operations">OPERATIONS (7)</button>
+    <button class="pill-btn" data-filter="finance">FINANCE (9)</button>
+    <button class="pill-btn" data-filter="branding">BRANDING (9)</button>
+    <button class="pill-btn" data-filter="copywriting">GROWTH (7)</button>
+  </div>
+
+  <!-- CEO Direct Command Console Modal -->
+  <div class="ceo-chat-modal" id="ceoChatModal">
+    <div class="chat-header">
+      <div class="chat-header-title">
+        <span class="chat-crown">👑</span>
+        <div>
+          <div class="chat-header-h1">CEO COMMAND CONSOLE: ASHUTOSH SHARMA ➔ HERMES AI</div>
+          <div class="chat-header-sub">Direct Sovereign Channel (+91 9079609627) • Hermes Coordinates Division Heads</div>
+        </div>
+      </div>
+      <button class="btn-hud" id="btnCloseCeoChat" style="padding:4px 10px; font-size:11px;">✕ CLOSE CONSOLE</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg hermes">
+        <div class="msg-sender">HERMES / JARVIS AI CORE</div>
+        <div class="msg-bubble">
+          Pranam Ashutosh Sir! System ready hai. Aapka direct connection mere sath live hai. Main Brian Tracy (Sales Head), Taiichi Ohno (Operations COO), aur Warren Buffett (Finance CFO) ko aapke instructions relay karke report deliver karunga. Bataiye Sir, kya aadesh hai?
+        </div>
+      </div>
+    </div>
+    <div class="chat-presets">
+      <button class="preset-btn" data-prompt="Brian Tracy se bolo 12-Pillar Sales Pipeline execute kare">▶ Run 12-Pillar Sales Pipeline</button>
+      <button class="preset-btn" data-prompt="Hormozi ka Market 25-Bag Starter Offer dikhao">📦 25-Bag Starter Offer (P1)</button>
+      <button class="preset-btn" data-prompt="John McMahon ka 6-Stage Dealer Onboarding Gate review karo">🚪 Onboarding Gates (P2)</button>
+      <button class="preset-btn" data-prompt="Neil Rackham aur Keenan ke Hindi SPIN questions dikhao">❓ SPIN Discovery (P3)</button>
+      <button class="preset-btn" data-prompt="Jeb Blount aur Chris Voss ke Top 8 Objection Battlecards dikhao">🥊 Objection Battlecards (P4)</button>
+      <button class="preset-btn" data-prompt="Sonu Kumar ki daily field sales cadence check karo">🚶 Field Beat Cadence (P5)</button>
+      <button class="preset-btn" data-prompt="Joe Girard aur Dale Carnegie ka 12-Month Dealer Calendar dikhao">🤝 Retention Calendar (P6)</button>
+      <button class="preset-btn" data-prompt="Taiichi Ohno aur Shahrukh bhai se factory batch viscosity status lo">🧪 Check Factory Viscosity</button>
+      <button class="preset-btn" data-prompt="92,700 dealers me se aaj Sonu ke liye 20 fresh leads shortlist karo">📍 Shortlist Field Leads for Sonu</button>
+    </div>
+    <div class="chat-input-bar">
+      <input type="text" id="chatInput" class="chat-input" placeholder="Ashutosh Sir, type your command to Hermes (e.g. Brian Tracy ko bolo dealer scheme ready kare)...">
+      <button class="btn-send" id="btnSendChat">SEND DIRECTIVE</button>
+    </div>
+  </div>
+
+  <!-- Playbook Reader Modal -->
+  <div class="playbook-modal" id="playbookModal">
+    <div class="playbook-modal-header">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 20px;">📘</span>
+        <div>
+          <div id="playbookModalTitle" style="font-family: var(--font-cyber); font-size: 15px; font-weight: 800; color: #fff;">PLAYBOOK TITLE</div>
+          <div id="playbookModalMeta" style="font-family: var(--font-tech); font-size: 12px; color: var(--accent-gold);">Author • Trained on Market Intelligence 2026</div>
+        </div>
+      </div>
+      <button class="btn-hud" id="btnClosePlaybook" style="padding:4px 12px; font-size:11px; border-color: #38bdf8;">✕ CLOSE PLAYBOOK</button>
+    </div>
+    <div class="playbook-modal-body" id="playbookModalBody">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+  <script>
+    // --- 1. Sound FX Synthesis (Web Audio API - 100% Offline) ---
+    let audioCtx = null;
+    let audioEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playTone(freq, duration, type = 'sine', gainVal = 0.05) {
+      if (!audioEnabled) return;
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function soundNodeHover() {
+      playTone(720, 0.04, 'sine', 0.02);
+    }
+    function soundNodeClick() {
+      playTone(587.33, 0.08, 'sine', 0.04);
+      setTimeout(() => playTone(880, 0.12, 'triangle', 0.03), 40);
+    }
+    function soundPipelineFire() {
+      playTone(440, 0.06, 'sine', 0.05);
+      setTimeout(() => playTone(659.25, 0.1, 'sine', 0.05), 80);
+      setTimeout(() => playTone(987.77, 0.18, 'triangle', 0.04), 160);
+    }
+
+    // --- 2. Master Data Structures: 5 Divisions ---
+    // Sales is led exclusively by Brian Tracy (Chief Sales Officer), who commands all 12 pipeline nodes and specialists.
+    const DIVISIONS = [
+      {
+        id: 'sales',
+        name: 'Sales Division',
+        color: '#f59e0b',
+        head: 'Brian Tracy (Chief Sales Officer)',
+        mission: 'Brian Tracy commands the 12-pillar sales pipeline, field cadence, dealer relationships (Girard), and tactical negotiations (Voss).'
+      },
+      {
+        id: 'operations',
+        name: 'Operations & Supply',
+        color: '#10b981',
+        head: 'Taiichi Ohno (COO)',
+        mission: 'Zero waste manufacturing, viscosity QC (Shahrukh bhai), 48-hr tempo logistics (Om Prakash).'
+      },
+      {
+        id: 'finance',
+        name: 'Finance & Capital Strategy',
+        color: '#38bdf8',
+        head: 'Warren Buffett (CFO)',
+        mission: 'Working capital safety, zero bad debt, cost-per-kg margin math & capital allocation.'
+      },
+      {
+        id: 'branding',
+        name: 'Branding & Positioning',
+        color: '#06b6d4',
+        head: 'David Ogilvy (CMO)',
+        mission: 'Regional category dominance over Asian Paints/Berger, painter prestige & brand authority.'
+      },
+      {
+        id: 'copywriting',
+        name: 'Direct Response & Growth',
+        color: '#f43f5e',
+        head: 'Eugene Schwartz (Head of Growth)',
+        mission: 'High-converting dealer catalogues, painter scheme cards & WhatsApp direct copy.'
+      }
+    ];
+
+    // The Pure 12 Sales Roles commanded by Brian Tracy
+    const SALES_PIPELINE = [
+      { num: 1, role: 'Pricing & Offers', legend: 'Alex Hormozi', skill: 'alex-hormozi-india', formula: 'Swatch Rustic Graph & Loop Engineering: 40-45% Dealer Margin (₹632.50–₹690), ₹100 Hurdle Gate', rule: 'Never sell commodities. Protect 40% dealer floor & company hurdle; CEO Ashutosh (+91 9079609627) approves overrides.', anti: 'Do not breach ₹100 net company margin floor or price below ₹632.50 without admin approval.' },
+      { num: 2, role: 'Sales Process (B2B)', legend: 'John McMahon', skill: 'john-mcmahon', formula: 'MEDDPICC Stage Gates: EB ➔ DC ➔ DP ➔ Pain ➔ Champion', rule: 'Never send Sonu to a dealer without knowing the shop owner (EB) name.', anti: 'Do not leave sample bags without an agreed follow-up date.' },
+      { num: 3, role: 'Consultative Selling', legend: 'Neil Rackham', skill: 'neil-rackham', formula: 'SPIN: Situation ➔ Problem ➔ Implication ➔ Need-Payoff', rule: 'Ask about working capital trapped in tinting machines before talking about Swatch.', anti: 'Never pitch product features before the dealer states their pain.' },
+      { num: 4, role: 'Pain-Based Selling', legend: 'Keenan', skill: 'keenan', formula: 'Gap Selling: Current State Bleeding vs Desired Future Profit', rule: 'Quantify exact rupee loss of low 3-5% margins on national brands.', anti: 'Do not accept "Everything is fine" from a stressed retailer.' },
+      { num: 5, role: 'Trust & Relationship', legend: 'Dale Carnegie', skill: 'dale-carnegie', formula: 'Genuine Respect, Listening, Using Dealer Name with Honor', rule: 'Treat Gupta ji like family; respect their multigenerational trade standing.', anti: 'Never argue with a dealer or tell them "You are wrong".' },
+      { num: 6, role: 'Offers & Incentives', legend: 'Dan Kennedy', skill: 'dan-kennedy', formula: 'Direct Response Dealer Schemes, Deadlines, Volume Rewards', rule: 'Send physical shock-and-awe sample box with a 7-day dealer scheme letter.', anti: 'Never offer schemes without a strict expiration date.' },
+      { num: 7, role: 'Objection Handling', legend: 'Jeb Blount', skill: 'jeb-blount', formula: 'Fanatical Objection Turnaround: Ledge ➔ Disrupt ➔ Ask', rule: 'When asked for 60-day credit, pivot to cash discount: "Credit absorbs your margin, Sir".', anti: 'Do not panic or offer immediate price reductions on objections.' },
+      { num: 8, role: 'Negotiation', legend: 'Chris Voss', skill: 'chris-voss', formula: 'Tactical Empathy, Calibrated "How/What", Mirroring', rule: 'Use "How am I supposed to protect your territory if we cut price on day one?"', anti: 'Never split the difference or compromise on cash flow discipline.' },
+      { num: 9, role: 'Closing', legend: 'Jordan Belfort', skill: 'jordan-belfort', formula: 'Straight Line Persuasion: 10/10 Certainty (Product, Company, Rep)', rule: 'Loop certainty into Swatch Rustic coverage, Sharma Industries reliability, and Sonu.', anti: 'Never ask for the order before the dealer hits 10/10 product certainty.' },
+      { num: 10, role: 'Execution & Discipline', legend: 'Brian Tracy', skill: 'brian-tracy', formula: 'Daily Sales Discipline, Morning Beat Route, Quota Cadence', rule: 'Sonu Kumar must visit 8 verified dealers daily with demo kits before 5 PM.', anti: 'No unscheduled visits or skipping follow-up commitments.' },
+      { num: 11, role: 'Pipeline & Prospecting', legend: 'Jeb Blount', skill: 'jeb-blount', formula: '30-Day Rule: Prospecting done today pays bills 30 days later', rule: 'Continuously pull 50 new leads daily from the 92,700+ Pan-India directory.', anti: 'Never let Sonu sit idle when pipeline dips.' },
+      { num: 12, role: 'Relationship Manager', legend: 'Joe Girard', skill: 'joe-girard', formula: 'Law of 250, 13-Postcard Cadence, Lifetime Retention', rule: 'Diwali sweets, shop anniversary cards, and personal calls from CEO Ashutosh Sir.', anti: 'Never contact a dealer ONLY when you need an order.' }
+    ];
+
+    // Master Node Database (CEO Ashutosh at top, Hermes in center, Division Heads below)
+    const ALL_NODES = [
+      // Top Sovereign CEO
+      { id: 'ashutosh-ceo', name: 'ASHUTOSH SHARMA (CEO)', role: 'Owner & Supreme Commander', division: 'executive', isCEO: true, radius: 25, color: '#fbbf24', whatDoes: 'Full administrator & executive authority. Sets vision, approves all catalogs, pricing, and schemes.', mandate: 'Hermes and all agents report strictly to Ashutosh Sir (+91 9079609627).' },
+
+      // Central AI Core
+      { id: 'jarvis', name: 'HERMES / JARVIS AI CORE', role: 'Master AI Orchestrator & Mind Mapper', division: 'core', isCore: true, radius: 28, color: '#f59e0b', whatDoes: 'Receives CEO directives, tasks Division Heads (Tracy, Ohno, Buffett), mind-maps cross-division outputs.', mandate: 'Reports directly to CEO Ashutosh Sharma. Controls Division Heads.' },
+
+      // 5 Division Heads (Exclusively connected to Hermes)
+      { id: 'brian-tracy', name: 'Brian Tracy', role: 'Chief Sales Officer (Head of Sales)', division: 'sales', isLeader: true, radius: 20, color: '#f59e0b', whatDoes: 'Commands the entire Sales Division and executes the 12-Pillar Pipeline. Reports consolidated sales intelligence to Hermes.', mandate: 'Responsible for daily sales discipline, dealer conversion quotas, and field rep cadence.' },
+      { id: 'taiichi-ohno', name: 'Taiichi Ohno', role: 'Chief Operating Officer (COO)', division: 'operations', isLeader: true, radius: 19, color: '#10b981', whatDoes: 'Eliminates the 7 Mudas (wastes), establishes factory Kanban, and guarantees flow.', mandate: 'Zero idle batch time and zero raw material shortages in factory.' },
+      { id: 'warren-buffett', name: 'Warren Buffett', role: 'Chief Financial Officer (CFO)', division: 'finance', isLeader: true, radius: 19, color: '#38bdf8', whatDoes: 'Safeguards economic moats, tests pricing power, and protects working capital float.', mandate: 'Zero bad debts; cash flow must compound safely without unsecured credit.' },
+      { id: 'david-ogilvy', name: 'David Ogilvy', role: 'Chief Brand Officer (CMO)', division: 'branding', isLeader: true, radius: 19, color: '#06b6d4', whatDoes: 'Creates The Big Idea, fact-driven advertising, and high-prestige brand identity.', mandate: 'Position Swatch as the craftsman’s undisputed mark of quality.' },
+      { id: 'eugene-schwartz', name: 'Eugene Schwartz', role: 'Head of Growth & Direct Response', division: 'copywriting', isLeader: true, radius: 19, color: '#f43f5e', whatDoes: 'Channels mass customer desire and crafts copy tailored to contractor awareness stages.', mandate: 'Match marketing brochures to the exact sophistication level of local applicators.' },
+
+      // Sales Specialists (Connected STRICTLY to Brian Tracy, NOT Hermes)
+      { id: 'joe-girard', name: 'Joe Girard', role: 'Head of Dealer Relationships & 7-Day Payment Collections', division: 'sales', radius: 15, color: '#f59e0b', whatDoes: 'Builds lifelong personal loyalty with dealers through 13-postcard cadence, personalized payment reminders & polite collections.', mandate: 'Guinness-record 7-day payment reminder sequence: zero bad debts with maximum dealer dignity.' },
+      { id: 'chris-voss', name: 'Chris Voss', role: 'Head of Deal Negotiations', division: 'sales', radius: 15, color: '#f59e0b', whatDoes: 'Executes FBI tactical empathy, calibrated questions, and closes high-stakes dealer terms.', mandate: 'Never surrender margins or give unsecured credit under dealer pressure.' },
+      { id: 'alex-hormozi', name: 'Alex Hormozi', role: 'Pricing & Grand-Slam Offers', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Architects Swatch Rustic Grand Slam Offers, pricing state-graphs, and loop margin rebalancing.', mandate: 'Enforce 40–45% dealer margin (₹632.50–₹690 on ₹1150 MRP) and dynamic CEO admin approvals.' },
+      { id: 'john-mcmahon', name: 'John McMahon', role: 'B2B Sales Process (MEDDPICC)', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Applies MEDDPICC stage gates so reps only negotiate with true Economic Buyers.', mandate: 'Confirm shop owner presence before dispatching field sample kits.' },
+      { id: 'neil-rackham', name: 'Neil Rackham', role: 'Consultative SPIN Selling', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Diagnoses dealer working capital chokeholds through SPIN structured inquiry.', mandate: 'Uncover dealer machine inventory pain before proposing Swatch stock.' },
+      { id: 'keenan', name: 'Keenan', role: 'Pain-Based Gap Selling', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Pinpoints the exact rupee cost of low margins and stagnant competitor stock.', mandate: 'Show dealers their real monthly cash loss on 3-5% margin MNC products.' },
+      { id: 'dale-carnegie', name: 'Dale Carnegie', role: 'Trust & Human Relationship', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Fosters deep human respect, active listening, and family bonding with trade partners.', mandate: 'Respect the dealer’s multi-generational reputation in the local B2B Market.' },
+      { id: 'dan-kennedy', name: 'Dan Kennedy', role: 'Offers & Urgency Incentives', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Engineers deadline-driven dealer schemes, scratch cards, and volume bonuses.', mandate: 'Every trade incentive must carry a strict expiry deadline.' },
+      { id: 'jeb-blount', name: 'Jeb Blount', role: 'Objection Handling & Pipeline', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Turns around credit demands and maintains continuous daily lead feeding.', mandate: 'Feed 50 fresh verified dealer prospects daily from master database.' },
+      { id: 'jordan-belfort', name: 'Jordan Belfort', role: 'Straight Line Closing', division: 'sales', radius: 14, color: '#f59e0b', whatDoes: 'Drives 10/10 certainty in Swatch Product, Company, and Field Rep.', mandate: 'Lock certainty on Rustic Texture coverage before asking for first PO.' },
+      { id: 'robert-cialdini', name: 'Robert Cialdini', role: 'Psychology of Pre-Suasion', division: 'sales', radius: 13, color: '#f59e0b', whatDoes: 'Applies 7 Universal Influence Principles (Reciprocity, Scarcity, Social Proof).', mandate: 'Gift premium physical texture sample plaques before asking for shelf space.' },
+      { id: 'daniel-kahneman', name: 'Daniel Kahneman', role: 'Loss Aversion & Framing', division: 'sales', radius: 13, color: '#f59e0b', whatDoes: 'Leverages System 1/2 heuristics and loss aversion framing in paint procurement.', mandate: 'Frame competitor stock traps as active daily financial bleeding.' },
+      { id: 'rory-sutherland', name: 'Rory Sutherland', role: 'Behavioral Value Perception', division: 'sales', radius: 13, color: '#f59e0b', whatDoes: 'Designs sensory cues and psychological nudges that elevate perceived paint value.', mandate: 'Ensure Swatch bag graphics convey heavy-duty architectural prestige.' },
+      { id: 'jeremy-miner', name: 'Jeremy Miner', role: 'NEPQ Disarming Questions', division: 'sales', radius: 12, color: '#f59e0b', whatDoes: 'Eliminates retailer sales resistance via neuro-emotional persuasion questioning.', mandate: 'Never pitch aggressively; let the retailer conclude they need Swatch.' },
+      { id: 'zig-ziglar', name: 'Zig Ziglar', role: 'Character Relationship Selling', division: 'sales', radius: 12, color: '#f59e0b', whatDoes: 'Aligns sales success with genuinely helping retail partners prosper.', mandate: 'Help the dealer build a thriving texture business in their mandi.' },
+      { id: 'grant-cardone', name: 'Grant Cardone', role: '10X Market Velocity', division: 'sales', radius: 12, color: '#f59e0b', whatDoes: 'Multiplies field touchpoint velocity and relentless follow-up cadence.', mandate: 'Zero complacency when competitor distributors visit our accounts.' },
+      { id: 'field-sales-router', name: 'Sonu Kumar', role: 'Ground Salesman (Field Exec)', division: 'sales', isOperator: true, radius: 13, color: '#fbbf24', whatDoes: 'Conducts live shop visits, presents physical texture chips, and books retail POs.', mandate: 'Direct field warrior operating on daily beat routes under Brian Tracy.' },
+
+      // Operations & Supply Nodes (Connected to Taiichi Ohno)
+      { id: 'tim-cook', name: 'Tim Cook', role: 'Zero Inventory Waste', division: 'operations', radius: 14, color: '#10b981', whatDoes: 'Optimizes raw material buffers and ensures strict 48-hour delivery SLAs.', mandate: 'Keep factory finished goods moving; inventory is depreciating waste.' },
+      { id: 'sam-walton', name: 'Sam Walton', role: 'Rural Mandi Distribution', division: 'operations', radius: 14, color: '#10b981', whatDoes: 'Builds low-cost distribution dominance across Tier-2/3 towns and rural mandis.', mandate: 'Dominate Rajasthan district mandis before tackling congested metros.' },
+      { id: 'eliyahu-goldratt', name: 'Eliyahu Goldratt', role: 'Theory of Constraints', division: 'operations', radius: 14, color: '#10b981', whatDoes: 'Identifies and eliminates production bottlenecks in paint grinding and packing.', mandate: 'Ensure packing line speed matches high-speed disperser output.' },
+      { id: 'amancio-ortega', name: 'Amancio Ortega', role: 'Agile Pull-Production', division: 'operations', radius: 13, color: '#10b981', whatDoes: 'Aligns factory batch sizing with live dealer reorder signals via WhatsApp.', mandate: 'Produce high-demand texture runs dynamically based on verified orders.' },
+      { id: 'chemist-router', name: 'Shahrukh bhai', role: 'Senior Chemist (Formulations & QC)', division: 'operations', isOperator: true, radius: 15, color: '#34d399', whatDoes: 'Controls batch viscosity, polymer binding, opacity testing, and quality standards.', mandate: 'Strict water-based portfolio focus: Texture, Emulsion, Primer, Distemper.' },
+      { id: 'dispatch-router', name: 'Om Prakash Saini', role: 'Logistics & Dispatch Helper', division: 'operations', isOperator: true, radius: 13, color: '#34d399', whatDoes: 'Oversees truck loading, route planning, and safe on-time dealer deliveries.', mandate: 'Zero transit bag leakage and immediate dispatch proof to customer.' },
+
+      // Finance & Capital Nodes (Connected to Warren Buffett)
+      { id: 'charlie-munger', name: 'Charlie Munger', role: 'Inversion & Mental Models', division: 'finance', radius: 14, color: '#38bdf8', whatDoes: 'Inverts business decisions: "How could this factory go broke, and how do we avoid it?"', mandate: 'Ruthlessly avoid capital allocation stupidity and credit speculation.' },
+      { id: 'aswath-damodaran', name: 'Aswath Damodaran', role: 'Operating Leverage & Cash Flow', division: 'finance', radius: 14, color: '#38bdf8', whatDoes: 'Models cost of capital, unit contribution margins, and free cash flow generation.', mandate: 'Maintain lean fixed overheads so profit scales rapidly with volume.' },
+      { id: 'ray-dalio', name: 'Ray Dalio', role: 'Machine Principles', division: 'finance', radius: 13, color: '#38bdf8', whatDoes: 'Treats Sharma Industries operations as an optimized economic machine.', mandate: 'Radical transparency on cost per liter and batch variance metrics.' },
+      { id: 'dhirubhai-ambani', name: 'Dhirubhai Ambani', role: 'Mass Indian Market Scale', division: 'finance', radius: 15, color: '#38bdf8', whatDoes: 'Envisions immense Indian scale, massive volume pricing, and grassroots trade trust.', mandate: 'Think at colossal Indian scale with absolute faith in local dealers.' },
+      { id: 'mukesh-ambani', name: 'Mukesh Ambani', role: 'Automated Execution Moats', division: 'finance', radius: 14, color: '#38bdf8', whatDoes: 'Builds scalable digital systems that automate supply chains and eliminate delays.', mandate: 'Leverage data intelligence to out-execute slower regional competitors.' },
+      { id: 'peter-drucker', name: 'Peter Drucker', role: 'Management & Retention', division: 'finance', radius: 14, color: '#38bdf8', whatDoes: 'Focuses business on Marketing and Innovation; what gets measured gets managed.', mandate: 'Track dealer re-order frequency as the definitive pulse of health.' },
+      { id: 'andy-grove', name: 'Andy Grove', role: 'Strategic Inflection Points', division: 'finance', radius: 13, color: '#38bdf8', whatDoes: 'Navigates competitive shifts with paranoid vigilance and high managerial leverage.', mandate: 'Only the paranoid survive against multi-thousand crore giants.' },
+      { id: 'elon-musk', name: 'Elon Musk', role: 'First Principles Costing', division: 'finance', radius: 14, color: '#38bdf8', whatDoes: 'Boils paint down to base raw chemicals (polymers, calcium, titanium) for true cost.', mandate: 'Never accept conventional vendor prices without first-principles breakdown.' },
+
+      // Branding & Positioning Nodes (Connected to David Ogilvy)
+      { id: 'april-dunford', name: 'April Dunford', role: 'Market Positioning Architecture', division: 'branding', radius: 15, color: '#06b6d4', whatDoes: 'Defines category frame of reference and translates chemical strength into dealer value.', mandate: 'Frame Swatch not as generic paint, but as heavy-duty exterior armor.' },
+      { id: 'seth-godin', name: 'Seth Godin', role: 'Purple Cow & Painter Tribes', division: 'branding', radius: 14, color: '#06b6d4', whatDoes: 'Builds a remarkable, talked-about brand and fosters painter brotherhood tribes.', mandate: 'Make the Swatch Ustaad Painter program a proud badge of honor.' },
+      { id: 'philip-kotler', name: 'Philip Kotler', role: 'Industrial STP Framework', division: 'branding', radius: 14, color: '#06b6d4', whatDoes: 'Applies rigorous segmentation, targeting, and trade marketing architectures.', mandate: 'Segment hardware outlets precisely by texture turnover capacity.' },
+      { id: 'al-ries-jack-trout', name: 'Ries & Trout', role: '22 Immutable Laws of Branding', division: 'branding', radius: 14, color: '#06b6d4', whatDoes: 'Claims singular mindshare ownership of "Water-Based Texture Durability".', mandate: 'Own a single powerful word in the dealer’s mind: Durability.' },
+      { id: 'donald-miller', name: 'Donald Miller', role: 'StoryBrand (SB7)', division: 'branding', radius: 13, color: '#06b6d4', whatDoes: 'Makes the paint contractor the hero, and Swatch the trusted expert guide.', mandate: 'Every marketing piece must focus on contractor success, not factory vanity.' },
+      { id: 'marty-neumeier', name: 'Marty Neumeier', role: 'Zag & Brand Gap', division: 'branding', radius: 13, color: '#06b6d4', whatDoes: 'Executes Zag Strategy: When national giants zig with commodity tins, Swatch zags.', mandate: 'Focus exclusively on specialized textures where giants have low agility.' },
+      { id: 'simon-sinek', name: 'Simon Sinek', role: 'Start With Why (Craftsmen)', division: 'branding', radius: 13, color: '#06b6d4', whatDoes: 'Anchors brand in purpose: empowering independent Indian craftsmen and builders.', mandate: 'Inspire contractors with a partnership that genuinely respects their labor.' },
+      { id: 'steve-jobs', name: 'Steve Jobs', role: 'Aesthetic Packaging Simplicity', division: 'branding', radius: 14, color: '#06b6d4', whatDoes: 'Demands uncompromising packaging aesthetics, clarity, and tactile bag appeal.', mandate: 'Clean, bold, clutter-free packaging that commands shelf presence.' },
+
+      // Direct Response & Growth Nodes (Connected to Eugene Schwartz)
+      { id: 'gary-halbert', name: 'Gary Halbert', role: 'Star-Story-Solution Letters', division: 'copywriting', radius: 14, color: '#f43f5e', whatDoes: 'Writes irresistible direct mail letters that command executive dealer attention.', mandate: 'Use personal, storytelling sales letters delivered directly to shop owners.' },
+      { id: 'joe-sugarman', name: 'Joe Sugarman', role: '30 Buying Triggers', division: 'copywriting', radius: 13, color: '#f43f5e', whatDoes: 'Builds psychological buying triggers and the slippery slide copy architecture.', mandate: 'Ensure every flyer headline compels reading the very next sentence.' },
+      { id: 'claude-hopkins', name: 'Claude Hopkins', role: 'Preemptive Process Advertising', division: 'copywriting', radius: 13, color: '#f43f5e', whatDoes: 'Explains the proprietary formulation process to claim unique quality preeminence.', mandate: 'Highlight double-milled marble grit and German resin purity in all literature.' },
+      { id: 'russell-brunson', name: 'Russell Brunson', role: 'Value Ladder Architecture', division: 'copywriting', radius: 14, color: '#f43f5e', whatDoes: 'Constructs contractor Value Ladders (Putty ➔ Primer ➔ Texture ➔ Emulsion).', mandate: 'Use high-volume putty/primer entry to introduce high-margin textures.' },
+      { id: 'gary-vaynerchuk', name: 'Gary Vaynerchuk', role: 'Painter Site Reels & Culture', division: 'copywriting', radius: 13, color: '#f43f5e', whatDoes: 'Documents real site texture rollouts on WhatsApp Status, Instagram, and Shorts.', mandate: 'Real, authentic job-site video proof triumphs over polished studio ads.' },
+      { id: 'neil-patel', name: 'Neil Patel', role: 'Hyper-Local Search Reach', division: 'copywriting', radius: 13, color: '#f43f5e', whatDoes: 'Drives hyper-local digital visibility for Swatch authorized dealer counters.', mandate: 'Ensure local contractors find authorized dealers on Google Maps instantly.' }
+    ];
+
+    // --- 3. Spatial Positions: Strict Executive Hierarchy & Wide Concentric Orbits ---
+    // Positions:
+    // Ashutosh (Top Center) ➔ Hermes Core (Dead Center)
+    // Division Heads form the primary ring
+    // Specialists cluster cleanly around their designated Division Head
+    const divisionAngles = {
+      sales: -Math.PI / 2,          // Top (12 o'clock) - Brian Tracy
+      operations: -Math.PI / 10,    // Top-Right (~2 o'clock) - Taiichi Ohno
+      finance: 3 * Math.PI / 10,    // Bottom-Right (~4:30 o'clock) - Warren Buffett
+      branding: 7 * Math.PI / 10,   // Bottom-Left (~7:30 o'clock) - David Ogilvy
+      copywriting: -9 * Math.PI / 10// Top-Left (~10 o'clock) - Eugene Schwartz
+    };
+
+    function layoutNodes(width, height) {
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radiusDiv = Math.min(width, height) * 0.35;
+
+      // 1. Position CEO Ashutosh Sharma with generous clearance at the top
+      const ceo = ALL_NODES.find(n => n.isCEO);
+      if (ceo) {
+        ceo.x = centerX;
+        ceo.y = centerY - radiusDiv * 2.05;
+      }
+
+      // 2. Position Hermes Core at center
+      const core = ALL_NODES.find(n => n.isCore);
+      if (core) {
+        core.x = centerX;
+        core.y = centerY;
+      }
+
+      // Group nodes by division
+      const divGroups = {};
+      DIVISIONS.forEach(d => divGroups[d.id] = []);
+      ALL_NODES.forEach(n => {
+        if (!n.isCore && !n.isCEO) {
+          if (!divGroups[n.division]) divGroups[n.division] = [];
+          divGroups[n.division].push(n);
+        }
+      });
+
+      // Position each division
+      DIVISIONS.forEach(d => {
+        const divAngle = divisionAngles[d.id] || 0;
+        const divCenterX = centerX + Math.cos(divAngle) * radiusDiv;
+        const divCenterY = centerY + Math.sin(divAngle) * radiusDiv;
+
+        const members = divGroups[d.id] || [];
+        const leader = members.find(m => m.isLeader);
+        const regularMembers = members.filter(m => !m.isLeader);
+
+        // Position Head Leader at division center
+        if (leader) {
+          leader.x = divCenterX;
+          leader.y = divCenterY;
+        }
+
+        // Position Regular Specialists in clean orbital arcs around their Leader
+        const total = regularMembers.length;
+        const arcSpread = (d.id === 'sales') ? Math.PI * 1.3 : Math.PI * 1.15;
+        // For Sales, orient the arc sideways/downward so it does not crowd Ashutosh Sir above
+        const startAngle = (d.id === 'sales') ? Math.PI * 0.85 : (divAngle - arcSpread / 2);
+
+        regularMembers.forEach((m, idx) => {
+          const stepAngle = startAngle + (idx / Math.max(1, total - 1)) * arcSpread;
+          // Stagger into 3 tiers (95px, 155px, 215px) around their Division Head
+          const tier = idx % 3;
+          const dist = (tier === 0) ? 95 : ((tier === 1) ? 155 : 215);
+          m.x = divCenterX + Math.cos(stepAngle) * dist;
+          m.y = divCenterY + Math.sin(stepAngle) * dist;
+        });
+      });
+    }
+
+    // --- 4. Canvas Engine & Arc Reactor Neural Hologram Loop ---
+    const canvas = document.getElementById('brainCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let cameraX = 0, cameraY = 60, zoom = 0.82;
+    let isDragging = false, dragStartX = 0, dragStartY = 0;
+    let selectedNode = ALL_NODES[2]; // Default to Brian Tracy
+    let hoveredNode = null;
+    let activeFilter = 'all';
+    let searchQuery = '';
+    let pipelineActiveIndex = -1;
+    let pipelineTimer = null;
+    let reactorAngle = 0;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      layoutNodes(width, height);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Synaptic particle pulses along axons
+    const particles = [];
+    function spawnParticle(source, target, color) {
+      if (!source || !target) return;
+      particles.push({
+        source, target,
+        progress: 0,
+        speed: 0.014 + Math.random() * 0.016,
+        color: color || '#f59e0b'
+      });
+    }
+
+    // Ambient synaptic firings strictly along hierarchical channels
+    setInterval(() => {
+      const ceo = ALL_NODES.find(n => n.isCEO);
+      const core = ALL_NODES.find(n => n.isCore);
+      const leaders = ALL_NODES.filter(n => n.isLeader);
+
+      // Pulse from Ashutosh Sir to Hermes
+      if (Math.random() < 0.4) spawnParticle(ceo, core, '#fbbf24');
+
+      // Pulse from Hermes to Division Heads
+      if (leaders.length) {
+        const randomLeader = leaders[Math.floor(Math.random() * leaders.length)];
+        spawnParticle(core, randomLeader, randomLeader.color);
+      }
+    }, 420);
+
+    // Draw Jarvis Arc Reactor Sci-Fi Center
+    function drawArcReactor(cx, cy, baseRadius) {
+      reactorAngle += 0.003;
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // Outer Holographic Circuit Ring
+      ctx.beginPath();
+      ctx.arc(0, 0, baseRadius * 1.8, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.12)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Outer Segmented Rotating Ring
+      ctx.save();
+      ctx.rotate(reactorAngle);
+      ctx.setLineDash([16, 12, 4, 12]);
+      ctx.beginPath();
+      ctx.arc(0, 0, baseRadius * 1.55, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.28)';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.restore();
+
+      // Counter-rotating tech ring
+      ctx.save();
+      ctx.rotate(-reactorAngle * 1.5);
+      ctx.setLineDash([8, 18, 30, 18]);
+      ctx.beginPath();
+      ctx.arc(0, 0, baseRadius * 1.3, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(234, 88, 12, 0.35)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Radial Tech Ticks
+      for (let i = 0; i < 24; i++) {
+        const angle = (i / 24) * Math.PI * 2;
+        const r1 = baseRadius * 1.35;
+        const r2 = r1 + ((i % 4 === 0) ? 10 : 5);
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(angle) * r1, Math.sin(angle) * r1);
+        ctx.lineTo(Math.cos(angle) * r2, Math.sin(angle) * r2);
+        ctx.strokeStyle = (i % 4 === 0) ? 'rgba(245, 158, 11, 0.5)' : 'rgba(245, 158, 11, 0.18)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Inner Glowing Core Halo
+      const grad = ctx.createRadialGradient(0, 0, 8, 0, 0, baseRadius * 1.1);
+      grad.addColorStop(0, 'rgba(251, 191, 36, 0.85)');
+      grad.addColorStop(0.4, 'rgba(245, 158, 11, 0.45)');
+      grad.addColorStop(0.8, 'rgba(234, 88, 12, 0.18)');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(0, 0, baseRadius * 1.1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Core Solid Center
+      ctx.beginPath();
+      ctx.arc(0, 0, baseRadius * 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#050508';
+      ctx.fill();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.save();
+      ctx.translate(width / 2, height / 2);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-width / 2 + cameraX, -height / 2 + cameraY);
+
+      const ceo = ALL_NODES.find(n => n.isCEO);
+      const core = ALL_NODES.find(n => n.isCore);
+      const tracy = ALL_NODES.find(n => n.id === 'brian-tracy');
+
+      // 1. Draw Jarvis Arc Reactor at Center
+      drawArcReactor(core.x, core.y, 75);
+
+      // 2. PRIMARY EXECUTIVE CONDUIT: Ashutosh Sir (CEO) ➔ Hermes Core
+      if (ceo && core) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(ceo.x, ceo.y);
+        ctx.lineTo(core.x, core.y);
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 3.5;
+        ctx.shadowColor = '#fbbf24';
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 3. DIVISION CONDUITS: Hermes Core ➔ STRICTLY TO THE 5 DIVISION HEADS
+      ALL_NODES.filter(n => n.isLeader).forEach(leader => {
+        const isDim = (activeFilter !== 'all' && activeFilter !== leader.division);
+        ctx.beginPath();
+        ctx.moveTo(core.x, core.y);
+        ctx.lineTo(leader.x, leader.y);
+        ctx.strokeStyle = isDim ? 'rgba(255, 255, 255, 0.03)' : leader.color;
+        ctx.lineWidth = isDim ? 1 : 2.8;
+        ctx.shadowColor = leader.color;
+        ctx.shadowBlur = isDim ? 0 : 12;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      });
+
+      // 4. SECONDARY SYNAPSES: Specialists connect STRICTLY to their Division Head (NOT Hermes)
+      ALL_NODES.filter(n => !n.isCore && !n.isCEO && !n.isLeader).forEach(member => {
+        const leader = ALL_NODES.find(n => n.division === member.division && n.isLeader) || core;
+        const isDim = (activeFilter !== 'all' && activeFilter !== member.division);
+        ctx.beginPath();
+        ctx.moveTo(leader.x, leader.y);
+        ctx.lineTo(member.x, member.y);
+        ctx.strokeStyle = isDim ? 'rgba(255,255,255,0.015)' : 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+
+      // 5. BRIAN TRACY'S 12-PILLAR PIPELINE TRACE
+      if (pipelineActiveIndex >= 0) {
+        ctx.save();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#fbbf24';
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 20;
+
+        // Trace from Tracy to the active pipeline node
+        const activeStep = SALES_PIPELINE[pipelineActiveIndex];
+        const activeNode = ALL_NODES.find(n => n.id === activeStep.skill || n.name === activeStep.legend);
+        if (tracy && activeNode) {
+          ctx.beginPath();
+          ctx.moveTo(tracy.x, tracy.y);
+          ctx.lineTo(activeNode.x, activeNode.y);
+          ctx.stroke();
+        }
+
+        // Sequential step connections
+        for (let i = 0; i <= pipelineActiveIndex; i++) {
+          const stepA = SALES_PIPELINE[i];
+          const nodeA = ALL_NODES.find(n => n.id === stepA.skill || n.name === stepA.legend);
+          if (i > 0) {
+            const stepB = SALES_PIPELINE[i - 1];
+            const nodeB = ALL_NODES.find(n => n.id === stepB.skill || n.name === stepB.legend);
+            if (nodeA && nodeB) {
+              ctx.beginPath();
+              ctx.moveTo(nodeB.x, nodeB.y);
+              ctx.lineTo(nodeA.x, nodeA.y);
+              ctx.stroke();
+            }
+          }
+        }
+        ctx.restore();
+      }
+
+      // 6. Draw Synaptic Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.progress += p.speed;
+        if (p.progress >= 1) {
+          particles.splice(i, 1);
+          continue;
+        }
+        const px = p.source.x + (p.target.x - p.source.x) * p.progress;
+        const py = p.source.y + (p.target.y - p.source.y) * p.progress;
+        ctx.beginPath();
+        ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // 7. Draw Nodes with Clean Labels & Breathing Room
+      ALL_NODES.forEach(node => {
+        const isDim = (activeFilter !== 'all' && node.division !== activeFilter && !node.isCore && !node.isCEO);
+        const isMatchSearch = searchQuery && node.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const isSelected = selectedNode && selectedNode.id === node.id;
+        const isHovered = hoveredNode && hoveredNode.id === node.id;
+        const r = node.radius * (isSelected || isHovered ? 1.35 : 1);
+
+        // Halo for Hovered, Selected, CEO or Core
+        if (isSelected || isHovered || node.isCore || node.isCEO || isMatchSearch) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, r + 9, 0, Math.PI * 2);
+          ctx.fillStyle = node.isCEO ? 'rgba(251, 191, 36, 0.45)' : (isSelected ? 'rgba(251, 191, 36, 0.35)' : (isHovered ? 'rgba(56, 189, 248, 0.35)' : 'rgba(245, 158, 11, 0.2)'));
+          ctx.fill();
+        }
+
+        // Node Circle
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = isDim ? '#182032' : (node.isCEO ? '#ea580c' : (node.isCore ? '#f59e0b' : (node.isLeader ? node.color : '#0f172a')));
+        ctx.shadowColor = isDim ? 'transparent' : node.color;
+        ctx.shadowBlur = isDim ? 0 : (node.isCEO || node.isLeader || node.isCore || isHovered ? 16 : 7);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Border Ring
+        ctx.lineWidth = node.isCEO ? 3.5 : (node.isLeader ? 2.8 : 1.6);
+        ctx.strokeStyle = isDim ? 'rgba(255,255,255,0.06)' : (isSelected || isHovered ? '#ffffff' : (node.isCEO ? '#fbbf24' : node.color));
+        ctx.stroke();
+
+        // Node Label
+        if (!isDim || isSelected || isHovered || isMatchSearch) {
+          ctx.font = node.isCEO ? '800 13px Orbitron' : (node.isCore ? '700 12px Orbitron' : (node.isLeader ? '700 12px Rajdhani' : '500 11px Inter'));
+          ctx.fillStyle = node.isCEO ? '#fbbf24' : (isSelected || isHovered ? '#fbbf24' : (isDim ? '#64748b' : '#f8fafc'));
+          ctx.textAlign = 'center';
+          ctx.fillText(node.name, node.x, node.y + r + 14);
+        }
+      });
+
+      ctx.restore();
+      requestAnimationFrame(render);
+    }
+    render();
+
+    // --- 5. Mouse Interaction: Pan, Zoom, Hover Tooltip & Click ---
+    const tooltip = document.getElementById('jarvisTooltip');
+    const ttName = document.getElementById('ttName');
+    const ttBadge = document.getElementById('ttBadge');
+    const ttRole = document.getElementById('ttRole');
+    const ttDesc = document.getElementById('ttDesc');
+    const ttMandate = document.getElementById('ttMandate');
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragStartX = e.clientX - cameraX;
+      dragStartY = e.clientY - cameraY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        cameraX = e.clientX - dragStartX;
+        cameraY = e.clientY - dragStartY;
+      }
+
+      // Hit test for Hover Tooltip
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left - width / 2) / zoom + width / 2 - cameraX;
+      const mouseY = (e.clientY - rect.top - height / 2) / zoom + height / 2 - cameraY;
+
+      let found = null;
+      for (const node of ALL_NODES) {
+        const dist = Math.hypot(node.x - mouseX, node.y - mouseY);
+        if (dist <= node.radius + 8) {
+          found = node;
+          break;
+        }
+      }
+
+      if (found) {
+        if (hoveredNode !== found) {
+          hoveredNode = found;
+          soundNodeHover();
+        }
+        ttName.textContent = found.name.toUpperCase();
+        ttBadge.textContent = found.isCEO ? 'SUPREME COMMANDER' : (found.isLeader ? 'DIVISION HEAD' : (found.isCore ? 'AI CORE' : (found.isOperator ? 'OPERATOR' : 'SPECIALIST')));
+        ttRole.textContent = found.role;
+        ttDesc.textContent = found.whatDoes || (found.role + ' specialist executing key methodologies for Swatch Paints.');
+        ttMandate.textContent = 'Mandate: ' + (found.mandate || 'Operates strictly under CEO Ashutosh Sharma guidelines.');
+
+        tooltip.style.left = e.clientX + 'px';
+        tooltip.style.top = e.clientY + 'px';
+        tooltip.classList.add('visible');
+      } else {
+        hoveredNode = null;
+        tooltip.classList.remove('visible');
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      zoom = Math.max(0.35, Math.min(2.8, zoom * zoomFactor));
+    });
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left - width / 2) / zoom + width / 2 - cameraX;
+      const clickY = (e.clientY - rect.top - height / 2) / zoom + height / 2 - cameraY;
+
+      let hit = null;
+      for (const node of ALL_NODES) {
+        const dist = Math.hypot(node.x - clickX, node.y - clickY);
+        if (dist <= node.radius + 8) {
+          hit = node;
+          break;
+        }
+      }
+
+      if (hit) {
+        selectedNode = hit;
+        soundNodeClick();
+        inspectLegend(hit);
+      }
+    });
+
+    // --- 6. UI Renderers: Inspector & Pipeline ---
+    function inspectLegend(node) {
+      const container = document.getElementById('inspectorContainer');
+      const pipelineData = SALES_PIPELINE.find(p => p.skill === node.id || p.legend === node.name);
+
+      let formula = pipelineData ? pipelineData.formula : (node.whatDoes || (node.role + ' for Swatch Paints.'));
+      let rule = pipelineData ? pipelineData.rule : (node.mandate || 'Operates strictly under CEO Ashutosh Sharma (+91 9079609627) guidelines.');
+      let anti = pipelineData ? pipelineData.anti : 'No unsolicited outbound WhatsApp messages to unverified cold leads.';
+
+      container.innerHTML = `
+        <div class="inspector-card" style="border-left: 4px solid ${node.color};">
+          <div class="insp-name">${node.name}</div>
+          <div class="insp-role">${node.role}</div>
+          
+          <div class="insp-section-title">WHAT THIS SPECIALIST EXECUTES</div>
+          <div class="insp-box">${formula}</div>
+
+          <div class="insp-section-title">SWATCH PAINTS OPERATIONAL MANDATE</div>
+          <div class="insp-box">${rule}</div>
+
+          <div class="insp-section-title">CRITICAL ANTI-PATTERN / BOUNDARY</div>
+          <div class="insp-box insp-anti">${anti}</div>
+        </div>
+      `;
+    }
+
+    function renderPipelineList() {
+      const list = document.getElementById('pipelineList');
+      list.innerHTML = SALES_PIPELINE.map((p, idx) => `
+        <div class="pipeline-step ${idx === pipelineActiveIndex ? 'active' : ''}" data-idx="${idx}">
+          <div class="step-num">${p.num}</div>
+          <div class="step-role">${p.role}</div>
+          <div class="step-legend">${p.legend}</div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.pipeline-step').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.getAttribute('data-idx'));
+          const step = SALES_PIPELINE[idx];
+          const node = ALL_NODES.find(n => n.id === step.skill || n.name === step.legend);
+          if (node) {
+            selectedNode = node;
+            inspectLegend(node);
+            soundNodeClick();
+          }
+        });
+      });
+    }
+    renderPipelineList();
+
+    function renderDivisionsList() {
+      const container = document.getElementById('divisionsList');
+      container.innerHTML = DIVISIONS.map(d => {
+        const count = ALL_NODES.filter(n => n.division === d.id).length;
+        return `
+          <div class="division-card" data-div="${d.id}" style="border-left: 3px solid ${d.color};">
+            <div class="div-top">
+              <div class="div-name">${d.name}</div>
+              <div class="div-count">${count} Skills</div>
+            </div>
+            <div class="div-leader-badge">
+              <span class="leader-crown">👑</span> ${d.head}
+            </div>
+            <div style="font-size: 11px; color: #94a3b8; margin-top: 5px; line-height: 1.35;">
+              ${d.mission}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.division-card').forEach(el => {
+        el.addEventListener('click', () => {
+          const divId = el.getAttribute('data-div');
+          activeFilter = (activeFilter === divId) ? 'all' : divId;
+          document.querySelectorAll('.division-card').forEach(c => c.classList.remove('selected'));
+          if (activeFilter !== 'all') el.classList.add('selected');
+          updateFilterPills(activeFilter);
+          soundNodeClick();
+        });
+      });
+    }
+    renderDivisionsList();
+
+    // Default inspect Brian Tracy
+    inspectLegend(ALL_NODES[2]);
+
+    // --- 9. Market Intelligence Sales Training Playbooks Data & Modal Logic ---
+    const MARKET_PLAYBOOKS = [
+      {
+        id: 'playbook-1',
+        num: 'P1',
+        title: 'Market Grand-Slam Offers & Margin Math',
+        legend: 'Alex Hormozi',
+        author: 'Alex Hormozi (Pricing Architect)',
+        desc: '₹150 Net Dealer Margin, ₹50 Mistri Cash Token, 30-Day 100% Unsold Stock Buyback Guarantee.',
+        content: `
+          <h1>Playbook 1: Market Grand-Slam Offers & Margin Engineering</h1>
+          <p class="playbook-quote">"Make the dealer an offer so good they feel stupid saying no — backed by ₹150 profit per bag, zero dead-stock risk, and mistri cash pull."</p>
+          
+          <h2>1. The Indian Retailer Value Equation</h2>
+          <div class="insp-box">
+            <b>Value = (₹150 Net Margin per Bag × Instant Contractor Demand) / (Zero Capital Risk × Zero Tinting Machine Cost)</b>
+          </div>
+
+          <h2>2. The Market Starter 25-Bag Risk-Reversal Bundle</h2>
+          <table class="playbook-table">
+            <tr><th>Metric</th><th>Asian Paints / MNC</th><th>Swatch Rustic Texture (25-Bag Starter)</th></tr>
+            <tr><td><b>Dealer Purchase Rate</b></td><td>₹780 - ₹820 per bucket</td><td><b>₹650 per 20kg bag</b> (Total: ₹16,250)</td></tr>
+            <tr><td><b>Dealer Selling Price</b></td><td>₹830 - ₹860 per bucket</td><td><b>₹850 - ₹900 per bag</b></td></tr>
+            <tr><td><b>Net Cash Margin</b></td><td>₹35 - ₹55 (4-6%)</td><td><b>₹200 - ₹250 per bag (24-28% net!)</b></td></tr>
+            <tr><td><b>Profit on 25 Units</b></td><td>₹1,000</td><td><b>₹5,000 - ₹6,250 Net Pocket Cash</b></td></tr>
+            <tr><td><b>Dead-Stock Risk</b></td><td>Dealer's headache</td><td><b>100% 30-Day Money-Back Buyback Guarantee</b></td></tr>
+          </table>
+
+          <h2>3. Irresistible Bonus Stack (Hormozi Stacking)</h2>
+          <ul style="padding-left: 20px; line-height: 1.7;">
+            <li><b>Bonus 1 (Mistri Pull)</b>: Har bag me ₹50 ka sealed instant scratch cash coupon jo thekedaar ko shop par wapis lata hai.</li>
+            <li><b>Bonus 2 (Display Board)</b>: Free 3ft × 2ft metallic acrylic texture demo board installed on shop counter.</li>
+            <li><b>Bonus 3 (Contractor Trial)</b>: 1 Free 20kg Bag for dealer's top contractor to live-test on active site.</li>
+            <li><b>Ultimate Risk-Reversal</b>: <i>"Gupta ji, agar 30 din me 25 bag nahi boke, factory tempo aakar unopen bags utha lega aur 100% payment return!"</i></li>
+          </ul>
+        `
+      },
+      {
+        id: 'playbook-2',
+        num: 'P2',
+        title: 'Dealer Onboarding Stage Gates (MEDDPICC)',
+        legend: 'John McMahon',
+        author: 'John McMahon (B2B Process Leader)',
+        desc: '6-Stage qualification gate: Cold Visit ➔ Sample Test ➔ Owner Gate ➔ First 25-Bag PO ➔ Board Install ➔ Retain.',
+        content: `
+          <h1>Playbook 2: Dealer Onboarding Stage Gates (MEDDPICC)</h1>
+          <p class="playbook-quote">"Amateurs pitch paint buckets to whoever is standing in the shop. Masters qualify the Economic Buyer (shop owner), test the product with the top contractor, and close 25-bag starter batches."</p>
+
+          <h2>The 6-Stage Counter Qualification Pipeline</h2>
+          <table class="playbook-table">
+            <tr><th>Stage</th><th>Objective</th><th>Verification Gate (MEDDPICC)</th></tr>
+            <tr><td><b>Stage 1: Cold Scout</b></td><td>Map footfall & counter standing</td><td>Confirm shop sells 100+ bags/buckets monthly; identify owner name.</td></tr>
+            <tr><td><b>Stage 2: Contractor Sample</b></td><td>Overcome quality doubt</td><td>Hand 1 free trial sample to top painting contractor; verify site patch within 48 hrs.</td></tr>
+            <tr><td><b>Stage 3: Economic Buyer Gate</b></td><td>Sit 1-on-1 with Owner (Seth ji)</td><td>Present laminated margin comparison sheet (₹150 profit vs ₹40 MNC).</td></tr>
+            <tr><td><b>Stage 4: First 25-Bag PO</b></td><td>Close starter order</td><td>Cheque or UPI booking of ₹16,250 starter bundle with written 30-day buyback.</td></tr>
+            <tr><td><b>Stage 5: Display Board</b></td><td>Counter space capture</td><td>3ft × 2ft metallic board installed on shop front wall within 7 days of delivery.</td></tr>
+            <tr><td><b>Stage 6: Reorder Retention</b></td><td>Repeat engine activation</td><td>Field rep visits on Day 21; verifies token redemptions; books 50-bag restock.</td></tr>
+          </table>
+        `
+      },
+      {
+        id: 'playbook-3',
+        num: 'P3',
+        title: 'Market Diagnostic Questions (SPIN & Gap)',
+        legend: 'Neil Rackham & Keenan',
+        author: 'Neil Rackham & Keenan (Consultative Selling)',
+        desc: 'Hindi counter scripts: Exposing 4-6% Tier-1 brand margin bleeding, credit traps, and lack of mistri loyalty.',
+        content: `
+          <h1>Playbook 3: Market Diagnostic Questions (SPIN & Gap Selling)</h1>
+          <p class="playbook-quote">"Never pitch product features before the dealer states their pain. Expose the bleeding cash in their current brand portfolio first."</p>
+
+          <h2>Neil Rackham's Market SPIN Sequence (Word-for-Word Hindi)</h2>
+          <div class="insp-box" style="margin-bottom: 8px;">
+            <b>S — Situation:</b> <i>"Bhaiya, aapke counter pe daily ka texture aur exterior paint ka kitna demand nikal raha hai abhi season me?"</i>
+          </div>
+          <div class="insp-box" style="margin-bottom: 8px;">
+            <b>P — Problem:</b> <i>"Aaj kal Asian Paints ya Berger me baaki dukan wale bhi wahi bech rahe hain, to kya customer aapse ₹10-20 ke liye rate compare karke dusri dukan pe chala jata hai?"</i>
+          </div>
+          <div class="insp-box" style="margin-bottom: 8px;">
+            <b>I — Implication:</b> <i>"Agar aap 200 bucket bechte ho aur margin sirf 5% hai, aur thekedaar 45 din ki udhari le gaya... to bank CC limit ka 1% to interest me hi nikal gaya na Seth ji? Haath me kya bacha?"</i>
+          </div>
+          <div class="insp-box" style="margin-bottom: 8px;">
+            <b>N — Need-Payoff:</b> <i>"Agar counter pe aisa product lag jaye jisme per bag ₹150-₹200 clear cash bache, thekedaar ko bag me ₹50 cash token mile, aur unbika maal 30 din me 100% factory return ho... to kya cash load kam hoga?"</i>
+          </div>
+
+          <h2>Keenan's Gap Analysis</h2>
+          <table class="playbook-table">
+            <tr><th>Metric</th><th>Current Reality (MNC Trap)</th><th>The Financial Gap</th><th>Future State (Swatch)</th></tr>
+            <tr><td><b>Dealer Gross Margin</b></td><td>4% - 6% (₹35 - ₹50)</td><td><b>-₹150 per bag lost</b></td><td><b>20% - 25% (₹150 - ₹250)</b></td></tr>
+            <tr><td><b>Contractor Loyalty</b></td><td>Buys wherever ₹10 cheaper</td><td><b>Zero shop loyalty</b></td><td><b>₹50 token binds mistri to shop</b></td></tr>
+            <tr><td><b>Territory Protection</b></td><td>6 shops in same lane sell it</td><td><b>Price wars kill profit</b></td><td><b>Market Pincode Protection</b></td></tr>
+          </table>
+        `
+      },
+      {
+        id: 'playbook-4',
+        num: 'P4',
+        title: 'Master Market Objection Battlecards',
+        legend: 'Jeb Blount & Chris Voss',
+        author: 'Jeb Blount & Chris Voss (Negotiation Masters)',
+        desc: 'Turnaround scripts for "Credit do", "Asian Paints chalta hai", "Dukan me jagah nahi", and "Local me complaint aati hai".',
+        content: `
+          <h1>Playbook 4: Master Market Objection Battlecards</h1>
+          <p class="playbook-quote">"When a dealer objects, amateurs offer discounts. Masters use tactical empathy, calibrated mirroring, and turn the objection into the exact reason to buy."</p>
+
+          <h2>Top 4 Market Turnaround Scripts (Field Tested)</h2>
+
+          <h3>Objection 1: "Yahan sirf Asian Paints chalta hai, customer naya brand nahi maangta."</h3>
+          <div class="playbook-quote">
+            <b>Voss Mirror & Label:</b> <i>"Customer nahi maangta? Bilkul sahi keh rahe hain Seth ji. Customer to wahi maangta hai jiska TV pe add dekhta hai. Lekin Seth ji, Asian Paints bech ke dukan ka bijli-kiraya nikalna mushkil ho gaya hai. Customer doctor ke pass jaakar dawai nahi maangta, doctor jo likhta hai wahi leta hai. Texture me customer aapke bharose par leta hai. Agar ek customer par aapko ₹200 bache, to kya 2 customer badalna bura sauda hai?"</i>
+          </div>
+
+          <h3>Objection 2: "Pehle 30-45 din ki udhari (credit) do, tabhi maal rakhenge."</h3>
+          <div class="playbook-quote">
+            <b>Blount Ledge & Calibrated Reversal:</b> <i>"Seth ji, agar hum 45 din ki udhari dein, to hume bag ka rate ₹100 badhana padega jaise baaki log karte hain. Kya aap chahte hain hum aapse zyada rate lein? Starter batch sirf 25 bag ka hai — ₹16,250 ka. Saath me 30 din ka 100% money-back guarantee hai. Maal na bika to cash wapis. Isme udhari ki zarurat kahan bachi?"</i>
+          </div>
+
+          <h3>Objection 3: "Dukan me jagah nahi hai, godown full hai."</h3>
+          <div class="playbook-quote">
+            <b>Reframing Tactic:</b> <i>"Seth ji, 25 bag ke liye poora godown nahi chahiye, sirf ek chhota sa 3ft × 3ft ka kona chahiye counter ke bagal me. Hume jagah nahi chahiye, hum to aapke counter ki sabse mehngi jagah ko sabse zyada profit dene wali machine banana chahte hain!"</i>
+          </div>
+
+          <h3>Objection 4: "Local brand me complaint aati hai — chalking ya papdi banna."</h3>
+          <div class="playbook-quote">
+            <b>Technical Empathy Strike:</b> <i>"Bhaiya, aapki chinta 100% sahi hai. Market me log calcite mitti daalte hain jisse papdi banti hai. Swatch Paints me hum 100% pure acrylic binder aur imported rutile titanium use karte hain (Shahrukh Bhai senior chemist ki direct certified batch report aati hai). 7 saal ki guarantee hum paper pe dete hain. Ek bag aap apne sabse sakht mistri ko test karne ke liye free dijiye!"</i>
+          </div>
+        `
+      },
+      {
+        id: 'playbook-5',
+        num: 'P5',
+        title: 'Field Sales Cadence & Straight-Line Closing',
+        legend: 'Brian Tracy & Jordan Belfort',
+        author: 'Brian Tracy & Jordan Belfort (Field Execution)',
+        desc: 'Sonu Kumar 08:30 AM Bag Kit Check, 10-Shop Daily Beat Route, Three 10s Certainty, and Straight-Line Close.',
+        content: `
+          <h1>Playbook 5: Field Sales Cadence & Straight-Line Closing</h1>
+          <p class="playbook-quote">"Discipline is doing what you must do, when you should do it, whether you feel like it or not. 10 shops a day, 3 demo panels, 1 confirmed 25-bag order daily."</p>
+
+          <h2>Brian Tracy's Golden Beat Schedule for Sonu Kumar</h2>
+          <ul style="padding-left: 20px; line-height: 1.7;">
+            <li><b>08:30 AM - 09:00 AM</b>: Swatch Field Attack Kit Inspection (2 finished metallic sample boards, cut bag showing white silica marble grit, 3 ₹50 scratch tokens, laminated profit sheet).</li>
+            <li><b>09:30 AM - 11:30 AM (Contractor Window)</b>: Target high-footfall shops when painters & thekedaars gather for morning chai. Live demo on wall.</li>
+            <li><b>11:30 AM - 02:00 PM (Dealer Deep-Dive)</b>: Counter crowd settles. Sit 1-on-1 with shop owner; present 25-bag starter bundle.</li>
+            <li><b>03:00 PM - 06:00 PM (Follow-up & Close)</b>: Re-visit morning shops where contractors tested the panel; collect booking cheques.</li>
+          </ul>
+
+          <h2>Jordan Belfort's Straight-Line Close Script (Market Counter)</h2>
+          <div class="playbook-quote">
+            <b>Sonu Kumar:</b> <i>"Seth ji, aapne khud dekha ki panel ka texture kaisa chamak raha hai aur binder bilkul waterproof hai. Aur jab har bag me ₹150+ ka net cash margin mil raha hai, jahan Asian Paints me sirf ₹40 bachta hai... To honestly Seth ji, product to ekdum solid laga na aapko?"</i><br><br>
+            <i>(Dealer nods: 'Haan product to theek hai')</i><br><br>
+            <b>Sonu Kumar (Direct Close):</b> <i>"Bas fir Seth ji, jab product me 100% dum hai aur company 30 din ki cash-back guarantee de rahi hai... to sochna kaisa? Main aaj sham ko tempo se 25 bag dispatch karwa raha hun aapke counter ke liye. Pehla order cheque se karenge ya UPI se?"</i>
+          </div>
+        `
+      },
+      {
+        id: 'playbook-6',
+        num: 'P6',
+        title: 'Dealer Relationship Calendar & Law of 250',
+        legend: 'Joe Girard & Dale Carnegie',
+        author: 'Joe Girard & Dale Carnegie (Relationship Masters)',
+        desc: '1 Dealer = 250 painters/jobs unlocked. 12-Month festive touchpoint cadence (Holi, Diwali, personal voice notes).',
+        content: `
+          <h1>Playbook 6: Dealer Relationship Calendar & Law of 250</h1>
+          <p class="playbook-quote">"Every hardware dealer knows 250 painters and builders. Treat one dealer like family, and his entire contractor network becomes your loyal customer base."</p>
+
+          <h2>Dale Carnegie's 4 Market Merchant Commandments</h2>
+          <ol style="padding-left: 20px; line-height: 1.7;">
+            <li><b>Remember the Owner's Name & Family</b>: Always say <i>"Radhey Shyam ji"</i> or <i>"Gupta ji"</i>; notice their family photo in the cash galla.</li>
+            <li><b>Talk in Terms of the Dealer's Profit</b>: Say <i>"Aapki dukan par is mahine ₹25,000 extra net cash add karne laya hun"</i>, never <i>"Mera monthly target hai"</i>.</li>
+            <li><b>Praise Their Counter Standing</b>: <i>"Seth ji, is market me thekedaar aapki baat patthar ki lakeer maante hain."</i></li>
+            <li><b>Never Argue or Make Them Wrong</b>: Bridge gracefully and validate their experience first.</li>
+          </ol>
+
+          <h2>12-Month Dealer Touchpoint Calendar</h2>
+          <table class="playbook-table">
+            <tr><th>Milestone / Festival</th><th>Touchpoint by Hermes & Ashutosh Sir</th></tr>
+            <tr><td><b>Day 1 Post-Onboarding</b></td><td>WhatsApp dispatch photo + Personal Voice Note from Ashutosh Sir wishing prosperity.</td></tr>
+            <tr><td><b>Day 7 Post-Onboarding</b></td><td>Field rep visits to click photo of installed Swatch display board; post on official status.</td></tr>
+            <tr><td><b>Day 21 Post-Onboarding</b></td><td>Check token redemption count; gift ₹500 tea/snack coupon for shop mistris.</td></tr>
+            <tr><td><b>Holi (March)</b></td><td>Custom branded Sharma Industries sweet box (Gujiya) + Pre-Season Booking Scheme.</td></tr>
+            <tr><td><b>Pre-Diwali (October)</b></td><td>Diwali Gold/Silver coin volume scheme brochure; priority factory tempo dispatch.</td></tr>
+            <tr><td><b>Diwali / Dhanteras</b></td><td>High-quality dry fruit box + Stainless steel home utility gift for Gold/Diamond tier dealers.</td></tr>
+            <tr><td><b>New Year (Jan 1)</b></td><td>Laminated "Annual Profit Statement": <i>"Gupta Ji, Swatch Paints ne is saal aapke counter pe ₹1,42,000 extra net profit banaya!"</i></td></tr>
+          </table>
+        `
+      }
+    ];
+
+    function renderPlaybooksList() {
+      const container = document.getElementById('playbooksList');
+      if (!container) return;
+      container.innerHTML = MARKET_PLAYBOOKS.map(pb => `
+        <div class="playbook-btn" data-pbid="${pb.id}">
+          <span class="playbook-badge">${pb.num}</span>
+          <span class="playbook-title">${pb.title}</span>
+          <span class="playbook-author">${pb.legend}</span>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.playbook-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-pbid');
+          openPlaybookModal(id);
+        });
+      });
+    }
+    renderPlaybooksList();
+
+    const pbModal = document.getElementById('playbookModal');
+    const pbTitle = document.getElementById('playbookModalTitle');
+    const pbMeta = document.getElementById('playbookModalMeta');
+    const pbBody = document.getElementById('playbookModalBody');
+
+    function openPlaybookModal(playbookId) {
+      const pb = MARKET_PLAYBOOKS.find(p => p.id === playbookId);
+      if (!pb) return;
+      pbTitle.innerText = `${pb.num}: ${pb.title.toUpperCase()}`;
+      pbMeta.innerText = `${pb.author} • Ground Reality Market Intelligence 2026`;
+      pbBody.innerHTML = pb.content;
+      pbModal.classList.add('open');
+      soundPipelineFire();
+    }
+
+    document.getElementById('btnClosePlaybook').addEventListener('click', () => {
+      pbModal.classList.remove('open');
+      soundNodeClick();
+    });
+
+    // --- 7. Interactive Controls & Buttons ---
+    document.getElementById('btnResetView').addEventListener('click', () => {
+      cameraX = 0;
+      cameraY = 40;
+      zoom = 0.88;
+      soundNodeClick();
+    });
+
+    document.getElementById('btnAudioToggle').addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      document.getElementById('btnAudioToggle').innerHTML = audioEnabled ? '<span>🔊</span> AUDIO: ON' : '<span>🔇</span> AUDIO: OFF';
+      soundNodeClick();
+    });
+
+    // 12-Pillar Flow Runner commanded by Brian Tracy
+    document.getElementById('btnRunSalesFlow').addEventListener('click', () => {
+      if (pipelineTimer) clearInterval(pipelineTimer);
+      pipelineActiveIndex = 0;
+      soundPipelineFire();
+      renderPipelineList();
+
+      // Start by selecting Brian Tracy (Commander of the Pipeline)
+      const tracyNode = ALL_NODES.find(n => n.id === 'brian-tracy');
+      if (tracyNode) {
+        selectedNode = tracyNode;
+        inspectLegend(tracyNode);
+      }
+
+      pipelineTimer = setInterval(() => {
+        pipelineActiveIndex++;
+        if (pipelineActiveIndex >= SALES_PIPELINE.length) {
+          clearInterval(pipelineTimer);
+          pipelineActiveIndex = -1;
+          renderPipelineList();
+          // Synthesize back to Hermes & Ashutosh Sir
+          const core = ALL_NODES.find(n => n.isCore);
+          if (core) {
+            selectedNode = core;
+            inspectLegend(core);
+          }
+          return;
+        }
+        soundNodeClick();
+        const curStep = SALES_PIPELINE[pipelineActiveIndex];
+        const targetNode = ALL_NODES.find(n => n.id === curStep.skill || n.name === curStep.legend);
+        if (targetNode) {
+          selectedNode = targetNode;
+          inspectLegend(targetNode);
+        }
+        renderPipelineList();
+      }, 1400);
+    });
+
+    // Hidable Sidebars
+    const leftSidebar = document.getElementById('sidebarLeft');
+    const rightSidebar = document.getElementById('sidebarRight');
+
+    document.getElementById('btnCloseLeft').addEventListener('click', () => leftSidebar.classList.add('hidden'));
+    document.getElementById('btnOpenLeft').addEventListener('click', () => leftSidebar.classList.remove('hidden'));
+    document.getElementById('btnCloseRight').addEventListener('click', () => rightSidebar.classList.add('hidden'));
+    document.getElementById('btnOpenRight').addEventListener('click', () => rightSidebar.classList.remove('hidden'));
+
+    document.getElementById('btnToggleSidebars').addEventListener('click', () => {
+      const isBothHidden = leftSidebar.classList.contains('hidden') && rightSidebar.classList.contains('hidden');
+      if (isBothHidden) {
+        leftSidebar.classList.remove('hidden');
+        rightSidebar.classList.remove('hidden');
+      } else {
+        leftSidebar.classList.add('hidden');
+        rightSidebar.classList.add('hidden');
+      }
+      soundNodeClick();
+    });
+
+    // Bottom Filter Pills
+    function updateFilterPills(filter) {
+      document.querySelectorAll('.pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === filter);
+      });
+    }
+
+    document.querySelectorAll('.pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeFilter = btn.getAttribute('data-filter');
+        updateFilterPills(activeFilter);
+        soundNodeClick();
+      });
+    });
+
+    // Search Box
+    document.getElementById('legendSearch').addEventListener('input', (e) => {
+      searchQuery = e.target.value.trim();
+    });
+
+    // --- 8. CEO Command Console Chat Modal Logic ---
+    const ceoModal = document.getElementById('ceoChatModal');
+    const chatBody = document.getElementById('chatBody');
+    const chatInput = document.getElementById('chatInput');
+
+    document.getElementById('btnOpenCeoChat').addEventListener('click', () => {
+      ceoModal.classList.add('open');
+      soundNodeClick();
+      chatInput.focus();
+    });
+
+    document.getElementById('btnCloseCeoChat').addEventListener('click', () => {
+      ceoModal.classList.remove('open');
+      soundNodeClick();
+    });
+
+    function appendMessage(sender, text, roleClass) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `chat-msg ${roleClass}`;
+      msgDiv.innerHTML = `
+        <div class="msg-sender">${sender}</div>
+        <div class="msg-bubble">${text}</div>
+      `;
+      chatBody.appendChild(msgDiv);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function executeCeoDirective(userText) {
+      appendMessage('ASHUTOSH SHARMA (CEO)', userText, 'ceo');
+      chatInput.value = '';
+      soundNodeClick();
+
+      const lower = userText.toLowerCase();
+
+      // Check if user specifically requested a playbook
+      let requestedPb = null;
+      if (lower.includes('p1') || lower.includes('starter offer') || lower.includes('25-bag') || lower.includes('hormozi')) {
+        requestedPb = MARKET_PLAYBOOKS[0];
+      } else if (lower.includes('p2') || lower.includes('stage gate') || lower.includes('onboarding gate') || lower.includes('mcmahon')) {
+        requestedPb = MARKET_PLAYBOOKS[1];
+      } else if (lower.includes('p3') || lower.includes('spin') || lower.includes('diagnostic') || lower.includes('rackham')) {
+        requestedPb = MARKET_PLAYBOOKS[2];
+      } else if (lower.includes('p4') || lower.includes('objection') || lower.includes('battlecard') || lower.includes('blount') || lower.includes('voss')) {
+        requestedPb = MARKET_PLAYBOOKS[3];
+      } else if (lower.includes('p5') || lower.includes('cadence') || lower.includes('beat') || lower.includes('sonu')) {
+        requestedPb = MARKET_PLAYBOOKS[4];
+      } else if (lower.includes('p6') || lower.includes('retention') || lower.includes('calendar') || lower.includes('girard') || lower.includes('carnegie')) {
+        requestedPb = MARKET_PLAYBOOKS[5];
+      }
+
+      if (requestedPb) {
+        setTimeout(() => {
+          appendMessage('HERMES / JARVIS AI CORE', `Hukum Ashutosh Sir! Sales Training Module **${requestedPb.num}: ${requestedPb.title}** retrieve kiya gaya hai. Main Chief Sales Officer **Brian Tracy** ko live briefing deliver karne ka bol raha hoon...`, 'hermes');
+          soundNodeClick();
+
+          setTimeout(() => {
+            appendMessage('BRIAN TRACY (CHIEF SALES OFFICER)', `
+              <b>${requestedPb.title.toUpperCase()}</b><br>
+              <i>Leader: ${requestedPb.author}</i><br><br>
+              ${requestedPb.desc}<br><br>
+              Sir, ye raha field execution summary:<br>
+              • <b>Ground Reality</b>: Indian market retailers sirf feature list se nahi maante. Udhari, margin chokehold aur thekedaar pull ko address karna zaruri hai.<br>
+              • <b>Action Directive</b>: Sonu Kumar aur sales reps ko is exact word-for-word framework par train kiya gaya hai.<br><br>
+              <button class="preset-btn" onclick="openPlaybookModal('${requestedPb.id}')" style="margin-top:4px;">📖 Open Full Interactive Playbook Modal</button>
+            `, 'tracy');
+            soundPipelineFire();
+          }, 900);
+        }, 500);
+        return;
+      }
+
+      // General directive routing
+      setTimeout(() => {
+        appendMessage('HERMES / JARVIS AI CORE', `Hukum Ashutosh Sir! Directive received: "${userText}". Main Sales Division Head **Brian Tracy** ko command delegate kar raha hoon...`, 'hermes');
+        soundNodeClick();
+
+        setTimeout(() => {
+          appendMessage('BRIAN TRACY (CHIEF SALES OFFICER)', `Understood Hermes! Sir Ashutosh Sharma ke aadesh par main 12-Pillar Sales Pipeline ko active kar raha hoon. Sonu Kumar ke daily beat routes, Hormozi ke margin tiers, aur Girard ke dealer retention protocols live engage ho rahe hain. Results process ho rahe hain...`, 'tracy');
+          soundPipelineFire();
+
+          // Also trigger the visual pipeline runner on the canvas!
+          document.getElementById('btnRunSalesFlow').click();
+
+          setTimeout(() => {
+            appendMessage('HERMES / JARVIS AI CORE', `Ashutosh Sir, Brian Tracy ne 12-pillar sales engine verify kar diya hai. Swatch Rustic Texture ke dealer quotes locked hain (₹550 base, ₹650-700 dealer, ₹1,150 MRP). Ek bhi unapproved outbound message nahi bheja gaya hai. Master database 100% secured hai.`, 'hermes');
+            soundNodeClick();
+          }, 3500);
+        }, 1200);
+      }, 600);
+    }
+
+    document.getElementById('btnSendChat').addEventListener('click', () => {
+      const text = chatInput.value.trim();
+      if (text) executeCeoDirective(text);
+    });
+
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const text = chatInput.value.trim();
+        if (text) executeCeoDirective(text);
+      }
+    });
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const prompt = btn.getAttribute('data-prompt');
+        executeCeoDirective(prompt);
+      });
+    });
+  </script>
+</body>
+</html>

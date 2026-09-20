@@ -1,0 +1,19 @@
+{
+  "agentName": "Keith Ferrazzi",
+  "division": "HR, Talent & People Operations Division",
+  "role": "Relationship Architect",
+  "domain": "Contractor Fellowship Dinners",
+  "peerInterconnection": {
+    "peerName": "Dale Carnegie",
+    "peerRole": "Human Relations Lead",
+    "peerDomain": "Winning Lifelong Friends in Trade"
+  },
+  "epoch": 45,
+  "finalScore": 98.8,
+  "trialsPassed": 494,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\hr-keith-ferrazzi.md",
+  "timestamp": "2026-09-20T04:47:40.018Z"
+}

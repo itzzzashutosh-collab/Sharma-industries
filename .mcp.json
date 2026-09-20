@@ -6,6 +6,10 @@
       "headers": {
         "Authorization": "Bearer ${SUPABASE_SERVICE_ROLE_KEY}"
       }
+    },
+    "clawfu": {
+      "command": "npx",
+      "args": ["-y", "@clawfu/mcp-skills"]
     }
   }
 }

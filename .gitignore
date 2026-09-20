@@ -37,3 +37,12 @@ lerna-debug.log*
 # Next.js build output
 .next/
 next-env.d.ts
+
+# WhatsApp & Agent Session State & Auth Keys
+Jarvis Agent/session_auth/
+session_auth/
+.wwebjs_auth/
+.wwebjs_cache/
+.hermes/
+*.log
+*.log*

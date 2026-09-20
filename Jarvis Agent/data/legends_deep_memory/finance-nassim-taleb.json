@@ -1,0 +1,19 @@
+{
+  "agentName": "Nassim Taleb",
+  "division": "Finance & Capital Architecture Division",
+  "role": "Antifragile Risk Lead",
+  "domain": "Black Swan Supply Buffer Architecture",
+  "peerInterconnection": {
+    "peerName": "Charlie Munger",
+    "peerRole": "Inversion Lead",
+    "peerDomain": "Inversion of Solvency Risks"
+  },
+  "epoch": 45,
+  "finalScore": 98.8,
+  "trialsPassed": 494,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\finance-nassim-taleb.md",
+  "timestamp": "2026-09-20T04:38:33.347Z"
+}

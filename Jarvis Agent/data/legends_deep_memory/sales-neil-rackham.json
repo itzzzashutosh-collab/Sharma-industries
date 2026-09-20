@@ -1,0 +1,19 @@
+{
+  "agentName": "Neil Rackham",
+  "division": "Sales & Negotiations Division",
+  "role": "SPIN Consultant",
+  "domain": "Diagnostic Working Capital Inquiry",
+  "peerInterconnection": {
+    "peerName": "Keenan",
+    "peerRole": "Gap Selling Master",
+    "peerDomain": "Mathematical Rupee Cost of Inaction"
+  },
+  "epoch": 45,
+  "finalScore": 99,
+  "trialsPassed": 495,
+  "totalTrials": 500,
+  "marketScope": "PAN-INDIA",
+  "status": "500-TRIAL 98%+ VALIDATED",
+  "winningArtifactPath": "D:\\Sharma Industries\\Jarvis Agent\\data\\legends_battlecards\\sales-neil-rackham.md",
+  "timestamp": "2026-09-20T04:28:44.138Z"
+}
