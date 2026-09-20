@@ -144,6 +144,26 @@ const server = http.createServer(async (req, res) => {
     return sendJson(res, 200, approvals);
   }
 
+  // 11. Dedicated Employees & Payroll Ledger
+  if (pathname === '/api/employees' && method === 'GET') {
+    const empData = dataBridge.getEmployees();
+    return sendJson(res, 200, { success: true, ...empData });
+  }
+
+  // 12. CEO Payroll Sign-off Action
+  if (pathname === '/api/employees/payroll-approve' && method === 'POST') {
+    const body = await parseJsonBody(req);
+    const { month, approver } = body;
+    const empData = dataBridge.getEmployees();
+    if (empData.payrollRuns && empData.payrollRuns.length > 0) {
+      const run = empData.payrollRuns.find(r => r.month === month) || empData.payrollRuns[0];
+      run.status = 'APPROVED_BY_CEO_ASHUTOSH_SHARMA';
+      run.approvedAt = new Date().toISOString();
+      run.approver = approver || 'Ashutosh Sharma (CEO)';
+    }
+    return sendJson(res, 200, { success: true, message: `Payroll for ${month || 'current month'} successfully approved by CEO Ashutosh Sharma.` });
+  }
+
   // --- STATIC FILE SERVING ---
   let filePath = path.join(PUBLIC_DIR, pathname === '/' ? 'index.html' : pathname);
   const ext = path.extname(filePath);

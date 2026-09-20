@@ -32,22 +32,33 @@
       </div>
 
       <!-- Main Objects Navigation -->
+      <!-- Main Objects Navigation -->
       <div class="nav-section-title">OBJECTS</div>
       <nav class="nav-menu">
         <a class="nav-item active" onclick="switchMainView('opportunities', this)">
           <span class="nav-icon">🎯</span>
           <span class="nav-label">Opportunities</span>
-          <span class="nav-badge" id="badge-opps">3,700</span>
+          <span class="nav-badge" id="badge-opps">10,508</span>
         </a>
         <a class="nav-item" onclick="switchMainView('people', this)">
           <span class="nav-icon">👤</span>
           <span class="nav-label">People & Contacts</span>
-          <span class="nav-badge" id="badge-people">3,707</span>
+          <span class="nav-badge" id="badge-people">10,508</span>
         </a>
         <a class="nav-item" onclick="switchMainView('companies', this)">
           <span class="nav-icon">🏢</span>
           <span class="nav-label">Companies</span>
-          <span class="nav-badge" id="badge-companies">3,100</span>
+          <span class="nav-badge" id="badge-companies">4,500</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('employees', this)">
+          <span class="nav-icon">👔</span>
+          <span class="nav-label">Employees & Payroll</span>
+          <span class="nav-badge green" id="badge-employees">7 Active</span>
+        </a>
+        <a class="nav-item" onclick="switchMainView('tenders', this)">
+          <span class="nav-icon">🏛️</span>
+          <span class="nav-label">Paint Tenders</span>
+          <span class="nav-badge amber" id="badge-tenders">96.8k</span>
         </a>
         <a class="nav-item" onclick="switchMainView('leaders', this)">
           <span class="nav-icon">🧠</span>
@@ -72,7 +83,7 @@
         <a class="nav-item sub" onclick="filterByEntityCategory('dealer')">
           <span class="bullet blue"></span>
           <span class="nav-label">Paint Dealers</span>
-          <span class="count">2,101</span>
+          <span class="count">3,500</span>
         </a>
         <a class="nav-item sub" onclick="filterByEntityCategory('builder')">
           <span class="bullet amber"></span>
@@ -82,27 +93,32 @@
         <a class="nav-item sub" onclick="filterByEntityCategory('architect')">
           <span class="bullet purple"></span>
           <span class="nav-label">Architects</span>
-          <span class="count">300</span>
+          <span class="count">2,000</span>
         </a>
         <a class="nav-item sub" onclick="filterByEntityCategory('interior_designer')">
           <span class="bullet pink"></span>
           <span class="nav-label">Interior Designers</span>
-          <span class="count">300</span>
+          <span class="count">2,000</span>
         </a>
-        <a class="nav-item sub" onclick="filterByEntityCategory('employee')">
+        <a class="nav-item sub" onclick="filterByEntityCategory('tender')">
+          <span class="bullet amber"></span>
+          <span class="nav-label">Paint Tenders</span>
+          <span class="count">2,000</span>
+        </a>
+        <a class="nav-item sub" onclick="switchMainView('employees')">
           <span class="bullet green"></span>
-          <span class="nav-label">Leadership & Team</span>
+          <span class="nav-label">Employees & Factory</span>
           <span class="count">7</span>
         </a>
       </nav>
 
-      <!-- Sidebar Footer -->
+      <!-- Sidebar Footer (Admin Access) -->
       <div class="sidebar-footer">
-        <div class="user-pill">
-          <div class="user-avatar">AS</div>
+        <div class="user-pill admin-pill">
+          <div class="user-avatar admin-avatar">👑</div>
           <div class="user-info">
             <div class="user-name">Ashutosh Sharma</div>
-            <div class="user-status">● Supabase Active</div>
+            <div class="user-status" style="color: var(--gold-text); font-weight: 600;">● Sovereign Admin (CEO)</div>
           </div>
         </div>
       </div>
@@ -153,12 +169,13 @@
           <input type="text" id="viewSearchInput" placeholder="Filter current view by name, phone, city..." oninput="handleViewFilter(this.value)">
         </div>
         <div class="filter-pills" id="activeFilterPills">
-          <span class="filter-pill active" onclick="setQuickPillFilter('all', this)">All (3,707)</span>
-          <span class="filter-pill" onclick="setQuickPillFilter('dealer', this)">Dealers (2,101)</span>
+          <span class="filter-pill active" onclick="setQuickPillFilter('all', this)">All (10,508)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('dealer', this)">Dealers (3,500)</span>
           <span class="filter-pill" onclick="setQuickPillFilter('builder', this)">Builders (1,000)</span>
-          <span class="filter-pill" onclick="setQuickPillFilter('architect', this)">Architects (300)</span>
-          <span class="filter-pill" onclick="setQuickPillFilter('interior_designer', this)">Interior Designers (300)</span>
-          <span class="filter-pill" onclick="setQuickPillFilter('employee', this)">Employees (7)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('architect', this)">Architects (2,000)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('interior_designer', this)">Interior Designers (2,000)</span>
+          <span class="filter-pill" onclick="setQuickPillFilter('tender', this)">Paint Tenders (2,000)</span>
+          <span class="filter-pill" onclick="switchMainView('employees')">Employees & Team (7)</span>
         </div>
       </div>
 
@@ -178,9 +195,9 @@
               <tr>
                 <th style="width: 40px;"><input type="checkbox"></th>
                 <th>Name / Contact Person</th>
-                <th>Company / Store</th>
+                <th>Company / Project / Authority</th>
                 <th>Category</th>
-                <th>Phone Number</th>
+                <th>Phone Number / Portal</th>
                 <th>City / Territory</th>
                 <th>Pipeline Stage</th>
                 <th>Deal Value (INR)</th>
@@ -200,17 +217,22 @@
           </div>
         </div>
 
-        <!-- C. AI LEADERS HUB VIEW -->
+        <!-- C. DEDICATED EMPLOYEES & PAYROLL VIEW -->
+        <div class="employees-hub-container" id="employeesContainer" style="display: none;">
+          <!-- Injected dynamically via app.js -->
+        </div>
+
+        <!-- D. AI LEADERS HUB VIEW -->
         <div class="leaders-hub-container" id="leadersContainer" style="display: none;">
           <!-- Injected dynamically -->
         </div>
 
-        <!-- D. PAN-INDIA DIRECTORY VIEW -->
+        <!-- E. PAN-INDIA DIRECTORY VIEW -->
         <div class="pan-india-container" id="panIndiaContainer" style="display: none;">
           <!-- Injected dynamically -->
         </div>
 
-        <!-- E. CEO APPROVALS VIEW -->
+        <!-- F. CEO APPROVALS VIEW -->
         <div class="approvals-container" id="approvalsContainer" style="display: none;">
           <!-- Injected dynamically -->
         </div>

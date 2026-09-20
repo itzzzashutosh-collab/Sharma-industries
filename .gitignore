@@ -46,3 +46,10 @@ session_auth/
 .hermes/
 *.log
 *.log*
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+

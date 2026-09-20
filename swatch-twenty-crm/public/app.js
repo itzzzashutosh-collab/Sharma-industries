@@ -42,9 +42,24 @@ async function loadStats() {
     document.getElementById('topbar-pipeline-value').innerText = `₹${pipelineVal}`;
     
     // Update Nav Badges
-    document.getElementById('badge-opps').innerText = (data.totalAccounts || 3707).toLocaleString('en-IN');
-    document.getElementById('badge-people').innerText = (data.totalAccounts || 3707).toLocaleString('en-IN');
-    document.getElementById('badge-companies').innerText = ((data.categoryCounts.DEALER || 2100) + (data.categoryCounts.BUILDER || 1000)).toLocaleString('en-IN');
+    const oppsEl = document.getElementById('badge-opps');
+    if (oppsEl) oppsEl.innerText = (data.totalAccounts || 10508).toLocaleString('en-IN');
+    
+    const peopleEl = document.getElementById('badge-people');
+    if (peopleEl) peopleEl.innerText = (data.totalAccounts || 10508).toLocaleString('en-IN');
+    
+    const companiesEl = document.getElementById('badge-companies');
+    if (companiesEl) {
+      const coCount = (data.categoryCounts.DEALER || 3500) + (data.categoryCounts.BUILDER || 1000);
+      companiesEl.innerText = coCount.toLocaleString('en-IN');
+    }
+
+    const empEl = document.getElementById('badge-employees');
+    if (empEl) empEl.innerText = `${(data.categoryCounts.EMPLOYEE || 6) + 1} Active`;
+
+    const tenderEl = document.getElementById('badge-tenders');
+    if (tenderEl) tenderEl.innerText = `${data.totalTenders ? (data.totalTenders/1000).toFixed(1) + 'k' : '96.8k'}`;
+
   } catch (err) {
     console.error('Failed to load stats:', err);
   }
@@ -64,8 +79,10 @@ function switchMainView(viewName, el) {
   // Title update
   const titleMap = {
     'opportunities': 'Opportunities Pipeline',
-    'people': 'People & Contacts Directory',
+    'people': 'People & Contacts Directory (All Genuine Accounts)',
     'companies': 'Companies & Accounts',
+    'employees': '👔 Employees & Factory Team (Payroll & Quota Ledger)',
+    'tenders': '🏛️ Government & Institutional Paint Tenders (96,810 Tenders)',
     'leaders': 'AI Division Leaders Command Deck (86 Legends)',
     'pan-india': 'PAN-India Master Directory (1.14M Accounts)',
     'approvals': '🛡️ CEO Sovereign File Approvals Desk'
@@ -73,13 +90,25 @@ function switchMainView(viewName, el) {
   document.getElementById('currentViewTitle').innerText = titleMap[viewName] || 'CRM Workspace';
 
   if (viewName === 'opportunities') {
+    state.categoryFilter = 'all';
     switcher.style.display = 'flex';
     toolbar.style.display = 'flex';
     setViewMode('kanban');
   } else if (viewName === 'people' || viewName === 'companies') {
+    state.categoryFilter = 'all';
     switcher.style.display = 'none';
     toolbar.style.display = 'flex';
     setViewMode('table');
+  } else if (viewName === 'tenders') {
+    state.categoryFilter = 'tender';
+    switcher.style.display = 'none';
+    toolbar.style.display = 'flex';
+    setViewMode('table');
+  } else if (viewName === 'employees') {
+    switcher.style.display = 'none';
+    toolbar.style.display = 'none';
+    hideAllContainers();
+    renderEmployeesView();
   } else {
     switcher.style.display = 'none';
     toolbar.style.display = 'none';
@@ -108,6 +137,8 @@ function setViewMode(mode) {
 function hideAllContainers() {
   document.getElementById('kanbanContainer').style.display = 'none';
   document.getElementById('tableContainer').style.display = 'none';
+  const empEl = document.getElementById('employeesContainer');
+  if (empEl) empEl.style.display = 'none';
   document.getElementById('leadersContainer').style.display = 'none';
   document.getElementById('panIndiaContainer').style.display = 'none';
   document.getElementById('approvalsContainer').style.display = 'none';
@@ -745,4 +776,244 @@ function openNewLeadModal() {
     loadStats();
     renderCurrentView();
   });
+}
+
+// 12. DEDICATED EMPLOYEES & PAYROLL VIEW
+async function renderEmployeesView() {
+  const container = document.getElementById('employeesContainer');
+  if (!container) return;
+  container.style.display = 'block';
+  container.innerHTML = '<div class="loading-state">Loading Sharma Industries Personnel & Payroll Ledger...</div>';
+
+  try {
+    const res = await fetch('/api/employees');
+    const data = await res.json();
+
+    const leadership = data.leadership || [];
+    const employees = data.employees || [];
+    const purchases = data.purchases || [];
+    const runs = data.payrollRuns || [];
+    const activeRun = runs[0] || {};
+    const isApproved = (activeRun.status || '').includes('APPROVED');
+
+    let html = `
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700; color: #fff;">👔 Sharma Industries Personnel & Payroll Hub</h2>
+            <p style="font-size: 13px; color: var(--text-muted);">Internal Leadership, Plant Factory Workers, Field Sales Representatives & Quota Ledger</p>
+          </div>
+          <div class="user-pill admin-pill" style="padding: 8px 16px;">
+            <span>👑 Logged in as: <strong>Ashutosh Sharma</strong> (CEO & Sovereign Administrator)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO Executive Payroll Action Banner -->
+      <div class="payroll-action-box">
+        <div>
+          <div style="font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px;">
+            📅 Current Payroll Run: ${activeRun.month || '2026-09'}
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted);">
+            Net Monthly Outflow: <strong style="color: var(--gold-text); font-size: 15px;">₹${(activeRun.total_payout || 77600).toLocaleString('en-IN')}</strong> • 
+            Status: <span class="badge ${isApproved ? 'employee' : 'builder'}">${activeRun.status || 'PENDING_CEO_APPROVAL'}</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="approvePayroll('${activeRun.month || '2026-09'}')" ${isApproved ? 'disabled' : ''}>
+            ${isApproved ? '✅ Payroll Signed Off & Approved' : '👑 1-Click CEO Executive Payroll Sign-Off'}
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. EXECUTIVE LEADERSHIP (FOUNDERS) -->
+      <div style="margin-bottom: 24px;">
+        <div class="drawer-section-title">EXECUTIVE LEADERSHIP & FOUNDERS</div>
+        <div class="employee-grid">
+    `;
+
+    leadership.forEach(l => {
+      const isAdmin = l.id === 'EXEC001';
+      html += `
+        <div class="employee-card ${isAdmin ? 'admin-card' : ''}">
+          <div class="employee-header">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="employee-avatar">${isAdmin ? '👑' : '🏛️'}</div>
+              <div>
+                <div class="employee-name">${l.name}</div>
+                <div class="employee-role">${l.role}</div>
+              </div>
+            </div>
+            <span class="badge ${isAdmin ? 'employee' : 'dealer'}">${isAdmin ? 'CEO ADMIN' : 'GM FOUNDER'}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Direct Phone</span>
+            <span class="employee-meta-value"><code>${l.phone}</code></span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Compensation Model</span>
+            <span class="employee-meta-value">${l.compensation_model}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Monthly Salary</span>
+            <span class="employee-meta-value" style="color: var(--gold-text);">${l.monthly_salary === 0 ? '₹0 (100% Equity / Reinvestment)' : '₹' + (l.total_monthly_payout || 23000).toLocaleString('en-IN')}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Disbursement Day</span>
+            <span class="employee-meta-value">${l.payout_day || 'N/A'}</span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-dim); margin-top: 10px; line-height: 1.4;">${l.notes || ''}</p>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+
+      <!-- 2. FACTORY & FIELD EMPLOYEES -->
+      <div style="margin-bottom: 24px;">
+        <div class="drawer-section-title">PHYSICAL FACTORY & FIELD EXECUTIVES</div>
+        <div class="employee-grid">
+    `;
+
+    employees.forEach(emp => {
+      const isChemist = emp.role.includes('Chemist');
+      const isLogistics = emp.role.includes('Helper') || emp.role.includes('Logistics');
+      const icon = isChemist ? '🧪' : (isLogistics ? '📦' : '💼');
+      html += `
+        <div class="employee-card">
+          <div class="employee-header">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="employee-avatar">${icon}</div>
+              <div>
+                <div class="employee-name">${emp.name}</div>
+                <div class="employee-role">${emp.role}</div>
+              </div>
+            </div>
+            <span class="badge ${emp.bank_status === 'Active' ? 'employee' : 'builder'}">${emp.bank_status}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Division / Dept</span>
+            <span class="employee-meta-value">${emp.division} • ${emp.department}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Registered Phone</span>
+            <span class="employee-meta-value"><code>${emp.phone}</code></span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Base Monthly Salary</span>
+            <span class="employee-meta-value" style="color: var(--gold-text);">₹${(emp.monthly_base_salary || 0).toLocaleString('en-IN')}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Monthly Payout Day</span>
+            <span class="employee-meta-value">${emp.payout_day}</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Allowance / Quota</span>
+            <span class="employee-meta-value">${emp.dispatch_loading_allowance_per_bag ? '₹1.00 / bag loading' : (emp.monthly_tada_allowance ? '₹3,000 TA/DA + 2.5% incentive' : 'Fixed Flat')}</span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-dim); margin-top: 10px; line-height: 1.4;">${emp.notes || ''}</p>
+        </div>
+      `;
+    });
+
+    // Sonu Kumar (Independent Wholesale Distributor)
+    html += `
+        <div class="employee-card">
+          <div class="employee-header">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="employee-avatar">🚚</div>
+              <div>
+                <div class="employee-name">Sonu Kumar</div>
+                <div class="employee-role">Independent B2B Wholesale Distributor</div>
+              </div>
+            </div>
+            <span class="badge distributor">Trade Partner</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Phone</span>
+            <span class="employee-meta-value"><code>+91 9057501926</code></span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Wholesale Rate</span>
+            <span class="employee-meta-value" style="color: var(--gold-text);">₹430.00 / 25kg Bag</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Committed Volume</span>
+            <span class="employee-meta-value">200 Bags / Month</span>
+          </div>
+          <div class="employee-meta-row">
+            <span class="employee-meta-label">Payroll Status</span>
+            <span class="employee-meta-value">Independent (Excluded from Payroll)</span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-dim); margin-top: 10px; line-height: 1.4;">Approved Territories: Talera, Kota, Dabi, Bijoliya, Rawatbhata. Direct CEO approval required for dealer assignment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. EMPLOYEE FACTORY PURCHASES & SALARY DEDUCTIONS -->
+    <div style="margin-top: 24px;">
+      <div class="drawer-section-title">FACTORY PURCHASES & SALARY DEDUCTION LEDGER (CHARGED AT FACTORY BASE COST)</div>
+      <div class="table-view-container">
+        <table class="twenty-table">
+          <thead>
+            <tr>
+              <th>Purchase ID</th>
+              <th>Employee Name</th>
+              <th>Phone</th>
+              <th>Date</th>
+              <th>Purchased Products</th>
+              <th>Pricing Tier</th>
+              <th>Deduction Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    purchases.forEach(p => {
+      const itemNames = (p.items || []).map(it => `${it.product_name || it.sku} x ${it.quantity}`).join(', ');
+      html += `
+        <tr>
+          <td><code>${p.purchase_id}</code></td>
+          <td><strong>${p.employee_name}</strong></td>
+          <td><code>${p.phone}</code></td>
+          <td>${p.date}</td>
+          <td>${itemNames}</td>
+          <td><span class="badge" style="background: rgba(255,255,255,0.06);">Factory Base Cost</span></td>
+          <td><strong style="color: #f87171;">-₹${(p.total_deduction || 0).toLocaleString('en-IN')}</strong></td>
+          <td><span class="badge employee">${p.deduction_status}</span></td>
+        </tr>
+      `;
+    });
+
+    html += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+    `;
+
+    container.innerHTML = html;
+  } catch (err) {
+    container.innerHTML = `<div style="padding: 40px; color: #ef4444; text-align: center;">Failed to load employees data: ${err.message}</div>`;
+  }
+}
+
+async function approvePayroll(month) {
+  if (!confirm(`Confirm 1-Click Executive Payroll Approval for ${month} as CEO Ashutosh Sharma?`)) return;
+  try {
+    const res = await fetch('/api/employees/payroll-approve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ month, approver: 'Ashutosh Sharma (CEO)' })
+    });
+    const json = await res.json();
+    alert('✅ ' + json.message);
+    renderEmployeesView();
+  } catch (e) {
+    alert('Approval failed: ' + e.message);
+  }
 }
