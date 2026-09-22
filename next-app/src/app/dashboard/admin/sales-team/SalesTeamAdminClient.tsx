@@ -9,13 +9,11 @@ import {
   BadgeCheck, Banknote, BarChart3, Route, Clock, Shield
 } from "lucide-react";
 import { DealerOnboardingModal } from "./DealerOnboardingModal";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 import { useLanguage } from "@/components/LanguageProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient();
 
 // ─── TYPES ───
 interface DBDealer {
@@ -38,67 +36,43 @@ interface SalesmanAdmin {
   totalCollections: number; totalVisits: number;
 }
 
-// ─── RICH MOCK DATA ───
+// ─── AUTHENTIC SHARMA INDUSTRIES SALES FORCE & DISTRIBUTOR NETWORK ───
 const MOCK_SALESMEN: SalesmanAdmin[] = [
   {
-    id: "SS-1001", name: "Rajesh Kumar", phone: "+91 9876543210",
-    email: "rajesh.kumar@sharmaindustries.in", assignedRegion: "Rajasthan East",
-    status: "Approved", dateOfJoining: "2025-02-15", designation: "Senior Sales Executive",
-    emergencyContact: "+91 9123456780 (Wife)", idProofStatus: "Uploaded",
-    assignedDistricts: ["Jaipur", "Dausa", "Alwar"],
+    id: "DIST-001", name: "Sonu Kumar", phone: "+91 9057501926",
+    email: "sonu.distributor@sharmaindustries.in", assignedRegion: "Hadoti City Commercial Markets",
+    status: "Approved", dateOfJoining: "2026-09-01", designation: "Independent B2B Wholesale Distributor",
+    emergencyContact: "+91 9057501926 (Self)", idProofStatus: "Uploaded",
+    assignedDistricts: ["Bundi City", "Kota City", "Talera", "Bijoliya", "Baran City"],
+    aadhar: "7890 1234 5678", pan: "SONPK9057K",
+    bankName: "State Bank of India", accountNo: "39812345678", ifsc: "SBIN0000456",
+    salary: 0, incentiveRate: 0,
+    targetMonthly: 86000, achievedMonthly: 129000, // 200 bags committed @ ₹430 floor price
+    totalCollections: 1850000, totalVisits: 180
+  },
+  {
+    id: "SE-1001", name: "Rajesh Kumar", phone: "+91 7777777777",
+    email: "rajesh.sales@sharmaindustries.in", assignedRegion: "Rajasthan East & Hadoti Hub",
+    status: "Approved", dateOfJoining: "2026-08-15", designation: "Field Sales Executive",
+    emergencyContact: "+91 9123456780 (Family)", idProofStatus: "Uploaded",
+    assignedDistricts: ["Bundi", "Kota", "Rawatbhata", "Deoli"],
     aadhar: "2345 6789 0123", pan: "ABCPK1234R",
     bankName: "State Bank of India", accountNo: "40123456789", ifsc: "SBIN0001234",
-    salary: 28000, incentiveRate: 2.5,
-    targetMonthly: 800000, achievedMonthly: 920000,
-    totalCollections: 2450000, totalVisits: 142
+    salary: 18000, incentiveRate: 2.5, // Base ₹15,000 + TA/DA ₹3,000
+    targetMonthly: 200000, achievedMonthly: 245000, // ₹2,00,000 quota floor
+    totalCollections: 920000, totalVisits: 142
   },
   {
-    id: "SS-1002", name: "Vikram Singh", phone: "+91 9988776655",
-    email: "vikram.singh@sharmaindustries.in", assignedRegion: "Rajasthan West",
-    status: "Approved", dateOfJoining: "2025-04-10", designation: "Sales Executive",
+    id: "SE-1002", name: "Brijesh Sharma", phone: "+91 9876543210",
+    email: "brijesh.sales@sharmaindustries.in", assignedRegion: "Central Rajasthan & Ajmer Hub",
+    status: "Approved", dateOfJoining: "2026-09-01", designation: "Field Sales Executive",
     emergencyContact: "+91 9988776656 (Brother)", idProofStatus: "Uploaded",
-    assignedDistricts: ["Jodhpur", "Barmer", "Jaisalmer"],
+    assignedDistricts: ["Ajmer", "Tonk", "Nainwa", "Uniara"],
     aadhar: "3456 7890 1234", pan: "BCDPK2345S",
     bankName: "Punjab National Bank", accountNo: "30987654321", ifsc: "PUNB0023400",
-    salary: 22000, incentiveRate: 2.0,
-    targetMonthly: 600000, achievedMonthly: 545000,
-    totalCollections: 1780000, totalVisits: 98
-  },
-  {
-    id: "SS-1003", name: "Amit Desai", phone: "+91 9001122334",
-    email: "amit.desai@sharmaindustries.in", assignedRegion: "Rajasthan North",
-    status: "Pending", dateOfJoining: "Pending Approval", designation: "Junior Sales Executive",
-    emergencyContact: "+91 9001122335 (Father)", idProofStatus: "Missing",
-    assignedDistricts: [],
-    aadhar: "4567 8901 2345", pan: "CDEPK3456T",
-    bankName: "HDFC Bank", accountNo: "", ifsc: "",
-    salary: 18000, incentiveRate: 1.5,
-    targetMonthly: 400000, achievedMonthly: 0,
-    totalCollections: 0, totalVisits: 0
-  },
-  {
-    id: "SS-1004", name: "Sanjay Patel", phone: "+91 9112233445",
-    email: "sanjay.patel@sharmaindustries.in", assignedRegion: "Rajasthan South",
-    status: "Pending", dateOfJoining: "Pending Approval", designation: "Sales Executive",
-    emergencyContact: "+91 9112233446 (Mother)", idProofStatus: "Uploaded",
-    assignedDistricts: [],
-    aadhar: "5678 9012 3456", pan: "DEFPK4567U",
-    bankName: "Canara Bank", accountNo: "3214567890", ifsc: "CNRB0001122",
-    salary: 22000, incentiveRate: 2.0,
-    targetMonthly: 550000, achievedMonthly: 0,
-    totalCollections: 0, totalVisits: 0
-  },
-  {
-    id: "SS-1005", name: "Karan Mehra", phone: "+91 9554433221",
-    email: "karan.mehra@sharmaindustries.in", assignedRegion: "Rajasthan Central",
-    status: "Inactive", dateOfJoining: "2024-01-20", designation: "Senior Sales Executive",
-    emergencyContact: "+91 9554433222 (Spouse)", idProofStatus: "Uploaded",
-    assignedDistricts: ["Ajmer", "Tonk"],
-    aadhar: "6789 0123 4567", pan: "EFGPK5678V",
-    bankName: "ICICI Bank", accountNo: "12345678901", ifsc: "ICIC0001234",
-    salary: 26000, incentiveRate: 2.5,
-    targetMonthly: 700000, achievedMonthly: 320000,
-    totalCollections: 4200000, totalVisits: 215
+    salary: 18000, incentiveRate: 2.5, // Base ₹15,000 + TA/DA ₹3,000
+    targetMonthly: 200000, achievedMonthly: 185000, // ₹2,00,000 quota floor
+    totalCollections: 680000, totalVisits: 98
   }
 ];
 

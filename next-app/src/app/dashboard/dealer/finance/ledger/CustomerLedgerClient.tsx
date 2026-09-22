@@ -43,85 +43,11 @@ interface Props {
 
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
-const INITIAL_MOCK_CLIENTS: ClientAccount[] = [
-  {
-    id: "CL_001",
-    name: "Vikram Construction Studio",
-    phone: "+91 98290 33445",
-    address: "Bundi Road Market, Alwar, Rajasthan - 301001",
-    total_billed: 185000,
-    total_paid: 110000,
-    credit_balance: 75000,
-    credit_limit: 150000,
-    credit_period_days: 15
-  },
-  {
-    id: "CL_002",
-    name: "Rajesh Hardware & Paints",
-    phone: "+91 98290 11223",
-    address: "Shop 14, Main Bazaar, Bundi - 323001",
-    total_billed: 94000,
-    total_paid: 94000,
-    credit_balance: 0,
-    credit_limit: 100000,
-    credit_period_days: 30
-  },
-  {
-    id: "CL_003",
-    name: "Sharma Paint Decorators",
-    phone: "+91 98290 55667",
-    address: "Near Old Bus Stand, Bundi - 323001",
-    total_billed: 62500,
-    total_paid: 40000,
-    credit_balance: 22500,
-    credit_limit: 50000,
-    credit_period_days: 7
-  }
-];
-
-const INITIAL_MOCK_INVOICES: Invoice[] = [
-  {
-    id: "INV_001",
-    invoice_no: "POS-2026-0041",
-    date: "2026-07-26",
-    customer: { name: "Rajesh Hardware & Paints", phone: "+91 98290 11223" },
-    grand_total: 48900,
-    advance_paid: 48900,
-    balance_due: 0,
-    payment_mode: "UPI",
-    status: "Paid"
-  },
-  {
-    id: "INV_002",
-    invoice_no: "POS-2026-0042",
-    date: "2026-07-25",
-    customer: { name: "Vikram Construction Studio", phone: "+91 98290 33445" },
-    grand_total: 125000,
-    advance_paid: 50000,
-    balance_due: 75000,
-    payment_mode: "Credit",
-    credit_days: 15,
-    status: "Partial"
-  },
-  {
-    id: "INV_003",
-    invoice_no: "POS-2026-0043",
-    date: "2026-07-24",
-    customer: { name: "Sharma Paint Decorators", phone: "+91 98290 55667" },
-    grand_total: 34500,
-    advance_paid: 12000,
-    balance_due: 22500,
-    payment_mode: "Credit",
-    credit_days: 7,
-    status: "Partial"
-  }
-];
-
 export function CustomerLedgerClient({ initialInvoices, initialClients }: Props) {
   const { t } = useLanguage();
   const [invoices] = useState<Invoice[]>(() => {
     if (initialInvoices && initialInvoices.length > 0) return initialInvoices;
-    return INITIAL_MOCK_INVOICES;
+    return [];
   });
 
   const [clients, setClients] = useState<ClientAccount[]>(() => {
@@ -137,7 +63,7 @@ export function CustomerLedgerClient({ initialInvoices, initialClients }: Props)
         credit_period_days: Number(c.credit_period_days || 15)
       }));
     }
-    return INITIAL_MOCK_CLIENTS;
+    return [];
   });
 
   const [activeTab, setActiveTab] = useState<"accounts" | "invoices">("accounts");

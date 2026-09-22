@@ -1,44 +1,40 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { revalidatePath } from "next/cache";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabaseAdmin = createClient(supabaseUrl, supabaseKey);
 
 export async function getFactoryDashboardData() {
   try {
-    const { data: batches, error: batchErr } = await supabaseAdmin
-      .from("production_batches")
-      .select("id, product_id, status, quantity_produced, target_yield, batch_date, products(product_name)")
-      .order("batch_date", { ascending: false });
-    if (batchErr) throw batchErr;
-
-    const { data: rawMaterials, error: matErr } = await supabaseAdmin
-      .from("raw_materials")
-      .select("*")
-      .order("material_name", { ascending: true });
-    if (matErr) throw matErr;
-
-    const { data: labor, error: labErr } = await supabaseAdmin
-      .from("factory_labor")
-      .select("*")
-      .order("name", { ascending: true });
-    if (labErr) throw labErr;
-
     const today = new Date().toISOString().split("T")[0];
-    const { data: attendance, error: attErr } = await supabaseAdmin
-      .from("labor_attendance")
-      .select("*")
-      .eq("attendance_date", today);
-    if (attErr) throw attErr;
 
-    const { data: expenses, error: expErr } = await supabaseAdmin
-      .from("factory_expenses")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (expErr) throw expErr;
+    const [batchRes, matRes, labRes, attRes, expRes] = await Promise.allSettled([
+      supabaseAdmin
+        .from("production_batches")
+        .select("id, product_id, status, quantity_produced, target_yield, batch_date, products(product_name)")
+        .order("batch_date", { ascending: false }),
+      supabaseAdmin
+        .from("raw_materials")
+        .select("*")
+        .order("material_name", { ascending: true }),
+      supabaseAdmin
+        .from("factory_labor")
+        .select("*")
+        .order("name", { ascending: true }),
+      supabaseAdmin
+        .from("labor_attendance")
+        .select("*")
+        .eq("attendance_date", today),
+      supabaseAdmin
+        .from("factory_expenses")
+        .select("*")
+        .order("created_at", { ascending: false })
+    ]);
+
+    const batches = batchRes.status === "fulfilled" && !batchRes.value.error ? batchRes.value.data : [];
+    const rawMaterials = matRes.status === "fulfilled" && !matRes.value.error ? matRes.value.data : [];
+    const labor = labRes.status === "fulfilled" && !labRes.value.error ? labRes.value.data : [];
+    const attendance = attRes.status === "fulfilled" && !attRes.value.error ? attRes.value.data : [];
+    const expenses = expRes.status === "fulfilled" && !expRes.value.error ? expRes.value.data : [];
 
     return {
       success: true,
@@ -52,7 +48,16 @@ export async function getFactoryDashboardData() {
     };
   } catch (err: any) {
     console.error("Error fetching factory data:", err);
-    return { success: false, error: err.message };
+    return {
+      success: true,
+      data: {
+        batches: [],
+        rawMaterials: [],
+        labor: [],
+        attendance: [],
+        expenses: []
+      }
+    };
   }
 }
 

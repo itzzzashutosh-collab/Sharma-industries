@@ -20,17 +20,21 @@ export default async function Page() {
     );
   }
 
-  // Pre-seed dynamic mock cities performance data
+  // Approved territory operational hubs (Bundi HQ & 150km radius city markets)
   const cities = [
-    { city: "Jaipur", dealers: 8, painters: 12, revenue: 220000, growth: "+12%" },
-    { city: "Kota", dealers: 4, painters: 8, revenue: 150000, growth: "+24%" },
-    { city: "Bundi", dealers: 2, painters: 4, revenue: 80000, growth: "-5%" }
+    { city: "Bundi (HQ)", dealers: 0, painters: 0, revenue: 0, growth: "HQ Base" },
+    { city: "Kota City", dealers: 0, painters: 0, revenue: 0, growth: "Expansion Hub" },
+    { city: "Talera", dealers: 0, painters: 0, revenue: 0, growth: "Corridor" },
+    { city: "Bijoliya", dealers: 0, painters: 0, revenue: 0, growth: "Trade Market" },
+    { city: "Baran", dealers: 0, painters: 0, revenue: 0, growth: "Commercial" },
+    { city: "Rawatbhata", dealers: 0, painters: 0, revenue: 0, growth: "Retail" },
+    { city: "Deoli", dealers: 0, painters: 0, revenue: 0, growth: "Retail" }
   ];
 
   const payload = {
     cities,
-    targetStats: res.targetStats || { mtdRevenue: 0, targetRevenue: 500000 },
-    assignedTerritory: res.assignedTerritory || "Rajasthan East"
+    targetStats: res.targetStats || { mtdRevenue: 0, targetRevenue: 200000 },
+    assignedTerritory: res.assignedTerritory || "Hadoti Region (Bundi & Kota)"
   };
 
   return <TerritoryClient initialData={payload} />;

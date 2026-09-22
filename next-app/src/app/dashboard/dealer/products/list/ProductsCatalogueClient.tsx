@@ -29,86 +29,84 @@ interface Props {
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
 const INITIAL_CATEGORIES = [
+  "Texture Coatings",
+  "Exterior Emulsions",
   "Interior Emulsions",
-  "Exterior Paints",
-  "Wall Primers",
-  "Waterproofing",
-  "Enamels & Thinners",
-  "Wood & Metal Finishes",
+  "Specialty & Waterproofing"
 ];
 
 const INITIAL_DEALER_PRODUCTS: Product[] = [
   {
-    id: "PROD_001",
-    name: "Swatch Paints Premium Interior Emulsion 20L",
+    id: "PROD_SWATCH_001",
+    name: "Swatch Rustic Texture (25kg)",
+    category: "Texture Coatings",
+    sku_number: "32149000",
+    purchase_rate: 632.5,
+    selling_price: 690,
+    mrp: 1150,
+    actual_stock: 50,
+    min_stock_threshold: 10,
+    unit: "25kg Bag"
+  },
+  {
+    id: "PROD_SWATCH_002",
+    name: "Swatch Roller Coat (25kg)",
+    category: "Texture Coatings",
+    sku_number: "32149000",
+    purchase_rate: 632.5,
+    selling_price: 690,
+    mrp: 1150,
+    actual_stock: 40,
+    min_stock_threshold: 10,
+    unit: "25kg Bag"
+  },
+  {
+    id: "PROD_SWATCH_003",
+    name: "Swatch Weatherguard Exterior Emulsion (20L)",
+    category: "Exterior Emulsions",
+    sku_number: "32091020",
+    purchase_rate: 2255,
+    selling_price: 2460,
+    mrp: 4100,
+    actual_stock: 15,
+    min_stock_threshold: 5,
+    unit: "20L Drum"
+  },
+  {
+    id: "PROD_SWATCH_004",
+    name: "Swatch Shine Interior Emulsion (20L)",
     category: "Interior Emulsions",
     sku_number: "32091010",
-    purchase_rate: 2650,
-    selling_price: 3450,
-    mrp: 3890,
-    actual_stock: 18,
+    purchase_rate: 2255,
+    selling_price: 2460,
+    mrp: 4100,
+    actual_stock: 20,
     min_stock_threshold: 5,
-    unit: "Pails (20L)"
+    unit: "20L Drum"
   },
   {
-    id: "PROD_002",
-    name: "Swatch Paints Exterior Weather Proof 20L",
-    category: "Exterior Paints",
-    sku_number: "32091020",
-    purchase_rate: 3200,
-    selling_price: 4120,
-    mrp: 4600,
-    actual_stock: 4,
-    min_stock_threshold: 6,
-    unit: "Pails (20L)"
-  },
-  {
-    id: "PROD_003",
-    name: "Swatch Waterproof Acrylic Wall Primer 10L",
-    category: "Wall Primers",
-    sku_number: "32099010",
-    purchase_rate: 940,
-    selling_price: 1280,
-    mrp: 1450,
-    actual_stock: 22,
-    min_stock_threshold: 8,
-    unit: "Liters (10L)"
-  },
-  {
-    id: "PROD_004",
-    name: "Swatch Damp-Proof Waterproofing Coat 20L",
-    category: "Waterproofing",
+    id: "PROD_SWATCH_005",
+    name: "Swatch Waterproofing Solution (5L)",
+    category: "Specialty & Waterproofing",
     sku_number: "32099020",
-    purchase_rate: 3850,
-    selling_price: 4890,
-    mrp: 5400,
-    actual_stock: 3,
-    min_stock_threshold: 5,
-    unit: "Pails (20L)"
-  },
-  {
-    id: "PROD_005",
-    name: "Asian Paints Royale Luxury Emulsion 20L",
-    category: "Interior Emulsions",
-    sku_number: "32091090",
-    purchase_rate: 4600,
-    selling_price: 5800,
-    mrp: 6300,
+    purchase_rate: 900,
+    selling_price: 1100,
+    mrp: 1800,
     actual_stock: 12,
     min_stock_threshold: 4,
-    unit: "Pails (20L)"
+    unit: "5L Can"
   },
   {
-    id: "PROD_006",
-    name: "Universal Synthetic Paint Thinner 5L",
-    category: "Enamels & Thinners",
-    sku_number: "38140010",
-    purchase_rate: 350,
-    selling_price: 480,
-    mrp: 550,
-    actual_stock: 2,
-    min_stock_threshold: 5,
-    unit: "Liters (5L)"
+    id: "PROD_SWATCH_006",
+    name: "Swatch Top Coat (5L)",
+    category: "Specialty & Waterproofing",
+    sku_number: "32099030",
+    purchase_rate: 1250,
+    selling_price: 1600,
+    mrp: 2500,
+    actual_stock: 10,
+    min_stock_threshold: 4,
+    unit: "5L Can"
   }
 ];
 

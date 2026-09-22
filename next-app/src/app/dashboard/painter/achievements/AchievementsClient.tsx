@@ -53,8 +53,8 @@ const SWATCH_ACHIEVEMENT_OBJECTIONS = [
 ];
 
 export function AchievementsClient({ initialData }: Props) {
-  const [profile] = useState(initialData.profile);
-  const totalTokens = Number(profile.total_tokens || 1480);
+  const [profile] = useState(initialData?.profile || { total_tokens: 1480 });
+  const totalTokens = Number(profile?.total_tokens || 1480);
   const [activeTab, setActiveTab] = useState<"trophies" | "rewards" | "playbook">("trophies");
   const [copiedObjId, setCopiedObjId] = useState<string | null>(null);
 

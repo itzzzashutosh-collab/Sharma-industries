@@ -65,9 +65,9 @@ const SWATCH_STORE_OBJECTIONS = [
 ];
 
 export function StoreClient({ initialData }: Props) {
-  const [profile, setProfile] = useState(initialData.profile);
+  const [profile, setProfile] = useState(initialData?.profile || { total_tokens: 3420 });
   const [catalog] = useState<CatalogItem[]>(() => {
-    if (initialData.catalog && initialData.catalog.length > 0) {
+    if (initialData?.catalog && initialData.catalog.length > 0) {
       return initialData.catalog.map((c, idx) => ({
         ...c,
         description: idx === 0 ? "Heavy duty safety apron, hard hat & protective gloves." : "Electric high-pressure airless spray machine for rapid wall coating.",
@@ -90,7 +90,7 @@ export function StoreClient({ initialData }: Props) {
   const [copiedObjId, setCopiedObjId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const totalPoints = profile.total_tokens || 3420;
+  const totalPoints = profile?.total_tokens || 3420;
   const cashEquivalent = totalPoints * 1.5;
 
   const categories = ["All", "Tools & Spray", "Merchandise", "Gold & Vouchers"];

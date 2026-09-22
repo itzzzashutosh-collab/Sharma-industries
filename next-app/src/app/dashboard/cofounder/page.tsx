@@ -36,8 +36,8 @@ export default async function CoFounderDashboardRoot() {
     const manufactured = dayBatches.reduce((s, b) => s + Number(b.actual_yield || 0), 0);
     chartData.push({
       date: dateStr,
-      manufactured: manufactured || (i === 1 ? 240 : i === 3 ? 310 : i === 5 ? 180 : 0),
-      dispatched: manufactured > 0 ? Math.floor(manufactured * 0.85) : (i === 1 ? 190 : i === 3 ? 280 : i === 5 ? 140 : 0),
+      manufactured: manufactured,
+      dispatched: Math.floor(manufactured * 0.85),
     });
   }
 
@@ -45,12 +45,10 @@ export default async function CoFounderDashboardRoot() {
   const { data: rawMaterials } = await supabase.from("raw_materials").select("current_stock");
   let rawValue = 0;
   rawMaterials?.forEach(rm => { rawValue += Number(rm.current_stock || 0) * 150; });
-  if (rawValue === 0) rawValue = 485000;
 
   const { data: products } = await supabase.from("products").select("purchase_price, stock");
   let fgValue = 0;
   products?.forEach(p => { fgValue += Number(p.purchase_price || 0) * Number(p.stock || 0); });
-  if (fgValue === 0) fgValue = 964000;
 
   return (
     <CoFounderDashboardClient

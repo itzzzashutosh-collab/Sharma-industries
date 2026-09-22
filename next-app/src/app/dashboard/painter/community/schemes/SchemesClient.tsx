@@ -33,50 +33,74 @@ const SWATCH_SCHEME_OBJECTIONS = [
   {
     id: "SCH_OBJ_1",
     category: "Near-Miss Target Extension",
-    title: "What happens if I reach 14 buckets out of 15 target slab by the deadline?",
-    problemText: "Painter is 1 bucket short of target slab on final scheme day.",
-    strategy: "3-Day Grace Period Extension or Pro-rata Cash Payout via Zonal Executive",
-    solutionHindi: "Bhaiya, agar aap 1-2 buckets short rehte hain, toh Swatch Zonal Executive 3-day grace extension issue karte hain taaki aapka target reward miss na ho!",
-    salesPitch: "3-Day Target Grace Period Extension via Zonal Executive Authorization.",
-    whatsappTemplate: "Bhaiya, Swatch Scheme Protection: 1-2 bucket short hone par 3-Day Grace Period Extension! Complete your 15-bucket slab & claim +₹3,500 Cash Bonus at Shree Ram Paints! 🎁"
+    title: "What happens if I reach 18 bags out of 20 target slab by the deadline?",
+    problemText: "Painter is 2 bags short of target slab on final scheme day.",
+    strategy: "3-Day Grace Period Extension via Zonal Sales Executive",
+    solutionHindi: "Namaste bhaiya, agar aap 1-2 bags short rehte hain, toh Swatch Zonal Sales Executive 3-day grace extension issue karte hain taaki aapka target reward miss na ho!",
+    salesPitch: "3-Day Target Grace Period Extension via Zonal Sales Executive Authorization.",
+    whatsappTemplate: "Namaste bhaiya! Swatch Scheme Protection: 1-2 bag short hone par 3-Day Grace Period Extension! Complete your slab & claim cash bonus at your authorized counter! 🎁"
   },
   {
     id: "SCH_OBJ_2",
-    category: "Double Token Auto-Credit",
-    title: "Are monsoon double token points added automatically when scanning bucket QR?",
-    problemText: "Painter is asking if double points require separate manual claim.",
-    strategy: "Instant Automatic 2x Double Token Credit on all Swatch Damp Kicker QR Scans",
-    solutionHindi: "Bhaiya, Swatch Monsoon Scheme mein scan karte hi 2x Double Token Points instantly wallet mein credit ho jaate hain. Zero manual hassle!",
-    salesPitch: "Instant Automatic 2x Double Token Credit on Damp Kicker Scans.",
-    whatsappTemplate: "Bhaiya, Swatch Double Token Benefit: Swatch Damp Kicker scan karte hi 2x Double Cashback automatically wallet mein aayegi! ⚡"
+    category: "Painters Growth Tokens Credit",
+    title: "How do ₹50 cash tokens work inside Swatch Rustic Texture bags?",
+    problemText: "Painter is asking how ₹50 cash token inside bag is credited.",
+    strategy: "Instant ₹50 Token Inside Every 25kg Bag + Instant Scan Payout",
+    solutionHindi: "Bhaiya, Swatch Rustic Texture 25kg bag mein ₹50 ka physical cash token andar rehta hai, aur bag QR scan karte hi direct wallet cash credit ho jaata hai!",
+    salesPitch: "Instant ₹50 Cash Token Inside Every 25kg Bag + Direct Digital Cashback.",
+    whatsappTemplate: "Bhaiya, Swatch Rustic Texture 25kg bag: ₹50 Token inside every bag + instant wallet payout! Track balance directly on your Swatch App! ⚡"
   },
   {
     id: "SCH_OBJ_3",
-    category: "Store Counter Gold Coin Claim",
-    title: "Can I claim physical gifts (Gold Coin / Spray Machine) at Shree Ram Paints store?",
-    problemText: "Painter wants instant gold coin collection at dealer store counter.",
-    strategy: "Generate Instant Store QR Voucher for Over-the-Counter Gold Coin Pickup",
-    solutionHindi: "Bhaiya, bilkul! Target complete hote hi app se 'Gold Coin Claim Voucher' generate karein aur Shree Ram Paints store counter par dikha kar 100% certified 24k Gold Coin collect karein!",
-    salesPitch: "Instant Store QR Voucher for Over-the-Counter Gold Coin Collection.",
-    whatsappTemplate: "Bhaiya, Swatch Gold Coin Claim: App se Claim Voucher generate karein aur Shree Ram Paints store counter se direct 24k Gold Coin pickup karein! 🪙"
+    category: "Store Counter Cash Bonus Claim",
+    title: "Can I collect cash bonuses directly at the retail store counter?",
+    problemText: "Painter wants instant cash bonus collection at retail counter.",
+    strategy: "Generate Instant Store QR Voucher for Over-the-Counter Settlement",
+    solutionHindi: "Bhaiya, bilkul! Target complete hote hi app se 'Cash Bonus Claim Voucher' generate karein aur authorized counter par dikha kar instant cash collect karein!",
+    salesPitch: "Instant Store QR Voucher for Over-the-Counter Cash Bonus Settlement.",
+    whatsappTemplate: "Bhaiya, Swatch Milestone Reward: App se Claim Voucher generate karein aur retail counter se direct cash bonus collect karein! 🏆"
   }
 ];
 
 export function SchemesClient({ initialData }: Props) {
   const [schemes] = useState<Scheme[]>(() => {
     if (initialData.schemes && initialData.schemes.length > 0) {
-      return initialData.schemes.map((s, idx) => ({
-        ...s,
-        target_buckets: idx === 0 ? 15 : 25,
-        current_scanned: idx === 0 ? 11 : 18,
-        reward: idx === 0 ? "+₹3,500 Cash Bonus + FREE Safety Kit" : "1 Gram 24k Pure Gold Coin",
-        days_left: idx === 0 ? 14 : 22
-      }));
+      return initialData.schemes;
     }
     return [
-      { id: "sch_1", title: "Swatch Monsoon Waterproofing Triple Reward Festival", description: "Scan 15 buckets of Swatch Damp Kicker 20L to unlock +₹3,500 Cash Bonus + FREE Safety Apron Kit.", start_date: "2026-07-01", end_date: "2026-08-31", target_buckets: 15, current_scanned: 11, reward: "+₹3,500 Cash Bonus + FREE Safety Kit", days_left: 14 },
-      { id: "sch_2", title: "Shree Ram Paints Dealer Target Bonanza", description: "Scan 25 buckets of Swatch Royal Shine 20L to earn 1 Gram 24k Pure Gold Coin.", start_date: "2026-07-15", end_date: "2026-09-15", target_buckets: 25, current_scanned: 18, reward: "1 Gram 24k Pure Gold Coin", days_left: 22 },
-      { id: "sch_3", title: "Diwali Early Bird Applicator Dhamaka", description: "Scan 40 buckets of Swatch Paints to unlock Swatch Airless Electric Spray Machine.", start_date: "2026-08-01", end_date: "2026-10-31", target_buckets: 40, current_scanned: 24, reward: "Swatch Airless Paint Spray Machine", days_left: 45 }
+      {
+        id: "sch_1",
+        title: "Painters Growth Tokens — Rustic Texture Volume Slab",
+        description: "Scan 50 bags of Swatch Rustic Texture (25kg) with ₹50 token inside to unlock +₹2,500 Cash Milestone + FREE Master Texture Sample Kit.",
+        start_date: "2026-09-01",
+        end_date: "2026-10-31",
+        target_buckets: 50,
+        current_scanned: 0,
+        reward: "+₹2,500 Cash Milestone + Sample Kit",
+        days_left: 41
+      },
+      {
+        id: "sch_2",
+        title: "Swatch Weatherguard Exterior 20L Target Club",
+        description: "Scan 20 buckets of Swatch Weatherguard Exterior (20L) to unlock +₹2,000 Direct Bank Transfer + Official Painter Jacket.",
+        start_date: "2026-09-01",
+        end_date: "2026-10-15",
+        target_buckets: 20,
+        current_scanned: 0,
+        reward: "+₹2,000 Cash Transfer + Painter Jacket",
+        days_left: 25
+      },
+      {
+        id: "sch_3",
+        title: "Swatch Texture Mastery Milestone (100 Bags)",
+        description: "Achieve 100 bags of Swatch Rustic & Roller Coat across your project sites to receive ₹5,000 Milestone Bonus + Swatch Certified Applicator Badge.",
+        start_date: "2026-09-01",
+        end_date: "2026-11-30",
+        target_buckets: 100,
+        current_scanned: 0,
+        reward: "₹5,000 Milestone Bonus + Certified Badge",
+        days_left: 71
+      }
     ];
   });
 

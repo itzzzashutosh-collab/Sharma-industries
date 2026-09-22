@@ -42,18 +42,26 @@ const SWATCH_LEADERBOARD_OBJECTIONS = [
   }
 ];
 
-export function LeaderboardClient() {
+interface Props {
+  initialPainters?: any[];
+}
+
+export function LeaderboardClient({ initialPainters = [] }: Props) {
   const [activeTab, setActiveTab] = useState<"leaderboard" | "playbook">("leaderboard");
-  const [filterRange, setFilterRange] = useState<"Monthly" | "All Time" | "Jaipur Zone">("Jaipur Zone");
+  const [filterRange, setFilterRange] = useState<"Bundi Zone" | "Monthly" | "All Time">("Bundi Zone");
   const [copiedObjId, setCopiedObjId] = useState<string | null>(null);
 
-  const board = [
-    { rank: 1, name: "Rajesh Kumar", points: 14850, rating: 5.0, locality: "Jaipur Central", badge: "100-Bucket Club", isUser: true },
-    { rank: 2, name: "Suresh Saini", points: 12400, rating: 4.9, locality: "Malviya Nagar", badge: "Gold Master", isUser: false },
-    { rank: 3, name: "Mukesh Bairwa", points: 9800, rating: 4.8, locality: "Tonk Road", badge: "Silver Master", isUser: false },
-    { rank: 4, name: "Anil Prajapat", points: 8200, rating: 4.7, locality: "Sanganer", badge: "Silver Master", isUser: false },
-    { rank: 5, name: "Vikram Sharma", points: 7100, rating: 4.7, locality: "Vaishali Nagar", badge: "Applicator", isUser: false }
-  ];
+  const board = useMemo(() => {
+    return (initialPainters || []).map((p, idx) => ({
+      rank: idx + 1,
+      name: p.name || `Master Applicator ${idx + 1}`,
+      points: Number(p.total_tokens || 0),
+      rating: 5.0,
+      locality: p.address || "Bundi & Hadoti Zone",
+      badge: Number(p.total_tokens || 0) >= 5000 ? "Gold Master" : "Applicator",
+      isUser: idx === 0
+    }));
+  }, [initialPainters]);
 
   const copyScript = (id: string, text: string) => {
     navigator.clipboard.writeText(text);
@@ -73,29 +81,33 @@ export function LeaderboardClient() {
             </span>
           </div>
           <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[9px] font-black font-mono">
-            #1 Jaipur Zone
+            {board.length > 0 ? `#1 ${board[0].locality}` : "Live Rankings"}
           </span>
         </div>
 
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[9px] font-black uppercase text-slate-400 block">Your Current Standings</span>
+            <span className="text-[9px] font-black uppercase text-slate-400 block">Swatch Applicator Community</span>
             <h1 className="text-xl font-black text-white font-mono tracking-tight flex items-center gap-1.5">
-              <Crown size={20} className="text-amber-400" /> Rank #1 • Rajesh Kumar
+              <Crown size={20} className="text-amber-400" /> {board.length > 0 ? `Rank #1 • ${board[0].name}` : "Verified Standings"}
             </h1>
-            <p className="text-[10px] text-emerald-400 font-mono font-bold mt-0.5">14,850 Token Points Scanned</p>
+            <p className="text-[10px] text-emerald-400 font-mono font-bold mt-0.5">
+              {board.length > 0 ? `${board[0].points.toLocaleString()} Token Points Scanned` : "Real-time Verified QR Scans"}
+            </p>
           </div>
 
-          <button
-            onClick={() => {
-              const rankTxt = `*SWATCH PAINTS OFFICIAL APPLICATOR RANK CARD* 🏆\nMaster Applicator: Rajesh Kumar\nZonal Rank: #1 in Jaipur Zone\nScanned Points: 14,850 PTS\nClient Rating: 5.0 Stars (100% Positive)\nBadge: 100-Bucket Club Gold Master\n\nCall for site inspection & 100% Swatch Warranty application!`;
-              navigator.clipboard.writeText(rankTxt);
-              alert("Swatch #1 Rank Card details copied for WhatsApp sharing!");
-            }}
-            className="flex items-center gap-1.5 px-3 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-[10px] hover:opacity-95 shadow-md shadow-emerald-500/20 transition-all cursor-pointer border border-emerald-400/30 shrink-0"
-          >
-            <Share2 size={13} /> Share Rank Card
-          </button>
+          {board.length > 0 && (
+            <button
+              onClick={() => {
+                const rankTxt = `*SWATCH PAINTS OFFICIAL APPLICATOR RANK CARD* 🏆\nMaster Applicator: ${board[0].name}\nZonal Rank: #1 in ${board[0].locality}\nScanned Points: ${board[0].points} PTS\nClient Rating: 5.0 Stars (100% Positive)\nBadge: Gold Master\n\nCall for site inspection & 100% Swatch Warranty application!`;
+                navigator.clipboard.writeText(rankTxt);
+                alert("Swatch #1 Rank Card details copied for WhatsApp sharing!");
+              }}
+              className="flex items-center gap-1.5 px-3 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-[10px] hover:opacity-95 shadow-md shadow-emerald-500/20 transition-all cursor-pointer border border-emerald-400/30 shrink-0"
+            >
+              <Share2 size={13} /> Share Rank Card
+            </button>
+          )}
         </div>
       </div>
 
@@ -153,72 +165,85 @@ export function LeaderboardClient() {
             </div>
           </div>
 
-          {/* Top 3 Podium Cards */}
-          <div className="grid grid-cols-3 gap-2 text-center pt-2">
-            {/* Rank 2 */}
-            <div className="bg-card border border-border rounded-2xl p-3 space-y-1 relative mt-4 shadow-xs">
-              <span className="w-6 h-6 rounded-full bg-slate-400 text-white font-black text-[10px] mx-auto flex items-center justify-center -mt-6 border-2 border-card">
-                2
-              </span>
-              <p className="font-extrabold text-foreground text-[10px] truncate">Suresh Saini</p>
-              <p className="text-[9px] text-muted-foreground font-mono">12,400 PTS</p>
+          {/* Podium or Empty State */}
+          {board.length === 0 ? (
+            <div className="py-12 px-4 text-center bg-card border border-border rounded-3xl space-y-2 my-4">
+              <Trophy size={36} className="mx-auto text-muted-foreground/30" />
+              <p className="font-extrabold text-foreground text-xs">No Applicator Rankings Yet</p>
+              <p className="text-[11px] text-muted-foreground max-w-xs mx-auto">
+                Applicator points and zonal standings will appear here in real-time as certified painters scan Swatch QR tokens.
+              </p>
             </div>
-
-            {/* Rank 1 (Podium Center) */}
-            <div className="bg-gradient-to-b from-amber-500/20 via-card to-card border-2 border-amber-500/40 rounded-2xl p-3 space-y-1 relative shadow-md">
-              <span className="w-7 h-7 rounded-full bg-amber-500 text-white font-black text-xs mx-auto flex items-center justify-center -mt-6 border-2 border-card shadow-sm">
-                1
-              </span>
-              <p className="font-black text-foreground text-xs truncate">Rajesh (You)</p>
-              <p className="text-[9px] text-amber-600 dark:text-amber-400 font-mono font-bold">14,850 PTS</p>
-            </div>
-
-            {/* Rank 3 */}
-            <div className="bg-card border border-border rounded-2xl p-3 space-y-1 relative mt-6 shadow-xs">
-              <span className="w-6 h-6 rounded-full bg-amber-700 text-white font-black text-[10px] mx-auto flex items-center justify-center -mt-6 border-2 border-card">
-                3
-              </span>
-              <p className="font-extrabold text-foreground text-[10px] truncate">Mukesh B.</p>
-              <p className="text-[9px] text-muted-foreground font-mono">9,800 PTS</p>
-            </div>
-          </div>
-
-          {/* Full Rank Roster List */}
-          <div className="space-y-2 pt-2">
-            {board.map(item => (
-              <div
-                key={item.rank}
-                className={`bg-card border rounded-3xl p-3.5 flex items-center justify-between transition-all shadow-xs ${
-                  item.isUser ? "border-emerald-500/40 bg-emerald-500/5" : "border-border/50"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-mono font-black text-xs border ${
-                    item.rank === 1 ? "bg-amber-500 text-white border-amber-400" :
-                    item.rank === 2 ? "bg-slate-400 text-white border-slate-300" :
-                    item.rank === 3 ? "bg-amber-700 text-white border-amber-600" :
-                    "bg-muted text-muted-foreground border-border"
-                  }`}>
-                    {item.rank}
+          ) : (
+            <>
+              {/* Top 3 Podium Cards */}
+              <div className="grid grid-cols-3 gap-2 text-center pt-2">
+                {/* Rank 2 */}
+                <div className="bg-card border border-border rounded-2xl p-3 space-y-1 relative mt-4 shadow-xs">
+                  <span className="w-6 h-6 rounded-full bg-slate-400 text-white font-black text-[10px] mx-auto flex items-center justify-center -mt-6 border-2 border-card">
+                    2
                   </span>
-
-                  <div>
-                    <h4 className="font-extrabold text-foreground text-xs flex items-center gap-1">
-                      {item.name} {item.isUser && <span className="text-emerald-600 font-black">(You)</span>}
-                    </h4>
-                    <p className="text-[9px] text-muted-foreground font-mono">{item.locality} • {item.badge}</p>
-                  </div>
+                  <p className="font-extrabold text-foreground text-[10px] truncate">{board[1]?.name || "Upcoming"}</p>
+                  <p className="text-[9px] text-muted-foreground font-mono">{board[1] ? `${board[1].points.toLocaleString()} PTS` : "-"}</p>
                 </div>
 
-                <div className="text-right font-mono">
-                  <span className="font-black text-foreground text-xs block">{item.points.toLocaleString()} PTS</span>
-                  <div className="flex items-center justify-end gap-1 text-[9px] text-amber-500 font-bold">
-                    <Star size={10} className="fill-amber-500" /> {item.rating}
-                  </div>
+                {/* Rank 1 (Podium Center) */}
+                <div className="bg-gradient-to-b from-amber-500/20 via-card to-card border-2 border-amber-500/40 rounded-2xl p-3 space-y-1 relative shadow-md">
+                  <span className="w-7 h-7 rounded-full bg-amber-500 text-white font-black text-xs mx-auto flex items-center justify-center -mt-6 border-2 border-card shadow-sm">
+                    1
+                  </span>
+                  <p className="font-black text-foreground text-xs truncate">{board[0].name}</p>
+                  <p className="text-[9px] text-amber-600 dark:text-amber-400 font-mono font-bold">{board[0].points.toLocaleString()} PTS</p>
+                </div>
+
+                {/* Rank 3 */}
+                <div className="bg-card border border-border rounded-2xl p-3 space-y-1 relative mt-6 shadow-xs">
+                  <span className="w-6 h-6 rounded-full bg-amber-700 text-white font-black text-[10px] mx-auto flex items-center justify-center -mt-6 border-2 border-card">
+                    3
+                  </span>
+                  <p className="font-extrabold text-foreground text-[10px] truncate">{board[2]?.name || "Upcoming"}</p>
+                  <p className="text-[9px] text-muted-foreground font-mono">{board[2] ? `${board[2].points.toLocaleString()} PTS` : "-"}</p>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Full Rank Roster List */}
+              <div className="space-y-2 pt-2">
+                {board.map(item => (
+                  <div
+                    key={item.rank}
+                    className={`bg-card border rounded-3xl p-3.5 flex items-center justify-between transition-all shadow-xs ${
+                      item.isUser ? "border-emerald-500/40 bg-emerald-500/5" : "border-border/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-mono font-black text-xs border ${
+                        item.rank === 1 ? "bg-amber-500 text-white border-amber-400" :
+                        item.rank === 2 ? "bg-slate-400 text-white border-slate-300" :
+                        item.rank === 3 ? "bg-amber-700 text-white border-amber-600" :
+                        "bg-muted text-muted-foreground border-border"
+                      }`}>
+                        {item.rank}
+                      </span>
+
+                      <div>
+                        <h4 className="font-extrabold text-foreground text-xs flex items-center gap-1">
+                          {item.name} {item.isUser && <span className="text-emerald-600 font-black">(You)</span>}
+                        </h4>
+                        <p className="text-[9px] text-muted-foreground font-mono">{item.locality} • {item.badge}</p>
+                      </div>
+                    </div>
+
+                    <div className="text-right font-mono">
+                      <span className="font-black text-foreground text-xs block">{item.points.toLocaleString()} PTS</span>
+                      <div className="flex items-center justify-end gap-1 text-[9px] text-amber-500 font-bold">
+                        <Star size={10} className="fill-amber-500" /> {item.rating}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
 

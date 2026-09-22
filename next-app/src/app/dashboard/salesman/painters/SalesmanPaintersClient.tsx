@@ -6,13 +6,11 @@ import {
   ShieldCheck, Sparkles, Shield, Copy, Check, Share2, Upload, TrendingUp, Building2,
   Flame, Zap, HelpCircle, Award, Wallet, Gift, QrCode, CreditCard, ArrowRight, DollarSign
 } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 import bcrypt from "bcryptjs";
 
-// Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key";
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Supabase client with fastFetch timeout
+const supabase = createClient();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -40,11 +38,11 @@ const PAINTER_OBJECTIONS = [
     id: "PNT_OBJ_1",
     category: "Instant Cashback vs Competitor",
     title: "Asian Paints TruCare gives direct QR scanner cashback in bank account",
-    problemText: "Ustadji, Asian Paints ka QR code scan karke direct ₹100 bank mein aa jata hai, Swatch App mein time kyun lagega?",
+    problemText: "Asian Paints ka QR code scan karke direct ₹100 bank mein aa jata hai, Swatch App mein time kyun lagega?",
     strategy: "Demonstrate 5-Second Instant Swatch UPI Transfer + 2x Double Points Benefit",
-    solutionHindi: "Ustadji, Swatch Painter App par QR scan karte hi within 5 seconds aapke UPI/Bank mein direct cash credit hota hai. PLUS Swatch 20L buckets par DOUBLE Points (₹200 value) mil rahe hain jo Asian Paints se 2x extra hain!",
+    solutionHindi: "Painter ji, Swatch Painter App par QR scan karte hi within 5 seconds aapke UPI/Bank mein direct cash credit hota hai. PLUS Swatch 20L buckets par DOUBLE Points (₹200 value) mil rahe hain jo Asian Paints se 2x extra hain!",
     salesPitch: "Instant 5-Second UPI Transfer + 2x Double Token Reward value compared to legacy brands.",
-    whatsappTemplate: "Namaste Ustadji! Swatch Painter App Double Cashback Offer: Har 20L Bucket scan par Instant ₹200 UPI Transfer (Within 5 seconds in bank!). App link and registration ready. Onboard karein? 🎨"
+    whatsappTemplate: "Namaste Painter ji! Swatch Painter App Double Cashback Offer: Har 20L Bucket scan par Instant ₹200 UPI Transfer (Within 5 seconds in bank!). App link and registration ready. Onboard karein? 🎨"
   },
   {
     id: "PNT_OBJ_2",
@@ -52,9 +50,9 @@ const PAINTER_OBJECTIONS = [
     title: "Painter does not have smartphone or online bank account",
     problemText: "Mere paas chhota phone hai, online QR app scan karna nahi aata, na online bank account hai.",
     strategy: "Activate Dealer Store Counter Scan & Instant Cash Payment Option",
-    solutionHindi: "Ustadji, tension bilkul nahi! Aap direct dealer shop par bucket token handing-over kar sakte hain. Dealer aapka token system par scan karke aapko DUKAN SE HI INSTANT HAND CASH PAYMENT de dega!",
+    solutionHindi: "Painter ji, tension bilkul nahi! Aap direct dealer shop par bucket token handing-over kar sakte hain. Dealer aapka token system par scan karke aapko DUKAN SE HI INSTANT HAND CASH PAYMENT de dega!",
     salesPitch: "Dealer Counter Token Scan = Instant Store Cash Payment without smartphone requirement.",
-    whatsappTemplate: "Ustadji, Swatch Paints Store Counter Cash Facility: Smartphone ki zaroorat nahi! Dealer shop par token dijiye aur instant HAND CASH payment paayein. 💵"
+    whatsappTemplate: "Painter ji, Swatch Paints Store Counter Cash Facility: Smartphone ki zaroorat nahi! Dealer shop par token dijiye aur instant HAND CASH payment paayein. 💵"
   },
   {
     id: "PNT_OBJ_3",
@@ -62,9 +60,9 @@ const PAINTER_OBJECTIONS = [
     title: "Why should contractors recommend Swatch Damp Shield to home owners?",
     problemText: "Ghar wale Asian Paints maangte hain, main Swatch Damp Shield bechne ki mehnat kyun karun?",
     strategy: "Highlight Zero-Dust Sanding Ease (30% Labor Saved) + 7-Year Stamp Warranty",
-    solutionHindi: "Ustadji, Swatch Damp Shield mein Zero-Dust Sanding Technology hai jisse ghisai mein 30% kam mehnat lagti hai aur dusting bilkul nahi hoti. Company customer ko 7-Year Guarantee Card deti hai jisse aapka kaam shine karega!",
+    solutionHindi: "Painter ji, Swatch Damp Shield mein Zero-Dust Sanding Technology hai jisse ghisai mein 30% kam mehnat lagti hai aur dusting bilkul nahi hoti. Company customer ko 7-Year Guarantee Card deti hai jisse aapka kaam shine karega!",
     salesPitch: "Zero-Dust Sanding (30% Less Physical Effort) + 7-Year Guaranteed Client Satisfaction.",
-    whatsappTemplate: "Ustadji, Swatch Damp Shield Zero-Dust Advantage: Ghisai mein 30% kam mehnat + Zero dust + Client ko 7-Year Warranty Card. Client khush, Ustadji safe! 🛡️"
+    whatsappTemplate: "Painter ji, Swatch Damp Shield Zero-Dust Advantage: Ghisai mein 30% kam mehnat + Zero dust + Client ko 7-Year Warranty Card. Client khush, Contractor ji safe! 🛡️"
   },
   {
     id: "PNT_OBJ_4",
@@ -82,9 +80,9 @@ const PAINTER_OBJECTIONS = [
     title: "Can I get free professional painting tools and branded overalls?",
     problemText: "Kya Swatch Paints mujhe premium roller kit, overall dress, aur safety helmet free dega?",
     strategy: "Issue Swatch Painter Professional Starter Toolkit on 100L Milestone",
-    solutionHindi: "Ustadji, bilkul! Jaise hi aapka 100L scan milestone hit hota hai, aapko Swatch Professional Toolkit (Heavy Roller, Scraper, Safety Goggles, Branded Overall Dress, Helmet) FREE gift bag deliver hoga!",
+    solutionHindi: "Painter ji, bilkul! Jaise hi aapka 100L scan milestone hit hota hai, aapko Swatch Professional Toolkit (Heavy Roller, Scraper, Safety Goggles, Branded Overall Dress, Helmet) FREE gift bag deliver hoga!",
     salesPitch: "100L Milestone = Free Swatch Professional Applicator Kit & Overalls.",
-    whatsappTemplate: "Ustadji, Swatch Painter Toolkit Offer: 100L milestone complete hote hi FREE Professional Roller Kit + Branded Dress Deliver hongi! 🧰"
+    whatsappTemplate: "Painter ji, Swatch Painter Toolkit Offer: 100L milestone complete hote hi FREE Professional Roller Kit + Branded Dress Deliver hongi! 🧰"
   }
 ];
 

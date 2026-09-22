@@ -15,24 +15,21 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function PnLDashboardPage() {
   const supabase = await createClient();
 
-  // Fetch Invoices for dealer margins
-  const { data: invoices } = await supabase
-    .from("invoices")
-    .select("grand_total, hidden_commission_amount");
+  // Fetch Invoices and logged expenses concurrently
+  const [invRes, expRes] = await Promise.all([
+    supabase.from("invoices").select("grand_total, hidden_commission_amount"),
+    supabase.from("dealer_expenses").select("category, amount, expense_date").order("expense_date", { ascending: false })
+  ]);
   
-  const totalSales = invoices?.reduce((acc, inv) => acc + (Number(inv.grand_total) || 0), 0) || 0;
-  const totalCommission = invoices?.reduce((acc, inv) => acc + (Number(inv.hidden_commission_amount) || 0), 0) || 0;
+  const invoices = invRes.data || [];
+  const expenses = expRes.data || [];
+  
+  const totalSales = invoices.reduce((acc, inv) => acc + (Number(inv.grand_total) || 0), 0);
+  const totalCommission = invoices.reduce((acc, inv) => acc + (Number(inv.hidden_commission_amount) || 0), 0);
 
   // Approximate purchase paint material cost (70% of gross invoice amount)
   const purchaseCost = totalSales * 0.7;
-
-  // Fetch logged expenses
-  const { data: expenses } = await supabase
-    .from("dealer_expenses")
-    .select("category, amount, expense_date")
-    .order("expense_date", { ascending: false });
-
-  const totalExpenses = expenses?.reduce((acc, exp) => acc + (Number(exp.amount) || 0), 0) || 0;
+  const totalExpenses = expenses.reduce((acc, exp) => acc + (Number(exp.amount) || 0), 0);
   
   // Parse expenses list for frontend render
   const expenseItems = expenses ? expenses.map((exp: any) => ({

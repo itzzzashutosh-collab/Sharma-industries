@@ -47,6 +47,7 @@ import {
   BookMarked,
   Landmark,
   Scale,
+  Globe,
   FileClock,
   FileSearch,
   Upload,
@@ -65,6 +66,7 @@ import {
   Download,
   Columns,
   Award,
+  Shield,
 } from "lucide-react";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -84,110 +86,136 @@ interface NavGroup {
 // ─── Navigation Config ────────────────────────────────────────────────        
 const CEO_NAV: NavGroup[] = [
   {
-    group: "Dashboard",
+    group: "Div 1: Vision & Strategy",
     items: [
-      { name: "Dashboard",       href: "/dashboard/admin",                icon: LayoutDashboard },
-      { name: "3D Factory Twin", href: "/factory",                         icon: Building2 },
-      { name: "JARVIS Brain",    href: "/dashboard/jarvis-brain",          icon: Sparkles },
-      { name: "AI Dashboard",    href: "/dashboard/intelligence",          icon: Sparkles },
-      { name: "Strategist Mode", href: "/dashboard/strategist",          icon: LineChart },
+
+      { name: "CEO Command Center", href: "/dashboard/ceo",                    icon: LayoutDashboard },
+      { name: "Co-Founder Hub",     href: "/dashboard/cofounder",              icon: Building2 },
+
+      { name: "Government Tenders", href: "/dashboard/crm/tenders",            icon: FileText },
     ],
   },
   {
-    group: "Business",
+    group: "Div 2: Sales & Negotiations",
     items: [
-      { name: "Invoices",       href: "/dashboard/dealer/sales/invoices",   icon: FileText },
-      { name: "Quotations",     href: "/dashboard/dealer/sales/quotations", icon: Receipt },
-      { name: "Purchase Bills", href: "/dashboard/purchase",              icon: ShoppingCart },
-      { name: "Customers",      href: "/dashboard/dealer/customers",       icon: Users },
-      { name: "Orders",         href: "/dashboard/admin/orders",          icon: ClipboardList },
+      { name: "CRM Directory Hub",       href: "/dashboard/crm",                  icon: Globe },
+      { name: "Dealers Directory",       href: "/dashboard/crm/dealers",          icon: Store },
+      { name: "Salesman List & Quotas",  href: "/dashboard/admin/sales-team",      icon: UserCog },
+      { name: "Orders Book",             href: "/dashboard/admin/orders",          icon: ClipboardList },
+      { name: "Invoices",                href: "/dashboard/dealer/sales/invoices",   icon: FileText },
+      { name: "Quotations",              href: "/dashboard/dealer/sales/quotations", icon: Receipt },
+      { name: "Architects Directory",    href: "/dashboard/crm/architects",       icon: Building2 },
+      { name: "Builders Directory",      href: "/dashboard/crm/builders",         icon: Building },
+      { name: "Interior Designers",      href: "/dashboard/crm/designers",        icon: Paintbrush },
+      { name: "Field Territory",         href: "/dashboard/salesman/territory",    icon: Truck },
     ],
   },
   {
-    group: "Products",
+    group: "Div 3: Operations & Supply Chain",
     items: [
-      { name: "Products",                  href: "/dashboard/dealer/products/list",    icon: Package },
-      { name: "Raw materials & inventory", href: "/dashboard/factory/inventory",     icon: Warehouse },
+      { name: "Production Batches",        href: "/dashboard/factory/production",    icon: Factory },
+      { name: "Raw Materials & Stock",    href: "/dashboard/factory/inventory",     icon: Warehouse },
       { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
-      { name: "Production",                href: "/dashboard/factory/production",    icon: Factory },
+      { name: "Logistics & Dispatches",    href: "/dashboard/dealer/logistics/dispatches", icon: Truck },
+      { name: "Purchase Bills",            href: "/dashboard/purchase",              icon: ShoppingCart },
     ],
   },
   {
-    group: "Sales",
+    group: "Div 4: Finance & Moat Economics",
     items: [
-      { name: "Dealers",        href: "/dashboard/dealer",                icon: Store },
-      { name: "Painters",       href: "/dashboard/admin/painters",        icon: Paintbrush },
-      { name: "Sales Team",     href: "/dashboard/admin/sales-team",      icon: UserCog },
-      { name: "Distribution",   href: "/dashboard/salesman/territory",    icon: Truck },
+      { name: "Revenue Analytics",         href: "/dashboard/dealer/finance/revenue",  icon: TrendingUp },
+      { name: "Business Expenses",         href: "/dashboard/factory/expenses",      icon: CreditCard },
+      { name: "Customer Ledger",           href: "/dashboard/dealer/finance/ledger",   icon: BookOpen },
+      { name: "Cash Flow Radar",           href: "/dashboard/dealer/finance/cash-flow", icon: Banknote },
+      { name: "Profit & Loss",             href: "/dashboard/dealer/finance/pnl",      icon: PieChart },
+      { name: "Payment Vouchers",          href: "/dashboard/dealer/finance/payments", icon: Receipt },
     ],
   },
   {
-    group: "Finance",
+    group: "Div 5: Branding & Positioning",
     items: [
-      { name: "Revenue",        href: "/dashboard/dealer/finance/revenue",  icon: TrendingUp },
-      { name: "Expenses",       href: "/dashboard/factory/expenses",      icon: CreditCard },
-      { name: "Ledger",         href: "/dashboard/dealer/finance/ledger",   icon: BookOpen },
-      { name: "Cash Flow",      href: "/dashboard/dealer/finance/cash-flow", icon: Banknote },
-      { name: "Profit & Loss",  href: "/dashboard/dealer/finance/pnl",      icon: PieChart },
+      { name: "Products Catalog",          href: "/dashboard/dealer/products/list",    icon: Package },
+      { name: "House Color Studio",        href: "/dashboard/dealer/customers/color-studio", icon: Paintbrush },
+      { name: "Sales Banners & Collateral", href: "/dashboard/salesman/branding",     icon: Layers },
     ],
   },
   {
-    group: "Intelligence",
+    group: "Div 6: Social & Direct Response",
     items: [
-      { name: "Competitors",     href: "/dashboard/intelligence",          icon: BarChart2 },
-      { name: "AI Spend",        href: "/dashboard/intelligence",          icon: Wallet },
+      { name: "Painter Community",         href: "/dashboard/painter/community/leaderboard", icon: Trophy },
+      { name: "Loyalty Schemes",           href: "/dashboard/painter/community/schemes", icon: Award },
+      { name: "Token Cashback Rewards",    href: "/dashboard/painter/rewards/cash",  icon: Wallet },
     ],
   },
   {
-    group: "Company",
+    group: "Div 7: HR & Talent Management",
     items: [
-      { name: "Factory",        href: "/dashboard/factory",               icon: Building2 },
-      { name: "Employees",      href: "/dashboard/employees",             icon: UserCheck },
-      { name: "Approvals",      href: "/dashboard/admin/approvals",       icon: CheckSquare },
-      { name: "Reports",        href: "/dashboard/dealer/reports/sales",   icon: BarChart2 },
-      { name: "Settings",       href: "/dashboard/dealer/settings/business", icon: Settings },
+      { name: "Employees Master",          href: "/dashboard/employees",             icon: UserCheck },
+      { name: "Add New Employee",          href: "/dashboard/employees/new",         icon: UserPlus },
+      { name: "CEO Approvals Desk",        href: "/dashboard/admin/approvals",       icon: CheckSquare },
+      { name: "Painter Directory & KYC",   href: "/dashboard/admin/painters",        icon: Paintbrush },
     ],
   },
+
 ];
 
 const COFOUNDER_NAV: NavGroup[] = [
   {
-    group: "Dashboard",
+    group: "Div 1: Vision & Strategy",
     items: [
-      { name: "Dashboard",      href: "/dashboard/cofounder",             icon: LayoutDashboard },
-      { name: "3D Factory Twin", href: "/factory",                         icon: Building2 },
-      { name: "JARVIS Brain",   href: "/dashboard/jarvis-brain",          icon: Sparkles },
-      { name: "AI Dashboard",   href: "/dashboard/intelligence",          icon: Sparkles },
+
+      { name: "Co-Founder Hub",            href: "/dashboard/cofounder",             icon: LayoutDashboard },
+      { name: "CEO Command Brief",         href: "/dashboard/ceo",                   icon: Building2 },
+      { name: "Government Tenders",        href: "/dashboard/crm/tenders",            icon: FileText },
     ],
   },
   {
-    group: "Factory",
+    group: "Div 2: Sales & Negotiations",
     items: [
-      { name: "Production",                href: "/dashboard/factory/production",    icon: Factory },
-      { name: "Raw materials & inventory", href: "/dashboard/factory/inventory",     icon: Warehouse },
+      { name: "CRM Directory Hub",         href: "/dashboard/crm",                  icon: Globe },
+      { name: "Dealers Directory",         href: "/dashboard/crm/dealers",          icon: Store },
+      { name: "Salesman List & Quotas",    href: "/dashboard/admin/sales-team",      icon: UserCog },
+      { name: "Orders Book",               href: "/dashboard/admin/orders",          icon: ClipboardList },
+      { name: "Invoices",                  href: "/dashboard/dealer/sales/invoices", icon: FileText },
+      { name: "Architects Directory",      href: "/dashboard/crm/architects",       icon: Building2 },
+      { name: "Builders Directory",        href: "/dashboard/crm/builders",         icon: Building },
+    ],
+  },
+  {
+    group: "Div 3: Operations & Supply Chain",
+    items: [
+      { name: "Production Batches",        href: "/dashboard/factory/production",    icon: Factory },
+      { name: "Raw Materials & Stock",    href: "/dashboard/factory/inventory",     icon: Warehouse },
       { name: "Stock Register",            href: "/dashboard/factory/stock-register", icon: BookOpen },
-      { name: "Expenses",                  href: "/dashboard/factory/expenses",      icon: CreditCard },
+      { name: "Logistics & Dispatches",    href: "/dashboard/dealer/logistics/dispatches", icon: Truck },
       { name: "Purchase Bills",            href: "/dashboard/purchase",              icon: ShoppingCart },
       { name: "Suppliers",                 href: "/dashboard/dealer/purchase/suppliers", icon: Truck },
     ],
   },
   {
-    group: "Business",
+    group: "Div 4: Finance & Moat Economics",
     items: [
-      { name: "Products",       href: "/dashboard/dealer/products/list",  icon: Package },
-      { name: "Invoices",       href: "/dashboard/dealer/sales/invoices", icon: FileText },
-      { name: "Dealers",        href: "/dashboard/dealer",                icon: Users },
-      { name: "Sales Team",     href: "/dashboard/admin/sales-team",      icon: UserCog },
-      { name: "Approvals",      href: "/dashboard/admin/approvals",       icon: CheckSquare },
+      { name: "Expenses Register",         href: "/dashboard/factory/expenses",      icon: CreditCard },
+      { name: "Customer Ledger",           href: "/dashboard/dealer/finance/ledger",   icon: BookOpen },
+      { name: "Profit & Loss",             href: "/dashboard/dealer/finance/pnl",      icon: PieChart },
     ],
   },
   {
-    group: "People",
+    group: "Div 5: Branding & Positioning",
     items: [
-      { name: "Employees",      href: "/dashboard/employees",             icon: UserCheck },
-      { name: "Painters",       href: "/dashboard/admin/painters",        icon: Paintbrush },
+      { name: "Products Catalog",          href: "/dashboard/dealer/products/list",  icon: Package },
+      { name: "House Color Studio",        href: "/dashboard/dealer/customers/color-studio", icon: Paintbrush },
     ],
   },
+  {
+    group: "Div 6: HR & Talent",
+    items: [
+      { name: "Employees Master",          href: "/dashboard/employees",             icon: UserCheck },
+      { name: "Painters Directory",        href: "/dashboard/admin/painters",        icon: Paintbrush },
+      { name: "Approvals Desk",            href: "/dashboard/admin/approvals",       icon: CheckSquare },
+    ],
+  },
+
 ];
 
 const FACTORY_NAV: NavGroup[] = [

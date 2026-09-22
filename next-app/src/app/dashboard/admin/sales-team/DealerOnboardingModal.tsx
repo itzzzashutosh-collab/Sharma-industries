@@ -2,12 +2,10 @@
 
 import React, { useState } from "react";
 import { X, Upload, Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 
-// We need a supabase client that has insert privileges
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Fast client with timeout
+const supabase = createClient();
 
 interface Props {
   salesmanId: string;

@@ -14,45 +14,38 @@ export async function generateMetadata(): Promise<Metadata> {
 export const dynamic = "force-dynamic";
 
 export default async function FactoryOperationsPage() {
-  const res = await getFactoryDashboardData();
   const supabase = await createClient();
 
-  // Fetch products
-  const { data: dbProducts } = await supabase
-    .from("products")
-    .select("id, product_name, actual_stock, min_stock_threshold, token_value");
+  const [res, prodRes, dealRes, paintRes] = await Promise.all([
+    getFactoryDashboardData(),
+    supabase.from("products").select("id, product_name, actual_stock, min_stock_threshold, token_value"),
+    supabase.from("users").select("id, name, gst_number").eq("role", "dealer").eq("is_approved", true),
+    supabase.from("painters").select("id, name, total_tokens")
+  ]);
 
-  // Fetch dealers (approved users with role='dealer')
-  const { data: dbDealers } = await supabase
-    .from("users")
-    .select("id, name, gst_number")
-    .eq("role", "dealer")
-    .eq("is_approved", true);
+  const dbProducts = prodRes.data || [];
+  const dbDealers = dealRes.data || [];
+  const dbPainters = paintRes.data || [];
 
-  // Fetch painters
-  const { data: dbPainters } = await supabase
-    .from("painters")
-    .select("id, name, total_tokens");
-
-  const initialProducts = dbProducts ? dbProducts.map((p: any) => ({
+  const initialProducts = dbProducts.map((p: any) => ({
     id: p.id,
     name: p.product_name,
     stock: Number(p.actual_stock) || 0,
     min_stock: Number(p.min_stock_threshold) || 10,
     token_value: Number(p.token_value) || 50
-  })) : [];
+  }));
 
-  const initialDealers = dbDealers ? dbDealers.map((d: any) => ({
+  const initialDealers = dbDealers.map((d: any) => ({
     id: d.id,
     name: d.name,
     gst_number: d.gst_number || ""
-  })) : [];
+  }));
 
-  const initialPainters = dbPainters ? dbPainters.map((p: any) => ({
+  const initialPainters = dbPainters.map((p: any) => ({
     id: p.id,
     name: p.name,
     total_tokens: Number(p.total_tokens) || 0
-  })) : [];
+  }));
 
   const initialData = res.success && res.data ? {
     batches: res.data.batches,

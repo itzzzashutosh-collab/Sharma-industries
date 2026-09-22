@@ -17,14 +17,12 @@ import {
   Loader2
 } from "lucide-react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 import { useLanguage } from "@/components/LanguageProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Supabase client with fastFetch timeout
+const supabase = createClient();
 
 // --- TYPES ---
 interface OrderItem {
@@ -78,86 +76,6 @@ export default function OrdersClient() {
   const [logisticsError, setLogisticsError] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
 
-// --- DUMMY ORDERS FALLBACK ---
-const DUMMY_ORDERS: Order[] = [
-  {
-    id: "SO-2026-001",
-    date: "2026-07-11",
-    dealer_name: "Jaipur Builders Association",
-    dealer_id: "dl-1",
-    salesman_name: "Aman Gupta",
-    total_amount: 345000,
-    payment_terms: "Net 30",
-    status: "Pending Approval",
-    order_items: [
-      { id: "item-1-1", order_id: "SO-2026-001", product_name: "Rustic Royale Superfine", size: "20L", quantity: 50, unit_price: 4500, stock_status: "In Stock" },
-      { id: "item-1-2", order_id: "SO-2026-001", product_name: "Wall Putty (Premium)", size: "40Kg", quantity: 100, unit_price: 1200, stock_status: "In Stock" }
-    ]
-  },
-  {
-    id: "SO-2026-002",
-    date: "2026-07-10",
-    dealer_name: "Karan Johar Paints",
-    dealer_id: "dl-2",
-    salesman_name: "Rohan Mehra",
-    total_amount: 185000,
-    payment_terms: "Cash on Delivery",
-    status: "Approved/Processing",
-    order_items: [
-      { id: "item-2-1", order_id: "SO-2026-002", product_name: "WeatherGuard Matte", size: "10L", quantity: 30, unit_price: 3500, stock_status: "In Stock" },
-      { id: "item-2-2", order_id: "SO-2026-002", product_name: "Rustic Royale Superfine", size: "4L", quantity: 40, unit_price: 2000, stock_status: "Low Stock" }
-    ]
-  },
-  {
-    id: "SO-2026-003",
-    date: "2026-07-09",
-    dealer_name: "Rajesh Sharma",
-    dealer_id: "dl-3",
-    salesman_name: "Aman Gupta",
-    total_amount: 45000,
-    payment_terms: "Net 15",
-    status: "Dispatched",
-    transporter_name: "SafeExpress Logistics",
-    vehicle_no: "RJ-14-GA-9876",
-    lr_bilty_no: "LR-6655102",
-    eway_bill_no: "889910223849",
-    order_items: [
-      { id: "item-3-1", order_id: "SO-2026-003", product_name: "Classic Acrylic Emulsion", size: "20L", quantity: 15, unit_price: 3000, stock_status: "In Stock" }
-    ]
-  },
-  {
-    id: "SO-2026-004",
-    date: "2026-07-08",
-    dealer_name: "Vijay Singh",
-    dealer_id: "dl-4",
-    salesman_name: "Priya Sharma",
-    total_amount: 125000,
-    payment_terms: "Net 45",
-    status: "Delivered",
-    transporter_name: "Gati Transport",
-    vehicle_no: "DL-3C-AY-2134",
-    lr_bilty_no: "LR-7711203",
-    eway_bill_no: "992817263540",
-    order_items: [
-      { id: "item-4-1", order_id: "SO-2026-004", product_name: "Wall Putty (Premium)", size: "40Kg", quantity: 80, unit_price: 1200, stock_status: "In Stock" },
-      { id: "item-4-2", order_id: "SO-2026-004", product_name: "WeatherGuard Matte", size: "20L", quantity: 5, unit_price: 5800, stock_status: "In Stock" }
-    ]
-  },
-  {
-    id: "SO-2026-005",
-    date: "2026-07-07",
-    dealer_name: "Jaipur Builders Association",
-    dealer_id: "dl-1",
-    salesman_name: "Rohan Mehra",
-    total_amount: 98000,
-    payment_terms: "Net 30",
-    status: "Rejected",
-    order_items: [
-      { id: "item-5-1", order_id: "SO-2026-005", product_name: "Rustic Royale Superfine", size: "20L", quantity: 20, unit_price: 4900, stock_status: "Low Stock" }
-    ]
-  }
-];
-
   // --- FETCH ORDERS FROM SUPABASE ---
   const fetchOrders = async () => {
     setLoading(true);
@@ -172,20 +90,30 @@ const DUMMY_ORDERS: Order[] = [
       } else {
         const local = localStorage.getItem("local_orders");
         if (local) {
-          setOrders(JSON.parse(local));
+          try {
+            const parsed = JSON.parse(local);
+            const realOrders = Array.isArray(parsed) ? parsed.filter((o: any) => !o.id?.startsWith("SO-SWATCH-00")) : [];
+            setOrders(realOrders);
+          } catch {
+            setOrders([]);
+          }
         } else {
-          setOrders(DUMMY_ORDERS);
-          localStorage.setItem("local_orders", JSON.stringify(DUMMY_ORDERS));
+          setOrders([]);
         }
       }
     } catch (err) {
       console.error("Error fetching orders:", err);
       const local = localStorage.getItem("local_orders");
       if (local) {
-        setOrders(JSON.parse(local));
+        try {
+          const parsed = JSON.parse(local);
+          const realOrders = Array.isArray(parsed) ? parsed.filter((o: any) => !o.id?.startsWith("SO-SWATCH-00")) : [];
+          setOrders(realOrders);
+        } catch {
+          setOrders([]);
+        }
       } else {
-        setOrders(DUMMY_ORDERS);
-        localStorage.setItem("local_orders", JSON.stringify(DUMMY_ORDERS));
+        setOrders([]);
       }
     } finally {
       setLoading(false);

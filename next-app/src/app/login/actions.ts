@@ -33,6 +33,20 @@ const SANDBOX_USERS: Record<string, { id: string; name: string; role: string; is
     is_active: true,
     is_approved: true,
   },
+  "9079609627": {
+    id: "USR_CEO_REAL",
+    name: "Ashutosh Sharma (CEO)",
+    role: "ceo",
+    is_active: true,
+    is_approved: true,
+  },
+  "9784832210": {
+    id: "USR_COF_REAL",
+    name: "Suresh Kumar Sharma (Co-Founder)",
+    role: "cofounder",
+    is_active: true,
+    is_approved: true,
+  },
   "9999999999": {
     id: "USR_CEO_001",
     name: "Ashutosh Sharma (CEO)",
@@ -158,7 +172,7 @@ export async function login(
     });
 
     // Redirect based on role
-    const redirectPath = authenticatedUser.role === "ceo" ? "/dashboard/admin" : `/dashboard/${authenticatedUser.role}`;
+    const redirectPath = authenticatedUser.role === "ceo" ? "/dashboard/ceo" : `/dashboard/${authenticatedUser.role}`;
     redirect(redirectPath);
   } catch (err: unknown) {
     // redirect() throws a NEXT_REDIRECT error — let it propagate

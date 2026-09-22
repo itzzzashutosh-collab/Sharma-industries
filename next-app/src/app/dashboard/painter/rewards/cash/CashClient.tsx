@@ -59,8 +59,8 @@ const SWATCH_CASH_OBJECTIONS = [
 ];
 
 export function CashClient({ initialData }: Props) {
-  const [profile] = useState(initialData.profile);
-  const initialCashWallet = Number(profile.total_tokens || 3420) * 1.5;
+  const profile = initialData?.profile || { total_tokens: 3420 };
+  const initialCashWallet = Number(profile?.total_tokens ?? 3420) * 1.5;
   const [cashWallet, setCashWallet] = useState(initialCashWallet);
   const [activeTab, setActiveTab] = useState<"wallet" | "playbook">("wallet");
   const [filterType, setFilterType] = useState<"All" | "Payouts" | "Credits">("All");

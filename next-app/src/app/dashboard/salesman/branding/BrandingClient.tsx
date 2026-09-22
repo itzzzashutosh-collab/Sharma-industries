@@ -103,46 +103,31 @@ const SWATCH_BRANDING_OBJECTIONS = [
 // ─────────────────────────────────────────────────────────────────────────────
 export function BrandingClient({ initialData }: Props) {
   // Normalize Dealers
-  const dealersList: Dealer[] = initialData.dealers?.length
-    ? initialData.dealers.map((d: any, idx: number) => ({
-        id: d.id || `D-${idx}`,
-        name: d.name || `Dealer ${idx + 1}`,
-        locality: d.locality || "Jaipur",
-        phone: d.phone || "9829012345",
-        tier: idx === 0 ? "Gold Partner" : "Silver Partner",
-        annual_revenue: d.annual_revenue || 450000
-      }))
-    : [
-        { id: "D1", name: "Shree Ram Paints", locality: "Malviya Nagar", phone: "9829012345", tier: "Gold Partner", annual_revenue: 650000 },
-        { id: "D2", name: "Ravi Paint & Hardware", locality: "Tonk Road", phone: "9829054321", tier: "Silver Partner", annual_revenue: 350000 },
-        { id: "D3", name: "Sharma Colour House", locality: "Sanganer", phone: "9829099887", tier: "Gold Partner", annual_revenue: 820000 },
-        { id: "D4", name: "Rajasthan Paint Depot", locality: "Vaishali Nagar", phone: "9829011223", tier: "Standard", annual_revenue: 210000 }
-      ];
+  const dealersList: Dealer[] = (initialData.dealers || []).map((d: any, idx: number) => ({
+    id: d.id || `D-${idx}`,
+    name: d.name || `Dealer ${idx + 1}`,
+    locality: d.locality || d.territory || "Rajasthan",
+    phone: d.phone || "",
+    tier: idx === 0 ? "Gold Partner" : "Silver Partner",
+    annual_revenue: d.annual_revenue || 0
+  }));
 
-  // Mock Branding Items with Swatch Paints Branding
-  const mockBrandingItems: BrandingItem[] = (initialData.branding?.length > 0)
-    ? initialData.branding.map((b: any, idx: number) => ({
-        id: b.id || `BRAND-94${80 + idx}`,
-        dealer_id: b.dealer_id || dealersList[idx % dealersList.length].id,
-        dealer_name: b.dealer_name || dealersList[idx % dealersList.length].name,
-        item_type: b.item_type || "Swatch Paints LED Glow Sign Board",
-        category: (b.category || (idx % 2 === 0 ? "Outdoor Signage" : "In-Store Display")) as any,
-        status: (b.status || (idx === 0 ? "Installed & Verified" : "In Production")) as any,
-        dimensions: b.dimensions || "10x4 ft",
-        installed_date: b.installed_date || "2026-05-10",
-        last_inspected: b.last_inspected || "2026-07-01",
-        locality: b.locality || "Jaipur",
-        visibility_score: b.visibility_score || (idx === 0 ? 95 : 78)
-      }))
-    : [
-        { id: "BRAND-9482", dealer_id: "D1", dealer_name: "Shree Ram Paints", item_type: "Swatch Paints LED Glow Sign Board", category: "Outdoor Signage", status: "Installed & Verified", dimensions: "12x4 ft", installed_date: "2026-04-15", last_inspected: "2026-07-01", locality: "Malviya Nagar", visibility_score: 95 },
-        { id: "BRAND-9511", dealer_id: "D3", dealer_name: "Sharma Colour House", item_type: "Swatch Paints Heavy Metal Display Rack", category: "In-Store Display", status: "In Production", dimensions: "4 Tier Heavy Duty", installed_date: "2026-06-20", last_inspected: "2026-07-10", locality: "Sanganer", visibility_score: 88 },
-        { id: "BRAND-9540", dealer_id: "D2", dealer_name: "Ravi Paint & Hardware", item_type: "Swatch Paints Fanalyser Master Shade Pack", category: "Color Collateral", status: "Installed & Verified", dimensions: "5 Book Set", installed_date: "2026-05-02", last_inspected: "2026-06-28", locality: "Tonk Road", visibility_score: 90 },
-        { id: "BRAND-9602", dealer_id: "D4", dealer_name: "Rajasthan Paint Depot", item_type: "Swatch Paints Exterior Wall Vinyl Wrap", category: "Vinyl & Banners", status: "Inspection Overdue", dimensions: "15x6 ft Side Facade", installed_date: "2026-03-12", last_inspected: "2026-05-15", locality: "Vaishali Nagar", visibility_score: 62 }
-      ];
+  const initialItems: BrandingItem[] = (initialData.branding || []).map((b: any, idx: number) => ({
+    id: b.id || `BRAND-${Date.now() + idx}`,
+    dealer_id: b.dealer_id || (dealersList[0]?.id || ""),
+    dealer_name: b.dealer_name || (dealersList[0]?.name || ""),
+    item_type: b.item_type || "Swatch Paints LED Glow Sign Board",
+    category: (b.category || "Outdoor Signage") as any,
+    status: (b.status || "Requested") as any,
+    dimensions: b.dimensions || "10x4 ft",
+    installed_date: b.installed_date || "",
+    last_inspected: b.last_inspected || "",
+    locality: b.locality || "",
+    visibility_score: b.visibility_score || 0
+  }));
 
   // States
-  const [brandingItems, setBrandingItems] = useState<BrandingItem[]>(mockBrandingItems);
+  const [brandingItems, setBrandingItems] = useState<BrandingItem[]>(initialItems);
   const [activeTab, setActiveTab] = useState<"assets" | "request" | "playbook" | "collateral" | "analytics">("assets");
   const [categoryFilter, setCategoryFilter] = useState<string>("ALL");
   const [searchTerm, setSearchTerm] = useState("");

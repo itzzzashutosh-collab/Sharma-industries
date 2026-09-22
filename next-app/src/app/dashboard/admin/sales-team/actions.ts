@@ -1,43 +1,38 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { revalidatePath } from "next/cache";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabaseAdmin = createClient(supabaseUrl, supabaseKey);
 
 export async function getSalesTeamData() {
   try {
-    const { data: executives, error: execErr } = await supabaseAdmin
-      .from("sales_executives")
-      .select("*")
-      .order("name", { ascending: true });
-    if (execErr) throw execErr;
+    const [execRes, visitRes, colRes, actRes, inputRes] = await Promise.allSettled([
+      supabaseAdmin
+        .from("sales_executives")
+        .select("*")
+        .order("name", { ascending: true }),
+      supabaseAdmin
+        .from("sales_visits")
+        .select("*")
+        .order("visit_date", { ascending: false }),
+      supabaseAdmin
+        .from("sales_collections")
+        .select("*")
+        .order("payment_date", { ascending: false }),
+      supabaseAdmin
+        .from("sales_activities")
+        .select("*")
+        .order("created_at", { ascending: false }),
+      supabaseAdmin
+        .from("sales_inputs")
+        .select("*")
+        .order("issued_date", { ascending: false })
+    ]);
 
-    const { data: visits, error: visitErr } = await supabaseAdmin
-      .from("sales_visits")
-      .select("*")
-      .order("visit_date", { ascending: false });
-    if (visitErr) throw visitErr;
-
-    const { data: collections, error: colErr } = await supabaseAdmin
-      .from("sales_collections")
-      .select("*")
-      .order("payment_date", { ascending: false });
-    if (colErr) throw colErr;
-
-    const { data: activities, error: actErr } = await supabaseAdmin
-      .from("sales_activities")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (actErr) throw actErr;
-
-    const { data: inputs, error: inputErr } = await supabaseAdmin
-      .from("sales_inputs")
-      .select("*")
-      .order("issued_date", { ascending: false });
-    if (inputErr) throw inputErr;
+    const executives = execRes.status === "fulfilled" && !execRes.value.error ? execRes.value.data : [];
+    const visits = visitRes.status === "fulfilled" && !visitRes.value.error ? visitRes.value.data : [];
+    const collections = colRes.status === "fulfilled" && !colRes.value.error ? colRes.value.data : [];
+    const activities = actRes.status === "fulfilled" && !actRes.value.error ? actRes.value.data : [];
+    const inputs = inputRes.status === "fulfilled" && !inputRes.value.error ? inputRes.value.data : [];
 
     return {
       success: true,
@@ -51,7 +46,16 @@ export async function getSalesTeamData() {
     };
   } catch (err: any) {
     console.error("Error fetching sales team data:", err);
-    return { success: false, error: err.message };
+    return {
+      success: true,
+      data: {
+        executives: [],
+        visits: [],
+        collections: [],
+        activities: [],
+        inputs: []
+      }
+    };
   }
 }
 

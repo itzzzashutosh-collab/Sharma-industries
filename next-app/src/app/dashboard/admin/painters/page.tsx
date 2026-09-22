@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import PaintersClient from "./client";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
@@ -24,101 +24,37 @@ export default async function PaintersPage() {
     // Allow for now, redirect if needed
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
-  // Fetch all painters
-  const { data: painters, error: paintersErr } = await supabase
-    .from("painters")
-    .select("*")
-    .order("name", { ascending: true });
-
-  if (paintersErr) {
-    console.error("Error fetching painters:", paintersErr);
-  }
-
-  // Fetch scanned QR registry entries
-  const { data: qrRegistry, error: qrErr } = await supabase
-    .from("qr_registry")
-    .select("qr_code, scanned_by, scanned_at, token_value, product_id, dealer_id, invoice_id")
-    .eq("is_scanned", true);
-
-  if (qrErr) {
-    console.error("Error fetching qrRegistry:", qrErr);
-  }
-
-  // Fetch all invoices
-  const { data: invoices, error: invErr } = await supabase
-    .from("invoices")
-    .select("id, items, client_details");
-
-  if (invErr) {
-    console.error("Error fetching invoices:", invErr);
-  }
-
-  // Fetch all products for lookup
-  const { data: products, error: prodErr } = await supabase
-    .from("products")
-    .select("id, product_name");
-
-  if (prodErr) {
-    console.error("Error fetching products:", prodErr);
-  }
-
-  // Fetch all dealers for lookup
-  const { data: dealers, error: dealersErr } = await supabase
-    .from("users")
-    .select("id, name, phone, address, territory")
-    .eq("role", "dealer");
-
-  if (dealersErr) {
-    console.error("Error fetching dealers:", dealersErr);
-  }
-
-  // Fetch rewards catalog
-  const { data: dbRewards, error: rewardsErr } = await supabase
-    .from("rewards_catalog")
-    .select("*")
-    .order("points", { ascending: true });
-
-  if (rewardsErr) {
-    console.error("Error fetching rewards:", rewardsErr);
-  }
-
-  // Fetch schemes
-  const { data: dbSchemes, error: schemesErr } = await supabase
-    .from("schemes")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (schemesErr) {
-    console.error("Error fetching schemes:", schemesErr);
-  }
-
-  // Fetch competitions
-  const { data: dbCompetitions, error: compErr } = await supabase
-    .from("competitions")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (compErr) {
-    console.error("Error fetching competitions:", compErr);
-  }
-
-  // Fetch Painter Projects (Portfolio), Estimations (Material Calculations), Coupons, and Meetings for CEO Mode
+  // Fetch all collections concurrently with fast timeout
   const [
-    { data: allProjects },
-    { data: allEstimations },
-    { data: allCoupons },
-    { data: allMeetings }
-  ] = await Promise.all([
-    supabase.from("painter_projects").select("*").order("created_at", { ascending: false }),
-    supabase.from("painter_estimations").select("*").order("created_at", { ascending: false }),
-    supabase.from("painter_coupons").select("*").order("scanned_at", { ascending: false }),
-    supabase.from("painter_meetings").select("*").order("meeting_date", { ascending: true })
+    paintRes, qrRes, invRes, prodRes, dealRes, rewRes,
+    schemesRes, compRes, projRes, estRes, coupRes, meetRes
+  ] = await Promise.allSettled([
+    supabaseAdmin.from("painters").select("*").order("name", { ascending: true }),
+    supabaseAdmin.from("qr_registry").select("qr_code, scanned_by, scanned_at, token_value, product_id, dealer_id, invoice_id").eq("is_scanned", true),
+    supabaseAdmin.from("invoices").select("id, items, client_details"),
+    supabaseAdmin.from("products").select("id, product_name"),
+    supabaseAdmin.from("users").select("id, name, phone, address, territory").eq("role", "dealer"),
+    supabaseAdmin.from("rewards_catalog").select("*").order("points", { ascending: true }),
+    supabaseAdmin.from("schemes").select("*").order("created_at", { ascending: false }),
+    supabaseAdmin.from("competitions").select("*").order("created_at", { ascending: false }),
+    supabaseAdmin.from("painter_projects").select("*").order("created_at", { ascending: false }),
+    supabaseAdmin.from("painter_estimations").select("*").order("created_at", { ascending: false }),
+    supabaseAdmin.from("painter_coupons").select("*").order("scanned_at", { ascending: false }),
+    supabaseAdmin.from("painter_meetings").select("*").order("meeting_date", { ascending: true })
   ]);
+
+  const painters = paintRes.status === "fulfilled" && !paintRes.value.error ? paintRes.value.data : [];
+  const qrRegistry = qrRes.status === "fulfilled" && !qrRes.value.error ? qrRes.value.data : [];
+  const invoices = invRes.status === "fulfilled" && !invRes.value.error ? invRes.value.data : [];
+  const products = prodRes.status === "fulfilled" && !prodRes.value.error ? prodRes.value.data : [];
+  const dealers = dealRes.status === "fulfilled" && !dealRes.value.error ? dealRes.value.data : [];
+  const dbRewards = rewRes.status === "fulfilled" && !rewRes.value.error ? rewRes.value.data : [];
+  const dbSchemes = schemesRes.status === "fulfilled" && !schemesRes.value.error ? schemesRes.value.data : [];
+  const dbCompetitions = compRes.status === "fulfilled" && !compRes.value.error ? compRes.value.data : [];
+  const allProjects = projRes.status === "fulfilled" && !projRes.value.error ? projRes.value.data : [];
+  const allEstimations = estRes.status === "fulfilled" && !estRes.value.error ? estRes.value.data : [];
+  const allCoupons = coupRes.status === "fulfilled" && !coupRes.value.error ? coupRes.value.data : [];
+  const allMeetings = meetRes.status === "fulfilled" && !meetRes.value.error ? meetRes.value.data : [];
 
   // Map scans, projects, and estimations to painters programmatically for CEO Mode
   const paintersWithHistory = (painters || []).map((p) => {

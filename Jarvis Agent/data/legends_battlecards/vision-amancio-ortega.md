@@ -1,1 +1,0 @@
-Battlecard for Amancio Ortega (Zero-Stockout Agile Manufacturing) synthesized with Tim Cook

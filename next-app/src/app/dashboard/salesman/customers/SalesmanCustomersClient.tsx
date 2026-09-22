@@ -7,12 +7,10 @@ import {
   ShieldCheck, Shield, Copy, Check, Share2, Upload, TrendingUp, Building2, Flame, Zap, HelpCircle,
   Award, Wallet, Gift, QrCode, CreditCard, ArrowRight, DollarSign, CheckCircle2, Calendar, UserPlus, Clock, RefreshCw, X, FileText, Loader2
 } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
 
-// Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key";
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Supabase client with fastFetch timeout
+const supabase = createClient();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types

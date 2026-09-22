@@ -55,18 +55,6 @@ interface Props {
 
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
-const MOCK_INFLOWS = [
-  { id: "CF_IN_01", desc: "POS Direct Cash Sale #POS-0043", type: "inflow", mode: "Cash Drawer", amount: 34500, date: "2026-07-26" },
-  { id: "CF_IN_02", desc: "UPI Settlement Rajesh Hardware #POS-0041", type: "inflow", mode: "Bank / UPI", amount: 48900, date: "2026-07-26" },
-  { id: "CF_IN_03", desc: "Khata Settlement Advance Vikram Construction", type: "inflow", mode: "Bank / UPI", amount: 50000, date: "2026-07-25" }
-];
-
-const MOCK_OUTFLOWS = [
-  { id: "CF_OUT_01", desc: "Helper & Loading Shift Daily Wages", type: "outflow", mode: "Cash Drawer", amount: 1400, date: "2026-07-26" },
-  { id: "CF_OUT_02", desc: "Showroom Premises Monthly Rent", type: "outflow", mode: "Bank / UPI", amount: 25000, date: "2026-07-01" },
-  { id: "CF_OUT_03", desc: "Commercial Electricity Bill Payment", type: "outflow", mode: "Bank / UPI", amount: 4680, date: "2026-07-15" }
-];
-
 export function CashFlowLedgerClient({
   initialInvoices,
   initialExpenses,
@@ -95,30 +83,32 @@ export function CashFlowLedgerClient({
   // Cash Inflows Calculation
   const cashSalesInflow = invoices
     .filter(i => (i.payment_mode || "").toLowerCase() === "cash")
-    .reduce((s, i) => s + Number(i.grand_total || 0), 0);
+    .reduce((s, i) => s + Number(i.advance_paid || i.grand_total || 0), 0);
 
   const upiSalesInflow = invoices
-    .filter(i => (i.payment_mode || "").toLowerCase() === "upi")
-    .reduce((s, i) => s + Number(i.grand_total || 0), 0);
+    .filter(i => (i.payment_mode || "").toLowerCase() === "upi" || (i.payment_mode || "").toLowerCase() === "bank")
+    .reduce((s, i) => s + Number(i.advance_paid || i.grand_total || 0), 0);
 
-  const advancePaidInflow = invoices
-    .reduce((s, i) => s + Number(i.advance_paid || (i.grand_total - (i.balance_due || 0))), 0);
-
-  const totalInflows = Math.max(133400, advancePaidInflow > 0 ? advancePaidInflow : (cashSalesInflow + upiSalesInflow));
+  const totalInflows = invoices.reduce((s, i) => s + Number(i.advance_paid || (i.grand_total - (i.balance_due || 0))), 0);
 
   // Cash Outflows Calculation
-  const totalOutflows = useMemo(() => {
-    const expTotal = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
-    return expTotal > 0 ? expTotal : 31080;
-  }, [expenses]);
+  const totalOutflows = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+
+  const cashExpenses = expenses
+    .filter(e => (e.payment_mode || "").toLowerCase() === "cash")
+    .reduce((s, e) => s + Number(e.amount || 0), 0);
+
+  const bankExpenses = expenses
+    .filter(e => (e.payment_mode || "").toLowerCase() !== "cash")
+    .reduce((s, e) => s + Number(e.amount || 0), 0);
 
   // Net Surplus & Balances
   const netCashSurplus = totalInflows - totalOutflows;
-  const cashDrawerBalance = Math.max(33100, cashSalesInflow + 34500 - 1400);
-  const bankAccountBalance = Math.max(69220, totalInflows - cashDrawerBalance - totalOutflows);
+  const cashDrawerBalance = Math.max(0, cashSalesInflow - cashExpenses);
+  const bankAccountBalance = Math.max(0, upiSalesInflow - bankExpenses);
 
   // Predictive Cash Forecast (7 & 30 Days)
-  const pendingCreditReceivables = invoices.reduce((s, i) => s + Number(i.balance_due || 0), 0) || 75000;
+  const pendingCreditReceivables = invoices.reduce((s, i) => s + Number(i.balance_due || 0), 0);
   const forecastedInflow7d = Math.round(pendingCreditReceivables * 0.4);
   const forecastedInflow30d = Math.round(pendingCreditReceivables * 0.85);
 
@@ -149,10 +139,6 @@ export function CashFlowLedgerClient({
         date: e.expense_date || "2026-07-26"
       });
     });
-
-    if (list.length === 0) {
-      return [...MOCK_INFLOWS, ...MOCK_OUTFLOWS];
-    }
 
     return list.sort((a, b) => b.date.localeCompare(a.date));
   }, [invoices, expenses]);
@@ -291,13 +277,13 @@ export function CashFlowLedgerClient({
             <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-2">
               <span className="text-[10px] font-black text-emerald-600 uppercase">Next 7 Days Projected Inflow</span>
               <p className="text-2xl font-black text-emerald-600 font-mono">{fmt(forecastedInflow7d)}</p>
-              <p className="text-[11px] text-muted-foreground">Expected Khata credit collections from 2 contractor clients</p>
+              <p className="text-[11px] text-muted-foreground">Expected Khata credit collections from receivables</p>
             </div>
 
             <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-2xl space-y-2">
               <span className="text-[10px] font-black text-blue-600 uppercase">Next 30 Days Projected Inflow</span>
               <p className="text-2xl font-black text-blue-600 font-mono">{fmt(forecastedInflow30d)}</p>
-              <p className="text-[11px] text-muted-foreground">Full Khata account settlement pipeline</p>
+              <p className="text-[11px] text-muted-foreground">Full Khata credit account pipeline</p>
             </div>
           </div>
         </div>
@@ -307,7 +293,7 @@ export function CashFlowLedgerClient({
             <h3 className="text-sm font-black text-foreground uppercase tracking-wider flex items-center gap-2">
               <Landmark size={16} className="text-emerald-500" /> Store Bank & UPI Account
             </h3>
-            <p className="text-xs text-muted-foreground mt-1">HDFC Bank Commercial Account Balance</p>
+            <p className="text-xs text-muted-foreground mt-1">Verified Commercial Account Balance</p>
             <p className="text-3xl font-black text-foreground font-mono mt-3">{fmt(bankAccountBalance)}</p>
           </div>
           <div className="pt-3 border-t border-border/40 text-[11px] text-muted-foreground flex items-center justify-between">

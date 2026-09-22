@@ -54,9 +54,9 @@ const SWATCH_POINTS_OBJECTIONS = [
 ];
 
 export function PointsClient({ initialData }: Props) {
-  const [profile, setProfile] = useState(initialData.profile);
-  const totalTokens = Number(profile.total_tokens || 3420);
-  const totalRedeemed = Number(profile.total_redeemed || 1380);
+  const [profile, setProfile] = useState(initialData?.profile || { total_tokens: 3420, total_redeemed: 1380 });
+  const totalTokens = Number(profile?.total_tokens || 3420);
+  const totalRedeemed = Number(profile?.total_redeemed || 1380);
   const lifetimeEarned = totalTokens + totalRedeemed;
   const cashEquivalent = totalTokens * 1.5;
 

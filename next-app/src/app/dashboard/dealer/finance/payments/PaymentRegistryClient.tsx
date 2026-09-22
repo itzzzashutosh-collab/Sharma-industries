@@ -60,13 +60,6 @@ interface PaymentVoucher {
 
 const fmt = (n: number) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
 
-const MOCK_VOUCHERS: PaymentVoucher[] = [
-  { id: "VCH_001", voucher_no: "VOU-2026-9801", party_name: "Rajesh Hardware & Paints", type: "collection", amount: 48900, payment_mode: "UPI", date: "2026-07-26", reference_no: "UPI_99120384", remarks: "Instant POS Payment for Invoice #POS-2026-0041" },
-  { id: "VCH_002", voucher_no: "VOU-2026-9802", party_name: "Vikram Construction Studio", type: "collection", amount: 50000, payment_mode: "Bank Transfer", date: "2026-07-25", reference_no: "NEFT_HDFC_4821", remarks: "Advance Settlement against Khata Credit Bill #POS-2026-0042" },
-  { id: "VCH_003", voucher_no: "VOU-2026-9803", party_name: "Store Helpers Shift Allowance", type: "disbursal", amount: 1400, payment_mode: "Cash", date: "2026-07-26", reference_no: "VCH_EXP_1400", remarks: "Daily Helper Shift Wage Payout" },
-  { id: "VCH_004", voucher_no: "VOU-2026-9804", party_name: "Bundi Road Premises Landlord", type: "disbursal", amount: 25000, payment_mode: "Bank Transfer", date: "2026-07-01", reference_no: "VCH_RENT_25K", remarks: "Showroom Monthly Rent Disbursement" }
-];
-
 export function PaymentRegistryClient({
   initialInvoices,
   initialExpenses,
@@ -131,7 +124,7 @@ export function PaymentRegistryClient({
       });
     });
 
-    if (list.length === 0) return MOCK_VOUCHERS;
+    if (list.length === 0) return [];
     return list.sort((a, b) => b.date.localeCompare(a.date));
   }, [initialInvoices, initialExpenses]);
 

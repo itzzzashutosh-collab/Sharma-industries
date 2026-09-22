@@ -20,27 +20,9 @@ export default async function Page() {
     );
   }
 
-  // Pre-seed dynamic mock branding items
-  const branding = [
-    {
-      id: "BRAND-9482",
-      dealer_name: (res.dealers && res.dealers[0]?.name) || "Shree Ram Paints",
-      item_type: "Glow Sign Board",
-      status: "Installed",
-      last_inspected: "2026-07-01"
-    },
-    {
-      id: "BRAND-9511",
-      dealer_name: "Mahadev Paints & Sanitary",
-      item_type: "Product Display Rack",
-      status: "Requested",
-      last_inspected: "2026-07-10"
-    }
-  ];
-
   const payload = {
     dealers: res.dealers || [],
-    branding
+    branding: []
   };
 
   return <BrandingClient initialData={payload} />;

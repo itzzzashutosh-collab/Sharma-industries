@@ -106,22 +106,22 @@ const B2B_TERRITORY_OBJECTIONS = [
 export function TerritoryClient({ initialData }: Props) {
   // Normalize Cities
   const defaultCities: CityPerformance[] = [
-    { city: "Jaipur Central & Urban", subHubs: "Malviya Nagar, Mansarovar, Vaishali", dealers: 10, painters: 18, revenue: 245000, growth: "+16%", marketShare: 35, topProduct: "Swatch Shine Emulsion" },
-    { city: "Kota Industrial & Educational", subHubs: "Vigyan Nagar, Talwandi, Groman", dealers: 5, painters: 10, revenue: 135000, growth: "+22%", marketShare: 28, topProduct: "Swatch Damp Shield" },
-    { city: "Bundi & Satellite Hub", subHubs: "Main Market, Bus Stand Area", dealers: 3, painters: 6, revenue: 70000, growth: "+8%", marketShare: 20, topProduct: "Swatch Weatherguard" }
+    { city: "Bundi (HQ)", subHubs: "Bundi City Trade Market", dealers: 0, painters: 0, revenue: 0, growth: "Base", marketShare: 0, topProduct: "Swatch Rustic Texture" },
+    { city: "Kota City", subHubs: "Kota Commercial Hub", dealers: 0, painters: 0, revenue: 0, growth: "Expansion", marketShare: 0, topProduct: "Swatch Weatherguard" },
+    { city: "Talera", subHubs: "Talera City Market", dealers: 0, painters: 0, revenue: 0, growth: "Corridor", marketShare: 0, topProduct: "Swatch Roller Coat" }
   ];
 
   const citiesList: CityPerformance[] = useMemo(() => {
     if (initialData.cities && initialData.cities.length > 0) {
       return initialData.cities.map((c: any, idx: number) => ({
         city: c.city || `City Hub ${idx + 1}`,
-        subHubs: c.subHubs || "Central Commercial Area",
-        dealers: c.dealers || 4,
-        painters: c.painters || 8,
-        revenue: c.revenue || 100000,
-        growth: c.growth || "+12%",
-        marketShare: c.marketShare || 25,
-        topProduct: c.topProduct || "Swatch Shine Emulsion"
+        subHubs: c.subHubs || "City Trade Market",
+        dealers: c.dealers || 0,
+        painters: c.painters || 0,
+        revenue: c.revenue || 0,
+        growth: c.growth || "0%",
+        marketShare: c.marketShare || 0,
+        topProduct: c.topProduct || "Swatch Rustic Texture"
       }));
     }
     return defaultCities;
@@ -129,16 +129,16 @@ export function TerritoryClient({ initialData }: Props) {
 
   // Territory Goals State
   const [goals, setGoals] = useState<TerritoryGoal[]>([
-    { id: "TG1", title: "Onboard 5 Tier-1 Swatch Dealers in Jaipur South", targetCity: "Jaipur", targetMetric: "5 Dealers", progress: 60, status: "Active", dueDate: "2026-08-15" },
-    { id: "TG2", title: "Conduct Swatch Waterproofing Painter Meet in Kota", targetCity: "Kota", targetMetric: "15 Painters", progress: 100, status: "Completed", dueDate: "2026-07-20" },
-    { id: "TG3", title: "Establish Express Delivery Logistics Hub in Bundi", targetCity: "Bundi", targetMetric: "24h Logistics", progress: 30, status: "Active", dueDate: "2026-08-30" }
+    { id: "TG1", title: "Onboard Authorized Retail Counters in Bundi", targetCity: "Bundi", targetMetric: "Retail Counters", progress: 0, status: "Active", dueDate: "2026-10-15" },
+    { id: "TG2", title: "Conduct Swatch Rustic Texture Painter Meet in Kota", targetCity: "Kota", targetMetric: "Painters", progress: 0, status: "Active", dueDate: "2026-10-20" },
+    { id: "TG3", title: "Establish Direct Dispatch Corridor in Talera", targetCity: "Talera", targetMetric: "Trade Logistics", progress: 0, status: "Active", dueDate: "2026-10-30" }
   ]);
 
   // States
   const [activeTab, setActiveTab] = useState<"coverage" | "goals" | "playbook" | "competitor" | "analytics">("coverage");
   const [showGoalModal, setShowGoalModal] = useState(false);
   const [goalTitle, setGoalTitle] = useState("");
-  const [goalCity, setGoalCity] = useState("Jaipur");
+  const [goalCity, setGoalCity] = useState("Bundi");
   const [goalMetric, setGoalMetric] = useState("");
   const [copiedObjId, setCopiedObjId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
